@@ -2,54 +2,45 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
-  <style>
-    /* The main text font */
+<style>
     @font-face {
       font-family: 'HaraldText';
-      src: url('fonts/HaraldReveryTextFont.woff2') format('woff2');
+      src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2');
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
 
-    /* The mono/branding font */
     @font-face {
       font-family: 'HaraldMono';
-      src: url('fonts/HaraldReveryMonoFont.woff2') format('woff2');
+      src: url('../fonts/HaraldReveryMonoFont.woff2') format('woff2');
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
 
-    /* Set HaraldText as the global default */
-    body {
-      font-family: 'HaraldText', sans-serif;
+    /* Force the larger size globally */
+    html {
+      font-size: 19px; /* This makes the base font larger across the whole site */
     }
-  /* 2. GLOBAL SCALING */
-  body {
-    font-family: 'HaraldText', sans-serif;
-    /* This makes the default text roughly 18px instead of 16px */
-    font-size: 1.245rem; 
-    /* Mono fonts often need more space between lines to look clean */
-    line-height: 1.7; 
-    background-color: white;
-    color: black;
-  }
+  </style>
 
-  /* 3. HEADERS & FOOTER ADJUSTMENT */
-  .font-signika, 
-  header a, 
-  footer p.font-signika {
-    font-family: 'HaraldMono', monospace !important;
-    /* Optional: boost the mono font slightly more if it feels even smaller */
-    letter-spacing: -0.02em; 
-  }
-
-  h1 {
-    font-family: 'HaraldMono', monospace;
-    font-weight: bold;
-  }
-</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            /* This forces 'font-signika' to use HaraldMono */
+            'signika': ['HaraldMono', 'monospace'],
+            /* This replaces the standard serif/sans fonts with your text font */
+            'sans': ['HaraldText', 'sans-serif'],
+            'serif': ['HaraldMono', 'monospace'], 
+          },
+        },
+      },
+    }
+  </script>
   
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
