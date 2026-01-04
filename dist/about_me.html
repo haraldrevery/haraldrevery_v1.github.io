@@ -3,6 +3,7 @@
 
 <head>
 <style>
+    /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
       src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2');
@@ -19,12 +20,19 @@
       font-display: swap;
     }
 
-    /* 2. TARGETED SCALING */
-    /* This targets the body, but we will keep the Mono font at 1rem in Tailwind */
+    /* 2. BASE SCALING */
     body {
       font-family: 'HaraldText', sans-serif;
-      font-size: 1.25rem; /* Makes the reading text larger (approx 20px) */
+      /* Main reading text boost (approx 20px) */
+      font-size: 1.25rem; 
       line-height: 1.6;
+    }
+
+    /* 3. TARGETED MONO SCALING */
+    /* This ensures that any element using font-signika gets a slight boost */
+    .font-signika {
+      font-size: 1.1em; /* Scales the mono font up by 10% relative to its container */
+      letter-spacing: -0.01em;
     }
   </style>
 
@@ -34,16 +42,10 @@
       theme: {
         extend: {
           fontFamily: {
-            /* Map your classes to the fonts */
             'signika': ['HaraldMono', 'monospace'],
             'sans': ['HaraldText', 'sans-serif'],
             'serif': ['HaraldMono', 'monospace'],
           },
-          /* This specifically resets font-signika back to standard size 
-             so it doesn't grow with the body text */
-          fontSize: {
-            '2xl': ['1.5rem', { lineHeight: '2rem' }], // Default Tailwind size for Nav
-          }
         },
       },
     }
