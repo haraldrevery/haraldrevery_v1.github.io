@@ -19,24 +19,31 @@
       font-display: swap;
     }
 
-    /* Force the larger size globally */
-    html {
-      font-size: 19px; /* This makes the base font larger across the whole site */
+    /* 2. TARGETED SCALING */
+    /* This targets the body, but we will keep the Mono font at 1rem in Tailwind */
+    body {
+      font-family: 'HaraldText', sans-serif;
+      font-size: 1.25rem; /* Makes the reading text larger (approx 20px) */
+      line-height: 1.6;
     }
   </style>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            /* This forces 'font-signika' to use HaraldMono */
+            /* Map your classes to the fonts */
             'signika': ['HaraldMono', 'monospace'],
-            /* This replaces the standard serif/sans fonts with your text font */
             'sans': ['HaraldText', 'sans-serif'],
-            'serif': ['HaraldMono', 'monospace'], 
+            'serif': ['HaraldMono', 'monospace'],
           },
+          /* This specifically resets font-signika back to standard size 
+             so it doesn't grow with the body text */
+          fontSize: {
+            '2xl': ['1.5rem', { lineHeight: '2rem' }], // Default Tailwind size for Nav
+          }
         },
       },
     }
