@@ -26,7 +26,31 @@
     body {
       font-family: 'HaraldText', sans-serif;
     }
-  </style>
+  /* 2. GLOBAL SCALING */
+  body {
+    font-family: 'HaraldText', sans-serif;
+    /* This makes the default text roughly 18px instead of 16px */
+    font-size: 1.125rem; 
+    /* Mono fonts often need more space between lines to look clean */
+    line-height: 1.25; 
+    background-color: white;
+    color: black;
+  }
+
+  /* 3. HEADERS & FOOTER ADJUSTMENT */
+  .font-signika, 
+  header a, 
+  footer p.font-signika {
+    font-family: 'HaraldMono', monospace !important;
+    /* Optional: boost the mono font slightly more if it feels even smaller */
+    letter-spacing: -0.02em; 
+  }
+
+  h1 {
+    font-family: 'HaraldMono', monospace;
+    font-weight: bold;
+  }
+</style>
   
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
