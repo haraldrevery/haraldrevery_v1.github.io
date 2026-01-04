@@ -135,7 +135,7 @@ If you find this project useful, consider supporting me on Ko-fi. Thanks for che
 
 ## 📜 License <a name="license"></a>
 
-Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs, and brand assets are Copyright © 2025 Harald Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
+Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs and brand assets in the folder are Copyright © 2025 Harald Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
