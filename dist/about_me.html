@@ -20,20 +20,27 @@
       font-display: swap;
     }
 
-    /* 2. BASE SCALING */
+    /* 2. TEXT SCALING */
     body {
       font-family: 'HaraldText', sans-serif;
-      /* Main reading text boost (approx 20px) */
-      font-size: 1.70em; 
-      line-height: 1.7;
+      font-size: 1.75rem;     /* ≈28px on 16px root */
+      line-height: 1.68;
     }
 
-    /* 3. TARGETED MONO SCALING */
-    /* This ensures that any element using font-signika gets a slight boost */
-    .font-signika {
-      font-size: 1.21em; /* Scales the mono font up by 10% relative to its container */
-      letter-spacing: 0.001em;
-    }
+    /* HaraldMono gets its own independent scale */
+        .font-signika,
+        code,
+        pre,
+        kbd,
+        samp,
+        tt,
+        .mono,
+        .console-output {
+          font-family: 'HaraldMono', monospace;
+          font-size: 1.375rem;      /* ≈22px – very common mono scale */
+          line-height: 1.55;
+          letter-spacing: 0.015em;
+        }
   </style>
 
 <script src="https://cdn.tailwindcss.com"></script>
