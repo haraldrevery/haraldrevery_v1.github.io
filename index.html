@@ -56,13 +56,14 @@
     tailwind.config = {
       content: ["./dist/*.{html,js}"],
       theme: {
-        extend:
-                {
-                  fontFamily: {
-                    'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
-                    'signika': ['Signika', 'sans-serif'],
-                  },
-                },
+        extend: {
+          fontFamily: {
+            'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
+            /* This re-routes your 'font-signika' classes to use HaraldMono */
+            'signika': ['HaraldMono', 'monospace'],
+            'body': ['HaraldText', 'sans-serif'],
+          },
+        },
       },
       plugins: [],
     }
