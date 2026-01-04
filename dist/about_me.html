@@ -2,6 +2,31 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
+  <style>
+    /* The main text font */
+    @font-face {
+      font-family: 'HaraldText';
+      src: url('fonts/HaraldReveryTextFont.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* The mono/branding font */
+    @font-face {
+      font-family: 'HaraldMono';
+      src: url('fonts/HaraldReveryMonoFont.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Set HaraldText as the global default */
+    body {
+      font-family: 'HaraldText', sans-serif;
+    }
+  </style>
+  
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
