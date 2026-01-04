@@ -3,6 +3,7 @@
 
 <head>
 <style>
+    /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
       src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2');
@@ -18,24 +19,45 @@
       font-style: normal;
       font-display: swap;
     }
-
-    /* Force the larger size globally */
+    
     html {
-      font-size: 19px; /* This makes the base font larger across the whole site */
+      font-size: 1.427rem;   /* ≈18px – gentle start */
+      /* or your target: 1.4rem / 1.5rem / 1.75rem / whatever feels right */
     }
+    
+    /* 2. TEXT SCALING */
+    body {
+      font-family: 'HaraldText', sans-serif;
+      font-size: 1.96rem;     /* ≈28px on 16px root */
+      line-height: 1.58;
+        letter-spacing: 0.0167em;
+    }
+
+    /* HaraldMono gets its own independent scale */
+        .font-signika,
+        code,
+        pre,
+        kbd,
+        samp,
+        tt,
+        .mono,
+        .console-output {
+          font-family: 'HaraldMono', monospace;
+          font-size: 1.7rem;      /* ≈22px – very common mono scale */
+          line-height: 1.2;
+          letter-spacing: 0.025em;
+        }
   </style>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            /* This forces 'font-signika' to use HaraldMono */
             'signika': ['HaraldMono', 'monospace'],
-            /* This replaces the standard serif/sans fonts with your text font */
             'sans': ['HaraldText', 'sans-serif'],
-            'serif': ['HaraldMono', 'monospace'], 
+            'serif': ['HaraldMono', 'monospace'],
           },
         },
       },
