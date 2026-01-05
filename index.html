@@ -24,29 +24,26 @@
     opacity: 1 !important;
   }
 
-
     
-/* fading words */
-#text-container p {
-    opacity: 0;
-  }
+     /* fading words */
 
-  /* Once the 'active' class is added via JS, show the paragraphs */
-  #text-container.active p {
-    opacity: 1;
-  }
-
-  @keyframes slowFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .fade-word {
-    display: inline-block;
-    opacity: 0;
-    animation: slowFade 0.40s ease-in-out forwards;
-    margin-right: 0.25em;
-  }
+        .word {
+          display: inline-block;
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        
+        @keyframes fadeInWord {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        /* This triggers when the IntersectionObserver adds the class */
+        .start-animation .word {
+          animation: fadeInWord 0.6s ease-out forwards;
+        }
 
 
 
@@ -794,75 +791,78 @@ function audioPlayer() {
 }
 </script>
 
- <!-- fading words script -->
+<!-- fading words script -->
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const containers = document.querySelectorAll('.text-container');
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('text-container');
+  containers.forEach(container => {
     const paragraphs = container.querySelectorAll('p');
+    
+    paragraphs.forEach(p => {
+      // Use textContent instead of innerText to ensure we get the text 
+      // even if the element is currently invisible/opacity 0
+      const text = p.textContent.trim();
+      const words = text.split(/\s+/);
+      
+      p.innerHTML = words.map((word) => {
+        // Random delay between 0.1s and 1.0s
+        const randomDelay = (Math.random() * 0.9 + 0.1).toFixed(2);
+        return `<span class="word" style="animation-delay: ${randomDelay}s">${word}</span>`;
+      }).join(' ');
+    });
 
+    // Observer to trigger when scrolled into view
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Add class to make the base paragraphs visible 
-          // (the individual words will still be at opacity 0)
-          container.classList.add('active');
-          startFadeAnimation();
+          // Add the class to the container to start the child animations
+          entry.target.classList.add('start-animation');
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { 
+      // Trigger when 10% of the block is visible
+      threshold: 0.1 
+    });
 
     observer.observe(container);
-
-    function startFadeAnimation() {
-      paragraphs.forEach(p => {
-        const words = p.innerText.split(/\s+/);
-        p.innerHTML = words.map(word => {
-          const delay = (Math.random() * 5).toFixed(2);
-          return `<span class="fade-word" style="animation-delay: ${delay}s">${word}</span>`;
-        }).join(' ');
-      });
-    }
   });
-
+});
 </script>
 
 <!-- fading letters script -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const heading = document.getElementById('animated-heading');
-    
-    // Intersection Observer to trigger when the heading is scrolled into view
-    const headingObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateLetters(heading);
-          headingObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Use a class selector to find ALL headings
+  const headings = document.querySelectorAll('.animated-heading');
+  
+  const headingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateLetters(entry.target);
+        headingObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 }); // Lower threshold often works better for mobile
 
-    headingObserver.observe(heading);
+  headings.forEach(h => headingObserver.observe(h));
 
-    function animateLetters(el) {
-      const text = el.innerText;
-      el.innerHTML = ''; // Clear original text
-      el.classList.add('active'); // Make the H2 container visible
+  function animateLetters(el) {
+    const text = el.innerText;
+    el.innerHTML = ''; 
+    el.style.opacity = '1'; // Ensure it's visible
+    el.classList.add('active'); 
 
-      // Split into characters
-      [...text].forEach((char, index) => {
-        const span = document.createElement('span');
-        span.textContent = char === ' ' ? '\u00A0' : char; // Handle spaces
-        span.className = 'fade-letter';
-        
-        // Incremental delay: 0.05s per character (adjust for speed)
-        span.style.animationDelay = `${index * 0.05}s`;
-        
-        el.appendChild(span);
-      });
-    }
-  });
+    [...text].forEach((char, index) => {
+      const span = document.createElement('span');
+      span.textContent = char === ' ' ? '\u00A0' : char; 
+      span.className = 'fade-letter';
+      span.style.animationDelay = `${index * 0.05}s`;
+      el.appendChild(span);
+    });
+  }
+});
 </script>
 
   
