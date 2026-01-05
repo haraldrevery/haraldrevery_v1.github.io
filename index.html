@@ -380,6 +380,32 @@
   <script>
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
+
+
+<!-- Script for the image scroll -->
+<script>
+  const revealOnScroll = () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { 
+      threshold: 0.1 // Triggers when 10% of the image is visible
+    });
+
+    // Targets all elements with the reveal class
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  };
+
+  // Run the function after Alpine.js has rendered the images
+  document.addEventListener('DOMContentLoaded', () => {
+    // Small timeout to ensure Alpine finishes its loop
+    setTimeout(revealOnScroll, 100); 
+  });
+</script>
+  
 </body>
 
 </html>
