@@ -2,41 +2,14 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
-<style>
-    
-       
-    /* wiggle animation */
-        @keyframes wave-animation {
-          0% { transform: rotate(0.0deg); }
-          10% { transform: rotate(14.0deg); }
-          20% { transform: rotate(-8.0deg); }
-          30% { transform: rotate(14.0deg); }
-          40% { transform: rotate(-4.0deg); }
-          50% { transform: rotate(10.0deg); }
-          60% { transform: rotate(0.0deg); }
-          100% { transform: rotate(0.0deg); }
-        }
-        
-        .animate-wave {
-          display: inline-block;
-          /* This matches the characteristic 'hand-wave' timing */
-          animation: wave-animation 2.5s infinite;
-          transform-origin: 70% 70%; /* Tilts from the bottom-right corner */
-        }
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HARALD REVERY - ABOUT</title>
+  
+  <script src="./dist/tailwind.js"></script>
 
-    
-    /* Animated Gradient Effect */
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .animate-bg-slow {
-      background-size: 200% 200%;
-      animation: gradientMove 15s ease infinite;
-    }
-    
+  <style>
     /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
@@ -53,67 +26,60 @@
       font-style: normal;
       font-display: swap;
     }
-    
-    html {
-      font-size: 1.427rem;   /* ≈18px – gentle start */
-      /* or your target: 1.4rem / 1.5rem / 1.75rem / whatever feels right */
-    }
-    
-    /* 2. TEXT SCALING */
+
+    /* 2. BASE STYLES */
+    html { font-size: 1.427rem; }
     body {
       font-family: 'HaraldText', sans-serif;
-      font-size: 2.40rem;     /* ≈28px on 16px root */
+      font-size: 2.40rem;
       line-height: 1.58;
-        letter-spacing: 0.019em;
+      letter-spacing: 0.019em;
     }
 
-    /* HaraldMono gets its own independent scale */
-        .font-signika,
-        code,
-        pre,
-        kbd,
-        samp,
-        tt,
-        .mono,
-        .console-output {
-          font-family: 'HaraldMono', monospace;
-          font-size: 1.7rem;      /* ≈22px – very common mono scale */
-          line-height: 1.2;
-          letter-spacing: 0.025em;
-        }
+    /* 3. ANIMATIONS */
+    @keyframes wave-animation {
+      0% { transform: rotate(0.0deg); }
+      10% { transform: rotate(14.0deg); }
+      20% { transform: rotate(-8.0deg); }
+      30% { transform: rotate(14.0deg); }
+      40% { transform: rotate(-4.0deg); }
+      50% { transform: rotate(10.0deg); }
+      60% { transform: rotate(0.0deg); }
+      100% { transform: rotate(0.0deg); }
+    }
+    .animate-wave {
+      display: inline-block;
+      animation: wave-animation 2.5s infinite;
+      transform-origin: 70% 70%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-in forwards;
+    }
   </style>
 
-<script>
-  tailwind.config = {
-    content: ["./dist/*.{html,js}"],
-    theme: {
-      extend: {
-        fontFamily: {
-          'signika': ['HaraldMono', 'monospace'],
-          'sans': ['HaraldText', 'sans-serif'], // Keep this here!
-          'body': ['HaraldText', 'sans-serif'],
-          'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'signika': ['HaraldMono', 'monospace'],
+            'sans': ['HaraldText', 'sans-serif'],
+            'body': ['HaraldText', 'sans-serif'],
+            'serif': ['HaraldMono', 'monospace'],
+            'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
+          },
         },
       },
-    },
-    plugins: [],
-  }
-</script>
-  
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HARALD REVERY - ABOUT</title>
-  <meta name="description"
-    content="Hello there, here at Team Revery we 100% vibe code. Yes, it really is that bad...">
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
-  <link rel="stylesheet" href="output.css" />
-  <link rel="stylesheet" href="styles.css" />
-  <!-- Alpine.js -->
-  <script defer src="./dist/alpine.min.js"></script>
+      plugins: [],
+    }
+  </script>
 
-    
+  <script defer src="./dist/alpine.min.js"></script>
 </head>
 
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-white via-slate-50 to-gray-100 dark:from-black dark:to-neutral-900">
