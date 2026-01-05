@@ -211,7 +211,7 @@
         images: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg',
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
     }">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-3 gap-4">
         <template x-for="img in images" :key="img">
           <a :href="path + img" data-fancybox="gallery" class="group overflow-hidden rounded-lg aspect-square bg-neutral-100 dark:bg-neutral-800">
             <img :src="path + img" 
