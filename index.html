@@ -4,53 +4,66 @@
 <head>
   
   <style>
-    /* The main text font */
+    /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
-      src: url('fonts/HaraldReveryTextFont.woff2') format('woff2');
+      src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2');
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
 
-    /* The mono/branding font */
     @font-face {
       font-family: 'HaraldMono';
-      src: url('fonts/HaraldReveryMonoFont.woff2') format('woff2');
+      src: url('../fonts/HaraldReveryMonoFont.woff2') format('woff2');
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
-
-    /* Set HaraldText as the global default */
+    
+    html {
+      font-size: 1.427rem;   /* ≈18px – gentle start */
+      /* or your target: 1.4rem / 1.5rem / 1.75rem / whatever feels right */
+    }
+    
+    /* 2. TEXT SCALING */
     body {
       font-family: 'HaraldText', sans-serif;
+      font-size: 1.96rem;     /* ≈28px on 16px root */
+      line-height: 1.58;
+        letter-spacing: 0.0167em;
     }
-  /* 2. GLOBAL SCALING */
-  body {
-    font-family: 'HaraldText', sans-serif;
-    /* This makes the default text roughly 18px instead of 16px */
-    font-size: 1.245rem; 
-    /* Mono fonts often need more space between lines to look clean */
-    line-height: 1.7; 
-    background-color: white;
-    color: black;
-  }
 
-  /* 3. HEADERS & FOOTER ADJUSTMENT */
-  .font-signika, 
-  header a, 
-  footer p.font-signika {
-    font-family: 'HaraldMono', monospace !important;
-    /* Optional: boost the mono font slightly more if it feels even smaller */
-    letter-spacing: -0.02em; 
-  }
+    /* HaraldMono gets its own independent scale */
+        .font-signika,
+        code,
+        pre,
+        kbd,
+        samp,
+        tt,
+        .mono,
+        .console-output {
+          font-family: 'HaraldMono', monospace;
+          font-size: 1.7rem;      /* ≈22px – very common mono scale */
+          line-height: 1.2;
+          letter-spacing: 0.025em;
+        }
+  </style>
 
-  h1 {
-    font-family: 'HaraldMono', monospace;
-    font-weight: bold;
-  }
-</style>
+<script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'signika': ['HaraldMono', 'monospace'],
+            'sans': ['HaraldText', 'sans-serif'],
+            'serif': ['HaraldMono', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
   
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
