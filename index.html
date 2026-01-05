@@ -443,18 +443,16 @@
       </div>
 
       <div class="flex-grow w-full">
-        <div class="flex items-center justify-between mb-3 font-mono text-xs opacity-60">
-          <span x-text="formatTime(currentTime)">0:00</span>
-          <div class="flex gap-8 items-center">
-             <button @click="previous()" class="hover:text-blue-500 transition active:scale-90">
-               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-             </button>
-             <button @click="next()" class="hover:text-blue-500 transition active:scale-90">
-               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-             </button>
-          </div>
-          <span x-text="formatTime(duration)">0:00</span>
+  <div class="flex items-center justify-between mb-3 opacity-60"> <span class="font-signika text-xs" x-text="formatTime(currentTime)">0:00</span>
+    
+    <div class="flex gap-8 items-center">
         </div>
+    
+    <span class="font-signika text-xs" x-text="formatTime(duration)">0:00</span>
+    
+  </div>
+  
+  </div>
         
         <div class="relative h-1.5 w-full bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
              @mousedown="isDragging = true; seek($event)" 
