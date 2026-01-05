@@ -442,19 +442,10 @@
         </div>
       </div>
 
-      <div class="flex-grow w-full">
-  <div class="flex items-center justify-between mb-3 opacity-60"> <span class="font-signika text-xs" x-text="formatTime(currentTime)">0:00</span>
-    
-    <div class="flex gap-8 items-center">
-        </div>
-    
-    <span class="font-signika text-xs" x-text="formatTime(duration)">0:00</span>
-    
-  </div>
-  
-  </div>
+      <div class="flex-grow w-full flex items-center gap-4">
+        <span class="font-signika text-xs min-w-[40px] opacity-60" x-text="formatTime(currentTime)">0:00</span>
         
-        <div class="relative h-1.5 w-full bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
+        <div class="relative h-1.5 flex-grow bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
              @mousedown="isDragging = true; seek($event)" 
              @mousemove="isDragging && seek($event)" 
              @mouseup="isDragging = false">
@@ -467,6 +458,8 @@
             </div>
           </div>
         </div>
+
+        <span class="font-signika text-xs min-w-[40px] opacity-60 text-right" x-text="formatTime(duration)">0:00</span>
       </div>
 
       <div class="hidden md:flex items-center gap-3 w-1/6 justify-end">
