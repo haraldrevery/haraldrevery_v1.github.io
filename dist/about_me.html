@@ -3,6 +3,18 @@
 
 <head>
 <style>
+    /* Animated Gradient Effect */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-bg-slow {
+      background-size: 200% 200%;
+      animation: gradientMove 15s ease infinite;
+    }
+    
     /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
@@ -85,7 +97,7 @@
 </head>
 
 <body
-  class="dark:bg-black bg-white h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500">
+  class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-gray-50 to-gray-200 dark:from-black dark:to-neutral-900">
   <!-- Navbar -->
   <header class="flex w-full overflow-hidden pt-10 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
