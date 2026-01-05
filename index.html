@@ -22,16 +22,13 @@
               fill-opacity: 0; 
               stroke-opacity: 1;
             }
-            /* Start filling while it's still drawing */
-            40% {
-              fill-opacity: 0.3;
-            }
-            /* Lines finish drawing, but fill is already well underway */
+            /* By 80%, the lines are done and the fill is almost solid */
             80% { 
               stroke-dashoffset: 0; 
-              fill-opacity: 0.8; 
+              fill-opacity: 0.9; 
               stroke-opacity: 1;
             }
+            /* Final 20% of time is for the subtle fade-out of the stroke */
             100% { 
               stroke-dashoffset: 0; 
               fill-opacity: 1; 
