@@ -3,6 +3,19 @@
 
 <head>
 <style>
+    /* Wave/Wiggle Animation */
+    @keyframes wave {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(15deg); }
+    }
+    
+    .animate-wave {
+      display: inline-block; /* Required for transform to work */
+      animation: wave 2s ease-in-out infinite;
+      transform-origin: center;
+    }
+    
     /* Animated Gradient Effect */
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
