@@ -5,6 +5,14 @@
   
   <style>
 /* fading words */
+#text-container p {
+    opacity: 0;
+  }
+
+  /* Once the 'active' class is added via JS, show the paragraphs */
+  #text-container.active p {
+    opacity: 1;
+  }
 
   @keyframes slowFade {
     from { opacity: 0; }
@@ -14,7 +22,6 @@
   .fade-word {
     display: inline-block;
     opacity: 0;
-    /* 2.5 second individual fade-in */
     animation: slowFade 2.5s ease-in-out forwards;
     margin-right: 0.25em;
   }
@@ -766,19 +773,22 @@ function audioPlayer() {
 
  <!-- fading words script -->
 <script>
+
   document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('text-container');
     const paragraphs = container.querySelectorAll('p');
 
-    // Intersection Observer to trigger when visible
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          // Add class to make the base paragraphs visible 
+          // (the individual words will still be at opacity 0)
+          container.classList.add('active');
           startFadeAnimation();
-          observer.unobserve(entry.target); // Run only once
+          observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 }); // Triggers when 20% of the text is visible
+    }, { threshold: 0.2 });
 
     observer.observe(container);
 
@@ -786,13 +796,13 @@ function audioPlayer() {
       paragraphs.forEach(p => {
         const words = p.innerText.split(/\s+/);
         p.innerHTML = words.map(word => {
-          // Words start appearing randomly within a 6-second window
-          const delay = (Math.random() * 6).toFixed(2);
+          const delay = (Math.random() * 5).toFixed(2);
           return `<span class="fade-word" style="animation-delay: ${delay}s">${word}</span>`;
         }).join(' ');
       });
     }
   });
+
 </script>
 
 
