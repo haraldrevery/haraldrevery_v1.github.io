@@ -12,21 +12,18 @@
   <style>
 
      /* fading words */
-          @keyframes fadeInWord {
-        to {
-          opacity: 1;
-          filter: blur(0);
-          transform: translateY(0);
+        @keyframes fadeInWord {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-      }
-      
-      .word {
-        display: inline-block;
-        opacity: 0;
-        filter: blur(4px); /* Optional: adds a soft look as it appears */
-        transform: translateY(2px); /* Optional: slight lift effect */
-        animation: fadeInWord 0.8s ease-out forwards;
-      }
+        
+        .word {
+          display: inline-block;
+          opacity: 0;
+          /* Duration increased to 1.5s for a slower fade */
+          animation: fadeInWord 1.5s ease-in-out forwards;
+          margin-right: 0.25em; /* Ensures proper spacing between words */
+        }
 
 
     
@@ -359,16 +356,18 @@
 
   <script>
     const container = document.getElementById('text-container');
-const paragraphs = container.querySelectorAll('p');
-
-paragraphs.forEach(p => {
-  const words = p.innerText.split(' ');
-  p.innerHTML = words.map(word => {
-
-    const delay = (Math.random() * 2).toFixed(2); 
-    return `<span class="word" style="animation-delay: ${delay}s">${word}</span>`;
-  }).join(' ');
-});
+    const paragraphs = container.querySelectorAll('p');
+    
+    paragraphs.forEach(p => {
+      // Split by spaces to isolate words
+      const words = p.innerText.split(/\s+/);
+      
+      p.innerHTML = words.map(word => {
+        // Random delay between 0 and 4 seconds for a slower overall reveal
+        const delay = (Math.random() * 4).toFixed(2); 
+        return `<span class="word" style="animation-delay: ${delay}s">${word}</span>`;
+      }).join(' ');
+    });
   </script>
     
 </body>
