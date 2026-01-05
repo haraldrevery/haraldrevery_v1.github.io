@@ -410,79 +410,70 @@
   <div class="max-w-5xl mx-auto" x-data="audioPlayer()">
     
     <div 
-      class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 md:p-6 transition-all duration-700 hover:shadow-2xl"
+      class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 md:p-5 transition-all duration-700 hover:shadow-2xl"
       :class="{ 'playing': isPlaying }"
     >
-      <div class="ambient-blob absolute -top-24 -left-24 w-64 h-64 blur-3xl rounded-full opacity-20 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color1}`"></div>
-      <div class="ambient-blob absolute -bottom-24 -right-24 w-64 h-64 blur-3xl rounded-full opacity-20 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color2}`"></div>
+      <div class="ambient-blob absolute -top-24 -left-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color1}`"></div>
+      <div class="ambient-blob absolute -bottom-24 -right-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color2}`"></div>
       
-      <div class="relative z-10">
-        <div class="flex flex-col md:flex-row items-center gap-8">
-          
-          <div class="flex flex-col items-center gap-3 w-[140px] flex-shrink-0">
-            <div class="flex items-center gap-2">
-              <button @click="previous()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-              </button>
+      <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+        
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <button @click="previous()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
 
-              <button @click="togglePlay()" 
-                class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-white rounded-lg hover:scale-105 transition active:scale-95 shadow-lg"
-                :class="tracks[currentIndex].btnColor">
-                <template x-if="!isPlaying"><svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></template>
-                <template x-if="isPlaying"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></template>
-              </button>
+          <button @click="togglePlay()" 
+            class="flex-shrink-0 w-11 h-11 flex items-center justify-center text-white rounded-xl hover:scale-105 transition active:scale-95 shadow-lg"
+            :class="tracks[currentIndex].btnColor">
+            <template x-if="!isPlaying"><svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></template>
+            <template x-if="isPlaying"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></template>
+          </button>
 
-              <button @click="next()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-              </button>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <svg class="w-3 h-3 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-              <input type="range" min="0" max="1" step="0.01" 
-                x-model="volume" 
-                @input="audio.volume = volume" 
-                class="volume-slider w-20 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
-                :style="`accent-color: ${tracks[currentIndex].color2}`">
-            </div>
-          </div>
-
-          <div class="flex-grow min-w-0 relative group/text overflow-hidden">
-            <div class="flex whitespace-nowrap">
-              <div class="animate-marquee inline-flex items-center font-signika">
-                <span class="text-lg opacity-60 text-neutral-800 dark:text-white mr-12" x-text="tracks[currentIndex].artist"></span>
-                <span class="mx-2 opacity-60 text-neutral-800 dark:text-white"> - </span>
-                <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-                
-                <span class="text-lg opacity-60 text-neutral-800 dark:text-white mr-12 ml-12" x-text="tracks[currentIndex].artist"></span>
-                <span class="mx-2 opacity-60 text-neutral-800 dark:text-white"> - </span>
-                <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-              </div>
-            </div>
-            <div class="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white/40 dark:from-neutral-900/40 to-transparent pointer-events-none"></div>
-            <div class="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white/40 dark:from-neutral-900/40 to-transparent pointer-events-none"></div>
-          </div>
-
-          <div class="w-full md:w-[240px] flex-shrink-0 flex flex-col gap-1.5"> 
-            <div class="flex justify-between w-full px-0.5">
-               <span class="font-signika text-[10px] opacity-60 text-neutral-800 dark:text-white" x-text="formatTime(currentTime)">0:00</span>
-               <span class="font-signika text-[10px] opacity-60 text-neutral-800 dark:text-white" x-text="formatTime(duration)">0:00</span>
-            </div>
-            
-            <div class="relative h-1.5 w-full bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
-                 @click="seek($event)"
-                 @mousedown="isDragging = true" 
-                 @mousemove="isDragging && seek($event)" 
-                 @mouseup="isDragging = false">
-              
-              <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-100" 
-                   :style="`width: ${(currentTime/duration * 100)}%; background: linear-gradient(to right, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2})`">
-                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover/bar:opacity-100 transition-opacity shadow-md border-2" :style="`border-color: ${tracks[currentIndex].color2}`"></div>
-              </div>
-            </div>
-          </div>
-
+          <button @click="next()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
         </div>
+
+        <div class="w-full md:w-48 lg:w-64 flex-shrink-0 overflow-hidden relative border-x border-black/5 dark:border-white/5 px-4">
+          <div class="flex whitespace-nowrap">
+            <div class="animate-marquee inline-flex items-center font-signika">
+              <span class="text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+              <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
+              <span class="text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+              <span class="ml-8 text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+              <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
+              <span class="text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+            </div>
+          </div>
+          <div class="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-white/10 dark:from-neutral-900/10 to-transparent pointer-events-none"></div>
+          <div class="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-white/10 dark:from-neutral-900/10 to-transparent pointer-events-none"></div>
+        </div>
+
+        <div class="flex-grow flex items-center gap-4 w-full">
+          <span class="font-signika text-[10px] opacity-50 text-neutral-800 dark:text-white w-8" x-text="formatTime(currentTime)">0:00</span>
+          
+          <div class="relative flex-grow h-2 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
+               @click="seek($event)"
+               @mousedown="isDragging = true" 
+               @mousemove="isDragging && seek($event)" 
+               @mouseup="isDragging = false">
+            <div class="absolute top-0 left-0 h-full rounded-full" 
+                 :style="`width: ${(currentTime/duration * 100)}%; background: linear-gradient(to right, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2})`">
+              <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full shadow-md scale-0 group-hover/bar:scale-100 transition-transform border-2" :style="`border-color: ${tracks[currentIndex].color2}`"></div>
+            </div>
+          </div>
+
+          <span class="font-signika text-[10px] opacity-50 text-neutral-800 dark:text-white w-8" x-text="formatTime(duration)">0:00</span>
+
+          <div class="hidden lg:flex items-center gap-2 ml-2">
+            <svg class="w-3.5 h-3.5 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" 
+                   class="w-16 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
+                   :style="`accent-color: ${tracks[currentIndex].color2}`">
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
