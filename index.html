@@ -216,17 +216,40 @@
   <!-- Content -->
 
  <!-- Logo intro -->
-        <div class="logo-float w-48 h-48 mx-auto">
-          <svg viewBox="0 0 100 100" class="animate-logo" xmlns=".dist/HaraldReveryTextLogo_Outline.svg">
-            <defs>
-              <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#22d3ee" /> <stop offset="100%" stop-color="#2563eb" /> </linearGradient>
-            </defs>
-            
-            </svg>
-        </div>
-
-
+      <div class="logo-float w-48 h-48 mx-auto">
+        <!-- Option 1: Inline SVG (recommended for animation control & reliability) -->
+        <svg 
+          viewBox="0 0 100 100" 
+          class="animate-logo w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22d3ee" />
+              <stop offset="100%" stop-color="#2563eb" />
+            </linearGradient>
+          </defs>
+      
+          <!-- ADD YOUR ACTUAL LOGO PATHS/TEXT HERE -->
+          <!-- Example: if it's text-based -->
+          <text 
+            x="50" 
+            y="65" 
+            font-family="'HaraldText', sans-serif" 
+            font-size="52" 
+            text-anchor="middle" 
+            fill="url(#logoGradient)"
+          >
+            HR
+          </text>
+      
+          <!-- OR if it's a complex outline path from your .svg file, paste the <path> or <g> content here -->
+          <!-- <path d="M... your long path data ..." fill="url(#logoGradient)" /> -->
+        </svg>
+      
+        <!-- Option 2: External file reference (simpler but less flexible for animation) -->
+        <!-- <img src="/dist/HaraldReveryTextLogo_Outline.svg" alt="Harald Revery Logo" class="w-full h-full animate-logo"> -->
+      </div>
 
 <!-- Grid to the left + Text to the right -->
 <div class="container mx-auto py-20">
