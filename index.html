@@ -616,12 +616,12 @@
     const rotateY = ((x - centerX) / centerX) * 20;
 
     // Apply the rotation while preserving your -translate-x-12 position
-    logo.style.transform = `translateX(-3rem) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    logo.style.transform = `translateX(-1rem) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
 
   // Reset position when mouse leaves
   container.addEventListener('mouseleave', () => {
-    logo.style.transform = `translateX(-3rem) rotateX(0deg) rotateY(0deg)`;
+    logo.style.transform = `translateX(-1rem) rotateX(0deg) rotateY(0deg)`;
   });
 </script>
 
