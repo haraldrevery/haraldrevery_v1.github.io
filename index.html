@@ -360,7 +360,7 @@
   
   
  <!-- Logo intro -->
-<div id="logo-container" class="relative h-[60vh] w-full flex items-center justify-center overflow-hidden px-4 text-blue-500" style="perspective: 1000px;">
+<div id="logo-container" class="relative h-[60vh] w-full flex items-center justify-center overflow-hidden px-6 text-blue-500" style="perspective: 1000px;">
     <svg 
       id="tilting-logo" 
       viewBox="0 0 1000 1100" 
@@ -407,7 +407,7 @@
 <section class="font-normal text-center text-base mx-3 col-span-2 my-auto">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
       <p>
-        Welcome Internet lurker, scroll down for content.
+        Welcome, scroll down for content.
       </p>
   </div>
 </section>
@@ -676,8 +676,8 @@
     const rotateX = ((y - centerY) / centerY) * -20; 
     const rotateY = ((x - centerX) / centerX) * 20;
 
-    // Apply the rotation while preserving your -translate-x-12 position
-    logo.style.transform = `translateX(-1rem) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    // Apply the rotation while preserving your -translate-x-12 position = 3rem
+    logo.style.transform = `translateX(-1.5rem) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
 
   // Reset position when mouse leaves
