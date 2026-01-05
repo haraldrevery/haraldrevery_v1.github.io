@@ -5,31 +5,42 @@
   
   <style>
         /* Logo animation */
-          @keyframes logoDraw {
-            0% { stroke-opacity: 0; stroke-dashoffset: 1000; fill-opacity: 0; }
-            50% { stroke-opacity: 1; stroke-dashoffset: 0; fill-opacity: 0; }
-            100% { stroke-opacity: 1; stroke-dashoffset: 0; fill-opacity: 1; }
+   /* Tracing effect for the outlines */
+        .animate-logo path, 
+        .animate-logo polygon, 
+        .animate-logo polyline {
+          /* This number must be larger than the longest path in your logo */
+          stroke-dasharray: 3000; 
+          stroke-dashoffset: 3000;
+          animation: logoDraw 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @keyframes logoDraw {
+          0% { 
+            stroke-dashoffset: 3000; 
+            fill-opacity: 0; 
           }
-          
-          .animate-logo path, 
-          .animate-logo polygon, 
-          .animate-logo circle {
-            stroke: url(#logoGradient); /* Link to your Cyan/Blue theme */
-            stroke-width: 1;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: logoDraw 3s ease-in-out forwards;
+          70% { 
+            stroke-dashoffset: 0; 
+            fill-opacity: 0; 
+            stroke-opacity: 1;
           }
-          
-          /* Subtle Floating effect after it draws */
-          .logo-float {
-            animation: float 4s ease-in-out infinite 3s;
+          100% { 
+            stroke-dashoffset: 0; 
+            fill-opacity: 1; 
+            stroke-opacity: 0.8; /* Subtle glow effect on the stroke */
           }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-          }
+        }
+        
+        /* Gentle floating movement for the logo */
+        .logo-float {
+          animation: logoFloat 6s ease-in-out infinite 4s;
+        }
+        
+        @keyframes logoFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+        }
 
 
 
