@@ -59,7 +59,27 @@
             50% { transform: translateY(-12px); }
           }
 
-
+        /* Perspective container for 3D logo effect */
+        .perspective-container {
+          perspective: 1000px;
+        }
+        
+        /* The logo wrapper that will rotate */
+        .animate-logo {
+          transition: transform 0.1s ease-out; /* Smooths out the mouse tracking */
+          transform-style: preserve-3d;
+        }
+        
+        /* Enhancing the gradient movement as requested previously */
+        @keyframes shiftGradient {
+          0% { x1: 0%; y1: 0%; }
+          50% { x1: 100%; y1: 100%; }
+          100% { x1: 0%; y1: 0%; }
+        }
+        
+        #logoGradient {
+          animation: shiftGradient 8s linear infinite;
+        }
 
     
     /* Animated Gradient Effect */
@@ -243,14 +263,18 @@
   <!-- Content -->
 
  <!-- Logo intro -->
-<div class="relative h-screen max-h-[90vh] w-full flex items-center justify-center overflow-hidden px-4">
-  <div class="logo-float w-full h-full max-w-4xl flex items-center justify-center">
+<div class="relative h-screen max-h-[90vh] w-full flex items-center justify-center overflow-hidden px-4 perspective-container">
+  <div id="logo-container" class="logo-float w-full h-full max-w-4xl flex items-center justify-center">
     <svg 
+      id="tilting-logo"
       viewBox="0 0 1000 1100" 
       class="animate-logo w-full h-full"
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
     >
+      </svg>
+  </div>
+</div>
       <!-- Logo color gradient --> 
     <defs>
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -485,6 +509,39 @@
   <script>
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
+  
+  <!--For the 3D logo thing to react to the mouse -->
+<script>
+  const container = document.getElementById('logo-container');
+const logo = document.getElementById('tilting-logo');
+
+container.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  
+  // Find the center of the logo container
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  // Calculate distance from center (-1 to 1)
+  const mouseX = (e.clientX - centerX) / (rect.width / 2);
+  const mouseY = (e.clientY - centerY) / (rect.height / 2);
+  
+  // Max rotation in degrees
+  const rotateX = mouseY * -15; // Vertical tilt
+  const rotateY = mouseX * 15;  // Horizontal tilt
+  
+  logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});
+
+// Reset position when mouse leaves
+container.addEventListener('mouseleave', () => {
+  logo.style.transform = `rotateX(0deg) rotateY(0deg)`;
+});
+  </script>
+
+
+
+  
 </body>
 
 </html>
