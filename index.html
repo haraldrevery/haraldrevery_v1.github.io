@@ -661,8 +661,8 @@
     const mouseY = e.clientY - centerY;
 
     // Convert mouse position to a percentage (-1 to 1)
-    const rotateX = (mouseY / (rect.height / 2)) * -15; // Max 15 degrees tilt
-    const rotateY = (mouseX / (rect.width / 2)) * 15;
+    const rotateX = (mouseY / (rect.height / 2)) * -21; // Max 21 degrees tilt
+    const rotateY = (mouseX / (rect.width / 2)) * 21;
 
     // Apply transformation with a slight Z-translation for "pop"
     logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(50px)`;
