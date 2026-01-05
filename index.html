@@ -9,14 +9,15 @@
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  fill: transparent; /* Start transparent so we only see the line drawing */
-  animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  fill: transparent; 
+  stroke: #3b82f6; /* Added a visible fallback color (blue) */
+  animation: logoDraw 4s cubic-bezier(0.4, 0, 0.2, 1) forwards; /* Speed up to 4s for testing */
 }
 
 @keyframes logoDraw {
-  0% { stroke-dashoffset: 4000; fill: transparent; stroke-opacity: 1; }
-  80% { stroke-dashoffset: 0; fill: transparent; stroke-opacity: 1; }
-  100% { stroke-dashoffset: 0; fill: url(#logoGradient); stroke-opacity: 0.5; }
+  0% { stroke-dashoffset: 4000; fill: transparent; }
+  80% { stroke-dashoffset: 0; fill: transparent; }
+  100% { stroke-dashoffset: 0; fill: url(#logoGradient); stroke: transparent; }
 }
 
     /* 2. Gradient Movement Animation */
