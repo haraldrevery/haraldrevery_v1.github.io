@@ -4,6 +4,19 @@
 <head>
   
   <style>
+
+      /* Reveal on Scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+    
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
     /* Animated Gradient Effect */
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -215,13 +228,14 @@
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
     }">
       <div class="grid grid-cols-3 gap-4">
-        <template x-for="img in images" :key="img">
-          <a :href="path + img" data-fancybox="gallery" class="group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800">
-            <img :src="path + img" 
-                 class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
-                 loading="lazy">
-          </a>
-        </template>
+      <template x-for="img in images" :key="img">
+        <a :href="path + img" data-fancybox="gallery" 
+           class="reveal group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800">
+          <img :src="path + img" 
+               class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
+               loading="lazy">
+        </a>
+      </template>
       </div>
     </div> 
     
