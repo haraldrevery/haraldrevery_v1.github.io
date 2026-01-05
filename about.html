@@ -163,41 +163,42 @@
   <!-- Content -->
     
     <!-- Card thing -->
-    <div class="col-span-2 md:col-span-1 perspective-container">
-      <div 
-        x-data="{ 
-          rotateX: 0, 
-          rotateY: 0, 
-          isHovering: false,
-          handleMouseMove(e) {
-            this.isHovering = true;
-            const card = $el.getBoundingClientRect();
-            const x = e.clientX - card.left;
-            const y = e.clientY - card.top;
-            const centerX = card.width / 2;
-            const centerY = card.height / 2;
-            this.rotateX = (y - centerY) / 15; 
-            this.rotateY = (centerX - x) / 15;
-          }
-        }"
-        @mousemove="handleMouseMove"
-        @mouseleave="isHovering = false; rotateX = 0; rotateY = 0"
-        :class="!isHovering ? 'animate-float' : ''"
-        :style="`transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg); transition: ${isHovering ? 'transform 0.1s ease-out' : 'transform 1.2s ease-in-out'};`"
-        class="relative w-full max-w-[450px] bg-white dark:bg-neutral-900 p-4 pb-24 shadow-2xl border border-gray-200 dark:border-neutral-800 group"
-      >
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none bg-gradient-to-tr from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+    <div class="col-span-2 md:col-span-1 perspective-stage">
+  <div 
+    x-data="{ 
+      rotateX: 0, 
+      rotateY: 0, 
+      isHovering: false,
+      handleMouseMove(e) {
+        this.isHovering = true;
+        const card = $el.getBoundingClientRect();
+        const x = e.clientX - card.left;
+        const y = e.clientY - card.top;
+        const centerX = card.width / 2;
+        const centerY = card.height / 2;
+        // Divisors control intensity. Higher = subtler.
+        this.rotateX = (y - centerY) / 15; 
+        this.rotateY = (centerX - x) / 15;
+      }
+    }"
+    @mousemove="handleMouseMove"
+    @mouseleave="isHovering = false; rotateX = 0; rotateY = 0"
+    :class="!isHovering ? 'animate-float' : ''"
+    :style="`transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg); transition: ${isHovering ? 'transform 0.1s ease-out' : 'transform 1.5s ease-in-out'};`"
+    class="relative w-full md:w-11/12 bg-white dark:bg-neutral-900 p-4 pb-24 shadow-2xl border border-gray-100 dark:border-neutral-800 group"
+  >
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-1000 pointer-events-none bg-gradient-to-tr from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full"></div>
+
+    <img src="./dist/assets/HaraldRevery11Calc.gif" 
+         class="w-full aspect-square object-cover shadow-inner" />
     
-        <img src="./dist/assets/HaraldRevery11Calc.gif" 
-             class="w-full aspect-square object-cover rounded-sm shadow-inner" />
-        
-        <div class="absolute bottom-6 left-0 right-0 text-center">
-          <p class="font-signika text-7xl md:text-8xl text-black dark:text-white group-hover:scale-110 transition-transform duration-500">
-            ½
-          </p>
-        </div>
-      </div>
+    <div class="absolute bottom-6 left-0 right-0 text-center">
+      <p class="font-signika text-7xl md:text-8xl text-black dark:text-white group-hover:scale-110 transition-transform duration-500">
+        ½
+      </p>
     </div>
+  </div>
+</div>
 
 
         
