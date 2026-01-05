@@ -4,43 +4,47 @@
 <head>
   
   <style>
+    
     /* Logo animation */
-   /* Tracing effect for the outlines */
-    .animate-logo path, 
-    .animate-logo polygon, 
-    .animate-logo polyline {
-      stroke-dasharray: 5000; 
-      stroke-dashoffset: 5000;
-      animation: logoDraw 6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-        
-        @keyframes logoDraw {
-          0% { 
-            stroke-dashoffset: 3000; 
-            fill-opacity: 0; 
+          .animate-logo path, 
+          .animate-logo polygon, 
+          .animate-logo polyline {
+            /* Ensure this value is larger than your longest path */
+            stroke-dasharray: 4000; 
+            stroke-dashoffset: 4000;
+            /* Increased duration to 8s for a "slower" feel */
+            animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
           }
-          70% { 
-            stroke-dashoffset: 0; 
-            fill-opacity: 0; 
-            stroke-opacity: 1;
+          
+          @keyframes logoDraw {
+            0% { 
+              stroke-dashoffset: 4000; 
+              fill-opacity: 0; 
+              stroke-opacity: 1;
+            }
+            /* The "Tracing" phase: 0% to 70% */
+            70% { 
+              stroke-dashoffset: 0; 
+              fill-opacity: 0; 
+              stroke-opacity: 1;
+            }
+            /* The "Fill & Fade" phase: 70% to 100% */
+            100% { 
+              stroke-dashoffset: 0; 
+              fill-opacity: 1; 
+              stroke-opacity: 0.5; /* Optional: dims the stroke as the fill arrives */
+            }
           }
-          100% { 
-            stroke-dashoffset: 0; 
-            fill-opacity: 1; 
-            stroke-opacity: 0.8; /* Subtle glow effect on the stroke */
+          
+          /* Gentle floating movement - starts after the logo finishes drawing */
+          .logo-float {
+            animation: logoFloat 6s ease-in-out infinite 8s;
           }
-        }
-        
-        /* Gentle floating movement for the logo */
-        .logo-float {
-          animation: logoFloat 6s ease-in-out infinite 4s;
-        }
-        
-        @keyframes logoFloat {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-12px); }
-        }
-
+          
+          @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+          }
 
 
 
@@ -242,7 +246,7 @@
       </linearGradient>
     </defs>
 
-      <g fill="url(#logoGradient)" stroke="url(#logoGradient)" stroke-width="2">
+      <g fill="url(#logoGradient)" stroke="url(#logoGradient)" stroke-width="3.2">
         <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
           C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
           c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
