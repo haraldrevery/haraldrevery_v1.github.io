@@ -4,6 +4,28 @@
 <head>
   
   <style>
+/* Standard letter fade animation */
+  @keyframes letterFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .fade-letter {
+    display: inline-block;
+    opacity: 0;
+    animation: letterFade 0.8s ease-out forwards;
+  }
+
+  /* Prevent layout jump: hide the H2 initially */
+  h2[data-animate="true"] {
+    opacity: 0;
+  }
+  h2.active {
+    opacity: 1 !important;
+  }
+
+
+    
 /* fading words */
 #text-container p {
     opacity: 0;
@@ -404,7 +426,7 @@
       <!-- Text part -->
     <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
       <!-- Text part -->
-      <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+        <h2 id="animated-heading" data-animate="true" class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
           The originals
         </h2>
       
@@ -805,6 +827,42 @@ function audioPlayer() {
 
 </script>
 
+<!-- fading letters script -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const heading = document.getElementById('animated-heading');
+    
+    // Intersection Observer to trigger when the heading is scrolled into view
+    const headingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateLetters(heading);
+          headingObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    headingObserver.observe(heading);
+
+    function animateLetters(el) {
+      const text = el.innerText;
+      el.innerHTML = ''; // Clear original text
+      el.classList.add('active'); // Make the H2 container visible
+
+      // Split into characters
+      [...text].forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char; // Handle spaces
+        span.className = 'fade-letter';
+        
+        // Incremental delay: 0.05s per character (adjust for speed)
+        span.style.animationDelay = `${index * 0.05}s`;
+        
+        el.appendChild(span);
+      });
+    }
+  });
+</script>
 
   
 </body>
