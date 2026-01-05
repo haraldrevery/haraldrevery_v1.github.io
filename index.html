@@ -10,23 +10,26 @@
   0% { 
     stroke-dashoffset: 4000; 
     fill-opacity: 0;
-    fill: url(#logoGradient); /* Set gradient immediately */
+  }
+  80% {
+    /* Stroke finished drawing, fill is mostly in */
+    stroke-dashoffset: 0;
+    fill-opacity: 0.8;
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill-opacity: 1; /* Gradually reaches full visibility */
-    fill: url(#logoGradient);
-    stroke: transparent; /* Lines fade out at the very end */
+    fill-opacity: 1;
+    /* Optional: make the blue lines disappear so only the white logo remains */
+    stroke: transparent; 
   }
 }
 
-/* Ensure the path itself uses the gradient and handles opacity */
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  stroke: #3b82f6; 
+  stroke: #3b82f6; /* Keeping the blue drawing line for contrast */
   fill: url(#logoGradient);
-  fill-opacity: 0; /* Start hidden */
+  fill-opacity: 0;
   animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
     
@@ -250,9 +253,8 @@
     >
       <defs>
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="currentColor" /> 
-          <stop offset="50%" stop-color="#6b7280" /> 
-          <stop offset="100%" stop-color="#3b82f6" />
+          <stop offset="0%" stop-color="#ffffff" /> 
+          <stop offset="100%" stop-color="#e5e5e5" />
         </linearGradient>
       </defs>
 
