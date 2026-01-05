@@ -381,6 +381,42 @@
 -->
 
 
+  
+<!-- Audio player -->
+<div class="container mx-auto py-10" x-data="audioPlayer()">
+  <h2 class="text-3xl font-bold mb-6 font-signika">Local Dubs</h2>
+  
+  <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-6 shadow-xl">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="text-xl font-bold" x-text="tracks[currentIndex].title"></h3>
+        <p class="text-sm opacity-60" x-text="tracks[currentIndex].artist"></p>
+      </div>
+      <div class="text-2xl font-mono" x-text="formatTime(currentTime)">0:00</div>
+    </div>
+
+    <div class="relative w-full h-2 bg-gray-200 dark:bg-neutral-700 rounded-full cursor-pointer mb-6" @click="seek($event)">
+      <div class="absolute top-0 left-0 h-full bg-blue-500 rounded-full" :style="'width: ' + (currentTime/duration * 100) + '%'"></div>
+    </div>
+
+    <div class="flex items-center justify-center space-x-8">
+      <button @click="previous()" class="hover:text-blue-500 transition"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+      
+      <button @click="togglePlay()" class="bg-blue-600 text-white p-4 rounded-full hover:scale-105 transition">
+        <template x-if="!isPlaying">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </template>
+        <template x-if="isPlaying">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </template>
+      </button>
+
+      <button @click="next()" class="hover:text-blue-500 transition"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+    </div>
+  </div>
+</div>
+
+  
 
 
   
@@ -543,9 +579,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
   animateNoise();
 </script>
-  
 
 
+   <!-- Audio player -->
+<script>
+function audioPlayer() {
+  return {
+    isPlaying: false,
+    currentTime: 0,
+    duration: 0,
+    currentIndex: 0,
+    audio: new Audio(),
+    tracks: [
+      {
+        title: "Phrases",
+        artist: "Harald Revery",
+        url: "./audio/Harald_Revery_-_Phrases"
+      },
+      {
+        title: "Forest Rain",
+        artist: "Harald Revery",
+        url: "./audio/Harald_Revery_-_Forest_Rain.flac"
+      }
+    ],
+    init() {
+      this.loadTrack();
+      this.audio.ontimeupdate = () => { this.currentTime = this.audio.currentTime };
+      this.audio.onloadedmetadata = () => { this.duration = this.audio.duration };
+      this.audio.onended = () => { this.next() };
+    },
+    loadTrack() {
+      this.audio.src = this.tracks[this.currentIndex].url;
+      this.audio.load();
+    },
+    togglePlay() {
+      if (this.isPlaying) {
+        this.audio.pause();
+      } else {
+        this.audio.play();
+      }
+      this.isPlaying = !this.isPlaying;
+    },
+    next() {
+      this.currentIndex = (this.currentIndex + 1) % this.tracks.length;
+      this.loadTrack();
+      if (this.isPlaying) this.audio.play();
+    },
+    previous() {
+      this.currentIndex = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
+      this.loadTrack();
+      if (this.isPlaying) this.audio.play();
+    },
+    formatTime(seconds) {
+      let min = Math.floor(seconds / 60);
+      let sec = Math.floor(seconds % 60);
+      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    },
+    seek(e) {
+      let rect = e.target.getBoundingClientRect();
+      if (e.target.classList.contains('rounded-full')) { // Ensure clicking the bar
+        let percent = (e.clientX - rect.left) / rect.width;
+        this.audio.currentTime = percent * this.duration;
+      }
+    }
+  }
+}
+</script>
   
 </body>
 
