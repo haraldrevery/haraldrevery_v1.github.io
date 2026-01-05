@@ -3,18 +3,19 @@
 
 <head>
 <style>
-    /* Wave/Wiggle Animation */
-    @keyframes wave {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-15deg); }
-      75% { transform: rotate(15deg); }
-    }
-    
-    .animate-wave {
-      display: inline-block; /* Required for transform to work */
-      animation: wave 2s ease-in-out infinite;
-      transform-origin: center;
-    }
+        /* True Wiggle: Tilts and bobs slightly */
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(0deg) translateY(0); }
+          25% { transform: rotate(-10deg) translateY(-2px); }
+          50% { transform: rotate(0deg) translateY(1px); }
+          75% { transform: rotate(10deg) translateY(-2px); }
+        }
+        
+        .animate-wave {
+          display: inline-block; /* Crucial: transforms don't work on 'inline' spans */
+          animation: wiggle 0.8s ease-in-out infinite;
+          transform-origin: center;
+        }
     
     /* Animated Gradient Effect */
     @keyframes gradientMove {
