@@ -652,20 +652,25 @@
 
   container.addEventListener('mousemove', (e) => {
     const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+    
+    // Calculate mouse position relative to the center of the container
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const mouseX = e.clientX - centerX;
+    const mouseY = e.clientY - centerY;
 
-    const rotateX = ((y - centerY) / centerY) * -20; 
-    const rotateY = ((x - centerX) / centerX) * 20;
+    // Convert mouse position to a percentage (-1 to 1)
+    const rotateX = (mouseY / (rect.height / 2)) * -15; // Max 15 degrees tilt
+    const rotateY = (mouseX / (rect.width / 2)) * 15;
 
-    // Clean rotation - the wrapper handles the position!
-    logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    // Apply transformation with a slight Z-translation for "pop"
+    logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(50px)`;
   });
 
   container.addEventListener('mouseleave', () => {
-    logo.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    // Return to neutral position smoothly
+    logo.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
   });
 </script>
 
