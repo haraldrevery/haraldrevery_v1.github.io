@@ -361,10 +361,11 @@
   
  <!-- Logo intro -->
 <div id="logo-container" class="relative h-[60vh] w-full flex items-center justify-center overflow-hidden px-6 text-blue-500" style="perspective: 1000px;">
+  <div class="relative -translate-x-4 w-full h-full flex items-center justify-center">
     <svg 
       id="tilting-logo" 
       viewBox="0 0 1000 1100" 
-      class="w-full h-full p-10 -translate-x-4 transition-transform duration-200 ease-out" 
+      class="w-full h-full p-10 transition-transform duration-200 ease-out" 
       xmlns="http://www.w3.org/2000/svg" 
       preserveAspectRatio="xMidYMid meet"
     >
@@ -659,31 +660,28 @@
   
   <!--For the 3D logo thing to react to the mouse -->
 <script>
-  const container = document.getElementById('logo-container');
-  const logo = document.getElementById('tilting-logo');
+const container = document.getElementById('logo-container');
+const logo = document.getElementById('tilting-logo');
 
-  container.addEventListener('mousemove', (e) => {
-    const rect = container.getBoundingClientRect();
-    
-    // Calculate mouse position relative to the center of the container
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+container.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
 
-    // Calculate rotation (adjust the 20 to make it more or less dramatic)
-    const rotateX = ((y - centerY) / centerY) * -20; 
-    const rotateY = ((x - centerX) / centerX) * 20;
+  const rotateX = ((y - centerY) / centerY) * -20; 
+  const rotateY = ((x - centerX) / centerX) * 20;
 
-    // Apply the rotation while preserving your -translate-x-12 position = 3rem
-    logo.style.transform = `translateX(-1.5rem) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
+  // No translateX needed here anymore!
+  logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});
 
-  // Reset position when mouse leaves
-  container.addEventListener('mouseleave', () => {
-    logo.style.transform = `translateX(-1rem) rotateX(0deg) rotateY(0deg)`;
-  });
+container.addEventListener('mouseleave', () => {
+  // Just reset the rotation
+  logo.style.transform = `rotateX(0deg) rotateY(0deg)`;
+});
 </script>
 
 
