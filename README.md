@@ -1,43 +1,20 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
 
 <a name="readme-top"></a>
 
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/JoaoFranco03/photography-portfolio">
+  <a>
     <img src="dist/assets/Logo.jpg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Photography Portfolio</h3>
+  <h3 align="center"> Website</h3>
 
   <p align="center">
-    A Website created using Tailwind CSS, HTML, CSS <br /> and JavaScript that can be used as a Photography Portfolio.
-    <br />
-    <br />
-    <a href="https://photography-portfolio-joaofranco03.netlify.app/">View Demo</a>
-    <br />
-    <br />
-    
+    A scuffed Website created using Tailwind CSS (IDK what that even is...), HTML, CSS <br /> and JavaScript that can be used as a Photography Portfolio.
+
   </p>
 </div>
 
@@ -68,14 +45,7 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-
-# 📋 About The Project <a name="about-the-project"></a>
-
-[![Product Name Screen Shot][product-screenshot]](https://github.com/JoaoFranco03/photography-portfolio)
-
-This project is a web-based portfolio that beautifully showcases the photography work of Sophia Williams, a fictional photographer. The portfolio was skillfully built using a combination of powerful front-end technologies, including Tailwind CSS, CSS, HTML, and JavaScript.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abombination, 100 % coded btw.
 
 ## 🛠️ Built With <a name="built-with"></a>
 
@@ -84,44 +54,8 @@ This project is a web-based portfolio that beautifully showcases the photography
 - [![JavaScript][js-badge]][js-url]
 - [![Tailwind][tailwind-badge]][tailwind-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🚀 Quick Start <a name="quick-start"></a>
-
-Create your own page with one click on [Netlify](https://app.netlify.com/signup):
-
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />](https://app.netlify.com/start/deploy?repository=https://github.com/JoaoFranco03/photography-portfolio)
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🎯 Getting Started <a name="getting-started"></a>
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### 🏗️ Installation <a name="installation"></a>
-
-1. Clone the repo
-
-```sh
- git clone https://github.com/JoaoFranco03/photography-portfolio/.git
-```
-
-2.  Run the following command:
-
-```sh
- npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
-```
-3.  Run the Project in a Server
-
-4.  Change it with your own photos, about me and contact info.
-
-5.  Publish it using your preferred hosting platform.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- Ko-fi -->
-
-## ☕ Support Me on Ko-fi
+## ☕ Support the  guy who made the template on Ko-fi
 
 If you find this project useful, consider supporting me on Ko-fi. Thanks for checking it out!  
 
@@ -154,7 +88,6 @@ Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://g
 ## 🌟 Acknowledgments <a name="acknowledgments"></a>
 
 - [FancyBox](https://fancyapps.com/fancybox/)
-- [Unsplash](https://unsplash.com/)
 - [Tailwind Documentation](https://tailwindcss.com/docs/installation)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
