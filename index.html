@@ -469,7 +469,7 @@
           <div class="hidden lg:flex items-center gap-2 ml-2">
             <svg class="w-3.5 h-3.5 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
             <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" 
-                   class="w-16 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
+                   class="w-16 h-0.5 scale-90 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
                    :style="`accent-color: ${tracks[currentIndex].color2}`">
           </div>
         </div>
