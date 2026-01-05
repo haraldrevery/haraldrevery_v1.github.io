@@ -10,7 +10,26 @@
   <script src="./dist/tailwind.js"></script>
 
   <style>
+/* Standard letter fade animation */
+  @keyframes letterFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
+  .fade-letter {
+    display: inline-block;
+    opacity: 0;
+    animation: letterFade 0.8s ease-out forwards;
+  }
+
+  /* Prevent layout jump: hide the H2 initially */
+  h2[data-animate="true"] {
+    opacity: 0;
+  }
+  h2.active {
+    opacity: 1 !important;
+  }
+    
      /* fading words */
         @keyframes fadeInWord {
           from { opacity: 0; }
@@ -196,18 +215,24 @@
         </div>
       </div> <section class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto">
         <div class="block md:hidden">
-          <p class="text-3xl font-serif font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-rose-500">
+          <p id="animated-heading" data-animate="true" class="text-3xl font-serif font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-rose-500">
             Music played from sunset 
           </p>
-          <p class="text-4xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-purple-600">
+          <p id="animated-heading" data-animate="true" class="text-4xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-purple-600">
             to sunset...
           </p>
         </div>
         
-        <p class="hidden md:block text-4xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600">
+        <p id="animated-heading" data-animate="true" class="hidden md:block text-4xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600">
           Music played from sunset to sunset...
         </p>
 
+
+
+        
+        
+
+        
         <div id="text-container" class="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Harald Revery is a contemporary electronic music producer and digital visionary based in Sweden. With a decade of experience crafting tracks for the dancefloor, Harald knows how to connect with an audience — whether they are in a dimly lit basement bar or at a major festival. His music always hits home for those who hear it.
@@ -247,13 +272,13 @@
 
     <div class="w-full lg:w-1/2 space-y-8 text-base md:text-lg lg:text-xl leading-relaxed">
       <div>
-        <h2 class="text-4xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600">
+        <h2 id="animated-heading" data-animate="true" class="text-4xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600">
           When not in the studio...
         </h2>
 
       </div>
       
-           <div class="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+           <div id="text-container" class="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Harald Revery is a contemporary electronic music producer and digital visionary based in Sweden. With a decade of experience crafting tracks for the dancefloor, Harald knows how to connect with an audience — whether they are in a dimly lit basement bar or at a major festival. His music always hits home for those who hear it.
           </p>
@@ -369,6 +394,44 @@
       }).join(' ');
     });
   </script>
+
+<!-- fading letters script -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const heading = document.getElementById('animated-heading');
+    
+    // Intersection Observer to trigger when the heading is scrolled into view
+    const headingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateLetters(heading);
+          headingObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    headingObserver.observe(heading);
+
+    function animateLetters(el) {
+      const text = el.innerText;
+      el.innerHTML = ''; // Clear original text
+      el.classList.add('active'); // Make the H2 container visible
+
+      // Split into characters
+      [...text].forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char; // Handle spaces
+        span.className = 'fade-letter';
+        
+        // Incremental delay: 0.05s per character (adjust for speed)
+        span.style.animationDelay = `${index * 0.05}s`;
+        
+        el.appendChild(span);
+      });
+    }
+  });
+</script>
+
     
 </body>
 </html>
