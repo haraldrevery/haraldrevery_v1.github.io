@@ -452,17 +452,27 @@
           <span x-text="formatTime(duration)">0:00</span>
         </div>
         
-        <div class="relative h-2 w-full bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" @mousedown="isDragging = true; seek($event)" @mousemove="isDragging && seek($event)" @mouseup="isDragging = false">
-          <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full transition-all duration-100" :style="'width: ' + (currentTime/duration * 100) + '%'">
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-blue-500 rounded-full opacity-0 group-hover/bar:opacity-100 transition-opacity shadow-sm"></div>
+        <div class="relative h-2 w-full bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
+             @mousedown="isDragging = true; seek($event)" 
+             @mousemove="isDragging && seek($event)" 
+             @mouseup="isDragging = false">
+          
+          <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-100" 
+               :style="`width: ${(currentTime/duration * 100)}%; background: linear-gradient(to right, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2})`"
+          >
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full opacity-0 group-hover/bar:opacity-100 transition-opacity shadow-md border-2"
+                 :style="`border-color: ${tracks[currentIndex].color2}`">
+            </div>
           </div>
         </div>
-      </div>
 
       <div class="hidden md:flex items-center gap-3 w-1/4 justify-end">
         <svg class="w-5 h-5 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-        <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" class="w-20 accent-blue-500 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer">
-      </div>
+        <input type="range" min="0" max="1" step="0.01" 
+       x-model="volume" 
+       @input="audio.volume = volume" 
+       class="w-20 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer transition-colors duration-500"
+       :style="`accent-color: ${tracks[currentIndex].color2}`">
 
     </div>
   </div>
