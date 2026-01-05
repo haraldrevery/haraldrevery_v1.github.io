@@ -29,19 +29,20 @@
   h2.active {
     opacity: 1 !important;
   }
+
     
      /* fading words */
         .word {
           display: inline-block;
           opacity: 0;
-          animation: fadeInWord 0.6s ease-out forwards; /* Reduced duration for snappier feel */
-          margin-right: 0.25em;
+          transform: translateY(5px);
+          /* Remove the animation from here so it doesn't run on load */
         }
         
-        @keyframes fadeInWord {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
-                }
+        /* This class will be added via JavaScript on scroll */
+        .text-container.start-animation .word {
+          animation: fadeInWord 0.6s ease-out forwards;
+        }
 
 
     
@@ -376,28 +377,37 @@
     
 <!-- fading words script -->
 <script>
+document.addEventListener('DOMContentLoaded', () => {
   const containers = document.querySelectorAll('.text-container');
-  
+
   containers.forEach(container => {
     const paragraphs = container.querySelectorAll('p');
-    let globalWordCounter = 0; 
-
+    
     paragraphs.forEach(p => {
       const words = p.innerText.split(/\s+/);
       
       p.innerHTML = words.map((word) => {
-        // FORMULA: Base + (Multiplier * (Index ^ Exponent))
-        // 0.2: Initial wait time
-        // 0.02: How much the delay grows per word
-        // 1.5: The 'Exponential' curve (Higher = more dramatic slowdown)
-        const delay = (0.2 + (0.02 * Math.pow(globalWordCounter, 1.5))).toFixed(2);
+        // RANDOM DELAY: Pick a random number between 0.1 and 1.2 seconds
+        // This makes the words pop in out of order (randomly)
+        const randomDelay = (Math.random() * 1.1 + 0.1).toFixed(2);
         
-        globalWordCounter++;
-        
-        return `<span class="word" style="animation-delay: ${delay}s">${word}</span>`;
+        return `<span class="word" style="animation-delay: ${randomDelay}s">${word}</span>`;
       }).join(' ');
     });
+
+    // SCROLL OBSERVER: Only start the animation when the text is 20% visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('start-animation');
+          observer.unobserve(entry.target); // Run only once
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(container);
   });
+});
 </script>
 
 <!-- fading letters script -->
