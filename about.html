@@ -114,8 +114,8 @@
     
 </head>
 
-<body
-  class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-gray-50 to-gray-200 dark:from-black dark:to-neutral-900">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-white via-slate-50 to-gray-100 dark:from-black dark:to-neutral-900">
+    
   <!-- Navbar -->
   <header class="flex w-full overflow-hidden pt-10 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -139,7 +139,7 @@
                 class="block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out"
                 :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
             </div>
-          </button>
+          </on>
         </div>
         <div id="menu"
           class="w-full h-0 transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center">
@@ -239,7 +239,7 @@
       </section>
 
       
-<!-- new text thing with a theme button -->
+<!-- new text thing with a theme on -->
 <div class="container mx-auto">
   <h1 class="text-4xl pt-10 pb-8"><b>ABOUT</b></h1>
   <div class="grid grid-cols-2 gap-14 md:gap-20">
@@ -305,9 +305,9 @@
     </section>
   </div>
 </div>
-
-<button id="theme-toggle" class="fixed bottom-5 right-5 z-50 p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 shadow-lg hover:scale-110 transition-transform">
-  ½
+      
+<button id="theme-toggle" class="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group">
+  <span class="font-signika text-xl group-hover:rotate-12 block">½</span>
 </button>
 
 <script>
