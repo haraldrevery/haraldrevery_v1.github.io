@@ -3,6 +3,19 @@
 
 <head>
 <style>
+    
+        @keyframes float {
+      0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px); }
+      25% { transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-5px); }
+      50% { transform: perspective(1000px) rotateX(-2deg) rotateY(2deg) translateY(0px); }
+      75% { transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(5px); }
+      100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px); }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
     /* Animated Gradient Effect */
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
@@ -148,48 +161,44 @@
     </nav>
   </header>
   <!-- Content -->
-<div class="container mx-auto">
-  <h1 class="text-4xl pt-10 pb-8"><b>ABOUT</b></h1>
-  <div class="grid grid-cols-2 gap-14 md:gap-20">
-    
-    <div class="col-span-2 md:col-span-1">
-      
-      <div 
-        x-data="{ 
-          rotateX: 0, 
-          rotateY: 0, 
-          perspective: 1000,
-          handleMouseMove(e) {
-            const card = $el.getBoundingClientRect();
-            const x = e.clientX - card.left;
-            const y = e.clientY - card.top;
-            const centerX = card.width / 2;
-            const centerY = card.height / 2;
-            this.rotateX = (y - centerY) / 12; 
-            this.rotateY = (centerX - x) / 12;
-          },
-          resetRotation() {
-            this.rotateX = 0;
-            this.rotateY = 0;
-          }
-        }"
-        @mousemove="handleMouseMove"
-        @mouseleave="resetRotation"
-        :style="`transform: perspective(${perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg); transition: transform 0.1s ease-out;`"
-        class="bg-white dark:bg-neutral-900 p-5 pb-28 m-6 md:m-12 shadow-2xl border border-gray-100 dark:border-neutral-800 relative group overflow-hidden"
-      >
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+<div 
+  x-data="{ 
+    rotateX: 0, 
+    rotateY: 0, 
+    isHovering: false,
+    handleMouseMove(e) {
+      this.isHovering = true;
+      const card = $el.getBoundingClientRect();
+      const x = e.clientX - card.left;
+      const y = e.clientY - card.top;
+      const centerX = card.width / 2;
+      const centerY = card.height / 2;
+      this.rotateX = (y - centerY) / 12; 
+      this.rotateY = (centerX - x) / 12;
+    },
+    resetRotation() {
+      this.isHovering = false;
+      this.rotateX = 0;
+      this.rotateY = 0;
+    }
+  }"
+  @mousemove="handleMouseMove"
+  @mouseleave="resetRotation"
+  :class="!isHovering ? 'animate-float' : ''"
+  :style="`transform: perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg); transition: ${isHovering ? 'transform 0.1s ease-out' : 'transform 2s ease-in-out'};`"
+  class="bg-white dark:bg-neutral-900 p-5 pb-28 m-6 md:m-12 shadow-2xl border border-gray-100 dark:border-neutral-800 relative group overflow-hidden"
+>
+  <div class="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
 
-        <img src="./dist/assets/HaraldRevery11Calc.gif" alt="Harald Revery"
-             class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto shadow-inner" />
-        
-        <div class="absolute bottom-0 left-0 right-0 text-center">
-          <p class="text-gray-800 dark:text-slate-200 pb-7 h-full font-signika text-6xl md:text-7xl tracking-wide leading-none group-hover:scale-110 transition-transform duration-300">
-            ½
-          </p>
-        </div>
-      </div>
-      </div>
+  <img src="./dist/assets/HaraldRevery11Calc.gif" alt="Harald Revery"
+       class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto shadow-inner" />
+  
+  <div class="absolute bottom-0 left-0 right-0 text-center">
+    <p class="text-gray-800 dark:text-slate-200 pb-7 h-full font-signika text-6xl md:text-7xl tracking-wide leading-none group-hover:scale-110 transition-transform duration-300">
+      ½
+    </p>
+  </div>
+</div>
 
 
         
