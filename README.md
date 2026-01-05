@@ -45,7 +45,7 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abombination, 100 % coded btw.
+I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abombination, 100 % vibe coded with Gemini and Grok (xAI) btw.
 
 ## 🛠️ Built With <a name="built-with"></a>
 
