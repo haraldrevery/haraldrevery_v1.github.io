@@ -3,18 +3,24 @@
 
 <head>
 <style>
-        /* True Wiggle: Tilts and bobs slightly */
-        @keyframes wiggle {
-          0%, 100% { transform: rotate(0deg) translateY(0); }
-          25% { transform: rotate(-10deg) translateY(-2px); }
-          50% { transform: rotate(0deg) translateY(1px); }
-          75% { transform: rotate(10deg) translateY(-2px); }
+
+        /* wiggle animation */
+        @keyframes wave-animation {
+          0% { transform: rotate(0.0deg); }
+          10% { transform: rotate(14.0deg); }
+          20% { transform: rotate(-8.0deg); }
+          30% { transform: rotate(14.0deg); }
+          40% { transform: rotate(-4.0deg); }
+          50% { transform: rotate(10.0deg); }
+          60% { transform: rotate(0.0deg); }
+          100% { transform: rotate(0.0deg); }
         }
         
         .animate-wave {
-          display: inline-block; /* Crucial: transforms don't work on 'inline' spans */
-          animation: wiggle 0.8s ease-in-out infinite;
-          transform-origin: center;
+          display: inline-block;
+          /* This matches the characteristic 'hand-wave' timing */
+          animation: wave-animation 2.5s infinite;
+          transform-origin: 70% 70%; /* Tilts from the bottom-right corner */
         }
     
     /* Animated Gradient Effect */
@@ -213,7 +219,7 @@
     <div class="max-w-screen-xl py-16 mx-auto">
       <div class="grid grid-cols-1 gap-8 text-center mx-auto">
         <div>
-          <p class="font-signika"><b><small>Team Revery</small></b></p>
+          <p class="font-signika"><b><small>Revery Division</small></b></p>
             
             <p><span class="animate-wave">½</span></p>
             
