@@ -22,17 +22,20 @@
               fill-opacity: 0; 
               stroke-opacity: 1;
             }
-            /* The "Tracing" phase: 0% to 70% */
-            70% { 
+            /* Start filling while it's still drawing */
+            40% {
+              fill-opacity: 0.3;
+            }
+            /* Lines finish drawing, but fill is already well underway */
+            80% { 
               stroke-dashoffset: 0; 
-              fill-opacity: 0; 
+              fill-opacity: 0.8; 
               stroke-opacity: 1;
             }
-            /* The "Fill & Fade" phase: 70% to 100% */
             100% { 
               stroke-dashoffset: 0; 
               fill-opacity: 1; 
-              stroke-opacity: 0.5; /* Optional: dims the stroke as the fill arrives */
+              stroke-opacity: 0.5;
             }
           }
           
