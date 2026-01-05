@@ -653,24 +653,25 @@
   container.addEventListener('mousemove', (e) => {
     const rect = container.getBoundingClientRect();
     
-    // Calculate mouse position relative to the center of the container
+    // Calculate position relative to center
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    const mouseX = e.clientX - centerX;
-    const mouseY = e.clientY - centerY;
+    // Normalize values to -1 to 1
+    const percentX = (e.clientX - centerX) / (rect.width / 2);
+    const percentY = (e.clientY - centerY) / (rect.height / 2);
 
-    // Convert mouse position to a percentage (-1 to 1)
-    const rotateX = (mouseY / (rect.height / 2)) * -21; // Max 21 degrees tilt
-    const rotateY = (mouseX / (rect.width / 2)) * 21;
+    // Max tilt - increased for impact, but smoothed by CSS
+    const deg = 30;
+    const rotateX = percentY * -deg;
+    const rotateY = percentX * deg;
 
-    // Apply transformation with a slight Z-translation for "pop"
-    logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(50px)`;
+    logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
   });
 
   container.addEventListener('mouseleave', () => {
-    // Return to neutral position smoothly
-    logo.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+    // Returns to center using the smooth 0.5s transition defined in CSS
+    logo.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
   });
 </script>
 
