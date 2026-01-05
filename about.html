@@ -31,18 +31,17 @@
   }
     
      /* fading words */
-        @keyframes fadeInWord {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
         .word {
           display: inline-block;
           opacity: 0;
-          /* Duration increased to 1.5s for a slower fade */
-          animation: fadeInWord 0.4s ease-in-out forwards;
-          margin-right: 0.25em; /* Ensures proper spacing between words */
+          animation: fadeInWord 0.6s ease-out forwards; /* Reduced duration for snappier feel */
+          margin-right: 0.25em;
         }
+        
+        @keyframes fadeInWord {
+          from { opacity: 0; transform: translateY(5px); }
+          to { opacity: 1; transform: translateY(0); }
+                }
 
 
     
@@ -375,22 +374,30 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
     
-
-  <script>
-    const container = document.getElementById('text-container');
+<!-- fading words script -->
+<script>
+  // Use querySelectorAll to handle multiple "text-container" classes
+  const containers = document.querySelectorAll('.text-container');
+  
+  containers.forEach(container => {
     const paragraphs = container.querySelectorAll('p');
-    
+    let globalWordCounter = 0; // Cumulative count across paragraphs in one container
+
     paragraphs.forEach(p => {
-      // Split by spaces to isolate words
       const words = p.innerText.split(/\s+/);
       
-      p.innerHTML = words.map(word => {
-        // Random delay between 0 and 4 seconds for a slower overall reveal
-        const delay = (Math.random() * 4).toFixed(2); 
+      p.innerHTML = words.map((word) => {
+        // EXPONENTIAL FORMULA: Delay = Base * (Index ^ Power)
+        // Adjust '0.05' for speed and '1.2' for the "curve" intensity
+        const delay = (0.05 * Math.pow(globalWordCounter, 1.2)).toFixed(2);
+        
+        globalWordCounter++;
+        
         return `<span class="word" style="animation-delay: ${delay}s">${word}</span>`;
       }).join(' ');
     });
-  </script>
+  });
+</script>
 
 <!-- fading letters script -->
  <script>
