@@ -438,12 +438,13 @@
         <div class="w-full md:w-48 lg:w-64 flex-shrink-0 overflow-hidden relative border-x border-black/5 dark:border-white/5 px-4">
           <div class="flex whitespace-nowrap">
             <div class="animate-marquee inline-flex items-center font-signika">
+              <span class="text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+              <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
               <span class="text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+              
+              <span class="ml-8 text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
               <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
-              <span class="text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-              <span class="ml-8 text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-              <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
-              <span class="text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+              <span class="text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
             </div>
           </div>
           <div class="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-white/10 dark:from-neutral-900/10 to-transparent pointer-events-none"></div>
@@ -466,12 +467,12 @@
 
           <span class="font-signika text-[10px] opacity-50 text-neutral-800 dark:text-white w-8" x-text="formatTime(duration)">0:00</span>
 
-         <div class="hidden lg:flex items-center gap-2 ml-2">
-                  <svg class="w-3.5 h-3.5 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-                  <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" 
-                         class="volume-slider w-16 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
-                         :style="`accent-color: ${tracks[currentIndex].color2}`">
-                </div>
+          <div class="hidden lg:flex items-center gap-2 ml-2">
+            <svg class="w-3.5 h-3.5 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" 
+                   class="volume-slider w-16 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
+                   :style="`accent-color: ${tracks[currentIndex].color2}`">
+          </div>
         </div>
 
       </div>
