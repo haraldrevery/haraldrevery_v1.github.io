@@ -376,20 +376,21 @@
     
 <!-- fading words script -->
 <script>
-  // Use querySelectorAll to handle multiple "text-container" classes
   const containers = document.querySelectorAll('.text-container');
   
   containers.forEach(container => {
     const paragraphs = container.querySelectorAll('p');
-    let globalWordCounter = 0; // Cumulative count across paragraphs in one container
+    let globalWordCounter = 0; 
 
     paragraphs.forEach(p => {
       const words = p.innerText.split(/\s+/);
       
       p.innerHTML = words.map((word) => {
-        // EXPONENTIAL FORMULA: Delay = Base * (Index ^ Power)
-        // Adjust '0.05' for speed and '1.2' for the "curve" intensity
-        const delay = (0.05 * Math.pow(globalWordCounter, 1.2)).toFixed(2);
+        // FORMULA: Base + (Multiplier * (Index ^ Exponent))
+        // 0.2: Initial wait time
+        // 0.02: How much the delay grows per word
+        // 1.5: The 'Exponential' curve (Higher = more dramatic slowdown)
+        const delay = (0.2 + (0.02 * Math.pow(globalWordCounter, 1.5))).toFixed(2);
         
         globalWordCounter++;
         
