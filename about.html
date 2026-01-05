@@ -83,20 +83,22 @@
         }
   </style>
 
-<script src="./dist/tailwind.js"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            'signika': ['HaraldMono', 'monospace'],
-            'sans': ['HaraldText', 'sans-serif'],
-            'serif': ['HaraldMono', 'monospace'],
-          },
+<script>
+  tailwind.config = {
+    content: ["./dist/*.{html,js}"],
+    theme: {
+      extend: {
+        fontFamily: {
+          'signika': ['HaraldMono', 'monospace'],
+          'sans': ['HaraldText', 'sans-serif'], // Keep this here!
+          'body': ['HaraldText', 'sans-serif'],
+          'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
         },
       },
-    }
-  </script>
+    },
+    plugins: [],
+  }
+</script>
   
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
