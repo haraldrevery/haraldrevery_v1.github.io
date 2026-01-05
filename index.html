@@ -384,7 +384,10 @@
   
 <!-- Audio player -->
 <div class="container mx-auto py-12" x-data="audioPlayer()">
-  <div class="group relative overflow-hidden bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 md:p-8 transition-all duration-500 hover:shadow-2xl">
+  <div 
+  class="group relative overflow-hidden bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 md:p-6 transition-all duration-700 hover:shadow-2xl bg-gradient-to-br"
+  :class="tracks[currentIndex].gradient"
+>
     
     <div class="flex flex-col md:flex-row items-center gap-6">
       
@@ -605,18 +608,26 @@ function audioPlayer() {
     volume: 0.7,
     currentIndex: 0,
     audio: new Audio(),
-    tracks: [
-      {
-        title: "Phrases",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Phrases.mp3"
-      },
-      {
-        title: "Forest Rain",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Forest_Rain.mp3"
-      }
-    ],
+                tracks: [
+                  {
+                    title: "Phrases",
+                    artist: "Harald Revery",
+                    url: "./audio/Harald_Revery_-_Phrases.mp3",
+                    gradient: "bg-gradient-to-r from-orange-500/20 to-rose-600/40" // Fixed Blue
+                  },
+                  {
+                    title: "Forest Rain",
+                    artist: "Harald Revery",
+                    url: "./audio/Harald_Revery_-_Forest_Rain.mp3",
+                    gradient: "from-emerald-500/20 to-teal-600/20" // Fixed Green
+                  },
+                  {
+                    title: "Third Track",
+                    artist: "Harald Revery",
+                    url: "./audio/track3.mp3",
+                    gradient: "from-purple-500/20 to-pink-600/20" // Fixed Purple
+                  }
+                ],
     init() {
       this.loadTrack();
       this.audio.volume = this.volume;
