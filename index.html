@@ -41,7 +41,32 @@
   animation-play-state: paused;
 }
 
-    
+    /* Make the Volume Slider Knob smaller */
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* Ensure the font scale for Signika doesn't make the roll too tall */
+.font-signika {
+  line-height: 1.2;
+}
 
 /* Specific blob colors based on the track */
 .blob-1 { background: radial-gradient(circle, var(--tw-gradient-from) 0%, transparent 70%); }
@@ -412,27 +437,33 @@
             </button>
           </div>
 
+          
           <div class="flex-grow overflow-hidden relative group/text max-w-full md:max-w-[400px]">
             <div class="flex whitespace-nowrap">
-              <div class="animate-marquee inline-flex items-center">
+              <div class="animate-marquee inline-flex items-center font-signika">
                 <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-                <span class="mx-3 opacity-40 text-neutral-800 dark:text-white">—</span>
-                <span class="text-sm uppercase tracking-widest opacity-60 font-signika text-neutral-600 dark:text-neutral-400 mr-12" x-text="tracks[currentIndex].artist"></span>
+                <span class="mx-2 opacity-60 text-neutral-800 dark:text-white"> - </span>
+                <span class="text-lg opacity-60 text-neutral-800 dark:text-white mr-12" x-text="tracks[currentIndex].artist"></span>
                 
                 <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-                <span class="mx-3 opacity-40 text-neutral-800 dark:text-white">—</span>
-                <span class="text-sm uppercase tracking-widest opacity-60 font-signika text-neutral-600 dark:text-neutral-400 mr-12" x-text="tracks[currentIndex].artist"></span>
+                <span class="mx-2 opacity-60 text-neutral-800 dark:text-white"> - </span>
+                <span class="text-lg opacity-60 text-neutral-800 dark:text-white mr-12" x-text="tracks[currentIndex].artist"></span>
               </div>
             </div>
             <div class="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-white/20 dark:from-neutral-900/20 to-transparent pointer-events-none"></div>
             <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white/20 dark:from-neutral-900/20 to-transparent pointer-events-none"></div>
           </div>
 
-          <div class="hidden lg:flex items-center gap-3 min-w-[120px]">
-            <svg class="w-4 h-4 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" class="w-20 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" :style="`accent-color: ${tracks[currentIndex].color2}`">
-          </div>
-        </div>
+          
+      <div class="hidden lg:flex items-center gap-2 min-w-[100px]">
+        <svg class="w-3 h-3 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <input type="range" min="0" max="1" step="0.01" 
+          x-model="volume" 
+          @input="audio.volume = volume" 
+          class="volume-slider w-16 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
+          :style="`accent-color: ${tracks[currentIndex].color2}`">
+      </div>
+          
 
         <div class="w-full flex items-center gap-4 pt-2"> 
           <span class="font-signika text-[10px] min-w-[35px] opacity-60 text-neutral-800 dark:text-white" x-text="formatTime(currentTime)">0:00</span>
