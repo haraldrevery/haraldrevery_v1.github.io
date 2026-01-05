@@ -10,37 +10,37 @@
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
   fill: transparent; 
-  stroke: #3b82f6; /* Added a visible fallback color (blue) */
-  animation: logoDraw 4s cubic-bezier(0.4, 0, 0.2, 1) forwards; /* Speed up to 4s for testing */
+  stroke: #3b82f6; 
+  /* Increased duration to 8s for a smoother, slower draw */
+  animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes logoDraw {
-  0% { stroke-dashoffset: 4000; fill: transparent; }
-  80% { stroke-dashoffset: 0; fill: transparent; }
-  100% { stroke-dashoffset: 0; fill: url(#logoGradient); stroke: transparent; }
+  0% { 
+    stroke-dashoffset: 4000; 
+    fill: rgba(59, 130, 246, 0); /* Fully transparent fill */
+  }
+  40% { 
+    /* Fill starts fading in earlier (at 40% of the duration) */
+    fill: rgba(59, 130, 246, 0.1); 
+  }
+  80% { 
+    stroke-dashoffset: 0; 
+    fill: url(#logoGradient); 
+    stroke: #3b82f6; 
+  }
+  100% { 
+    stroke-dashoffset: 0; 
+    fill: url(#logoGradient); 
+    stroke: transparent; /* Lines disappear at the very end */
+  }
 }
-
-    /* 2. Gradient Movement Animation */
-    @keyframes shiftGradient {
-      0% { x1: 0%; y1: 0%; x2: 100%; y2: 100%; }
-      50% { x1: 100%; y1: 100%; x2: 0%; y2: 0%; }
-      100% { x1: 0%; y1: 0%; x2: 100%; y2: 100%; }
-    }
-
-    #logoGradient {
-      animation: shiftGradient 8s linear infinite;
-    }
-
-    /* 3. 3D Perspective & Floating */
-    .perspective-container {
-      perspective: 1200px;
-    }
-
-    .logo-float {
-      /* Floating starts after drawing is done (8s delay) */
-      animation: logoFloat 6s ease-in-out infinite 8s;
-      transform-style: preserve-3d;
-    }
+    
+/* Ensure the floating animation starts only AFTER the 8s drawing is done */
+.logo-float {
+  animation: logoFloat 6s ease-in-out infinite 8s;
+  transform-style: preserve-3d;
+}
 
     @keyframes logoFloat {
       0%, 100% { transform: translateY(0); }
