@@ -6,34 +6,28 @@
   <style>
     
 /* 1. Logo Drawing Animation */
-.animate-logo path {
-  stroke-dasharray: 4000;
-  stroke-dashoffset: 4000;
-  fill: transparent; 
-  stroke: #3b82f6; 
-  /* Increased duration to 8s for a smoother, slower draw */
-  animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
 @keyframes logoDraw {
   0% { 
     stroke-dashoffset: 4000; 
-    fill: rgba(59, 130, 246, 0); /* Fully transparent fill */
-  }
-  40% { 
-    /* Fill starts fading in earlier (at 40% of the duration) */
-    fill: rgba(59, 130, 246, 0.1); 
-  }
-  80% { 
-    stroke-dashoffset: 0; 
-    fill: url(#logoGradient); 
-    stroke: #3b82f6; 
+    fill-opacity: 0;
+    fill: url(#logoGradient); /* Set gradient immediately */
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill: url(#logoGradient); 
-    stroke: transparent; /* Lines disappear at the very end */
+    fill-opacity: 1; /* Gradually reaches full visibility */
+    fill: url(#logoGradient);
+    stroke: transparent; /* Lines fade out at the very end */
   }
+}
+
+/* Ensure the path itself uses the gradient and handles opacity */
+.animate-logo path {
+  stroke-dasharray: 4000;
+  stroke-dashoffset: 4000;
+  stroke: #3b82f6; 
+  fill: url(#logoGradient);
+  fill-opacity: 0; /* Start hidden */
+  animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
     
 /* Ensure the floating animation starts only AFTER the 8s drawing is done */
