@@ -5,70 +5,51 @@
   
   <style>
     
-    /* Logo animation */
-          .animate-logo path, 
-          .animate-logo polygon, 
-          .animate-logo polyline {
-            /* Ensure this value is larger than your longest path */
-            stroke-dasharray: 4000; 
-            stroke-dashoffset: 4000;
-            /* Increased duration to 8s for a "slower" feel */
-            animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-          }
-          
-          @keyframes logoDraw {
-            0% { 
-              stroke-dashoffset: 4000; 
-              fill-opacity: 0; 
-              stroke-opacity: 1;
-            }
-            /* By 80%, the lines are done and the fill is almost solid */
-            80% { 
-              stroke-dashoffset: 0; 
-              fill-opacity: 0.9; 
-              stroke-opacity: 1;
-            }
-            /* Final 20% of time is for the subtle fade-out of the stroke */
-            100% { 
-              stroke-dashoffset: 0; 
-              fill-opacity: 1; 
-              stroke-opacity: 0.5;
-            }
-          }
+/* 1. Logo Drawing Animation */
+.animate-logo path {
+  stroke-dasharray: 4000;
+  stroke-dashoffset: 4000;
+  fill: transparent; /* Start transparent so we only see the line drawing */
+  animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
 
-        /* Animation for the gradient shift */
-          @keyframes shiftGradient {
-            0% { x1: 0%; y1: 0%; x2: 100%; y2: 100%; }
-            50% { x1: 100%; y1: 100%; x2: 0%; y2: 0%; }
-            100% { x1: 0%; y1: 0%; x2: 100%; y2: 100%; }
-          }
-          
-          #logoGradient {
-            /* This ensures the gradient moves constantly */
-            animation: shiftGradient 10s linear infinite;
-          }
+@keyframes logoDraw {
+  0% { stroke-dashoffset: 4000; fill: transparent; stroke-opacity: 1; }
+  80% { stroke-dashoffset: 0; fill: transparent; stroke-opacity: 1; }
+  100% { stroke-dashoffset: 0; fill: url(#logoGradient); stroke-opacity: 0.5; }
+}
 
-    
-          /* Gentle floating movement - starts after the logo finishes drawing */
-          .logo-float {
-            animation: logoFloat 6s ease-in-out infinite 8s;
-          }
-          
-          @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-          }
+    /* 2. Gradient Movement Animation */
+    @keyframes shiftGradient {
+      0% { x1: 0%; y1: 0%; x2: 100%; y2: 100%; }
+      50% { x1: 100%; y1: 100%; x2: 0%; y2: 0%; }
+      100% { x1: 0%; y1: 0%; x2: 100%; y2: 100%; }
+    }
 
-        /* Perspective container for 3D logo effect */
-        .perspective-container {
-          perspective: 1000px;
-        }
-        
-        /* The logo wrapper that will rotate */
-        .animate-logo {
-          transition: transform 0.1s ease-out; /* Smooths out the mouse tracking */
-          transform-style: preserve-3d;
-        }
+    #logoGradient {
+      animation: shiftGradient 8s linear infinite;
+    }
+
+    /* 3. 3D Perspective & Floating */
+    .perspective-container {
+      perspective: 1200px;
+    }
+
+    .logo-float {
+      /* Floating starts after drawing is done (8s delay) */
+      animation: logoFloat 6s ease-in-out infinite 8s;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    #tilting-logo {
+      transition: transform 0.15s ease-out; /* Smooths mouse movement */
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+    }
         
         /* Enhancing the gradient movement as requested previously */
         @keyframes shiftGradient {
