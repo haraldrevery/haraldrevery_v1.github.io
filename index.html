@@ -28,7 +28,20 @@
   animation: meshRotate 20s linear infinite;
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
+.animate-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 10s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
 
     
 
@@ -453,11 +466,24 @@
             </button>
           </div>
 
-          <div class="overflow-hidden">
-            <h3 class="text-xl font-bold truncate text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></h3>
-            <p class="text-sm uppercase tracking-wider opacity-60 font-signika text-neutral-600 dark:text-neutral-400" x-text="tracks[currentIndex].artist"></p>
-          </div>
-        </div>
+<div class="overflow-hidden w-full max-w-[200px] relative">
+  <div class="flex whitespace-nowrap">
+    <div class="animate-marquee">
+      <h3 class="text-xl font-bold pr-8 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></h3>
+      <h3 class="text-xl font-bold pr-8 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></h3>
+    </div>
+  </div>
+
+  <div class="flex whitespace-nowrap">
+    <div class="animate-marquee" style="animation-duration: 15s;">
+      <p class="text-sm uppercase tracking-wider opacity-60 font-signika pr-8 text-neutral-600 dark:text-neutral-400" x-text="tracks[currentIndex].artist"></p>
+      <p class="text-sm uppercase tracking-wider opacity-60 font-signika pr-8 text-neutral-600 dark:text-neutral-400" x-text="tracks[currentIndex].artist"></p>
+    </div>
+  </div>
+  
+  <div class="absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-white/40 dark:from-neutral-900/40 to-transparent z-10"></div>
+  <div class="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white/40 dark:from-neutral-900/40 to-transparent z-10"></div>
+</div>
 
         <div class="flex-grow w-full flex items-center gap-4"> 
           <span class="font-signika text-xs min-w-[35px] opacity-60 text-neutral-800 dark:text-white" x-text="formatTime(currentTime)">0:00</span>
