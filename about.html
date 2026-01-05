@@ -200,36 +200,60 @@
           </p>
         </div>
       </section>
-    </div> <div class="py-20 px-5 md:px-0">
-      <div class="flex flex-col lg:flex-row-reverse gap-12 items-center">
-        
-        <div class="w-full lg:w-1/2" x-data="{ 
-            path: './photos/', 
-            images: ['2025Harald_on_Galdhopiggen1.jpg', '2025Harald_on_Galdhopiggen2.jpg', 'HRldbnr.jpg', '2025Sunne_2.jpg', 'hrld2019may.jpg',
-          'hrldrvry2018april.jpg','2024HaraldMT.jpg','2024Cortina_Selfie.jpg','2025Harald_on_Galdhopiggen3.jpg'] 
-        }">
-          <div class="grid grid-cols-3 gap-4">
-            <template x-for="img in images" :key="img">
-              <a :href="path + img" data-fancybox="gallery" class="group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800">
-                <img :src="path + img" 
-                     class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
-                     loading="lazy">
-              </a>
-            </template>
-          </div>
-        </div> 
 
-        <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
-            When not in the studio...
-          </h2>
-          
-          <p>Downloadables: Press media bilder + music</p>
-          <p>Downloadables: Press media bilder + music</p>
-        </div>
-      </div> 
+
+      
+<div class="container mx-auto py-20 px-5 md:px-0">
+  <div class="flex flex-col lg:flex-row-reverse gap-16 items-center">
+    
+    <div class="w-full lg:w-1/2" x-data="{ 
+        path: './photos/', 
+        images: ['2025Harald_on_Galdhopiggen1.jpg', '2025Harald_on_Galdhopiggen2.jpg', 'HRldbnr.jpg', '2025Sunne_2.jpg', 'hrld2019may.jpg',
+      'hrldrvry2018april.jpg','2024HaraldMT.jpg','2024Cortina_Selfie.jpg','2025Harald_on_Galdhopiggen3.jpg'] 
+    }">
+      <div class="grid grid-cols-3 gap-3 md:gap-5">
+        <template x-for="(img, index) in images" :key="img">
+          <a :href="path + img" 
+             data-fancybox="gallery" 
+             class="group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-500 hover:shadow-2xl"
+             :class="index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square'">
+            
+            <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <img :src="path + img" 
+                 class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
+                 loading="lazy">
+          </a>
+        </template>
+      </div>
     </div> 
+
+    <div class="w-full lg:w-1/2 space-y-8 text-base md:text-lg lg:text-xl leading-relaxed">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+          When not in the studio...
+        </h2>
+        <div class="h-1 w-20 bg-gradient-to-r from-cyan-400 to-blue-600 rounded-full"></div>
+      </div>
+      
+      <div class="space-y-4">
+        <a href="#" class="group flex items-center space-x-4 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 hover:bg-white dark:hover:bg-neutral-800 transition-all">
+          <div class="p-3 bg-cyan-500/10 rounded-lg text-cyan-500">
+             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          </div>
+          <span class="font-signika">Download Press Media Kit</span>
+        </a>
+
+        <a href="#" class="group flex items-center space-x-4 p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 hover:bg-white dark:hover:bg-neutral-800 transition-all">
+          <div class="p-3 bg-blue-500/10 rounded-lg text-blue-500">
+             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+          </div>
+          <span class="font-signika">Listen to Latest Demos</span>
+        </a>
+      </div>
+    </div>
   </div> 
+</div>
   
   <footer>
         
