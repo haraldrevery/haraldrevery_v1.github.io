@@ -529,6 +529,22 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+  
+  <!-- Film noise -->
+<script>
+  const noiseElement = document.querySelector('#noiseFilter feTurbulence');
+  let seed = 0;
+
+  function animateNoise() {
+    seed = (seed + 1) % 1000;
+    noiseElement.setAttribute('seed', seed);
+    requestAnimationFrame(animateNoise);
+  }
+
+  animateNoise();
+</script>
+  
+
 
   
 </body>
