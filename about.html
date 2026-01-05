@@ -240,64 +240,105 @@
 
       
 <!-- new text thing with a theme button -->
+<div class="container mx-auto">
+  <h1 class="text-4xl pt-10 pb-8"><b>ABOUT</b></h1>
+  <div class="grid grid-cols-2 gap-14 md:gap-20">
+    
+    <div class="col-span-2 md:col-span-1">
+      <div
+        x-data="{
+          rotateX: 0,
+          rotateY: 0,
+          perspective: 1000,
+          handleMouseMove(e) {
+            const card = $el.getBoundingClientRect();
+            const x = e.clientX - card.left;
+            const y = e.clientY - card.top;
+            const centerX = card.width / 2;
+            const centerY = card.height / 2;
+            this.rotateX = (y - centerY) / 12;
+            this.rotateY = (centerX - x) / 12;
+          },
+          resetRotation() {
+            this.rotateX = 0;
+            this.rotateY = 0;
+          }
+        }"
+        @mousemove="handleMouseMove"
+        @mouseleave="resetRotation"
+        :style="`transform: perspective(${perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg); transition: transform 0.1s ease-out;`"
+        class="bg-white dark:bg-neutral-900 p-5 pb-28 m-6 md:m-12 shadow-2xl border border-gray-100 dark:border-neutral-800 relative group overflow-hidden"
+      >
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-0 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        
+        <img id="card-gif" src="./dist/assets/HaraldRevery11Calc.gif" alt="Harald Revery"
+             class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto shadow-inner" />
+        
+        <div class="absolute bottom-0 left-0 right-0 text-center">
+          <p class="text-gray-800 dark:text-slate-200 pb-7 h-full font-signika text-6xl md:text-7xl tracking-wide leading-none group-hover:scale-110 transition-transform duration-300">
+            ½
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto">
+      <div class="block md:hidden">
+        <p class="gradient-text text-3xl font-serif font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-rose-500 transition-all duration-500">
+          Music from sunset to sunset
+        </p>
+        <p class="gradient-text text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-purple-600 transition-all duration-500">
+          to sunset...
+        </p>
+      </div>
+      
+      <p class="gradient-text hidden md:block text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 transition-all duration-500">
+        Music from sunset to sunset...
+      </p>
+        
+      <p class="mb-4">
+        Harald Revery is a contemporary electronic music producer and digital visionary based in Sweden...
+      </p>
+      <p class="mb-4">
+        In an era of digital slop and cheap sample packs, Harald draws inspiration from the natural world...
+      </p>
+    </section>
+  </div>
+</div>
+
 <button id="theme-toggle" class="fixed bottom-5 right-5 z-50 p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 shadow-lg hover:scale-110 transition-transform">
   🌓
 </button>
 
-<section id="profile-section" class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto transition-colors duration-500">
-  
-  <div class="mb-6 overflow-hidden rounded-lg">
-    <img id="main-gif" src="sunset-original.gif" alt="Atmospheric Visual" class="w-full h-auto">
-  </div>
-
-  <div class="block md:hidden">
-    <p class="gradient-text text-3xl font-serif font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-rose-500">
-      Music from sunset to sunset
-    </p>
-    <p class="gradient-text text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-purple-600">
-      to sunset...
-    </p>
-  </div>
-
-  <p class="gradient-text hidden md:block text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600">
-    Music from sunset to sunset...
-  </p>
-
-  <p class="mb-4 text-content">
-    Harald Revery is a contemporary electronic music producer...
-  </p>
-  <p class="mb-4 text-content">
-    In an era of digital slop and cheap sample packs...
-  </p>
-</section>
-
 <script>
   const toggleBtn = document.getElementById('theme-toggle');
-  const section = document.getElementById('profile-section');
-  const gif = document.getElementById('main-gif');
+  const cardGif = document.getElementById('card-gif');
   const gradients = document.querySelectorAll('.gradient-text');
 
   toggleBtn.addEventListener('click', () => {
-    // 1. Swap the GIF source
-    if (gif.src.includes('sunset-original.gif')) {
-      gif.src = './dist/assets/HaraldRevery11Tech.gif'; // Your alternative GIF
+    // 1. Swap the GIF inside the 3D card
+    if (cardGif.src.includes('HaraldRevery11Calc.gif')) {
+      cardGif.src = './dist/assets/HaraldRevery11Tech.gif';
     } else {
-      gif.src = './dist/assets/HaraldRevery11Calc.gif';
+      cardGif.src = './dist/assets/HaraldRevery11Calc.gif';
     }
 
-    // 2. Toggle Gradient Colors
+    // 2. Toggle Gradient Colors on headings
     gradients.forEach(el => {
-      // Switches from Sunset (Orange/Purple) to Forest (Teal/Emerald)
+      // Remove sunset colors
       el.classList.toggle('from-orange-400');
+      el.classList.toggle('via-rose-500');
       el.classList.toggle('to-purple-600');
+      el.classList.toggle('to-rose-500'); // for the mobile version
       
-      el.classList.toggle('from-teal-400');
-      el.classList.toggle('to-emerald-600');
+      // Add "Tech/Forest" colors (Teal to Blue)
+      el.classList.toggle('from-cyan-400');
+      el.classList.toggle('via-blue-500');
+      el.classList.toggle('to-indigo-600');
     });
 
-    // 3. Optional: Change body background or text color
-    document.body.classList.toggle('bg-slate-900');
-    document.body.classList.toggle('text-white');
+    // 3. Optional: Global dark mode toggle for the whole page
+    document.documentElement.classList.toggle('dark');
   });
 </script>
 
