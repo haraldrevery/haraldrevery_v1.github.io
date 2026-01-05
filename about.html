@@ -214,7 +214,7 @@
       </div>
       </div>
       
-        
+        <!-- Text -->
       <section class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto">
         <div class="block md:hidden">
             
@@ -238,43 +238,68 @@
         
       </section>
 
-hhhhh
-    <section x-data="{ midnight: false }" class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto">
+      
+<!-- new text thing with a theme button -->
+<button id="theme-toggle" class="fixed bottom-5 right-5 z-50 p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 shadow-lg hover:scale-110 transition-transform">
+  🌓
+</button>
+
+<section id="profile-section" class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto transition-colors duration-500">
   
-  <button @click="midnight = !midnight" 
-          class="mb-6 px-4 py-2 rounded-full border border-neutral-300 dark:border-neutral-700 text-xs font-bold tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition duration-300">
-    SWITCH ATMOSPHERE
-  </button>
+  <div class="mb-6 overflow-hidden rounded-lg">
+    <img id="main-gif" src="sunset-original.gif" alt="Atmospheric Visual" class="w-full h-auto">
+  </div>
 
   <div class="block md:hidden">
-    <p class="text-3xl font-serif font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r transition-all duration-700"
-       :class="midnight ? 'from-blue-400 to-indigo-500' : 'from-orange-400 to-rose-500'">
+    <p class="gradient-text text-3xl font-serif font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-rose-500">
       Music from sunset to sunset
     </p>
-    <p class="text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r transition-all duration-700"
-       :class="midnight ? 'from-indigo-500 to-cyan-600' : 'from-rose-500 to-purple-600'">
+    <p class="gradient-text text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-purple-600">
       to sunset...
     </p>
   </div>
 
-  <p class="hidden md:block text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r transition-all duration-700"
-     :class="midnight ? 'from-blue-400 via-indigo-500 to-cyan-600' : 'from-orange-400 via-rose-500 to-purple-600'">
+  <p class="gradient-text hidden md:block text-3xl font-serif font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600">
     Music from sunset to sunset...
   </p>
 
-  <p class="mb-4">
+  <p class="mb-4 text-content">
     Harald Revery is a contemporary electronic music producer...
   </p>
-  
-  </section>
+  <p class="mb-4 text-content">
+    In an era of digital slop and cheap sample packs...
+  </p>
+</section>
+
+<script>
+  const toggleBtn = document.getElementById('theme-toggle');
+  const section = document.getElementById('profile-section');
+  const gif = document.getElementById('main-gif');
+  const gradients = document.querySelectorAll('.gradient-text');
+
+  toggleBtn.addEventListener('click', () => {
+    // 1. Swap the GIF source
+    if (gif.src.includes('sunset-original.gif')) {
+      gif.src = './dist/assets/HaraldRevery11Tech.gif'; // Your alternative GIF
+    } else {
+      gif.src = './dist/assets/HaraldRevery11Calc.gif';
+    }
+
+    // 2. Toggle Gradient Colors
+    gradients.forEach(el => {
+      // Switches from Sunset (Orange/Purple) to Forest (Teal/Emerald)
+      el.classList.toggle('from-orange-400');
+      el.classList.toggle('to-purple-600');
       
+      el.classList.toggle('from-teal-400');
+      el.classList.toggle('to-emerald-600');
+    });
 
-
-
-
-
-
-
+    // 3. Optional: Change body background or text color
+    document.body.classList.toggle('bg-slate-900');
+    document.body.classList.toggle('text-white');
+  });
+</script>
 
 
 
