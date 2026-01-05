@@ -127,9 +127,15 @@
     <!-- Navbar -->
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
-        <div class="mr-4 md:mr-8">
-          <a href="index.html" class="text-2xl font-signika font-bold">HARALD REVERY</a>
-        </div>
+        
+              <!-- Hoover over opacity change -->
+                <div class="mr-4 md:mr-8">
+                  <a href="index.html" 
+                     class="text-2xl font-signika font-bold transition duration-300 hover:opacity-70 tap-highlight-transparent">
+                    HARALD REVERY
+                  </a>
+                </div>
+        
         <div class="ml-auto md:hidden flex items-center justify-start">
           <button onclick="menuToggle()" @click="open = !open"
             class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none"
