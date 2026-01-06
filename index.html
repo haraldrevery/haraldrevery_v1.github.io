@@ -393,22 +393,22 @@
 </div>
   
 
-<section class="font-normal text-center text-base mx-3 col-span-2 my-auto">
+
+<section id="next-section" class="h-screen bg-gray-100">
+  </section>
+  
+  
+<section class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-      <p>
-        Welcome! Scroll down.
-      </p>
+      <p>Welcome! Scroll down.</p>
   </div>
 </section>
 
-<section class="font-normal text-center text-xl mx-3 col-span-2 my-auto">
-  <div class="text-container space-y-4 text-xl md:text-xl lg:text-2xl leading-relaxed">
-      <p>
-        ↓
-      </p>
+<section class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
+  <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+      <p>↓</p>
   </div>
 </section>
-
   
 <!-- Grid to the left + Text to the right -->
 <div class="container mx-auto py-20">
@@ -878,6 +878,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+  <!-- Click to scroll thing-->
+  <script>
+const scrollElement = document.getElementById('hero');
+
+scrollElement.addEventListener('click', () => {
+  window.scrollBy({
+    top: window.innerHeight, // Scrolls down by the height of the viewport
+    left: 0,
+    behavior: 'smooth' // Creates the sliding effect
+  });
+});
+</script>
+  
   
 </body>
 
