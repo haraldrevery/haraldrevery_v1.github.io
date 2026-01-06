@@ -371,7 +371,7 @@ body {
 
           <div class="flex items-center gap-4 w-full pt-2">
             <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
-            <div class="relative flex-grow h-3 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
+            <div class="relative flex-grow h-1 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
                  @click="seek($event)"
                  @mousedown="isDragging = true" 
                  @mousemove="isDragging && seek($event)" 
