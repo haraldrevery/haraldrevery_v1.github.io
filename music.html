@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Harald Revery - Music</title>
-  
+  <title>Harald Revery - Music</title> 
   <script src="./dist/tailwind.js"></script>
 
   <style>
@@ -193,9 +192,7 @@
 /* Specific smoothing for the background gradient */
 body {
     transition: background 0.8s ease-in-out !important;
-}
-    
-    
+}  
   </style>
 
   <script>
@@ -343,22 +340,20 @@ body {
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
               </button>
             </div>
-
             <div class="w-full overflow-hidden relative border-y border-black/5 dark:border-white/5 py-4">
               <div class="flex whitespace-nowrap">
                 <div class="animate-marquee inline-flex items-center font-signika">
-                  <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-                  <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
-                  <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-                  
-                  <span class="ml-12 text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-                  <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
-                  <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-
-                  <span class="ml-12 text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-                  <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
-                  <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-                  
+                    <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+                    <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+                    <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+                    
+                    <span class="ml-12 text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+                    <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+                    <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+  
+                    <span class="ml-12 text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+                    <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+                    <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>          
                 </div>
               </div>
             </div>
@@ -411,7 +406,6 @@ body {
               x-transition:leave-end="opacity-0">
           Let the moon arrive
         </span>
-
         <span x-show="darkMode" 
               style="display: none;"
               class="absolute inset-0 flex items-center justify-center"
