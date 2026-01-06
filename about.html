@@ -120,14 +120,16 @@
   animation: gradientMove 15s ease infinite;
 }
 
-/* Smoothly transition every element's background and text color */
+/* Apply a smooth transition to the entire page and all its children */
 * {
-    transition-color: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, fill 0.5s ease;
+    transition: background-color 0.6s ease-in-out, color 0.6s ease-in-out, border-color 0.6s ease-in-out;
 }
-/* Ensure the background gradient also feels smooth */
+
+/* Specific smoothing for the background gradient */
 body {
-    transition: background 0.8s ease-in-out;
+    transition: background 0.8s ease-in-out !important;
 }
+    
 
 
     
@@ -352,27 +354,34 @@ body {
 <section id="hero-trigger" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
 
-        <!-- dark mode button -->      
-<button @click="darkMode = !darkMode" 
-        class="text-sm font-medium uppercase tracking-wider transition-all duration-300 focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400">
-  
-  <span x-show="!darkMode" 
-        x-transition:enter="transition opacity duration-500" 
-        x-transition:enter-start="opacity-0" 
-        x-transition:enter-end="opacity-100">
-    Under the moon
-  </span>
-  
-  <span x-show="darkMode" 
-        style="display: none;"
-        x-transition:enter="transition opacity duration-500" 
-        x-transition:enter-start="opacity-0" 
-        x-transition:enter-end="opacity-100">
-    Let there be light
-  </span>
-  
-</button>
+    <button @click="darkMode = !darkMode" 
+            class="text-sm font-medium uppercase tracking-wider focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400">
+      
+      <div class="relative h-6 flex items-center justify-center">
+        <span x-show="!darkMode" 
+              x-transition:enter="transition opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition opacity duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0">
+          Let the moon shine
+        </span>
 
+        <span x-show="darkMode" 
+              style="display: none;"
+              class="absolute"
+              x-transition:enter="transition opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition opacity duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0">
+          Let there be light
+        </span>
+      </div>
+      
+    </button>
 
   </div>
 </section>
