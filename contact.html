@@ -98,7 +98,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 50vh; /* Only covers top 50% of the viewport */
+  height: 90vh; /* Only covers top 50% of the viewport */
   pointer-events: none; /* Allows clicking through to links */
   z-index: 1;
 }
@@ -430,21 +430,26 @@ body {
 
   function resize() {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight / 2; // Keep canvas to top half
+    // Set canvas height to the full scrollable height of the page
+    canvas.height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
   }
 
   window.addEventListener('resize', resize);
+  // Also resize when content might shift
+  window.addEventListener('load', resize);
   resize();
 
   class Particle {
     constructor() {
       this.reset();
+      // Randomize initial Y so they don't all start at the top at once
+      this.y = Math.random() * (window.innerHeight / 2);
     }
     reset() {
       this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
+      this.y = -10; 
       this.size = Math.random() * 2 + 1;
-      this.speedY = Math.random() * 1 + 0.5;
+      this.speedY = Math.random() * 1.2 + 0.5;
       this.speedX = (Math.random() - 0.5) * 0.5;
       this.opacity = 1;
     }
@@ -452,17 +457,27 @@ body {
       this.y += this.speedY;
       this.x += this.speedX;
 
-      // Calculate opacity based on vertical position (fade out towards the bottom)
-      // Starts fading immediately and hits 0 at the bottom of the canvas
-      this.opacity = 1 - (this.y / canvas.height);
+      // FADE LOGIC:
+      // We want them to disappear by the time they hit 50% of the screen height
+      const fadeLimit = window.innerHeight * 0.5;
+      
+      if (this.y < fadeLimit) {
+        // Opacity stays 1 until it starts getting close to the limit, 
+        // then scales down to 0
+        this.opacity = Math.max(0, 1 - (this.y / fadeLimit));
+      } else {
+        this.opacity = 0;
+      }
 
-      if (this.y > canvas.height || this.opacity <= 0) {
+      // Reset particle if it's invisible or off canvas
+      if (this.opacity <= 0) {
         this.reset();
-        this.y = -10; // Reset to top
       }
     }
     draw() {
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      // Flakes will be white in dark mode, and slightly grey/transparent in light mode
+      // This ensures they are visible on both backgrounds
+      ctx.fillStyle = `rgba(200, 200, 200, ${this.opacity})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
@@ -470,6 +485,8 @@ body {
   }
 
   function init() {
+    particles = [];
+    // 100 particles is usually enough for a subtle look
     for (let i = 0; i < 100; i++) {
       particles.push(new Particle());
     }
