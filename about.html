@@ -27,7 +27,7 @@
     opacity: 0;
   }
   h2.active {
-    opacity: 1 !important;
+    opacity: 1;
   }
 
     
@@ -131,8 +131,32 @@ body {
 }
     
 
+/* Force text to be white and hidden immediately to prevent black flicker */
+/* 1. Force white color initially, but NO !important so JS can clear it later */
+body, .animated-heading, .text-container p {
+  color: white; 
+}
 
+/* 2. Hide only the specific animated elements initially to prevent jumps */
+.animated-heading, .text-container p {
+  opacity: 0;
+}
+
+/* 3. Allow active states to show */
+.active, .start-animation p {
+  opacity: 1 !important;
+}
+
+/* 4. Individual letters start white and invisible */
+.fade-letter {
+  color: white;
+  opacity: 0;
+}
     
+/* Ensure the gradient heading is visible during its animation */
+.animated-heading.bg-clip-text {
+  color: transparent !important;
+}    
   </style>
 
   <script>
@@ -169,7 +193,7 @@ body {
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
 -->
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+<body class="min-h-screen text-white opacity-0 animate-fade-in bg-fixed bg-[length:250%_250%] animate-gradient-slow 
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
@@ -570,7 +594,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+   document.addEventListener('DOMContentLoaded', () => {
+  // Wait a tiny bit for the fade-in animation to begin
+  setTimeout(() => {
+    // Remove the forced white text so Tailwind's dark/light logic takes over
+    document.body.style.color = ''; 
+    // Add the transition class now so theme switching later is smooth, not instant
+    document.body.classList.add('text-black', 'dark:text-white', 'transition-colors', 'duration-700');
+  }, 100); 
+});
 </script>
-    
+
 </body>
 </html>
