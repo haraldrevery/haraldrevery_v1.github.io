@@ -734,6 +734,7 @@ function audioPlayer() {
       }
     },
     init() {
+      this.audio.preservesPitch = false;
       this.loadTrack();
       this.audio.volume = this.volume;
       this.audio.ontimeupdate = () => { if(!this.isDragging) this.currentTime = this.audio.currentTime };
@@ -742,8 +743,10 @@ function audioPlayer() {
     },
     loadTrack() {
       this.audio.src = this.tracks[this.currentIndex].url;
+      this.audio.preservesPitch = false; // Add this line
+      this.audio.playbackRate = this.playbackRate;
       this.audio.load();
-    },
+    }
     togglePlay() {
       if (this.isPlaying) {
         this.audio.pause();
