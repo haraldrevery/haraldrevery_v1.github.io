@@ -395,16 +395,18 @@
 
   
   
-<section class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
+<section id="hero-trigger" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
       <p>Welcome! Scroll down.</p>
   </div>
 </section>
-<section class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
+
+<section id="next-section" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
       <p>↓</p>
   </div>
 </section>
+
   
 <!-- Grid to the left + Text to the right -->
 <div class="container mx-auto py-20">
@@ -875,19 +877,20 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
   <!-- Click to scroll thing-->
-  <script>
-// Select all elements with the class 'hero'
-const scrollElements = document.querySelectorAll('.hero');
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.getElementById('hero-trigger');
+    const target = document.getElementById('next-section');
 
-scrollElements.forEach(el => {
-  el.addEventListener('click', () => {
-    window.scrollBy({
-      top: window.innerHeight,
-      left: 0,
-      behavior: 'smooth'
-    });
+    if (trigger && target) {
+      trigger.addEventListener('click', () => {
+        target.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' // Aligns the top of the next section to the top of the viewport
+        });
+      });
+    }
   });
-});
 </script>
   
   
