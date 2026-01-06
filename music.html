@@ -358,15 +358,24 @@ body {
   
   
 
-  <div class="w-full overflow-hidden relative border-y border-black/5 dark:border-white/5 py-4">
-    <div class="flex whitespace-nowrap">
-      <div class="animate-marquee inline-flex items-center font-signika">
-          <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-          <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
-          <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+      <div class="w-full overflow-hidden relative border-y border-black/5 dark:border-white/5 py-4">
+        <div class="flex whitespace-nowrap overflow-hidden">
+          <div class="flex animate-marquee shrink-0 items-center">
+            <div class="flex items-center">
+              <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+              <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+              <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+              <span class="mx-12"></span> </div>
+            
+            <div class="flex items-center">
+              <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+              <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+              <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+              <span class="mx-12"></span>
+            </div>
           </div>
-    </div>
-  </div>
+        </div>
+      </div>
 
   <div class="flex items-center gap-4 w-full pt-2">
     <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
