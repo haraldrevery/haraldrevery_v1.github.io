@@ -125,22 +125,6 @@
 body {
     transition: background 0.8s ease-in-out !important;
 }
-
-    
-/* snow effect */
-#snow-canvas {
-  position: absolute; /* Changed from fixed to absolute */
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* This ensures it covers the full scrollable length of your page */
-  height: 100%; 
-  pointer-events: none;
-  z-index: 1;
-}
-
-
-
     
   </style>
 
@@ -173,8 +157,7 @@ body {
   <!-- background texture image -->
   <div class="bg-image-fade"></div>
   
-  <!-- snow -->
-  <canvas id="snow-canvas"></canvas>
+ 
   
   <!-- Navbar -->
  <header id="main-header" class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-10 pb-1 transition-all duration-500 -translate-y-full">
@@ -483,97 +466,7 @@ body {
 </script>
 
 
-
-
-
-
   
-    <!-- snow script -->
-<script>
-  const canvas = document.getElementById('snow-canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    // This captures the full height of your content, not just the screen
-    canvas.height = Math.max(
-      document.body.scrollHeight, 
-      document.documentElement.scrollHeight
-    );
-  }
-
-  
-  // Resize on window changes and when the page fully loads
-  window.addEventListener('resize', resize);
-  window.addEventListener('load', resize);
-  resize();
-
-  class Snowflake {
-    constructor() {
-      this.reset();
-      // Start some flakes at random heights within the top half
-      this.y = Math.random() * (canvas.height * 0.5);
-    }
-
-    reset() {
-      this.x = Math.random() * canvas.width;
-      this.y = -10; 
-      this.size = Math.random() * 2 + 1;
-      this.speedY = Math.random() * 1 + 0.5; 
-      this.speedX = (Math.random() - 0.5) * 0.3; 
-      this.opacity = 1;
-    }
-
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-
-      // FADE LOGIC:
-      // Halfway point of the FULL PAGE height
-      const fadePoint = canvas.height * 0.5;
-
-      if (this.y > 0) {
-        // Opacity will be 1 at the top and 0 at the middle of the page
-        this.opacity = Math.max(0, 1 - (this.y / fadePoint));
-      }
-
-      // If particle reaches the midpoint of the page, reset it to the top
-      if (this.y >= fadePoint || this.opacity <= 0) {
-        this.reset();
-      }
-    }
-
-    draw() {
-      // Adjusted to be slightly brighter for the dark background
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function init() {
-    particles = [];
-    // 120 particles for a slightly fuller look on a full page
-    for (let i = 0; i < 120; i++) {
-      particles.push(new Snowflake());
-    }
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
-    requestAnimationFrame(animate);
-  }
-
-  init();
-  animate();
-</script>
-
   
 </body>
 
