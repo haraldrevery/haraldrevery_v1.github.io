@@ -83,30 +83,7 @@
 
 
 
-    
-    /* Ambient Background Blobs (for audio player) */
-@keyframes meshRotate {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(20%, 10%) rotate(180deg); }
-  100% { transform: translate(0, 0) rotate(360deg); }
-}
 
-.ambient-blob {
-  position: absolute;
-  width: 150%;
-  height: 150%;
-  top: -25%;
-  left: -25%;
-  filter: blur(40px);
-  opacity: 0.4;
-  z-index: 0;
-  pointer-events: none;
-  mix-blend-mode: soft-light;
-}
-
-.playing .ambient-blob {
-  animation: meshRotate 20s linear infinite;
-}
 
 @keyframes marquee {
   0% { transform: translateX(0); }
@@ -121,28 +98,7 @@
   animation-play-state: paused;
 }
 
-    /* Make the Volume Slider Knob smaller */
-.volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 1px solid rgba(0,0,0,0.1);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.volume-slider::-moz-range-thumb {
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-}
-
+    
 /* Ensure the font scale for Signika doesn't make the roll too tall */
 .font-signika {
   line-height: 1.2;
@@ -509,82 +465,6 @@
 
 
   
-<!-- Audio player -->
-<div class="container mx-auto py-12 px-4">
-  <div class="max-w-5xl mx-auto" x-data="audioPlayer()">
-    
-    <div 
-      class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 md:p-5 transition-all duration-700 hover:shadow-2xl"
-      :class="{ 'playing': isPlaying }"
-    >
-      <div class="ambient-blob absolute -top-24 -left-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color1}`"></div>
-      <div class="ambient-blob absolute -bottom-24 -right-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color2}`"></div>
-      
-      <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
-        
-        <div class="flex items-center gap-1 flex-shrink-0">
-          <button @click="previous()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-          </button>
-
-          <button @click="togglePlay()" 
-            class="flex-shrink-0 w-11 h-11 flex items-center justify-center text-white rounded-xl hover:scale-105 transition active:scale-95 shadow-lg"
-            :class="tracks[currentIndex].btnColor">
-            <template x-if="!isPlaying"><svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></template>
-            <template x-if="isPlaying"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></template>
-          </button>
-
-          <button @click="next()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-          </button>
-        </div>
-
-        <div class="w-full md:w-48 lg:w-64 flex-shrink-0 overflow-hidden relative border-x border-black/5 dark:border-white/5 px-4">
-          <div class="flex whitespace-nowrap">
-            <div class="animate-marquee inline-flex items-center font-signika">
-              <span class="text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-              <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
-              <span class="text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-              
-              <span class="ml-8 text-sm opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-              <span class="mx-2 opacity-40 text-neutral-800 dark:text-white">-</span>
-              <span class="text-sm font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-            </div>
-          </div>
-          <div class="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-white/10 dark:from-neutral-900/10 to-transparent pointer-events-none"></div>
-          <div class="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-white/10 dark:from-neutral-900/10 to-transparent pointer-events-none"></div>
-        </div>
-
-        <div class="flex-grow flex items-center gap-4 w-full">
-          <span class="font-signika text-[10px] opacity-50 text-neutral-800 dark:text-white w-8" x-text="formatTime(currentTime)">0:00</span>
-          
-          <div class="relative flex-grow h-2 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
-               @click="seek($event)"
-               @mousedown="isDragging = true" 
-               @mousemove="isDragging && seek($event)" 
-               @mouseup="isDragging = false">
-            <div class="absolute top-0 left-0 h-full rounded-full" 
-                 :style="`width: ${(currentTime/duration * 100)}%; background: linear-gradient(to right, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2})`">
-              <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full shadow-md scale-0 group-hover/bar:scale-100 transition-transform border-2" :style="`border-color: ${tracks[currentIndex].color2}`"></div>
-            </div>
-          </div>
-
-          <span class="font-signika text-[10px] opacity-50 text-neutral-800 dark:text-white w-8" x-text="formatTime(duration)">0:00</span>
-
-          <div class="hidden lg:flex items-center gap-2 ml-2">
-            <svg class="w-3.5 h-3.5 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" 
-                   class="volume-slider w-16 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
-                   :style="`accent-color: ${tracks[currentIndex].color2}`">
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-  
 
 
   
@@ -747,105 +627,6 @@
   animateNoise();
 </script>
 
-
-   <!-- Audio player -->
-<script>
-function audioPlayer() {
-  return {
-    isPlaying: false,
-    isDragging: false,
-    currentTime: 0,
-    duration: 0,
-    volume: 0.7,
-    currentIndex: 0,
-    audio: new Audio(),
-    tracks: [
-      {
-        title: "Phrases",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Phrases.mp3",
-        color1: "#f97316",
-        color2: "#e11d48",
-        btnColor: "bg-gradient-to-br from-orange-500 to-rose-600"
-      },
-      {
-        title: "Forest Rain",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Forest_Rain.mp3",
-        color1: "#8f9c4b",
-        color2: "#f9f9f9",
-        btnColor: "bg-gradient-to-br from-white via-green-100 to-green-500"
-      },
-            {
-        title: "Looking for Snow",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Looking_For_Snow.mp3",
-        color1: "#3f535e",
-        color2: "#f9f9f9",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-            {
-        title: "Uninhabited Island",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Uninhabited_Island.mp3",
-        color1: "#090c10",
-        color2: "#2d965c",
-        btnColor: "bg-gradient-to-br from-[#090c10] to-[#2d965c]"
-      },
-            {
-        title: "The North",
-        artist: "Harald Revery & Light Titum",
-        url: "./audio/Harald_Revery_and_Light_Titum_-_The_North.mp3",
-        color1: "#f9f9f9",
-        color2: "#3f535e",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-    ],
-    init() {
-      this.loadTrack();
-      this.audio.volume = this.volume;
-      this.audio.ontimeupdate = () => { if(!this.isDragging) this.currentTime = this.audio.currentTime };
-      this.audio.onloadedmetadata = () => { this.duration = this.audio.duration };
-      this.audio.onended = () => { this.next() };
-    },
-    loadTrack() {
-      this.audio.src = this.tracks[this.currentIndex].url;
-      this.audio.load();
-    },
-    togglePlay() {
-      if (this.isPlaying) {
-        this.audio.pause();
-      } else {
-        this.audio.play();
-      }
-      this.isPlaying = !this.isPlaying;
-    },
-    next() {
-      this.currentIndex = (this.currentIndex + 1) % this.tracks.length;
-      this.loadTrack();
-      if (this.isPlaying) this.audio.play();
-    },
-    previous() {
-      this.currentIndex = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
-      this.loadTrack();
-      if (this.isPlaying) this.audio.play();
-    },
-    formatTime(seconds) {
-      if (isNaN(seconds)) return "0:00";
-      let min = Math.floor(seconds / 60);
-      let sec = Math.floor(seconds % 60);
-      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-    },
-    seek(e) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percent = Math.min(Math.max(x / rect.width, 0), 1);
-      this.currentTime = percent * this.duration;
-      this.audio.currentTime = this.currentTime;
-    }
-  }
-}
-</script>
 
 <!-- fading words script -->
 <script>
