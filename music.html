@@ -11,24 +11,33 @@
 
   <style>
 
-    /* Ambient Background Blobs */
-@keyframes meshRotate {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(20%, 10%) rotate(180deg); }
-  100% { transform: translate(0, 0) rotate(360deg); }
+/* Enhanced Ambient Background Blobs */
+@keyframes meshMove {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(30%, -20%) scale(1.2) rotate(120deg); }
+  66% { transform: translate(-20%, 20%) scale(0.8) rotate(240deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(360deg); }
 }
 
 .ambient-blob {
   position: absolute;
-  width: 150%;
-  height: 150%;
-  top: -25%;
-  left: -25%;
-  filter: blur(40px);
-  opacity: 0.4;
+  width: 120%; /* Slightly smaller for more movement room */
+  height: 120%;
+  filter: blur(60px); /* Increased blur for smoother blending */
+  opacity: 0.15; /* Increased slightly for visibility */
   z-index: 0;
   pointer-events: none;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: screen; /* Better color blending */
+  transition: background 1.5s ease-in-out;
+}
+
+/* Specific animations for each blob to make them move independently */
+.playing .blob-1 {
+  animation: meshMove 15s ease-in-out infinite;
+}
+
+.playing .blob-2 {
+  animation: meshMove 20s ease-in-out infinite reverse;
 }
 
 .playing .ambient-blob {
@@ -316,14 +325,16 @@ body {
 
     <div class="w-full lg:w-1/2">
       <div 
-        class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl"
-        :class="{ 'playing': isPlaying }"
-      >
-        <div class="ambient-blob absolute -top-24 -left-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color1}`"></div>
-        <div class="ambient-blob absolute -bottom-24 -right-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color2}`"></div>
-        
-        <div class="relative z-10 flex flex-col gap-6">
-          <div class="flex flex-col items-center justify-between gap-6">
+  class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl"
+  :class="{ 'playing': isPlaying }"
+>
+  <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
+       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color1} 0%, transparent 70%)`"></div >
+  
+  <div class="ambient-blob blob-2 absolute -bottom-1/2 -right-1/2 rounded-full" 
+       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color2} 0%, transparent 70%)`"></div >
+
+  <div class="relative z-10 flex flex-col gap-6">
             
             <div class="flex items-center gap-2 flex-shrink-0">
               <button @click="previous()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
