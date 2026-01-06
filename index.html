@@ -395,19 +395,17 @@
 
   
   
-<section class="font-normal text-center text-base mx-3 col-span-2 my-auto">
+<section id="hero-trigger" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
       <p>Welcome! Scroll down.</p>
   </div>
 </section>
 
-<section class="font-normal text-center text-base mx-3 col-span-2 my-auto">
+<section id="next-section" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
       <p>↓</p>
   </div>
 </section>
-  
-
 
   
 <!-- Grid to the left + Text to the right -->
@@ -878,6 +876,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+  <!-- Click to scroll thing-->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.getElementById('hero-trigger');
+    const target = document.getElementById('next-section');
+
+    if (trigger && target) {
+      trigger.addEventListener('click', () => {
+        target.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' // Aligns the top of the next section to the top of the viewport
+        });
+      });
+    }
+  });
+</script>
   
   
 </body>
