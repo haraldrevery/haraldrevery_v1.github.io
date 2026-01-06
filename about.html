@@ -351,14 +351,16 @@ body {
 
 
   <!-- center the dark mode button -->  
-<section id="hero-trigger" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
-  <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+<section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
+  <div class="text-container">
 
     <button @click="darkMode = !darkMode" 
-            class="text-sm font-medium uppercase tracking-wider focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400">
+            class="text-sm font-medium uppercase tracking-widest focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400 transition-colors duration-300">
       
-      <div class="relative h-6 flex items-center justify-center">
+      <div class="relative h-8 flex items-center justify-center min-w-[200px]">
+        
         <span x-show="!darkMode" 
+              class="absolute inset-0 flex items-center justify-center"
               x-transition:enter="transition opacity duration-500"
               x-transition:enter-start="opacity-0"
               x-transition:enter-end="opacity-100"
@@ -370,7 +372,7 @@ body {
 
         <span x-show="darkMode" 
               style="display: none;"
-              class="absolute"
+              class="absolute inset-0 flex items-center justify-center"
               x-transition:enter="transition opacity duration-500"
               x-transition:enter-start="opacity-0"
               x-transition:enter-end="opacity-100"
@@ -379,13 +381,12 @@ body {
               x-transition:leave-end="opacity-0">
           Let there be light
         </span>
+        
       </div>
-      
     </button>
 
   </div>
 </section>
-
 
     
 
