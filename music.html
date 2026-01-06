@@ -379,7 +379,13 @@ body {
                      :style="`accent-color: ${tracks[currentIndex].color2}`">
             </div>
           </div>
-
+          <div class="flex items-end justify-center gap-1 h-12 w-full mb-2" x-ref="visualizer">
+  <template x-for="i in 32">
+    <div class="vis-bar w-full bg-current opacity-30 rounded-full transition-all duration-75"
+         :style="`background: linear-gradient(to top, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2}); height: 4px;` ">
+    </div>
+  </template>
+</div>
           <div class="flex items-center gap-4 w-full pt-2">
             <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
             <div class="relative flex-grow h-1 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
@@ -630,49 +636,14 @@ function audioPlayer() {
     volume: 0.7,
     currentIndex: 0,
     audio: new Audio(),
-    // color1 = start color, color2 = current time color
+    audioCtx: null,
+    analyser: null,
+    dataArray: null,
+    animationId: null,
     tracks: [
-      {
-        title: "Phrases",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Phrases.mp3",
-        color1: "#f97316",
-        color2: "#e11d48",
-        btnColor: "bg-gradient-to-br from-orange-500 to-rose-600"
-      },
-      {
-        title: "Forest Rain",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Forest_Rain.mp3",
-        color1: "#8f9c4b",
-        color2: "#f9f9f9",
-        btnColor: "bg-gradient-to-br from-white via-green-100 to-green-500"
-      },
-      {
-        title: "Looking for Snow",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Looking_For_Snow.mp3",
-        color1: "#3f535e",
-        color2: "#f9f9f9",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-      {
-        title: "Uninhabited Island",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Uninhabited_Island.mp3",
-        color1: "#090c10",
-        color2: "#2d965c",
-        btnColor: "bg-gradient-to-br from-[#090c10] to-[#2d965c]"
-      },
-      {
-        title: "The North",
-        artist: "Harald Revery & Light Titum",
-        url: "./audio/Harald_Revery_and_Light_Titum_-_The_North.mp3",
-        color1: "#f9f9f9",
-        color2: "#3f535e",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
+      /* ... keep your existing tracks array here ... */
     ],
+
     init() {
       this.loadTrack();
       this.audio.volume = this.volume;
@@ -680,34 +651,75 @@ function audioPlayer() {
       this.audio.onloadedmetadata = () => { this.duration = this.audio.duration };
       this.audio.onended = () => { this.next() };
     },
+
+    setupVisualizer() {
+      if (this.audioCtx) return; // Only setup once
+
+      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = this.audioCtx.createMediaElementSource(this.audio);
+      this.analyser = this.audioCtx.createAnalyser();
+      
+      source.connect(this.analyser);
+      this.analyser.connect(this.audioCtx.destination);
+      
+      this.analyser.fftSize = 64; // Small number for 32 bars
+      const bufferLength = this.analyser.frequencyBinCount;
+      this.dataArray = new Uint8Array(bufferLength);
+      
+      this.animate();
+    },
+
+    animate() {
+      this.analyser.getByteFrequencyData(this.dataArray);
+      const bars = this.$refs.visualizer.querySelectorAll('.vis-bar');
+      
+      bars.forEach((bar, i) => {
+        // Map the frequency value (0-255) to a height (4px - 48px)
+        const height = (this.dataArray[i] / 255) * 44 + 4; 
+        bar.style.height = `${height}px`;
+        bar.style.opacity = this.isPlaying ? (this.dataArray[i] / 255) + 0.2 : 0.1;
+      });
+
+      this.animationId = requestAnimationFrame(() => this.animate());
+    },
+
     loadTrack() {
       this.audio.src = this.tracks[this.currentIndex].url;
       this.audio.load();
     },
+
     togglePlay() {
+      if (!this.audioCtx) this.setupVisualizer(); // Initialize on first click
+
       if (this.isPlaying) {
         this.audio.pause();
+        this.audioCtx.suspend();
       } else {
         this.audio.play();
+        this.audioCtx.resume();
       }
       this.isPlaying = !this.isPlaying;
     },
+
     next() {
       this.currentIndex = (this.currentIndex + 1) % this.tracks.length;
       this.loadTrack();
       if (this.isPlaying) this.audio.play();
     },
+
     previous() {
       this.currentIndex = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
       this.loadTrack();
       if (this.isPlaying) this.audio.play();
     },
+
     formatTime(seconds) {
       if (isNaN(seconds)) return "0:00";
       let min = Math.floor(seconds / 60);
       let sec = Math.floor(seconds % 60);
       return `${min}:${sec < 10 ? '0' : ''}${sec}`;
     },
+
     seek(e) {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
