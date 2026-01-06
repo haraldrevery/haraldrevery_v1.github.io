@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
+<html lang="en" class="scroll-smooth dark" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
 
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,14 @@
   <script src="./dist/tailwind.js"></script>
 
   <style>
+
+    /* Added a safeguard: Force background to be dark immediately 
+       This prevents any white flashes during script execution */
+    .dark body {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+    
     /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
