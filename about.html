@@ -177,10 +177,7 @@ body {
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
         <div class="mr-4 md:mr-8">
-
-          <!-- Left top button  -->
-          <a href="../index.html" class="text-2xl font-signika font-bold transition duration-300 hover:opacity-75 text-white">HARALD REVERY</a>
-          
+          <a href="../index.html" class="text-2xl font-signika font-bold transition duration-300 hover:opacity-75">HARALD REVERY</a>
         </div>
         <div class="ml-auto md:hidden flex items-center justify-start">
           <button @click="open = !open"
@@ -204,26 +201,25 @@ body {
           :class="{'h-48': open, 'h-0': !open}">
           <ul id="ulMenu"
             class="flex flex-col duration-300 ease-out md:space-x-5 sm:transition-none mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0">
-
-                <!-- Right top button  -->
-                <li class="group transition duration-300">
-                      <a href="../index.html" class="font-signika text-2xl text-white dark:text-white md:dark:text-white">MUSIC
-                        <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white">
-                        </span>
-                      </a>
-                    </li>
-                    <li class="group transition duration-300">
-                      <a href="about.html" class="font-signika text-2xl text-white">ABOUT
-                        <span class="hidden md:block h-0.5 bg-white"></span>
-                      </a>
-                    </li>
-                    <li class="group transition duration-300">
-                      <a href="contact.html" class="font-signika text-2xl text-white">CONTACT
-                        <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white">
-                        </span>
-                      </a>
-                    </li>
-            
+            <li class="group transition duration-300">
+              <a href="../index.html" class="font-signika text-2xl">MUSIC
+                <span
+                  class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white">
+                </span>
+              </a>
+            </li>
+            <li class="group transition duration-300">
+              <a href="about.html" class="font-signika text-2xl">ABOUT
+                <span class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
+              </a>
+            </li>
+            <li class="group transition duration-300">
+              <a href="contact.html" class="font-signika text-2xl">CONTACT
+                <span
+                  class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white">
+                </span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
