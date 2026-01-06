@@ -619,45 +619,48 @@ function audioPlayer() {
     volume: 0.7,
     currentIndex: 0,
     audio: new Audio(),
-    // We keep placeholders for colors which will be overwritten on load
     tracks: [
       {
         title: "Phrases",
         artist: "Harald Revery",
         url: "./audio/Harald_Revery_-_Phrases.mp3",
-        color1: "#333",
-        color2: "#666"
+        color1: "#f97316",
+        color2: "#e11d48",
+        btnColor: "bg-gradient-to-br from-orange-500 to-rose-600"
       },
       {
         title: "Forest Rain",
         artist: "Harald Revery",
         url: "./audio/Harald_Revery_-_Forest_Rain.mp3",
-        color1: "#333",
-        color2: "#666"
+        color1: "#8f9c4b",
+        color2: "#f9f9f9",
+        btnColor: "bg-gradient-to-br from-white via-green-100 to-green-500"
       },
       {
         title: "Looking for Snow",
         artist: "Harald Revery",
         url: "./audio/Harald_Revery_-_Looking_For_Snow.mp3",
-        color1: "#333",
-        color2: "#666"
+        color1: "#3f535e",
+        color2: "#f9f9f9",
+        btnColor: "bg-gradient-to-br from-white to-sky-400"
       },
       {
         title: "Uninhabited Island",
         artist: "Harald Revery",
         url: "./audio/Harald_Revery_-_Uninhabited_Island.mp3",
-        color1: "#333",
-        color2: "#666"
+        color1: "#090c10",
+        color2: "#2d965c",
+        btnColor: "bg-gradient-to-br from-[#090c10] to-[#2d965c]"
       },
       {
         title: "The North",
         artist: "Harald Revery & Light Titum",
         url: "./audio/Harald_Revery_and_Light_Titum_-_The_North.mp3",
-        color1: "#333",
-        color2: "#666"
+        color1: "#f9f9f9",
+        color2: "#3f535e",
+        btnColor: "bg-gradient-to-br from-white to-sky-400"
       },
     ],
-
     init() {
       this.loadTrack();
       this.audio.volume = this.volume;
@@ -665,64 +668,10 @@ function audioPlayer() {
       this.audio.onloadedmetadata = () => { this.duration = this.audio.duration };
       this.audio.onended = () => { this.next() };
     },
-
     loadTrack() {
-      const track = this.tracks[this.currentIndex];
-      this.audio.src = track.url;
+      this.audio.src = this.tracks[this.currentIndex].url;
       this.audio.load();
-      
-      // Reset colors to a neutral state while loading new metadata
-      track.color1 = 'rgba(150,150,150,0.2)';
-      track.color2 = 'rgba(100,100,100,0.2)';
-
-      // Extract colors from MP3 Metadata
-      this.extractMetadata(track);
     },
-
-    extractMetadata(track) {
-      window.jsmediatags.read(track.url, {
-        onSuccess: (tag) => {
-          const image = tag.tags.picture;
-          if (image) {
-            // Convert picture data to a base64 URL
-            let base64String = "";
-            for (let i = 0; i < image.data.length; i++) {
-              base64String += String.fromCharCode(image.data[i]);
-            }
-            const base64 = `data:${image.format};base64,${window.btoa(base64String)}`;
-            
-            // Pass to color extractor
-            this.getColorsFromImage(base64, track);
-          }
-        },
-        onError: (error) => {
-          console.error("Metadata error:", error.type, error.info);
-          // Fallback colors if no image is found
-          track.color1 = "#1a1a1a";
-          track.color2 = "#333333";
-        }
-      });
-    },
-
-    getColorsFromImage(src, track) {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 1;
-        canvas.height = 2; // We sample two areas for two different colors
-        
-        ctx.drawImage(img, 0, 0, 1, 2);
-        const data = ctx.getImageData(0, 0, 1, 2).data;
-        
-        // Update the track colors dynamically
-        // Since Alpine.js is reactive, the UI updates instantly
-        track.color1 = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-        track.color2 = `rgb(${data[4]}, ${data[5]}, ${data[6]})`;
-      };
-    },
-
     togglePlay() {
       if (this.isPlaying) {
         this.audio.pause();
@@ -731,26 +680,22 @@ function audioPlayer() {
       }
       this.isPlaying = !this.isPlaying;
     },
-
     next() {
       this.currentIndex = (this.currentIndex + 1) % this.tracks.length;
       this.loadTrack();
       if (this.isPlaying) this.audio.play();
     },
-
     previous() {
       this.currentIndex = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
       this.loadTrack();
       if (this.isPlaying) this.audio.play();
     },
-
     formatTime(seconds) {
       if (isNaN(seconds)) return "0:00";
       let min = Math.floor(seconds / 60);
       let sec = Math.floor(seconds % 60);
       return `${min}:${sec < 10 ? '0' : ''}${sec}`;
     },
-
     seek(e) {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
