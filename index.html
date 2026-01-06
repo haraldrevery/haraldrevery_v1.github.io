@@ -244,6 +244,7 @@
 
 <script>
   tailwind.config = {
+    darkMode: 'class',
     content: ["./dist/*.{html,js}"],
     theme: {
       extend: {
@@ -303,7 +304,9 @@
 </head>
 
 
-  <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+             bg-gradient-to-br from-slate-100 via-white to-slate-200 
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
   <header class="flex w-full overflow-hidden pt-10 pb-1">
     <!-- Navbar -->
@@ -654,6 +657,55 @@
       </p>
     </div>
   </footer>
+
+  <!-- center the dark mode button -->  
+<section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
+  <div class="text-container">
+
+    <button @click="darkMode = !darkMode" 
+            class="text-sm font-medium uppercase tracking-widest focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400 transition-colors duration-300">
+      
+      <div class="relative h-8 flex items-center justify-center min-w-[200px]">
+        
+        <span x-show="!darkMode" 
+              class="absolute inset-0 flex items-center justify-center"
+              x-transition:enter="transition opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition opacity duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0">
+          Let the moon arrive
+        </span>
+
+        <span x-show="darkMode" 
+              style="display: none;"
+              class="absolute inset-0 flex items-center justify-center"
+              x-transition:enter="transition opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition opacity duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0">
+          Let there be light
+        </span>
+        
+      </div>
+    </button>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
   
   <!-- Script for the LightBox -->
   <script>
