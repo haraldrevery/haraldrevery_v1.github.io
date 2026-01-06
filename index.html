@@ -877,13 +877,10 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- Click to scroll thing-->
   <script>
 const scrollElement = document.getElementById('hero');
+const nextSection = document.querySelector('.content-section'); // or whatever is below hero
 
 scrollElement.addEventListener('click', () => {
-  window.scrollBy({
-    top: window.innerHeight, // Scrolls down by the height of the viewport
-    left: 0,
-    behavior: 'smooth' // Creates the sliding effect
-  });
+  nextSection.scrollIntoView({ behavior: 'smooth' });
 });
 </script>
   
