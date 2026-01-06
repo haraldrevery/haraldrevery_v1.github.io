@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
 
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,14 @@
   <script src="./dist/tailwind.js"></script>
 
   <style>
+
+    /* Added a safeguard: Force background to be dark immediately 
+       This prevents any white flashes during script execution */
+    .dark body {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+    
     /* 1. FONT DEFINITIONS */
     @font-face {
       font-family: 'HaraldText';
@@ -73,7 +81,15 @@
         animation: gradientMove 15s ease infinite;
       }
 
+/* Apply a smooth transition to the entire page and all its children */
+* {
+    transition: background-color 0.96s ease-in-out, color 0.6s ease-in-out, border-color 0.6s ease-in-out;
+}
 
+/* Specific smoothing for the background gradient */
+body {
+    transition: background 0.8s ease-in-out !important;
+}
 
 
 
@@ -84,6 +100,7 @@
 
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -103,9 +120,11 @@
 </head>
 
         
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0D0D0D] to-[#1A1A1A] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+             bg-gradient-to-br from-slate-100 via-white to-slate-200 
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
-  <header class="flex w-full overflow-hidden pt-4 pb-1">
+  <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
 
@@ -214,7 +233,7 @@
             font-signika 
             animated-heading text-4xl md:text-4xl font-bold mb-6 
             w-fit 
-            bg-gradient-to-r from-orange-400 via-rose-500 to-[#00d5ff] 
+            bg-gradient-to-r from-[#fbef00] via-[#42d392] to-[#00d5ff] 
             bg-clip-text text-transparent">
             Get in touch
             </h2>
@@ -252,6 +271,52 @@
       
     </div>
   </div>
+
+
+  <!-- center the dark mode button -->  
+<section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
+  <div class="text-container">
+
+    <button @click="darkMode = !darkMode" 
+            class="text-sm font-medium uppercase tracking-widest focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400 transition-colors duration-300">
+      
+      <div class="relative h-8 flex items-center justify-center min-w-[200px]">
+        
+        <span x-show="!darkMode" 
+              class="absolute inset-0 flex items-center justify-center"
+              x-transition:enter="transition opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition opacity duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0">
+          Let the moon arrive
+        </span>
+
+        <span x-show="darkMode" 
+              style="display: none;"
+              class="absolute inset-0 flex items-center justify-center"
+              x-transition:enter="transition opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition opacity duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0">
+          Let there be light
+        </span>
+        
+      </div>
+    </button>
+
+  </div>
+</section>
+
+
+
+
+
+
+
   
   <!-- Footer -->
    <footer>
