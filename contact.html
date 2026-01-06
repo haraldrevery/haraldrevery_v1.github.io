@@ -44,7 +44,11 @@
   opacity: 0.15; /* Slightly lower opacity helps blend textures more smoothly */
   pointer-events: none;
 }
-
+/* for smooth header*/
+#main-header {
+    transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out, background-color 0.8s ease-in-out;
+}
+    
     
     /* Added a safeguard: Force background to be dark immediately 
        This prevents any white flashes during script execution */
@@ -160,7 +164,7 @@ body {
  
   
   <!-- Navbar -->
- <header id="main-header" class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-10 pb-1 transition-all duration-500 -translate-y-full">
+ <header id="main-header" class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-10 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0">
   <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
 
@@ -450,20 +454,20 @@ body {
   const header = document.getElementById('main-header');
   
   window.addEventListener('scroll', () => {
-    // If we are at the very top, show the navbar without background
-    if (window.scrollY < 50) {
-      header.classList.remove('-translate-y-full', 'bg-white/80', 'dark:bg-black/80', 'backdrop-blur-md');
-      header.classList.add('translate-y-0');
-    } 
-    // If we are scrolling down but haven't reached the threshold, hide it
-    else if (window.scrollY <= 100) {
-      header.classList.add('-translate-y-full');
-      header.classList.remove('translate-y-0');
-    } 
-    // If we have scrolled past 100px, slide it down with the blur effect
-    else {
-      header.classList.remove('-translate-y-full');
-      header.classList.add('translate-y-0', 'bg-white/80', 'dark:bg-black/80', 'backdrop-blur-md');
+    if (window.scrollY > 150) { // Increased threshold slightly
+      // Slide down and Fade in
+      header.classList.remove('-translate-y-full', 'opacity-0');
+      header.classList.add('translate-y-0', 'opacity-100');
+      
+      // Add the glass effect
+      header.classList.add('bg-white/70', 'dark:bg-black/70', 'backdrop-blur-lg');
+    } else {
+      // Slide up and Fade out
+      header.classList.remove('translate-y-0', 'opacity-100');
+      header.classList.add('-translate-y-full', 'opacity-0');
+      
+      // Remove glass effect
+      header.classList.remove('bg-white/70', 'dark:bg-black/70', 'backdrop-blur-lg');
     }
   });
 </script>
