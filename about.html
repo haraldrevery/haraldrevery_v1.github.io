@@ -16,11 +16,11 @@
     to { opacity: 1; }
   }
 
-  .fade-letter {
-    display: inline-block;
+.fade-letter {
+    /* remove display: inline-block if letters look gapped */
     opacity: 0;
     animation: letterFade 0.8s ease-out forwards;
-  }
+}
 
   /* Prevent layout jump: hide the H2 initially */
   h2[data-animate="true"] {
@@ -443,32 +443,50 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Use a class selector to find ALL headings
   const headings = document.querySelectorAll('.animated-heading');
   
   const headingObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        animateLetters(entry.target);
+        animateWords(entry.target);
         headingObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 }); // Lower threshold often works better for mobile
+  }, { threshold: 0.1 });
 
   headings.forEach(h => headingObserver.observe(h));
 
-  function animateLetters(el) {
+  function animateWords(el) {
     const text = el.innerText;
     el.innerHTML = ''; 
-    el.style.opacity = '1'; // Ensure it's visible
+    el.style.opacity = '1';
     el.classList.add('active'); 
 
-    [...text].forEach((char, index) => {
-      const span = document.createElement('span');
-      span.textContent = char === ' ' ? '\u00A0' : char; 
-      span.className = 'fade-letter';
-      span.style.animationDelay = `${index * 0.05}s`;
-      el.appendChild(span);
+    // Split by space to get individual words
+    const words = text.split(' ');
+
+    words.forEach((word, wordIndex) => {
+      // Create a wrapper for the word to keep it together
+      const wordSpan = document.createElement('span');
+      wordSpan.style.display = 'inline-block';
+      wordSpan.style.whiteSpace = 'nowrap'; // This prevents the word itself from breaking
+
+      // Put letters inside the word wrapper
+      [...word].forEach((char, charIndex) => {
+        const letterSpan = document.createElement('span');
+        letterSpan.textContent = char;
+        letterSpan.className = 'fade-letter';
+        // Calculate delay based on total progress (word index + letter position)
+        letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
+        wordSpan.appendChild(letterSpan);
+      });
+
+      el.appendChild(wordSpan);
+
+      // Add a space after the word (unless it's the last one)
+      if (wordIndex < words.length - 1) {
+        el.appendChild(document.createTextNode(' '));
+      }
     });
   }
 });
