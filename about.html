@@ -189,6 +189,61 @@
 
 
 
+<!-- images to the left, text to the right -->      
+<div class="container mx-auto py-20 px-5 md:px-0">
+  <div class="flex flex-col lg:flex-row-reverse gap-16 items-center">
+    
+    <div class="w-full lg:w-1/2" x-data="{ 
+        path: './photos/', 
+        images: ['2025Harald_on_Galdhopiggen2.jpg', '2025Harald_on_Galdhopiggen1.jpg', 'HRldbnr.jpg', '2025Sunne_1.jpg', 
+      '2024HaraldMT.jpg','2025Harald_on_Galdhopiggen3.jpg'] 
+    }">
+      <div class="grid grid-cols-3 gap-3 md:gap-5">
+        <template x-for="(img, index) in images" :key="img">
+          <a :href="path + img" 
+             data-fancybox="gallery" 
+             class="group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-500 hover:shadow-2xl"
+             :class="index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square'">
+            
+            <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <img :src="path + img" 
+                 class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
+                 loading="lazy">
+          </a>
+        </template>
+      </div>
+    </div> 
+
+    <div class="w-full lg:w-1/2 space-y-8 text-base md:text-lg lg:text-xl leading-relaxed">
+      <div>
+
+
+    <p data-animate="true" class="
+        animated-heading text-4xl md:text-4xl font-bold mb-6 
+        block w-full max-w-max break-normal whitespace-normal
+        bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 
+        bg-clip-text text-transparent">
+        Music that can be played sunset to sunset
+    </p>
+            
+      </div>      
+           <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+          <p>
+           Harald Revery is a contemporary electronic music producer based in Sweden. In an era of digital slop and cheap sample packs, Harald draws inspiration from the natural world, incorporating field-recorded elements ranging from nocturnal forest ambiences to the raw beauty of the world's landscapes. The haunting sounds of the forest at night to the winds at the highest mountain peaks of Scandinavia, Harald is there to capture those moments.His dedication for making music that can ignite that special spark within people is well known for the ones around him. He brings the raw spirit of Europe's nature into his productions for the world to experience.
+
+          </p>
+          <p>
+            With a decade of experience crafting tracks for the dancefloor, Harald knows how to get the rave experience anywhere — whether they are in a dimly lit basement bar or at a major festival. His music always hits home for those who hear it.   
+          
+          </p>
+        </div>
+      
+    </div>
+  </div> 
+</div>
+
+
     <!-- text to the left, card to the right -->   
     <div class="grid grid-cols-2 gap-14 md:gap-20">  
       <div class="col-span-2 md:col-span-1">
@@ -251,60 +306,13 @@
       </section>
 </div> 
 
-<!-- images to the left, text to the right -->      
-<div class="container mx-auto py-20 px-5 md:px-0">
-  <div class="flex flex-col lg:flex-row-reverse gap-16 items-center">
+
+
+
+
+
     
-    <div class="w-full lg:w-1/2" x-data="{ 
-        path: './photos/', 
-        images: ['2025Harald_on_Galdhopiggen2.jpg', '2025Harald_on_Galdhopiggen1.jpg', 'HRldbnr.jpg', '2025Sunne_1.jpg', 
-      '2024HaraldMT.jpg','2025Harald_on_Galdhopiggen3.jpg'] 
-    }">
-      <div class="grid grid-cols-3 gap-3 md:gap-5">
-        <template x-for="(img, index) in images" :key="img">
-          <a :href="path + img" 
-             data-fancybox="gallery" 
-             class="group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-500 hover:shadow-2xl"
-             :class="index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square'">
-            
-            <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            <img :src="path + img" 
-                 class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
-                 loading="lazy">
-          </a>
-        </template>
-      </div>
-    </div> 
-
-    <div class="w-full lg:w-1/2 space-y-8 text-base md:text-lg lg:text-xl leading-relaxed">
-      <div>
-
-
-    <p data-animate="true" class="
-        animated-heading text-4xl md:text-4xl font-bold mb-6 
-        block w-full max-w-max break-normal whitespace-normal
-        bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 
-        bg-clip-text text-transparent">
-        Music that can be played sunset to sunset
-    </p>
-            
-      </div>      
-           <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-          <p>
-           Harald Revery is a contemporary electronic music producer based in Sweden. In an era of digital slop and cheap sample packs, Harald draws inspiration from the natural world, incorporating field-recorded elements ranging from nocturnal forest ambiences to the raw beauty of the world's landscapes. The haunting sounds of the forest at night to the winds at the highest mountain peaks of Scandinavia, Harald is there to capture those moments.His dedication for making music that can ignite that special spark within people is well known for the ones around him. He brings the raw spirit of Europe's nature into his productions for the world to experience.
-
-          </p>
-          <p>
-            With a decade of experience crafting tracks for the dancefloor, Harald knows how to get the rave experience anywhere — whether they are in a dimly lit basement bar or at a major festival. His music always hits home for those who hear it.   
-          
-          </p>
-        </div>
-      
-    </div>
-  </div> 
-</div>
-  
+ <!-- footer--> 
   <footer>
         
     <div class="max-w-screen-xl py-16 mx-auto">
