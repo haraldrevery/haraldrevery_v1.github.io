@@ -107,6 +107,22 @@
     .animate-fade-in {
       animation: fadeIn 0.8s ease-in forwards;
     }
+
+
+    /* Background ANIMATIONS */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-slow {
+  animation: gradientMove 15s ease infinite;
+}
+
+
+
+    
   </style>
 
   <script>
@@ -126,10 +142,16 @@
     }
   </script>
 
+
+
+
+
+  
+
   <script defer src="./dist/alpine.min.js"></script>
 </head>
 
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-white via-slate-50 to-gray-100 dark:from-black dark:to-neutral-900">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-white via-slate-50 to-gray-100 bg-[length:400%_400%] animate-gradient-slow">
     
   <header class="flex w-full overflow-hidden pt-10 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
