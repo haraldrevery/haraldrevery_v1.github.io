@@ -98,7 +98,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* Only covers top 50% of the viewport */
+  height: 100vh; 
   pointer-events: none; /* Allows clicking through to links */
   z-index: 1;
 }
@@ -430,53 +430,49 @@ body {
 
   function resize() {
     canvas.width = window.innerWidth;
-    // Set canvas height to the full scrollable height of the page
-    canvas.height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    canvas.height = window.innerHeight;
   }
 
   window.addEventListener('resize', resize);
-  // Also resize when content might shift
-  window.addEventListener('load', resize);
   resize();
 
-  class Particle {
+  class Snowflake {
     constructor() {
       this.reset();
-      // Randomize initial Y so they don't all start at the top at once
-      this.y = Math.random() * (window.innerHeight / 2);
+      // Start some flakes at random heights so they don't all drop at once
+      this.y = Math.random() * (canvas.height * 0.5);
     }
+
     reset() {
       this.x = Math.random() * canvas.width;
-      this.y = -10; 
+      this.y = -10; // Start just above the screen
       this.size = Math.random() * 2 + 1;
-      this.speedY = Math.random() * 1.2 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = Math.random() * 1 + 0.5; // Gentle fall
+      this.speedX = (Math.random() - 0.5) * 0.3; // Slight drift
       this.opacity = 1;
     }
+
     update() {
       this.y += this.speedY;
       this.x += this.speedX;
 
       // FADE LOGIC:
-      // We want them to disappear by the time they hit 50% of the screen height
-      const fadeLimit = window.innerHeight * 0.5;
-      
-      if (this.y < fadeLimit) {
-        // Opacity stays 1 until it starts getting close to the limit, 
-        // then scales down to 0
-        this.opacity = Math.max(0, 1 - (this.y / fadeLimit));
-      } else {
-        this.opacity = 0;
+      // Halfway point of the screen
+      const fadePoint = canvas.height * 0.5;
+
+      if (this.y > 0) {
+        // This calculates a percentage: 1 at the top, 0 at the midpoint
+        this.opacity = 1 - (this.y / fadePoint);
       }
 
-      // Reset particle if it's invisible or off canvas
-      if (this.opacity <= 0) {
+      // If particle reaches the midpoint or is invisible, reset to top
+      if (this.y >= fadePoint || this.opacity <= 0) {
         this.reset();
       }
     }
+
     draw() {
-      // Flakes will be white in dark mode, and slightly grey/transparent in light mode
-      // This ensures they are visible on both backgrounds
+      // Colors are soft white/grey to work in both light and dark modes
       ctx.fillStyle = `rgba(200, 200, 200, ${this.opacity})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -486,9 +482,9 @@ body {
 
   function init() {
     particles = [];
-    // 100 particles is usually enough for a subtle look
+    // Adjust 100 to higher/lower for more or less snow
     for (let i = 0; i < 100; i++) {
-      particles.push(new Particle());
+      particles.push(new Snowflake());
     }
   }
 
