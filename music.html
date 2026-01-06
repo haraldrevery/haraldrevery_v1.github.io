@@ -383,6 +383,102 @@ body {
   </div>
 
 
+<!-- Audio player to the left, text to the right -->  
+<div class="container mx-auto py-12 px-4">
+  <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12" x-data="audioPlayer()">
+    
+    <div class="w-full lg:w-1/2 text-container start-animation">
+      <h1 class="text-5xl font-bold mb-6 tracking-tight">Latest Sounds</h1>
+      <p class="text-lg opacity-80 leading-relaxed mb-4">
+        Explore the atmospheric soundscapes of Gothenburg. Each track is a 
+        reflection of the Nordic landscape, from the stillness of the snow 
+        to the rhythmic pulse of the city rain.
+      </p>
+      <div class="flex gap-4 mt-8">
+        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Experimental</span>
+        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Ambient</span>
+        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Electronic</span>
+      </div>
+    </div>
+
+    <div class="w-full lg:w-1/2">
+      <div 
+        class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl"
+        :class="{ 'playing': isPlaying }"
+      >
+        <div class="ambient-blob absolute -top-24 -left-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color1}`"></div>
+        <div class="ambient-blob absolute -bottom-24 -right-24 w-64 h-64 blur-3xl rounded-full opacity-10 pointer-events-none transition-colors duration-1000" :style="`background: ${tracks[currentIndex].color2}`"></div>
+        
+        <div class="relative z-10 flex flex-col gap-6">
+          <div class="flex flex-col items-center justify-between gap-6">
+            
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button @click="previous()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+              </button>
+
+              <button @click="togglePlay()" 
+                class="flex-shrink-0 w-14 h-14 flex items-center justify-center text-neutral-800 dark:text-white rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 border border-black/5 dark:border-white/10 transition-all active:scale-95 shadow-sm"
+              >
+                <template x-if="!isPlaying"><svg class="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></template>
+                <template x-if="isPlaying"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></template>
+              </button>
+
+              <button @click="next()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+              </button>
+            </div>
+
+            <div class="w-full overflow-hidden relative border-y border-black/5 dark:border-white/5 py-4">
+              <div class="flex whitespace-nowrap">
+                <div class="animate-marquee inline-flex items-center font-signika">
+                  <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+                  <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+                  <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+                  
+                  <span class="ml-12 text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+                  <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+                  <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 w-full justify-center">
+              <svg class="w-4 h-4 opacity-40 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+              <input type="range" min="0" max="1" step="0.01" x-model="volume" @input="audio.volume = volume" 
+                     class="volume-slider w-full max-w-[150px] h-1.5 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
+                     :style="`accent-color: ${tracks[currentIndex].color2}`">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 w-full pt-2">
+            <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
+            <div class="relative flex-grow h-3 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
+                 @click="seek($event)"
+                 @mousedown="isDragging = true" 
+                 @mousemove="isDragging && seek($event)" 
+                 @mouseup="isDragging = false">
+              <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-100" 
+                   :style="`width: ${(currentTime/duration * 100)}%; background: linear-gradient(to right, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2})`">
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-md scale-0 group-hover/bar:scale-100 transition-transform border-2" :style="`border-color: ${tracks[currentIndex].color2}`"></div>
+              </div>
+            </div>
+            <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10" x-text="formatTime(duration)">0:00</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+    
+
+
+
+    
+
   <!-- center the dark mode button -->  
 <section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
   <div class="text-container">
