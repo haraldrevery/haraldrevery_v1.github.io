@@ -10,37 +10,32 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 124vh; 
+  /* Use 100vh to match the exact height of the user's screen */
+  height: 100vh; 
   z-index: -1;
   background-image: url('./dist/assets/bgtexture.jpg');
   
-  /* Forces the image to span the full width of the viewport */
-  background-size: 100% auto; 
+  /* 'cover' ensures the image fills the screen without stretching or gaps */
+  background-size: cover; 
   background-position: center top;
   background-repeat: no-repeat;
 
-  /* Improved Mask: Ensures the texture disappears completely before the container ends */
+  /* Smooth fade-out tied to the viewport height */
   mask-image: linear-gradient(
     to bottom, 
-    rgba(0,0,0,1) 0%,      /* Fully visible at top */
-    rgba(0,0,0,1) 40%,     /* Stays solid for a bit */
-    rgba(0,0,0,0.4) 75%,   /* Starts fading heavily */
-    rgba(0,0,0,0) 100%     /* Completely transparent at 124vh */
+    rgba(0,0,0,1) 0%,      /* Solid at the top */
+    rgba(0,0,0,1) 30%,     /* Begins fade after 30% of screen height */
+    rgba(0,0,0,0) 100%     /* Fully gone by the bottom of the display */
   );
   -webkit-mask-image: linear-gradient(
     to bottom, 
     rgba(0,0,0,1) 0%, 
-    rgba(0,0,0,1) 40%, 
-    rgba(0,0,0,0.4) 75%, 
+    rgba(0,0,0,1) 30%, 
     rgba(0,0,0,0) 100%
   );
   
   opacity: 0.12;
   pointer-events: none;
-}
-/* for smooth header*/
-#main-header {
-    transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out, background-color 0.8s ease-in-out;
 }
 
     
