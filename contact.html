@@ -94,12 +94,13 @@ body {
     
 /* snow effect */
 #snow-canvas {
-  position: absolute;
+  position: absolute; /* Changed from fixed to absolute */
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh; 
-  pointer-events: none; /* Allows clicking through to links */
+  /* This ensures it covers the full scrollable length of your page */
+  height: 100%; 
+  pointer-events: none;
   z-index: 1;
 }
 
@@ -430,25 +431,31 @@ body {
 
   function resize() {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // This captures the full height of your content, not just the screen
+    canvas.height = Math.max(
+      document.body.scrollHeight, 
+      document.documentElement.scrollHeight
+    );
   }
 
+  // Resize on window changes and when the page fully loads
   window.addEventListener('resize', resize);
+  window.addEventListener('load', resize);
   resize();
 
   class Snowflake {
     constructor() {
       this.reset();
-      // Start some flakes at random heights so they don't all drop at once
+      // Start some flakes at random heights within the top half
       this.y = Math.random() * (canvas.height * 0.5);
     }
 
     reset() {
       this.x = Math.random() * canvas.width;
-      this.y = -10; // Start just above the screen
+      this.y = -10; 
       this.size = Math.random() * 2 + 1;
-      this.speedY = Math.random() * 1 + 0.5; // Gentle fall
-      this.speedX = (Math.random() - 0.5) * 0.3; // Slight drift
+      this.speedY = Math.random() * 1 + 0.5; 
+      this.speedX = (Math.random() - 0.5) * 0.3; 
       this.opacity = 1;
     }
 
@@ -457,23 +464,23 @@ body {
       this.x += this.speedX;
 
       // FADE LOGIC:
-      // Halfway point of the screen
+      // Halfway point of the FULL PAGE height
       const fadePoint = canvas.height * 0.5;
 
       if (this.y > 0) {
-        // This calculates a percentage: 1 at the top, 0 at the midpoint
-        this.opacity = 1 - (this.y / fadePoint);
+        // Opacity will be 1 at the top and 0 at the middle of the page
+        this.opacity = Math.max(0, 1 - (this.y / fadePoint));
       }
 
-      // If particle reaches the midpoint or is invisible, reset to top
+      // If particle reaches the midpoint of the page, reset it to the top
       if (this.y >= fadePoint || this.opacity <= 0) {
         this.reset();
       }
     }
 
     draw() {
-      // Colors are soft white/grey to work in both light and dark modes
-      ctx.fillStyle = `rgba(200, 200, 200, ${this.opacity})`;
+      // Adjusted to be slightly brighter for the dark background
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
@@ -482,8 +489,8 @@ body {
 
   function init() {
     particles = [];
-    // Adjust 100 to higher/lower for more or less snow
-    for (let i = 0; i < 100; i++) {
+    // 120 particles for a slightly fuller look on a full page
+    for (let i = 0; i < 120; i++) {
       particles.push(new Snowflake());
     }
   }
