@@ -51,12 +51,12 @@
 
 .animate-marquee {
   animation: marquee 12s linear infinite;
-  display: flex; /* Ensure it stays in a single line */
+  display: flex !important;
+  white-space: nowrap !important;
+  width: max-content !important;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
+
 
 .will-change-transform {
   will-change: transform;
@@ -383,27 +383,26 @@ body {
   
   
 
-    <div class="w-full relative border-y border-black/5 dark:border-white/5 py-4 overflow-hidden">
-      <div class="mask-fade overflow-hidden">
-        <div :key="currentIndex" 
-             class="flex w-max animate-marquee items-center will-change-transform">
-          
-          <div class="flex items-center">
-            <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-            <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
-            <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-            <span class="px-24"></span> 
-          </div>
-          
-          <div class="flex items-center" aria-hidden="true">
-            <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
-            <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
-            <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
-            <span class="px-24"></span>
-          </div>
-        </div>
+<div class="w-full relative border-y border-black/5 dark:border-white/5 py-4 overflow-hidden">
+  <div class="mask-fade">
+    <div class="flex w-max animate-marquee items-center will-change-transform">
+      
+      <div class="flex items-center">
+        <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+        <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+        <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+        <span class="w-48 shrink-0"></span> </div>
+      
+      <div class="flex items-center" aria-hidden="true">
+        <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+        <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+        <span class="text-lg font-bold text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+        <span class="w-48 shrink-0"></span>
       </div>
+      
     </div>
+  </div>
+</div>
 
   <div class="flex items-center gap-4 w-full pt-2">
     <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
