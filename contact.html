@@ -139,7 +139,10 @@ body {
   z-index: 1;
 }
 
-
+ /* menu scroll fade */   
+header {
+  will-change: transform, opacity;
+}
 
     
   </style>
@@ -177,62 +180,69 @@ body {
   <canvas id="snow-canvas"></canvas>
   
   <!-- Navbar -->
-  <header class="flex w-full overflow-hidden pt-10 pb-1">
-    <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
-      <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
+<header 
+  x-data="{ scrolled: false, open: false }" 
+  @scroll.window="scrolled = (window.pageYOffset > 50)"
+  :class="{ 'translate-y-0 opacity-100': scrolled, '-translate-y-full opacity-0': !scrolled || (window.pageYOffset <= 50) }"
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out px-5 md:px-20 pt-6 pb-6 bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-gray-200/10 dark:border-white/5"
+>
+  <nav id="nav" role="navigation" class="w-full">
+    <div class="container mx-auto flex flex-wrap items-center">
 
-              <!-- Hoover over opacity change -->
-                <div class="mr-4 md:mr-8">
-                  <a href="index.html" 
-                     class="text-2xl font-signika font-bold transition duration-300 hover:opacity-70 tap-highlight-transparent">
-                    HARALD REVERY
-                  </a>
-                </div>
-              
-        <div class="ml-auto md:hidden flex items-center justify-start">
-          <button onclick="menuToggle()" @click="open = !open"
-            class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none"
-            @click="open = !open">
-            <span class="sr-only">Open main menu</span>
-            <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-              <span aria-hidden="true"
-                class="block absolute  h-0.5 w-5 bg-current   transform transition duration-500 ease-in-out"
-                :class="{'opacity-0': open } "></span>
-              <span aria-hidden="true"
-                class="block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out"
-                :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
-            </div>
-          </button>
-        </div>
-        <div id="menu"
-          class="w-full h-0 transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center">
-          <ul id="ulMenu"
-            class="flex flex-col duration-300 ease-out md:space-x-5 sm:transition-none mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0">
-            <li class="group transition duration-300">
-              <a href="../index.html" class="font-signika text-2xl">MUSIC
-                <span
-                  class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-            <li class="group transition duration-300">
-              <a href="about.html" class="font-signika text-2xl">ABOUT
-                <span
-                  class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-            <li class="group transition duration-300">
-              <a href="contact.html" class="font-signika text-2xl">CONTACT
-                <span class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="mr-4 md:mr-8">
+        <a href="index.html" 
+           class="text-2xl font-signika font-bold transition duration-300 hover:opacity-70 tap-highlight-transparent">
+          HARALD REVERY
+        </a>
       </div>
-    </nav>
-  </header>
+
+      <div class="ml-auto md:hidden flex items-center">
+        <button @click="open = !open"
+          class="tap-highlight-transparent text-black dark:text-white w-6 h-6 relative focus:outline-none">
+          <span class="sr-only">Open main menu</span>
+          <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <span aria-hidden="true"
+              class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+              :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+            <span aria-hidden="true"
+              class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+              :class="{'opacity-0': open } "></span>
+            <span aria-hidden="true"
+              class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+              :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+          </div>
+        </button>
+      </div>
+
+      <div id="menu"
+        class="w-full transition-all ease-in-out duration-300 md:w-auto md:flex-grow md:flex md:items-center overflow-hidden"
+        :class="{ 'max-h-96 opacity-100 mt-4': open, 'max-h-0 opacity-0 md:max-h-full md:opacity-100': !open }">
+        <ul id="ulMenu"
+          class="flex flex-col md:flex-row md:items-center md:ml-auto md:space-x-8 space-y-4 md:space-y-0 pb-4 md:pb-0">
+          <li class="group">
+            <a href="../index.html" class="font-signika text-2xl block">MUSIC
+              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+            </a>
+          </li>
+          <li class="group">
+            <a href="about.html" class="font-signika text-2xl block">ABOUT
+              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+            </a>
+          </li>
+          <li class="group">
+            <a href="contact.html" class="font-signika text-2xl block">CONTACT
+              <span class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+</header>
+
+
+  
   <!-- Content -->
   <div class="container mx-auto">
 
