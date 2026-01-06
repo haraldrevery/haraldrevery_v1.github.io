@@ -383,21 +383,31 @@ body {
   </div>
 
 
-<!-- Audio player to the left, text to the right -->  
+
+<!-- Audio player to the right, text to the left -->  
 <div class="container mx-auto py-12 px-4">
   <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12" x-data="audioPlayer()">
     
     <div class="w-full lg:w-1/2 text-container start-animation">
-      <h1 class="text-5xl font-bold mb-6 tracking-tight">Latest Sounds</h1>
-      <p class="text-lg opacity-80 leading-relaxed mb-4">
+      
+
+      <h2 data-animate="true" class="
+      animated-heading text-4xl md:text-4xl font-bold mb-6 
+      w-fit 
+      bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 
+      bg-clip-text text-transparent">
+      Latest Sounds
+      </h2>
+      
+      <p class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
         Explore the atmospheric soundscapes of Gothenburg. Each track is a 
         reflection of the Nordic landscape, from the stillness of the snow 
         to the rhythmic pulse of the city rain.
       </p>
       <div class="flex gap-4 mt-8">
-        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Experimental</span>
-        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Ambient</span>
-        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Electronic</span>
+        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Melodic House</span>
+        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Synthwave</span>
+        <span class="text-xs uppercase tracking-[0.3em] opacity-50">Trap</span>
       </div>
     </div>
 
