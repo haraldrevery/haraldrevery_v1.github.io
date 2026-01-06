@@ -177,8 +177,8 @@ body {
   <canvas id="snow-canvas"></canvas>
   
   <!-- Navbar -->
-  <header class="flex w-full overflow-hidden pt-10 pb-1">
-    <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
+ <header id="main-header" class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-10 pb-1 transition-all duration-500 -translate-y-full">
+  <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
 
               <!-- Hoover over opacity change -->
@@ -461,6 +461,33 @@ body {
       </script>
 
 
+
+<!-- navigation bar scroll-->
+<script>
+  const header = document.getElementById('main-header');
+  
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+      // Show the navbar
+      header.classList.remove('-translate-y-full');
+      header.classList.add('translate-y-0');
+      // Optional: Add a background color so text is readable over content
+      header.classList.add('bg-white/80', 'dark:bg-black/80', 'backdrop-blur-md');
+    } else {
+      // Hide the navbar
+      header.classList.remove('translate-y-0');
+      header.classList.add('-translate-y-full');
+      header.classList.remove('bg-white/80', 'dark:bg-black/80', 'backdrop-blur-md');
+    }
+  });
+</script>
+
+
+
+
+
+
+  
     <!-- snow script -->
 <script>
   const canvas = document.getElementById('snow-canvas');
@@ -476,6 +503,7 @@ body {
     );
   }
 
+  
   // Resize on window changes and when the page fully loads
   window.addEventListener('resize', resize);
   window.addEventListener('load', resize);
