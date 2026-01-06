@@ -120,6 +120,14 @@
   animation: gradientMove 15s ease infinite;
 }
 
+/* Smoothly transition every element's background and text color */
+* {
+    transition-color: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, fill 0.5s ease;
+}
+/* Ensure the background gradient also feels smooth */
+body {
+    transition: background 0.8s ease-in-out;
+}
 
 
     
@@ -159,7 +167,7 @@
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
 -->
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-colors duration-500 bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
@@ -346,11 +354,22 @@
 
         <!-- dark mode button -->      
 <button @click="darkMode = !darkMode" 
-        class="text-sm font-medium uppercase tracking-wider transition-colors duration-300 focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400">
+        class="text-sm font-medium uppercase tracking-wider transition-all duration-300 focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400">
   
-  <span x-show="!darkMode">Let the moon shine</span>
+  <span x-show="!darkMode" 
+        x-transition:enter="transition opacity duration-500" 
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100">
+    Let the moon shine
+  </span>
   
-  <span x-show="darkMode" style="display: none;">Let there be light</span>
+  <span x-show="darkMode" 
+        style="display: none;"
+        x-transition:enter="transition opacity duration-500" 
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100">
+    Let there be light
+  </span>
   
 </button>
 
