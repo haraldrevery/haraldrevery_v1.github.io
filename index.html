@@ -116,38 +116,33 @@
 /* Specific blob colors based on the track */
 .blob-1 { background: radial-gradient(circle, var(--tw-gradient-from) 0%, transparent 70%); }
 .blob-2 { background: radial-gradient(circle, var(--tw-gradient-to) 0%, transparent 70%); top: 20%; left: 40%; }
-
-    
 /* 1. Logo Drawing Animation */
+@keyframes logoDraw {
+  0% { 
+    stroke-dashoffset: 4000; 
+    fill-opacity: 0;
+  }
+  80% {
+    /* Stroke finished drawing, fill is mostly in */
+    stroke-dashoffset: 0;
+    fill-opacity: 0.96;
+  }
+  100% { 
+    stroke-dashoffset: 0; 
+    fill-opacity: 1;
+    /* Optional: make the blue lines disappear so only the white logo remains */
+    stroke: transparent; 
+  }
+}
+
 .animate-logo path {
   filter: url(#noiseFilter);
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  
-  /* Use the new gradient ID here */
-  stroke: url(#strokeGradient); 
-  stroke-width: 4;
-  
-  /* Your existing fill logic */
+  stroke: #9834e2; /* Keeping the blue drawing line for contrast */
   fill: url(#logoGradient);
   fill-opacity: 0;
-  
   animation: logoDraw 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes logoDraw {
-  0% {
-    stroke-dashoffset: 4000;
-    fill-opacity: 0;
-  }
-  70% {
-    fill-opacity: 0;
-    stroke-dashoffset: 0;
-  }
-  100% {
-    fill-opacity: 1;
-    stroke-dashoffset: 0;
-  }
 }
     
 /* Ensure the floating animation starts only AFTER the 8s drawing is done */
@@ -376,19 +371,17 @@
       xmlns="http://www.w3.org/2000/svg" 
       preserveAspectRatio="xMidYMid meet"
     >
-        <defs>
-          <linearGradient id="strokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#9834e2" />
-            <stop offset="100%" stop-color="#23a6d5" />
-          </linearGradient>
-        
-          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" /> 
-            <stop offset="100%" stop-color="#F0F0F0" />
-          </linearGradient>
-        
-          <filter id="noiseFilter">...</filter>
-        </defs>
+      <defs>
+        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" /> 
+          <stop offset="100%" stop-color="#F0F0F0" />
+        </linearGradient>
+        <filter id="noiseFilter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.29" numOctaves="3" stitchTiles="stitch" result="noise" />
+          <feComposite operator="in" in="noise" in2="SourceGraphic" result="monoNoise"/>
+          <feBlend in="SourceGraphic" in2="monoNoise" mode="multiply" />
+        </filter>
+      </defs>
       <g class="animate-logo" stroke="url(#logoGradient)" stroke-width="4" fill="url(#logoGradient)" filter="url(#noiseFilter)">
         <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
         <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
@@ -885,15 +878,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <!-- Click to scroll thing-->
 <script>
-trigger.addEventListener('click', (e) => {
-  // Calculate position manually for maximum control
-  const topOffset = target.getBoundingClientRect().top + window.pageYOffset;
-  
-  window.scrollTo({
-    top: topOffset,
-    behavior: 'smooth'
+  document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.getElementById('hero-trigger');
+    const target = document.getElementById('next-section');
+
+    if (trigger && target) {
+      trigger.addEventListener('click', () => {
+        target.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' // Aligns the top of the next section to the top of the viewport
+        });
+      });
+    }
   });
-});
 </script>
   
   
