@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
 
 <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harald Revery - Contact</title>
   
+   <!--  <script src="https://cdn.tailwindcss.com"></script>-->
+  <script src="./dist/tailwind.js"></script>
+
   <style>
-/* Standard letter fade animation */
-  @keyframes letterFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+
+    /* Added a safeguard: Force background to be dark immediately 
+       This prevents any white flashes during script execution */
+    .dark body {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
 
   .fade-letter {
     display: inline-block;
@@ -274,8 +283,7 @@
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
     integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
   <!-- End - Fancybox Scripts -->
- <!--  <script src="https://cdn.tailwindcss.com"></script>-->
-  <script src="./dist/tailwind.js"></script>
+
   <script>
     tailwind.config = {
       content: ["./dist/*.{html,js}"],
