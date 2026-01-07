@@ -224,31 +224,41 @@
         }
     
  /* Photo glass thing  */
-/* Container for the 3D space */
 .glass-stage {
-  perspective: 1200px;
+  perspective: 1500px;
   transform-style: preserve-3d;
 }
 
-/* Base style for the "Glass" slides */
 .glass-card {
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform, opacity;
-  backface-visibility: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(4px);
-  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(5px);
 }
 
-/* Default "Stacked" State */
-.card-back   { transform: translateZ(-100px) translateX(-20px) rotateY(10deg); opacity: 0.6; }
-.card-middle { transform: translateZ(-50px) translateX(0) rotateY(5deg); opacity: 0.8; }
-.card-front  { transform: translateZ(0) translateX(20px) rotateY(0deg); opacity: 1; z-index: 30; }
+/* --- Initial "Stacked" Positions --- */
+/* Outer Left */
+.glass-card:nth-child(1) { transform: translate3d(-30px, 0, -150px) rotateY(20deg); opacity: 0.4; }
+/* Inner Left */
+.glass-card:nth-child(2) { transform: translate3d(-15px, 0, -75px) rotateY(10deg); opacity: 0.7; }
+/* Center (Top) */
+.glass-card:nth-child(3) { transform: translate3d(0, 0, 0); z-index: 50; }
+/* Inner Right */
+.glass-card:nth-child(4) { transform: translate3d(15px, 0, -75px) rotateY(-10deg); opacity: 0.7; }
+/* Outer Right */
+.glass-card:nth-child(5) { transform: translate3d(30px, 0, -150px) rotateY(-20deg); opacity: 0.4; }
 
-/* Hover "Fan Out" State */
-.glass-stage:hover .card-back   { transform: translateZ(0) translateX(-140px) rotateY(-15deg); opacity: 1; }
-.glass-stage:hover .card-middle { transform: translateZ(50px) translateX(0) rotateY(0deg); opacity: 1; }
-.glass-stage:hover .card-front  { transform: translateZ(100px) translateX(140px) rotateY(15deg); opacity: 1; }
+/* --- Hover "Fan Out" Positions --- */
+.glass-stage:hover .glass-card:nth-child(1) { transform: translate3d(-280px, 0, 0) rotateY(25deg); opacity: 1; }
+.glass-stage:hover .glass-card:nth-child(2) { transform: translate3d(-140px, 0, 50px) rotateY(15deg); opacity: 1; }
+.glass-stage:hover .glass-card:nth-child(3) { transform: translate3d(0, 0, 150px) scale(1.05); opacity: 1; }
+.glass-stage:hover .glass-card:nth-child(4) { transform: translate3d(140px, 0, 50px) rotateY(-15deg); opacity: 1; }
+.glass-stage:hover .glass-card:nth-child(5) { transform: translate3d(280px, 0, 0) rotateY(-25deg); opacity: 1; }
     
   </style>
 
@@ -515,23 +525,14 @@
       </div>
     </section>
     
-     <section class="flex justify-center items-center min-h-[500px] py-10">
-  <div class="glass-stage relative w-full max-w-sm aspect-[3/4] cursor-pointer">
+<section class="flex justify-center items-center min-h-[600px] py-20 overflow-hidden">
+  <div class="glass-stage relative w-full max-w-[280px] md:max-w-[320px] aspect-[3/4] cursor-pointer">
     
-    <div class="glass-card card-back absolute inset-0 rounded-2xl overflow-hidden shadow-2xl">
-      <img src="./photos/hrldrvry2018april.jpg" alt="2018" class="w-full h-full object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-    </div>
-    
-    <div class="glass-card card-middle absolute inset-0 rounded-2xl overflow-hidden shadow-2xl">
-      <img src="./photos/2024HaraldMT.jpg" alt="2024" class="w-full h-full object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-    </div>
-    
-    <div class="glass-card card-front absolute inset-0 rounded-2xl overflow-hidden shadow-2xl">
-      <img src="./photos/hrld2019may.jpg" alt="2019" class="w-full h-full object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-    </div>
+    <div class="glass-card"><img src="./photos/1.jpg" class="w-full h-full object-cover"></div>
+    <div class="glass-card"><img src="./photos/2.jpg" class="w-full h-full object-cover"></div>
+    <div class="glass-card"><img src="./photos/3.jpg" class="w-full h-full object-cover"></div>
+    <div class="glass-card"><img src="./photos/4.jpg" class="w-full h-full object-cover"></div>
+    <div class="glass-card"><img src="./photos/5.jpg" class="w-full h-full object-cover"></div>
 
   </div>
 </section>
