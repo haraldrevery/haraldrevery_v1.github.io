@@ -267,31 +267,35 @@
 }
 
 /* Standard letter fade animation */
-/* 1. The Heading Container */
 .animated-heading {
   display: inline-block;
   position: relative;
-  opacity: 1 !important; /* Keep the container visible */
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  /* 1. FALLBACK COLOR: High contrast for dark backgrounds */
+  color: #f43f5e; 
+  
+  /* Reset for modern browsers */
+  -webkit-text-fill-color: initial; 
 }
 
-/* 2. Apply the gradient specifically here */
 .animated-heading.active {
+  /* 2. THE GRADIENT */
   background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
-  -webkit-background-clip: text;
+  
+  /* 3. THE CLIPPING */
   background-clip: text;
+  -webkit-background-clip: text;
+
+  /* 4. HIDE FALLBACK: Only if clipping is supported */
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
-/* 3. The Individual Letters */
+/* Ensure spans inherit the "hole-punch" effect */
 .fade-letter {
   display: inline-block;
-  /* Instead of inherit, we force transparency to ensure clipping works */
-  color: transparent; 
-  -webkit-text-fill-color: transparent;
-  
+  color: inherit;
+  -webkit-text-fill-color: inherit;
   opacity: 0;
-  transform: translateY(10px);
   animation: letterFade 0.6s ease-out forwards;
 }
 
@@ -777,37 +781,39 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Use a class selector to find ALL headings
   const headings = document.querySelectorAll('.animated-heading');
   
   const headingObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
+      // Check for isIntersecting AND intersectionRatio for better Edge/Safari support
+      if (entry.isIntersecting || entry.intersectionRatio > 0) {
         animateLetters(entry.target);
         headingObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 }); // Lower threshold often works better for mobile
+  }, { 
+    threshold: 0.01, // Trigger as soon as 1% is visible
+    rootMargin: '0px 0px -50px 0px' // Trigger slightly before it hits the viewport
+  });
 
   headings.forEach(h => headingObserver.observe(h));
 
-        //  fixed animateLetters()
-                    function animateLetters(el) {
-                      const text = el.innerText;
-                      el.innerHTML = ''; 
-                      
-                      // Apply the 'active' class which triggers the background-clip CSS
-                      el.classList.add('active'); 
-                      el.style.opacity = '1'; 
-                    
-                      [...text].forEach((char, index) => {
-                        const span = document.createElement('span');
-                        span.textContent = char === ' ' ? '\u00A0' : char; 
-                        span.className = 'fade-letter';
-                        span.style.animationDelay = `${index * 0.05}s`;
-                        el.appendChild(span);
-                      });
-                    }
+  function animateLetters(el) {
+    if (el.classList.contains('active')) return; // Prevent double-triggering
+
+    const text = el.innerText;
+    el.innerHTML = ''; 
+    el.classList.add('active'); 
+    el.style.opacity = '1'; 
+
+    [...text].forEach((char, index) => {
+      const span = document.createElement('span');
+      span.textContent = char === ' ' ? '\u00A0' : char; 
+      span.className = 'fade-letter';
+      span.style.animationDelay = `${index * 0.05}s`;
+      el.appendChild(span);
+    });
+  }
 });
 </script>
 
