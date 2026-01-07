@@ -120,21 +120,15 @@
     }
 
 /* Audio player texture slide show */
-@keyframes backgroundFade {
-    0% { background-image: url('./dist/assets/audioplayer_texture.jpg'); }
-    33% { background-image: url('./dist/assets/bgtexture.jpg'); }
-    34% { background-image: url('./dist/assets/texture_bg.jpg'); }
-    66% { background-image: url('./dist/assets/audioplayer_texture.jpg'); }
-    67% { background-image: url('./dist/assets/bgtexture.jpg'); }
-    100% { background-image: url('./dist/assets/audioplayer_texture.jpg'); }
+@keyframes crossfade {
+    0%, 10% { opacity: 0; }
+    30%, 50% { opacity: 1; }
+    70%, 100% { opacity: 0; }
   }
 
-  .slideshow-overlay {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    /* Duration: 15s total, infinite loop */
-    animation: backgroundFade 15s infinite alternate;
+  .animate-crossfade {
+    opacity: 0;
+    animation: crossfade 12s infinite;
   }
 
     
@@ -362,7 +356,13 @@ body {
   :class="{ 'playing': isPlaying }"
 >
   <!-- Image texture --> 
-    <div class="absolute inset-0 pointer-events-none opacity-[0.07] z-0 slideshow-overlay">
+    <div class="absolute inset-0 pointer-events-none opacity-[0.07] z-0 overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+       style="background-image: url('./dist/assets/audioplayer_texture.jpg'); animation-delay: 0s;"></div>
+  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+       style="background-image: url('./dist/assets/bgtexture.jpg'); animation-delay: 4s;"></div>
+  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+       style="background-image: url('./dist/assets/texture_bg.jpg'); animation-delay: 8s;"></div>
 </div>
         
   <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
