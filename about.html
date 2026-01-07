@@ -18,45 +18,47 @@
     }
 
     /* Standard letter fade animation */
-    @keyframes letterFade {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-.fade-letter {
-    /* remove display: inline-block if letters look gapped */
-    opacity: 0;
-    animation: letterFade 0.8s ease-out forwards;
-}
-
-  /* Prevent layout jump: hide the H2 initially */
-  h2[data-animate="true"] {
-    opacity: 0;
-  }
-  h2.active {
-    opacity: 1 !important;
-  }
-
-    
-     /* fading words */
-
-        .word {
-          display: inline-block;
-          opacity: 0;
-          transform: translateY(5px);
-        }
-        
-        @keyframes fadeInWord {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        /* This triggers when the IntersectionObserver adds the class */
-        .start-animation .word {
-          animation: fadeInWord 0.6s ease-out forwards;
-        }
+              /* 1. Base state: Visible for Pocket/Reader view */
+                p[data-animate="true"], 
+                .text-container p {
+                  opacity: 1;
+                  transition: opacity 0.5s ease;
+                }
+                
+                /* 2. Animation state: Hide ONLY if JS is working so it can fade in */
+                .js-enabled p[data-animate="true"]:not(.active),
+                .js-enabled .text-container p:not(.start-animation) {
+                  opacity: 0;
+                }
+                
+                /* Standard letter fade animation */
+                @keyframes letterFade {
+                  from { opacity: 0; }
+                  to { opacity: 1; }
+                }
+                
+                .fade-letter {
+                  opacity: 0;
+                  animation: letterFade 0.8s ease-out forwards;
+                }
+                
+                /* Word fade for the body text */
+                .word {
+                  display: inline-block;
+                  opacity: 0;
+                  transform: translateY(5px);
+                }
+                
+                .start-animation .word {
+                  animation: fadeInWord 0.6s ease-out forwards;
+                }
+                
+                @keyframes fadeInWord {
+                  to {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
 
 
     
@@ -167,8 +169,9 @@ body {
   
 
   <script defer src="./dist/alpine.min.js"></script>
+  
 </head>
-
+<script>document.documentElement.classList.add('js-enabled');</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 <script src="./dist/glightbox_min.js"></script>
 
@@ -177,9 +180,7 @@ body {
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
 -->
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
-             bg-gradient-to-br from-slate-100 via-white to-slate-200 
-             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow bg-gradient-to-br from-slate-100 via-white to-slate-200 dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
   <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -369,7 +370,7 @@ body {
   <div class="text-container">
 
     <button @click="darkMode = !darkMode" 
-            class="text-sm font-medium uppercase tracking-widest focus:outline-none hover:text-[#18273a] dark:text-white dark:hover:text-[#bfd1db] transition-colors duration-300">
+            class="text-sm font-medium uppercase tracking-widest focus:outline-none hover:text-[#00AEFF] dark:text-white dark:hover:text-[#FFE100] transition-colors duration-300">
       
       <div class="relative h-8 flex items-center justify-center min-w-[200px]">
         
@@ -537,12 +538,13 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const headings = document.querySelectorAll('.animated-heading');
+  const headings = document.querySelectorAll('[data-animate="true"]');
   
   const headingObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+      // Check if we are in a browser environment that supports classList
       if (entry.isIntersecting) {
-        animateWords(entry.target);
+        animateLetters(entry.target);
         headingObserver.unobserve(entry.target);
       }
     });
@@ -550,34 +552,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   headings.forEach(h => headingObserver.observe(h));
 
-  function animateWords(el) {
-    const text = el.innerText;
+  function animateLetters(el) {
+    const text = el.textContent; // Use textContent for cleaner scraping
     el.innerHTML = ''; 
-    el.style.opacity = '1';
     el.classList.add('active'); 
 
-    // Split by space to get individual words
-    const words = text.split(' ');
-
+    const words = text.split(/\s+/);
     words.forEach((word, wordIndex) => {
-      // Create a wrapper for the word to keep it together
       const wordSpan = document.createElement('span');
       wordSpan.style.display = 'inline-block';
-      wordSpan.style.whiteSpace = 'nowrap'; // This prevents the word itself from breaking
+      wordSpan.style.whiteSpace = 'nowrap';
 
-      // Put letters inside the word wrapper
       [...word].forEach((char, charIndex) => {
         const letterSpan = document.createElement('span');
         letterSpan.textContent = char;
         letterSpan.className = 'fade-letter';
-        // Calculate delay based on total progress (word index + letter position)
-        letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
+        // Delay calculation
+        letterSpan.style.animationDelay = `${(wordIndex * 2 + charIndex) * 0.05}s`;
         wordSpan.appendChild(letterSpan);
       });
 
       el.appendChild(wordSpan);
-
-      // Add a space after the word (unless it's the last one)
       if (wordIndex < words.length - 1) {
         el.appendChild(document.createTextNode(' '));
       }
