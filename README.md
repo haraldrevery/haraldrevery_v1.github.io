@@ -55,15 +55,7 @@ I took this repository https://github.com/JoaoFranco03/photography-portfolio and
 - [![Tailwind][tailwind-badge]][tailwind-url]
 
 
-## ☕ Support the  guy who made the template on Ko-fi
 
-If you find this project useful, consider supporting me on Ko-fi. Thanks for checking it out!  
-
-<a href="https://ko-fi.com/joaofranco03" target="_blank">
-    <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" style="height:40px;">
-</a>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
 
@@ -71,7 +63,6 @@ If you find this project useful, consider supporting me on Ko-fi. Thanks for che
 
 Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs and brand assets in the folder are Copyright © 2025 Harald Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 
@@ -81,7 +72,7 @@ João Franco - https://www.linkedin.com/in/joão-franco-452161195/
 
 Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://github.com/JoaoFranco03/photography-portfolio/)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 <!-- ACKNOWLEDGMENTS -->
 
@@ -90,7 +81,6 @@ Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://g
 - [GLightbox](https://github.com/biati-digital)
 - [Tailwind Documentation](https://tailwindcss.com/docs/installation)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
