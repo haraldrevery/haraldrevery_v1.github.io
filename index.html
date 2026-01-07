@@ -223,29 +223,32 @@
           letter-spacing: 0.025em;
         }
     
- /* Photo layer thing  */
-@keyframes smoothStack {
-  0%, 20% { opacity: 1; transform: translate3d(0, 0, 0) rotate(var(--base-rot)); }
-  30%, 55% { opacity: 0; transform: translate3d(0, -20px, 0) rotate(var(--base-rot)); }
-  65%, 100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(var(--base-rot)); }
+ /* Photo glass thing  */
+/* Container for the 3D space */
+.glass-stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
-.img-animate {
-  /* This ensures the animation doesn't "snap" when it loops */
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+/* Base style for the "Glass" slides */
+.glass-card {
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity;
   backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.layer-1 { --base-rot: 6deg; animation: smoothStack 9s infinite 0s; }
-.layer-2 { --base-rot: -3deg; animation: smoothStack 9s infinite 3s; }
-.layer-3 { --base-rot: 0deg; animation: smoothStack 9s infinite 6s; }
+/* Default "Stacked" State */
+.card-back   { transform: translateZ(-100px) translateX(-20px) rotateY(10deg); opacity: 0.6; }
+.card-middle { transform: translateZ(-50px) translateX(0) rotateY(5deg); opacity: 0.8; }
+.card-front  { transform: translateZ(0) translateX(20px) rotateY(0deg); opacity: 1; z-index: 30; }
 
-/* Critical: Stop the jumpy animation immediately on hover */
-.group:hover .img-animate {
-  animation: none !important;
-  opacity: 1 !important;
-}
+/* Hover "Fan Out" State */
+.glass-stage:hover .card-back   { transform: translateZ(0) translateX(-140px) rotateY(-15deg); opacity: 1; }
+.glass-stage:hover .card-middle { transform: translateZ(50px) translateX(0) rotateY(0deg); opacity: 1; }
+.glass-stage:hover .card-front  { transform: translateZ(100px) translateX(140px) rotateY(15deg); opacity: 1; }
     
   </style>
 
@@ -512,26 +515,26 @@
       </div>
     </section>
     
-      <section class="flex justify-center items-center min-h-[500px] overflow-visible">
-        <div class="group relative w-full max-w-sm aspect-[3/4] cursor-pointer">
-          
-          <div class="img-animate layer-1 absolute inset-0 rounded-2xl bg-neutral-800 shadow-xl overflow-hidden transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1)
-                      group-hover:translate-x-[-120px] group-hover:rotate-[-10deg] group-hover:z-10">
-            <img src="./photos/hrldrvry2018april.jpg" alt="Harald 2018" class="w-full h-full object-cover pointer-events-none">
-          </div>
-          
-          <div class="img-animate layer-2 absolute inset-0 rounded-2xl bg-neutral-800 shadow-xl overflow-hidden transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1)
-                      group-hover:translate-x-[120px] group-hover:rotate-[10deg] group-hover:z-20">
-            <img src="./photos/2024HaraldMT.jpg" alt="Harald 2024" class="w-full h-full object-cover pointer-events-none">
-          </div>
-          
-          <div class="img-animate layer-3 absolute inset-0 rounded-2xl bg-neutral-800 shadow-2xl overflow-hidden transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1)
-                      group-hover:scale-105 group-hover:translate-y-[-20px] group-hover:z-30">
-            <img src="./photos/hrld2019may.jpg" alt="Harald 2019" class="w-full h-full object-cover pointer-events-none">
-          </div>
-      
-        </div>
-      </section>
+     <section class="flex justify-center items-center min-h-[500px] py-10">
+  <div class="glass-stage relative w-full max-w-sm aspect-[3/4] cursor-pointer">
+    
+    <div class="glass-card card-back absolute inset-0 rounded-2xl overflow-hidden shadow-2xl">
+      <img src="./photos/hrldrvry2018april.jpg" alt="2018" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+    </div>
+    
+    <div class="glass-card card-middle absolute inset-0 rounded-2xl overflow-hidden shadow-2xl">
+      <img src="./photos/2024HaraldMT.jpg" alt="2024" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+    </div>
+    
+    <div class="glass-card card-front absolute inset-0 rounded-2xl overflow-hidden shadow-2xl">
+      <img src="./photos/hrld2019may.jpg" alt="2019" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+    </div>
+
+  </div>
+</section>
     
 </div>
 
