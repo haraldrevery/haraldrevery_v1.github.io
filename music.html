@@ -350,7 +350,8 @@ body {
 
 <div class="relative z-10 flex flex-col gap-1">
   
-  <div class="flex items-center gap-4 w-full pt-2">
+  <!-- progress bar part rise / lower -->  
+  <div class="flex items-center gap-4 w-full -mt-2">
     <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
     <div class="relative flex-grow h-1 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar" 
          @click="seek($event)"
