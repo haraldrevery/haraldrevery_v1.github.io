@@ -39,17 +39,8 @@
 }
 
     
-/* Standard letter fade animation */
-  @keyframes letterFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
 
-  .fade-letter {
-    display: inline-block;
-    opacity: 0;
-    animation: letterFade 0.8s ease-out forwards;
-  }
+
 
   /* Prevent layout jump: hide the H2 initially */
   h2[data-animate="true"] {
@@ -275,6 +266,38 @@
   overflow: visible !important;
 }
 
+/* Standard letter fade animation */
+    /* 1. The Parent Container holds the "Big Picture" gradient */
+.animated-heading {
+  display: inline-block;
+  background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make the text itself see-through */
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  
+  /* Ensure the background covers the whole area */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* 2. The Individual Letters only handle the Fading */
+.fade-letter {
+  display: inline-block;
+  /* Crucial: inherit the "transparent" state from the H2 */
+  color: inherit; 
+  -webkit-text-fill-color: inherit;
+  
+  opacity: 0;
+  animation: letterFade 0.8s ease-out forwards;
+}
+
+@keyframes letterFade {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
     
   </style>
@@ -527,9 +550,9 @@
     <section class="flex flex-col justify-center py-10">
       <div class="max-w-screen-md">
          <!-- 1st col starts here -->
-        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
-          Behind the mixer decks
-        </h2>
+            <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit">
+              Behind the mixer decks
+            </h2>
         <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Get to know who’s behind the sound.
@@ -765,20 +788,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   headings.forEach(h => headingObserver.observe(h));
 
-  function animateLetters(el) {
-    const text = el.innerText;
-    el.innerHTML = ''; 
-    el.style.opacity = '1'; // Ensure it's visible
-    el.classList.add('active'); 
-
-    [...text].forEach((char, index) => {
-      const span = document.createElement('span');
-      span.textContent = char === ' ' ? '\u00A0' : char; 
-      span.className = 'fade-letter';
-      span.style.animationDelay = `${index * 0.05}s`;
-      el.appendChild(span);
-    });
-  }
+        //  fixed animateLetters()
+          function animateLetters(el) {
+            const text = el.innerText;
+            el.innerHTML = ''; 
+            el.style.opacity = '1'; 
+            el.classList.add('active'); 
+          
+            [...text].forEach((char, index) => {
+              const span = document.createElement('span');
+              // Using &nbsp; for spaces to maintain width
+              span.textContent = char === ' ' ? '\u00A0' : char; 
+              span.className = 'fade-letter';
+              
+              // Staggered delay for the "wave" fade-in effect
+              span.style.animationDelay = `${index * 0.05}s`;
+              
+              el.appendChild(span);
+            });
+          }
 });
 </script>
 
