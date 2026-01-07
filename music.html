@@ -120,10 +120,18 @@
     }
 
 /* Audio player texture slide show */
-@keyframes crossfade {
-    0%, 10% { opacity: 0; }
-    30%, 50% { opacity: 1; }
-    70%, 100% { opacity: 0; }
+/* Standard cycle for images 2 and 3 */
+  @keyframes crossfade {
+    0% { opacity: 0; }
+    10%, 40% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  /* Special cycle for Image 1 to prevent the black start */
+  @keyframes crossfade-first {
+    0%, 40% { opacity: 1; } /* Visible immediately */
+    50%, 90% { opacity: 0; } /* Fades out for others */
+    100% { opacity: 1; }     /* Comes back at the end */
   }
 
   .animate-crossfade {
@@ -131,7 +139,14 @@
     animation: crossfade 12s infinite;
   }
 
+  .animate-crossfade-first {
+    opacity: 1;
+    animation: crossfade-first 12s infinite;
+  }
+
     
+
+   /* letters fading in */ 
 .fade-letter {
     /* remove display: inline-block if letters look gapped */
     opacity: 0;
