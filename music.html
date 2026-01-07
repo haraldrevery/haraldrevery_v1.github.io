@@ -123,11 +123,9 @@
 /* Standard cycle for images 2 and 3 */
 
 @keyframes crossfade {
-  0% { opacity: 0; }
-  3% { opacity: 1; }   /* Fade in quickly at the start of its turn */
-  25% { opacity: 1; }  /* Stay solid until the next image starts */
-  28% { opacity: 0; }  /* Fade out while the next image is fading in */
-  100% { opacity: 0; }
+  0%, 20% { opacity: 1; }   /* Visible for 20% of the time */
+  25%, 95% { opacity: 0; }  /* Faded out for the rest */
+  100% { opacity: 1; }      /* Loop back */
 }
 
 
@@ -142,7 +140,6 @@
   opacity: 0;
   animation: crossfade 48s infinite; 
 }
-
     
 
    /* letters fading in */ 
@@ -473,19 +470,17 @@ body {
   :class="{ 'playing': isPlaying }"
 >
   <!-- Image texture --> 
-            <div class="absolute inset-0 pointer-events-none opacity-[0.07] z-0 overflow-hidden">
               <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
                    style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: 0s;"></div>
               
               <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
-                   style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 4s;"></div>
+                   style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 12s;"></div>
               
               <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
-                   style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 8s;"></div>
-            
+                   style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 24s;"></div>
+              
               <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
-                   style="background-image: url('./dist/assets/audioplayer_texture3.jpg'); animation-delay: 12s;"></div>
-            </div>
+                   style="background-image: url('./dist/assets/audioplayer_texture3.jpg'); animation-delay: 36s;"></div>
         
   <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
        :style="`background: radial-gradient(circle, ${tracks[currentIndex].color1} 0%, transparent 70%)`"></div >
