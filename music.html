@@ -121,13 +121,15 @@
 
 /* Audio player texture slide show */
 /* Standard cycle for images 2 and 3 */
+
 @keyframes crossfade {
   0% { opacity: 0; }
-  3% { opacity: 1; }   /* Fade in quickly */
-  22% { opacity: 1; }  /* Stay visible for roughly 1/4 of the time */
-  25% { opacity: 0; }  /* Fade out */
+  3% { opacity: 1; }   /* Fade in quickly at the start of its turn */
+  25% { opacity: 1; }  /* Stay solid until the next image starts */
+  28% { opacity: 0; }  /* Fade out while the next image is fading in */
   100% { opacity: 0; }
 }
+
 
   /* Special cycle for Image 1 to prevent the black start */
   @keyframes crossfade-first {
@@ -138,7 +140,6 @@
 
 .animate-crossfade {
   opacity: 0;
-  /* Total duration is 16s (4 images x 4s each) */
   animation: crossfade 16s infinite; 
 }
 
