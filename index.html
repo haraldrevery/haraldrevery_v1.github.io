@@ -39,8 +39,17 @@
 }
 
     
+/* Standard letter fade animation */
+  @keyframes letterFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-
+  .fade-letter {
+    display: inline-block;
+    opacity: 0;
+    animation: letterFade 0.8s ease-out forwards;
+  }
 
   /* Prevent layout jump: hide the H2 initially */
   h2[data-animate="true"] {
@@ -266,45 +275,6 @@
   overflow: visible !important;
 }
 
-/* Standard letter fade animation */
-.animated-heading {
-  display: inline-block;
-  position: relative;
-  /* 1. FALLBACK COLOR: High contrast for dark backgrounds */
-  color: #f43f5e; 
-  
-  /* Reset for modern browsers */
-  -webkit-text-fill-color: initial; 
-}
-
-.animated-heading.active {
-  /* 2. THE GRADIENT */
-  background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
-  
-  /* 3. THE CLIPPING */
-  background-clip: text;
-  -webkit-background-clip: text;
-
-  /* 4. HIDE FALLBACK: Only if clipping is supported */
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-/* Ensure spans inherit the "hole-punch" effect */
-.fade-letter {
-  display: inline-block;
-  color: inherit;
-  -webkit-text-fill-color: inherit;
-  opacity: 0;
-  animation: letterFade 0.6s ease-out forwards;
-}
-
-@keyframes letterFade {
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
 
     
   </style>
@@ -557,9 +527,9 @@
     <section class="flex flex-col justify-center py-10">
       <div class="max-w-screen-md">
          <!-- 1st col starts here -->
-            <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit">
-              Behind the mixer decks
-            </h2>
+        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+          Behind the mixer decks
+        </h2>
         <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Get to know who’s behind the sound.
@@ -781,30 +751,25 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Use a class selector to find ALL headings
   const headings = document.querySelectorAll('.animated-heading');
   
   const headingObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      // Check for isIntersecting AND intersectionRatio for better Edge/Safari support
-      if (entry.isIntersecting || entry.intersectionRatio > 0) {
+      if (entry.isIntersecting) {
         animateLetters(entry.target);
         headingObserver.unobserve(entry.target);
       }
     });
-  }, { 
-    threshold: 0.01, // Trigger as soon as 1% is visible
-    rootMargin: '0px 0px -50px 0px' // Trigger slightly before it hits the viewport
-  });
+  }, { threshold: 0.1 }); // Lower threshold often works better for mobile
 
   headings.forEach(h => headingObserver.observe(h));
 
   function animateLetters(el) {
-    if (el.classList.contains('active')) return; // Prevent double-triggering
-
     const text = el.innerText;
     el.innerHTML = ''; 
+    el.style.opacity = '1'; // Ensure it's visible
     el.classList.add('active'); 
-    el.style.opacity = '1'; 
 
     [...text].forEach((char, index) => {
       const span = document.createElement('span');
