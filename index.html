@@ -276,6 +276,14 @@
 }
 
 
+/* Fix for Gradient Headers */
+[data-animate="true"].bg-clip-text {
+  -webkit-background-clip: text; /* Required for Safari/Chrome */
+  background-clip: text;         /* Standard */
+  color: transparent;            /* Fallback to ensure text doesn't block gradient */
+  -webkit-text-fill-color: transparent; /* Extra safety for Webkit browsers */
+}
+
     
   </style>
 
@@ -527,9 +535,13 @@
     <section class="flex flex-col justify-center py-10">
       <div class="max-w-screen-md">
          <!-- 1st col starts here -->
-        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+        <h2 data-animate="true" 
+            class="font-signika animated-heading text-4xl font-bold mb-6 w-fit 
+                   bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 
+                   bg-clip-text -webkit-bg-clip-text text-transparent">
           Behind the mixer decks
         </h2>
+        
         <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Get to know who’s behind the sound.
