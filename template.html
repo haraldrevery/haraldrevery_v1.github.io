@@ -363,6 +363,103 @@ body {
 </div> 
 
 
+<!-- Text  to the left + Text to the right -->
+  <div class="container mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+    <section class="flex flex-col justify-start">
+      <div class="max-w-screen-md">
+        
+        <!-- 1st col starts here -->
+        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+          Get in touch
+        </h2>
+        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+          <p>
+            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+
+        <!-- end -->
+      </div>
+    </section>
+    <section class="flex flex-col justify-start">
+      <div class="max-w-screen-md">
+        
+        <!-- 2nd col starts here -->
+        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">Get in touch</h2>
+        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+          <p>
+            ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          </p>
+          <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
+          </p>
+        </div>
+
+        <!-- end -->
+      </div>
+    </section>
+    
+</div>
+
+
+
+
+
+<!-- Grid to the left + Text to the right -->
+<div class="container mx-auto py-20">
+  <div class="flex flex-col lg:flex-row gap-12 items-center">
+    <!-- Grid settings -->
+    <div class="w-full lg:w-1/2" x-data="{ 
+        path: './artcovers/', 
+        images: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg',
+      'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
+    }">
+      <div class="grid grid-cols-3 gap-4">
+        <template x-for="img in images" :key="img">
+          <a :href="path + img" data-fancybox="gallery" class="group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800">
+            <img :src="path + img" 
+                 class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
+                 loading="lazy">
+          </a>
+        </template>
+      </div>
+    </div> 
+    
+      <!-- Text part -->
+    <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
+      <!-- Text part -->
+<h2 data-animate="true" class="
+    animated-heading text-4xl md:text-4xl font-bold mb-6 
+    w-fit 
+    bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 
+    bg-clip-text text-transparent">
+  A  collection
+</h2>
+      
+       <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+      <p>
+        Explore the discography of Harald Revery. While mostly focused on electronic dance music (EDM), beyond his signature electronic productions a few singular tracks emerge to capture a wider soundscape. 
+      </p>
+      <p class="mt-4">
+        Music for every moment, every place, every occasion in life...
+      </p>
+         </div> 
+      
+      <div class="pt-6">
+        <a href="music.html" class="inline-block border-b-2 border-black dark:border-white pb-1 font-bold hover:opacity-50 transition text-lg tracking-widest">
+          MUSIC →
+        </a>
+      </div>
+    </div>
+    </div> 
+</div>
+    
+    
+
   <!-- center the dark mode button -->  
 <section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
   <div class="text-container">
