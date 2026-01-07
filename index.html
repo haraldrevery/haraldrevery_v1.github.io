@@ -84,28 +84,39 @@
 
 
 
-/* Isolated Radio Signal Echo */
+
+/* Radio Signal "Implosion" - Waves travel inward */
 @keyframes signalEcho {
-  0% { transform: scale(1); opacity: 0; }
-  20% { opacity: 0.6; } /* Slightly brighter for visibility */
-  100% { transform: scale(2.8); opacity: 0; }
+  0% { 
+    transform: scale(3); /* Start large */
+    opacity: 0; 
+  }
+  20% { 
+    opacity: 0.4; /* Fade in quickly */
+  }
+  100% { 
+    transform: scale(0.8); /* Shrink inward */
+    opacity: 0; 
+  }
 }
 
 .echo-ring {
   transform-box: fill-box;
   transform-origin: center;
   transition: transform 0.3s ease-out;
-  pointer-events: none; /* Ensures the echoes don't block mouse movement */
+  pointer-events: none;
   
-  /* Animation Settings */
+  /* Initial state */
   opacity: 0;
-  animation: signalEcho 1.5s ease-out forwards; /* 'forwards' keeps it at the end state (invisible) */
-  animation-iteration-count: 1; /* Runs only once */
+  
+  /* 1.5s + 10% = 1.65s duration */
+  animation: signalEcho 1.65s ease-out forwards;
+  animation-iteration-count: 1;
 }
 
-/* Echoes trigger almost immediately after load */
+/* Slightly staggered start times */
 .echo-1 { animation-delay: 0.1s; } 
-.echo-2 { animation-delay: 0.4s; }
+.echo-2 { animation-delay: 0.3s; }
 
 
 
