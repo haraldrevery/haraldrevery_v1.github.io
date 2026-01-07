@@ -223,10 +223,13 @@
           letter-spacing: 0.025em;
         }
     
- /* Photo glass thing  */
+
+/* --- Photo Glass Interactive Stage --- */
 .glass-stage {
   perspective: 1500px;
   transform-style: preserve-3d;
+  margin: auto; /* Centers the stage in its grid column */
+  position: relative;
 }
 
 .glass-card {
@@ -239,21 +242,40 @@
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backface-visibility: hidden; /* Prevents flickering on Safari */
 }
 
-/* Positions when "Fanned Out" (Active Container) */
-.glass-stage.fanned .pos-1 { transform: translate3d(-320px, 0, -100px) rotateY(30deg); opacity: 0.6; z-index: 10; }
-.glass-stage.fanned .pos-2 { transform: translate3d(-160px, 0, 0px) rotateY(15deg); opacity: 0.9; z-index: 20; }
-.glass-stage.fanned .pos-3 { transform: translate3d(0, 0, 150px) scale(1.05); opacity: 1; z-index: 50; }
-.glass-stage.fanned .pos-4 { transform: translate3d(160px, 0, 0px) rotateY(-15deg); opacity: 0.9; z-index: 20; }
-.glass-stage.fanned .pos-5 { transform: translate3d(320px, 0, -100px) rotateY(-30deg); opacity: 0.6; z-index: 10; }
-
-/* Positions when "Stacked" (Default Container) */
+/* --- 1. Default "Stacked" State (Mobile and Non-Hover) --- */
 .glass-stage:not(.fanned) .pos-1 { transform: translate3d(-40px, 0, -150px); opacity: 0; }
 .glass-stage:not(.fanned) .pos-2 { transform: translate3d(-20px, 0, -75px); opacity: 0.5; }
 .glass-stage:not(.fanned) .pos-3 { transform: translate3d(0, 0, 0); opacity: 1; z-index: 30; }
 .glass-stage:not(.fanned) .pos-4 { transform: translate3d(20px, 0, -75px); opacity: 0.5; }
 .glass-stage:not(.fanned) .pos-5 { transform: translate3d(40px, 0, -150px); opacity: 0; }
+
+/* --- 2. Fanned Out State (Large Screens / Hover) --- */
+@media (min-width: 768px) {
+  .glass-stage.fanned .pos-1 { transform: translate3d(-240px, 0, -100px) rotateY(30deg); opacity: 0.6; z-index: 10; }
+  .glass-stage.fanned .pos-2 { transform: translate3d(-120px, 0, 0px) rotateY(15deg); opacity: 0.9; z-index: 20; }
+  .glass-stage.fanned .pos-3 { transform: translate3d(0, 0, 150px) scale(1.05); opacity: 1; z-index: 50; }
+  .glass-stage.fanned .pos-4 { transform: translate3d(120px, 0, 0px) rotateY(-15deg); opacity: 0.9; z-index: 20; }
+  .glass-stage.fanned .pos-5 { transform: translate3d(240px, 0, -100px) rotateY(-30deg); opacity: 0.6; z-index: 10; }
+}
+
+/* Mobile specific: If you want them to fan out less on phones */
+@media (max-width: 767px) {
+  .glass-stage.fanned .pos-1 { transform: translate3d(-60px, 0, -50px); opacity: 0.4; }
+  .glass-stage.fanned .pos-2 { transform: translate3d(-30px, 0, 0); opacity: 0.8; }
+  .glass-stage.fanned .pos-3 { transform: translate3d(0, 0, 50px) scale(1.05); }
+  .glass-stage.fanned .pos-4 { transform: translate3d(30px, 0, 0); opacity: 0.8; }
+  .glass-stage.fanned .pos-5 { transform: translate3d(60px, 0, -50px); opacity: 0.4; }
+}
+
+/* Helper to prevent clipping */
+.overflow-visible {
+  overflow: visible !important;
+}
+
+
     
   </style>
 
@@ -817,15 +839,26 @@ document.addEventListener('DOMContentLoaded', () => {
 const stage = document.getElementById('interactive-stage');
 const cards = stage.querySelectorAll('.glass-card');
 
-// 1. Handle Fanning on Hover
+// 1. Handle Fanning (Hover & Touch)
+// Using 'mouseenter' for desktop and a simple toggle/check for better feel
 stage.addEventListener('mouseenter', () => stage.classList.add('fanned'));
 stage.addEventListener('mouseleave', () => stage.classList.remove('fanned'));
 
 // 2. Handle Click to Focus
 cards.forEach(clickedCard => {
-  clickedCard.addEventListener('click', () => {
+  clickedCard.addEventListener('click', (e) => {
+    // If on mobile and not fanned yet, fan it first
+    if (!stage.classList.contains('fanned')) {
+      stage.classList.add('fanned');
+    }
+
     const clickedPos = parseInt(clickedCard.getAttribute('data-pos'));
-    if (clickedPos === 3) return; // Already in center
+    
+    // If the user clicks the center card, maybe you want to trigger a link?
+    if (clickedPos === 3) {
+      console.log("Center card clicked - could open a lightbox here!");
+      return; 
+    }
 
     const shift = 3 - clickedPos;
 
@@ -833,13 +866,19 @@ cards.forEach(clickedCard => {
       let currentPos = parseInt(card.getAttribute('data-pos'));
       let newPos = currentPos + shift;
 
-      // Wrap around logic to keep 1-5 range
+      // Wrap around logic (Modulo-style) to keep 1-5 range
       if (newPos > 5) newPos -= 5;
       if (newPos < 1) newPos += 5;
 
-      // Update Classes and Data
+      // Update Data Attribute
       card.setAttribute('data-pos', newPos);
-      card.className = `glass-card pos-${newPos}`;
+      
+      // Update Classes smoothly
+      // We use classList to avoid wiping out other classes like 'glass-card'
+      for (let i = 1; i <= 5; i++) {
+        card.classList.remove(`pos-${i}`);
+      }
+      card.classList.add(`pos-${newPos}`);
     });
   });
 });
