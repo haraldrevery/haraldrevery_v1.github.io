@@ -342,6 +342,11 @@ body {
   class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl"
   :class="{ 'playing': isPlaying }"
 >
+  <!-- Image texture --> 
+  <div class="absolute inset-0 pointer-events-none opacity-10 z-0" 
+       style="background-image: url('./photos/bw_glass2.jpg'); background-repeat: repeat; background-size: 200px;">
+  </div>
+        
   <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
        :style="`background: radial-gradient(circle, ${tracks[currentIndex].color1} 0%, transparent 70%)`"></div >
   
