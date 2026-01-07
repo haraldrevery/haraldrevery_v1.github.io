@@ -123,11 +123,17 @@
 /* Standard cycle for images 2 and 3 */
 
 @keyframes crossfade {
-  0%, 20% { opacity: 1; }   /* Visible for 20% of the time */
-  25%, 95% { opacity: 0; }  /* Faded out for the rest */
-  100% { opacity: 1; }      /* Loop back */
+  0% { opacity: 0; }
+  5% { opacity: 0.07; }   /* Fade in quickly */
+  25% { opacity: 0.07; }  /* Stay visible for exactly 1/4 of the 48s */
+  30% { opacity: 0; }     /* Fade out */
+  100% { opacity: 0; }
 }
 
+.animate-crossfade {
+  opacity: 0;
+  animation: crossfade 48s infinite linear;
+}
 
   /* Special cycle for Image 1 to prevent the black start */
   @keyframes crossfade-first {
@@ -136,10 +142,6 @@
     100% { opacity: 1; }     /* Comes back at the end */
   }
 
-.animate-crossfade {
-  opacity: 0;
-  animation: crossfade 48s infinite; 
-}
     
 
    /* letters fading in */ 
