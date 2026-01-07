@@ -222,6 +222,28 @@
           line-height: 1.2;
           letter-spacing: 0.025em;
         }
+    
+ /* Photo layer thing  */
+@keyframes stackFade {
+  0%, 20% { opacity: 1; transform: scale(1) translateY(0); z-index: 30; }
+  33%, 53% { opacity: 0; transform: scale(0.95) translateY(-20px); z-index: 10; }
+  66%, 100% { opacity: 1; transform: scale(1) translateY(0); z-index: 20; }
+}
+
+.animate-stack-1 { animation: stackFade 9s infinite 0s; }
+.animate-stack-2 { animation: stackFade 9s infinite 3s; }
+.animate-stack-3 { animation: stackFade 9s infinite 6s; }
+    
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(var(--base-rotation)); }
+  50% { transform: translateY(-10px) rotate(var(--base-rotation)); }
+}
+
+/* Apply to the images with different delays for a natural look */
+.group div {
+  animation: float 4s ease-in-out infinite;
+}
+    
   </style>
 
 <script>
@@ -462,46 +484,47 @@
 </div>
 
 
-<!-- Text  to the left + Text to the right -->
-  <div class="container mx-auto">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+<div class="container mx-auto px-4 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+    
     <section class="flex flex-col justify-start">
       <div class="max-w-screen-md">
-        
-        <!-- 1st col starts here -->
-        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+        <h2 class="font-signika text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
           Get in touch
         </h2>
-        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+        <div class="space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-gray-700">
           <p>
-            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+            Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Hover over the images to see them fan out!
           </p>
         </div>
-
-        <!-- end -->
       </div>
     </section>
-    <section class="flex flex-col justify-start">
-      <div class="max-w-screen-md">
+
+    <section class="flex justify-center items-center min-h-[450px]">
+      <div class="group relative w-full max-w-sm aspect-[3/4] cursor-pointer">
         
-        <!-- 2nd col starts here -->
-        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">Get in touch</h2>
-        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-          <p>
-            ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-          </p>
-          <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. 
-          </p>
+        <div class="absolute inset-0 rounded-2xl bg-purple-100 shadow-xl overflow-hidden transition-all duration-500 ease-out 
+                    rotate-6 group-hover:-rotate-12 group-hover:-translate-x-20 group-hover:-translate-y-4">
+          <img src="./photos/hrldrvry2018april.jpg" alt="Layer 1" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="absolute inset-0 rounded-2xl bg-rose-100 shadow-xl overflow-hidden transition-all duration-500 ease-out 
+                    -rotate-3 group-hover:rotate-12 group-hover:translate-x-20 group-hover:-translate-y-4">
+          <img src="./photos/2024HaraldMT.jpg" alt="Layer 2" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="absolute inset-0 rounded-2xl bg-orange-100 shadow-2xl overflow-hidden transition-all duration-500 ease-out 
+                    group-hover:scale-105 group-hover:-translate-y-8">
+          <img src="./photos/hrld2019may.jpg" alt="Layer 3" class="w-full h-full object-cover">
         </div>
 
-        <!-- end -->
       </div>
     </section>
     
+  </div>
 </div>
 
 
