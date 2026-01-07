@@ -45,7 +45,11 @@
     to { opacity: 1; }
   }
 
-
+  .fade-letter {
+    display: inline-block;
+    opacity: 0;
+    animation: letterFade 0.8s ease-out forwards;
+  }
 
   /* Prevent layout jump: hide the H2 initially */
   h2[data-animate="true"] {
@@ -271,23 +275,7 @@
   overflow: visible !important;
 }
 
-/* Header gradient issue preventer on some browsers  */
-.animated-heading {
-  background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
 
-/* The spans now ONLY handle the fade, not the color */
-.fade-letter {
-  display: inline-block;
-  color: inherit; /* This makes the span inherit the "transparent" from H2 */
-  opacity: 0;
-  animation: letterFade 0.8s ease-out forwards;
-}
-    
     
   </style>
 
@@ -539,10 +527,9 @@
     <section class="flex flex-col justify-center py-10">
       <div class="max-w-screen-md">
          <!-- 1st col starts here -->
-          <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit">
-            Behind the mixer decks
-          </h2>
-        
+        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+          Behind the mixer decks
+        </h2>
         <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Get to know who’s behind the sound.
