@@ -87,7 +87,7 @@ Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://g
 
 ## 🌟 Acknowledgments <a name="acknowledgments"></a>
 
-- [FancyBox](https://fancyapps.com/fancybox/)
+- [GLightbox](https://github.com/biati-digital)
 - [Tailwind Documentation](https://tailwindcss.com/docs/installation)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
