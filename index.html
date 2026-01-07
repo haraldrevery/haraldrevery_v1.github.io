@@ -276,13 +276,16 @@
 }
 
 /* Header gradient issue preventer on some browsers  */
-.header-gradient-fix {
-  background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea) !important;
-  background-clip: text !important;
-  -webkit-background-clip: text !important;
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  display: inline-block; /* Crucial for some browsers to clip correctly */
+.animated-heading .fade-letter {
+  background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  /* This is the secret: it makes the background stay put 
+     while the letters move over it */
+  background-attachment: scroll; 
 }
     
   </style>
@@ -535,9 +538,9 @@
     <section class="flex flex-col justify-center py-10">
       <div class="max-w-screen-md">
          <!-- 1st col starts here -->
-        <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit header-gradient-fix relative z-10">
-          Behind the mixer decks
-        </h2>
+          <h2 data-animate="true" class="font-signika animated-heading text-4xl font-bold mb-6 w-fit">
+            Behind the mixer decks
+          </h2>
         
         <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
