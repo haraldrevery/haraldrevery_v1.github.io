@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
+<html lang="en" class="scroll-smooth dark" style="background-color: #000;">
 
 <head>
   <meta charset="UTF-8" />
@@ -30,12 +30,15 @@
 }
 
   /* Prevent layout jump: hide the H2 initially */
-  h2[data-animate="true"] {
-    opacity: 0;
-  }
-  h2.active {
-    opacity: 1 !important;
-  }
+[data-animate="true"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+[data-animate="true"].active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
 
     
      /* fading words */
@@ -550,40 +553,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   headings.forEach(h => headingObserver.observe(h));
 
-  function animateWords(el) {
-    const text = el.innerText;
-    el.innerHTML = ''; 
-    el.style.opacity = '1';
-    el.classList.add('active'); 
-
-    // Split by space to get individual words
+ function animateWords(el) {
+    const text = el.textContent;
+    el.setAttribute('aria-label', text); // Accessibility fix
+    el.innerHTML = '';
+    
     const words = text.split(' ');
-
     words.forEach((word, wordIndex) => {
-      // Create a wrapper for the word to keep it together
       const wordSpan = document.createElement('span');
       wordSpan.style.display = 'inline-block';
-      wordSpan.style.whiteSpace = 'nowrap'; // This prevents the word itself from breaking
+      wordSpan.style.whiteSpace = 'nowrap';
 
-      // Put letters inside the word wrapper
       [...word].forEach((char, charIndex) => {
         const letterSpan = document.createElement('span');
         letterSpan.textContent = char;
         letterSpan.className = 'fade-letter';
-        // Calculate delay based on total progress (word index + letter position)
-        letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
+        letterSpan.style.animationDelay = `${(wordIndex * 2 + charIndex) * 0.04}s`;
         wordSpan.appendChild(letterSpan);
       });
 
       el.appendChild(wordSpan);
-
-      // Add a space after the word (unless it's the last one)
       if (wordIndex < words.length - 1) {
         el.appendChild(document.createTextNode(' '));
       }
     });
+
+    el.classList.add('active'); 
   }
-});
+}); // Removed the extra bracket and closing tag that was causing the error
 </script>
     
 <!-- image grid -->
