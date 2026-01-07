@@ -232,33 +232,28 @@
 .glass-card {
   position: absolute;
   inset: 0;
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   overflow: hidden;
-  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: transform, opacity;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(5px);
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity, z-index;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Initial "Stacked" Positions --- */
-/* Outer Left */
-.glass-card:nth-child(1) { transform: translate3d(-30px, 0, -150px) rotateY(20deg); opacity: 0.4; }
-/* Inner Left */
-.glass-card:nth-child(2) { transform: translate3d(-15px, 0, -75px) rotateY(10deg); opacity: 0.7; }
-/* Center (Top) */
-.glass-card:nth-child(3) { transform: translate3d(0, 0, 0); z-index: 50; }
-/* Inner Right */
-.glass-card:nth-child(4) { transform: translate3d(15px, 0, -75px) rotateY(-10deg); opacity: 0.7; }
-/* Outer Right */
-.glass-card:nth-child(5) { transform: translate3d(30px, 0, -150px) rotateY(-20deg); opacity: 0.4; }
+/* Positions when "Fanned Out" (Active Container) */
+.glass-stage.fanned .pos-1 { transform: translate3d(-320px, 0, -100px) rotateY(30deg); opacity: 0.6; z-index: 10; }
+.glass-stage.fanned .pos-2 { transform: translate3d(-160px, 0, 0px) rotateY(15deg); opacity: 0.9; z-index: 20; }
+.glass-stage.fanned .pos-3 { transform: translate3d(0, 0, 150px) scale(1.05); opacity: 1; z-index: 50; }
+.glass-stage.fanned .pos-4 { transform: translate3d(160px, 0, 0px) rotateY(-15deg); opacity: 0.9; z-index: 20; }
+.glass-stage.fanned .pos-5 { transform: translate3d(320px, 0, -100px) rotateY(-30deg); opacity: 0.6; z-index: 10; }
 
-/* --- Hover "Fan Out" Positions --- */
-.glass-stage:hover .glass-card:nth-child(1) { transform: translate3d(-280px, 0, 0) rotateY(25deg); opacity: 1; }
-.glass-stage:hover .glass-card:nth-child(2) { transform: translate3d(-140px, 0, 50px) rotateY(15deg); opacity: 1; }
-.glass-stage:hover .glass-card:nth-child(3) { transform: translate3d(0, 0, 150px) scale(1.05); opacity: 1; }
-.glass-stage:hover .glass-card:nth-child(4) { transform: translate3d(140px, 0, 50px) rotateY(-15deg); opacity: 1; }
-.glass-stage:hover .glass-card:nth-child(5) { transform: translate3d(280px, 0, 0) rotateY(-25deg); opacity: 1; }
+/* Positions when "Stacked" (Default Container) */
+.glass-stage:not(.fanned) .pos-1 { transform: translate3d(-40px, 0, -150px); opacity: 0; }
+.glass-stage:not(.fanned) .pos-2 { transform: translate3d(-20px, 0, -75px); opacity: 0.5; }
+.glass-stage:not(.fanned) .pos-3 { transform: translate3d(0, 0, 0); opacity: 1; z-index: 30; }
+.glass-stage:not(.fanned) .pos-4 { transform: translate3d(20px, 0, -75px); opacity: 0.5; }
+.glass-stage:not(.fanned) .pos-5 { transform: translate3d(40px, 0, -150px); opacity: 0; }
     
   </style>
 
@@ -524,19 +519,19 @@
         <!-- end -->
       </div>
     </section>
-    
+
+
 <section class="flex justify-center items-center min-h-[600px] py-20 overflow-hidden">
-  <div class="glass-stage relative w-full max-w-[280px] md:max-w-[320px] aspect-[3/4] cursor-pointer">
+  <div id="interactive-stage" class="glass-stage relative w-full max-w-[320px] aspect-[3/4]">
     
-    <div class="glass-card"><img src="./photos/2024HaraldMT.jpg" class="w-full h-full object-cover"></div>
-    <div class="glass-card"><img src="./photos/2024Looking_at_Matterhorn.jpg" class="w-full h-full object-cover"></div>
-    <div class="glass-card"><img src="./photos/2025Harald_on_Galdhopiggen1.jpg" class="w-full h-full object-cover"></div>
-    <div class="glass-card"><img src="./photos/HRldbnr.jpg" class="w-full h-full object-cover"></div>
-    <div class="glass-card"><img src="./photos/hrldrvry2018april.jpg" class="w-full h-full object-cover"></div>
+    <div class="glass-card pos-1" data-pos="1"><img src="./photos/2024HaraldMT.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+    <div class="glass-card pos-2" data-pos="2"><img src="./photos/2024Looking_at_Matterhorn.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+    <div class="glass-card pos-3" data-pos="3"><img src="./photos/2025Harald_on_Galdhopiggen1.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+    <div class="glass-card pos-4" data-pos="4"><img src="./photos/HRldbnr.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+    <div class="glass-card pos-5" data-pos="5"><img src="./photos/hrldrvry2018april.jpg" class="w-full h-full object-cover pointer-events-none"></div>
 
   </div>
-</section>
-    
+</section>   
 </div>
 
 
@@ -820,7 +815,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
+<!-- Photo glass thing -->
+<script>
+const stage = document.getElementById('interactive-stage');
+const cards = stage.querySelectorAll('.glass-card');
 
+// 1. Handle Fanning on Hover
+stage.addEventListener('mouseenter', () => stage.classList.add('fanned'));
+stage.addEventListener('mouseleave', () => stage.classList.remove('fanned'));
+
+// 2. Handle Click to Focus
+cards.forEach(clickedCard => {
+  clickedCard.addEventListener('click', () => {
+    const clickedPos = parseInt(clickedCard.getAttribute('data-pos'));
+    if (clickedPos === 3) return; // Already in center
+
+    const shift = 3 - clickedPos;
+
+    cards.forEach(card => {
+      let currentPos = parseInt(card.getAttribute('data-pos'));
+      let newPos = currentPos + shift;
+
+      // Wrap around logic to keep 1-5 range
+      if (newPos > 5) newPos -= 5;
+      if (newPos < 1) newPos += 5;
+
+      // Update Classes and Data
+      card.setAttribute('data-pos', newPos);
+      card.className = `glass-card pos-${newPos}`;
+    });
+  });
+});
+</script>    
     
 
     
