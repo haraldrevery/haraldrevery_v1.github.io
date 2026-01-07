@@ -224,27 +224,27 @@
         }
     
  /* Photo layer thing  */
-/* 1. The Cycling Stack Animation */
-@keyframes stackCycle {
-  0%, 20% { opacity: 1; transform: translateY(0) rotate(var(--base-rot)); z-index: 30; }
-  33%, 53% { opacity: 0; transform: translateY(-20px) rotate(var(--base-rot)); z-index: 10; }
-  66%, 100% { opacity: 1; transform: translateY(0) rotate(var(--base-rot)); z-index: 20; }
+@keyframes smoothStack {
+  0%, 20% { opacity: 1; transform: translate3d(0, 0, 0) rotate(var(--base-rot)); }
+  30%, 55% { opacity: 0; transform: translate3d(0, -20px, 0) rotate(var(--base-rot)); }
+  65%, 100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(var(--base-rot)); }
 }
 
-/* 2. Passive Floating (only active when NOT hovering) */
-@keyframes passiveFloat {
-  0%, 100% { transform: translateY(0) rotate(var(--base-rot)); }
-  50% { transform: translateY(-10px) rotate(var(--base-rot)); }
+.img-animate {
+  /* This ensures the animation doesn't "snap" when it loops */
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Applying the animations with CSS Variables for individual rotations */
-.img-layer-1 { --base-rot: 6deg; animation: stackCycle 9s infinite 0s; }
-.img-layer-2 { --base-rot: -3deg; animation: stackCycle 9s infinite 3s; }
-.img-layer-3 { --base-rot: 0deg; animation: stackCycle 9s infinite 6s; }
+.layer-1 { --base-rot: 6deg; animation: smoothStack 9s infinite 0s; }
+.layer-2 { --base-rot: -3deg; animation: smoothStack 9s infinite 3s; }
+.layer-3 { --base-rot: 0deg; animation: smoothStack 9s infinite 6s; }
 
-/* Stop stacking animation on hover so the fan effect works */
-.group:hover .animate-layer {
+/* Critical: Stop the jumpy animation immediately on hover */
+.group:hover .img-animate {
   animation: none !important;
+  opacity: 1 !important;
 }
     
   </style>
@@ -512,26 +512,26 @@
       </div>
     </section>
     
-       <section class="flex justify-center items-center min-h-[450px]">
-  <div class="group relative w-full max-w-sm aspect-[3/4] cursor-pointer">
-    
-    <div class="animate-layer img-layer-1 absolute inset-0 rounded-2xl bg-purple-100 shadow-xl overflow-hidden transition-all duration-500 ease-out 
-                group-hover:!rotate-[-12deg] group-hover:-translate-x-20 group-hover:-translate-y-4 group-hover:opacity-100 group-hover:z-10">
-      <img src="./photos/hrldrvry2018april.jpg" alt="Layer 1" class="w-full h-full object-cover">
-    </div>
-    
-    <div class="animate-layer img-layer-2 absolute inset-0 rounded-2xl bg-rose-100 shadow-xl overflow-hidden transition-all duration-500 ease-out 
-                group-hover:!rotate-[12deg] group-hover:translate-x-20 group-hover:-translate-y-4 group-hover:opacity-100 group-hover:z-20">
-      <img src="./photos/2024HaraldMT.jpg" alt="Layer 2" class="w-full h-full object-cover">
-    </div>
-    
-    <div class="animate-layer img-layer-3 absolute inset-0 rounded-2xl bg-orange-100 shadow-2xl overflow-hidden transition-all duration-500 ease-out 
-                group-hover:scale-105 group-hover:-translate-y-8 group-hover:opacity-100 group-hover:z-30">
-      <img src="./photos/hrld2019may.jpg" alt="Layer 3" class="w-full h-full object-cover">
-    </div>
-
-  </div>
-</section>
+      <section class="flex justify-center items-center min-h-[500px] overflow-visible">
+        <div class="group relative w-full max-w-sm aspect-[3/4] cursor-pointer">
+          
+          <div class="img-animate layer-1 absolute inset-0 rounded-2xl bg-neutral-800 shadow-xl overflow-hidden transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1)
+                      group-hover:translate-x-[-120px] group-hover:rotate-[-10deg] group-hover:z-10">
+            <img src="./photos/hrldrvry2018april.jpg" alt="Harald 2018" class="w-full h-full object-cover pointer-events-none">
+          </div>
+          
+          <div class="img-animate layer-2 absolute inset-0 rounded-2xl bg-neutral-800 shadow-xl overflow-hidden transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1)
+                      group-hover:translate-x-[120px] group-hover:rotate-[10deg] group-hover:z-20">
+            <img src="./photos/2024HaraldMT.jpg" alt="Harald 2024" class="w-full h-full object-cover pointer-events-none">
+          </div>
+          
+          <div class="img-animate layer-3 absolute inset-0 rounded-2xl bg-neutral-800 shadow-2xl overflow-hidden transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1)
+                      group-hover:scale-105 group-hover:translate-y-[-20px] group-hover:z-30">
+            <img src="./photos/hrld2019may.jpg" alt="Harald 2019" class="w-full h-full object-cover pointer-events-none">
+          </div>
+      
+        </div>
+      </section>
     
 </div>
 
