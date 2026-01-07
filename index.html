@@ -315,8 +315,9 @@
   <!-- End - Fonts -->
   
   <!-- Start - Fancybox Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+  
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
     integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
   <!-- End - Fancybox Scripts -->
@@ -476,13 +477,16 @@
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
     }">
       <div class="grid grid-cols-3 gap-4">
-        <template x-for="img in images" :key="img">
-          <a :href="path + img" data-fancybox="gallery" class="group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800">
-            <img :src="path + img" 
-                 class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
-                 loading="lazy">
-          </a>
-        </template>
+
+         <!-- Grid images -->
+            <template x-for="img in images" :key="img">
+              <a :href="path + img" class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800" data-gallery="gallery1">
+                <img :src="path + img" 
+                     class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
+                     loading="lazy">
+              </a>
+            </template>
+        
       </div>
     </div> 
     
@@ -641,8 +645,14 @@
   
   <!-- Script for the LightBox -->
   <script>
-    Fancybox.bind("[data-fancybox]", {});
+    const lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: true
+  });
   </script>
+    
   <script src="dist/fade_in.js"></script>
   <script src="dist/menu.js"></script>
   
