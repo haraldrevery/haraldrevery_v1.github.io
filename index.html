@@ -83,27 +83,29 @@
 
 
 
-/* Isolated Radio Signal Echo - Modified to go further */
+
 /* Isolated Radio Signal Echo */
 @keyframes signalEcho {
   0% { transform: scale(1); opacity: 0; }
-  10% { opacity: 0.4; }
-  100% { transform: scale(2.5); opacity: 0; }
+  20% { opacity: 0.6; } /* Slightly brighter for visibility */
+  100% { transform: scale(2.8); opacity: 0; }
 }
 
 .echo-ring {
   transform-box: fill-box;
   transform-origin: center;
   transition: transform 0.3s ease-out;
+  pointer-events: none; /* Ensures the echoes don't block mouse movement */
   
-  /* ADD THESE TWO LINES */
-  opacity: 0; 
-  animation: signalEcho 4s ease-out infinite; 
+  /* Animation Settings */
+  opacity: 0;
+  animation: signalEcho 1.5s ease-out forwards; /* 'forwards' keeps it at the end state (invisible) */
+  animation-iteration-count: 1; /* Runs only once */
 }
 
-/* Keep your existing delays */
-.echo-1 { animation-delay: 8.2s; } 
-.echo-2 { animation-delay: 9.7s; }
+/* Echoes trigger almost immediately after load */
+.echo-1 { animation-delay: 0.1s; } 
+.echo-2 { animation-delay: 0.4s; }
 
 
 
@@ -432,13 +434,13 @@
   <div class="absolute -translate-x-[4.15vw] inset-0 flex items-center justify-center pointer-events-none" style="z-index: 0;">
     <svg viewBox="0 0 1000 1100" class="w-full h-full p-10 opacity-40" preserveAspectRatio="xMidYMid meet">
       <g fill="none" stroke="#FFFFFF" stroke-width="2">
-        <g class="echo-ring echo-1">
+        <g class="echo-ring echo-1" fill="none" stroke="white" stroke-width="2">
           <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
           <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
           <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
           <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
         </g>
-        <g class="echo-ring echo-2">
+        <g class="echo-ring echo-2" fill="none" stroke="white" stroke-width="2">
           <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
           <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
           <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
