@@ -169,7 +169,8 @@ body {
   <script defer src="./dist/alpine.min.js"></script>
 </head>
 
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+<script src="./dist/glightbox_min.js"></script>
 
   
 <!-- 
@@ -255,19 +256,20 @@ body {
       '2024HaraldMT.jpg','2025Harald_on_Galdhopiggen3.jpg'] 
     }">
       <div class="grid grid-cols-3 gap-3 md:gap-5">
-        <template x-for="(img, index) in images" :key="img">
-          <a :href="path + img" 
-             data-fancybox="gallery" 
-             class="group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-500 hover:shadow-2xl"
-             :class="index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square'">
-            
-            <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            <img :src="path + img" 
-                 class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
-                 loading="lazy">
-          </a>
-        </template>
+          <template x-for="(img, index) in images" :key="img">
+            <a :href="path + img" 
+               class="glightbox group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-500 hover:shadow-2xl"
+               :class="index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square'"
+               data-gallery="gallery1">
+              
+              <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <img :src="path + img" 
+                   class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
+                   loading="lazy"
+                   alt="Harald Revery Art Cover">
+            </a>
+          </template>
       </div>
     </div> 
 
@@ -584,6 +586,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+    
+<!-- image grid -->
+    <script>
+  const lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: true
+  });
+</script>
+
     
 </body>
 </html>
