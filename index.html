@@ -45,11 +45,7 @@
     to { opacity: 1; }
   }
 
-  .fade-letter {
-    display: inline-block;
-    opacity: 0;
-    animation: letterFade 0.8s ease-out forwards;
-  }
+
 
   /* Prevent layout jump: hide the H2 initially */
   h2[data-animate="true"] {
@@ -276,30 +272,20 @@
 }
 
 /* Header gradient issue preventer on some browsers  */
-.animated-heading .fade-letter {
-  /* 1. Define the gradient */
+.animated-heading {
   background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
-  
-  /* 2. Standard clipping properties */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  
-  display: inline-block;
-
-  /* 3. THE FIX: Make the background "stick" to the parent container's size */
-  /* This prevents the gradient from restarting on every letter */
-  background-size: 100vw 100%; 
-  background-attachment: fixed;
 }
-/* Optional: If "fixed" causes issues on mobile Safari, use this alternative */
-@supports (-webkit-overflow-scrolling: touch) {
-  .animated-heading .fade-letter {
-    background-attachment: scroll;
-    /* You might need to manually set a background-size if fixed fails */
-    background-size: 500px 100%; 
-  }
+
+/* The spans now ONLY handle the fade, not the color */
+.fade-letter {
+  display: inline-block;
+  color: inherit; /* This makes the span inherit the "transparent" from H2 */
+  opacity: 0;
+  animation: letterFade 0.8s ease-out forwards;
 }
     
     
