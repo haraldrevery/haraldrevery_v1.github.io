@@ -277,16 +277,31 @@
 
 /* Header gradient issue preventer on some browsers  */
 .animated-heading .fade-letter {
+  /* 1. Define the gradient */
   background-image: linear-gradient(to right, #fb923c, #f43f5e, #9333ea);
+  
+  /* 2. Standard clipping properties */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  
   display: inline-block;
-  /* This is the secret: it makes the background stay put 
-     while the letters move over it */
-  background-attachment: scroll; 
+
+  /* 3. THE FIX: Make the background "stick" to the parent container's size */
+  /* This prevents the gradient from restarting on every letter */
+  background-size: 100vw 100%; 
+  background-attachment: fixed;
 }
+/* Optional: If "fixed" causes issues on mobile Safari, use this alternative */
+@supports (-webkit-overflow-scrolling: touch) {
+  .animated-heading .fade-letter {
+    background-attachment: scroll;
+    /* You might need to manually set a background-size if fixed fails */
+    background-size: 500px 100%; 
+  }
+}
+    
     
   </style>
 
