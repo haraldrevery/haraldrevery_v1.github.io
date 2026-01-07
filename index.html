@@ -91,10 +91,9 @@
 }
 
 .echo-ring {
-  transform-origin: 50% 45%;
-  opacity: 0;
-  /* Set to 2 iterations, then stay at the final state (which is transparent) */
-  animation: signalEcho 3s ease-out 2 forwards; 
+  transform-box: fill-box; /* Crucial for SVG groups to rotate around their own center */
+  transform-origin: center;
+  transition: transform 0.3s ease-out;
 }
 
 /* Adjust delays to ensure they don't overlap awkwardly during their 2 runs */
@@ -678,32 +677,42 @@
   
   <!--For the 3D logo thing to react to the mouse -->
 <script>
-  const container = document.getElementById('logo-container');
-  const logo = document.getElementById('tilting-logo');
+ const container = document.getElementById('logo-container');
+const logo = document.getElementById('tilting-logo');
+// Select both echo rings
+const echoes = document.querySelectorAll('.echo-ring');
 
-  container.addEventListener('mousemove', (e) => {
-    const rect = container.getBoundingClientRect();
-    
-    // Calculate position relative to center
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    // Normalize values to -1 to 1
-    const percentX = (e.clientX - centerX) / (rect.width / 2);
-    const percentY = (e.clientY - centerY) / (rect.height / 2);
+container.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const percentX = (e.clientX - centerX) / (rect.width / 2);
+  const percentY = (e.clientY - centerY) / (rect.height / 2);
 
-    // Max tilt - increased for impact, but smoothed by CSS
-    const deg = 30;
-    const rotateX = percentY * -deg;
-    const rotateY = percentX * deg;
+  const deg = 30;
+  const rotateX = percentY * -deg;
+  const rotateY = percentX * deg;
 
-    logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  // Apply to the main logo
+  logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+  // Apply to each echo ring with a slight multiplier for a "parallax" depth effect
+  echoes.forEach((echo) => {
+    // We use a slightly smaller degree (0.8x) so the echoes feel like they are "deeper" in the screen
+    echo.style.transform = `rotateX(${rotateX * 0.8}deg) rotateY(${rotateY * 0.8}deg)`;
+    echo.style.transition = "transform 0.4s ease-out"; // Softer follow for the echoes
   });
+});
 
-  container.addEventListener('mouseleave', () => {
-    // Returns to center using the smooth 0.5s transition defined in CSS
-    logo.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+// Optional: Reset position when mouse leaves
+container.addEventListener('mouseleave', () => {
+  logo.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  echoes.forEach((echo) => {
+    echo.style.transform = `rotateX(0deg) rotateY(0deg)`;
   });
+});
 </script>
 
 
