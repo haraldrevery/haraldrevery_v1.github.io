@@ -340,6 +340,27 @@ body {
     
 <!-- <h1 class="text-4xl pt-10 pb-8"><b>MUSIC</b></h1> -->   
 
+
+<!-- Full width section -->  
+<div class="container mx-auto py-20 px-5 md:px-0">
+  <section class="w-full">
+    <h2 data-animate="true" class="font-signika animated-heading text-4xl md:text-5xl font-bold mb-8 w-fit bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+      Discography preview
+    </h2>
+
+    <div class="text-container space-y-6 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-none">
+      <p>
+        Explore Harald Revery's wide range of EDM genres, from melodic house music to intense trap beats. Skim through some of the tracks, see what you like!
+      </p>
+      <p>
+        Skim through some of the tracks, see what you like!
+      </p>
+    </div>
+  </section>
+</div>
+
+
+    
 <!-- Audio player to the right, text to the left -->  
 <div class="container mx-auto py-12 px-4">
   <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12" x-data="audioPlayer()">
@@ -351,12 +372,38 @@ body {
       w-fit 
       bg-gradient-to-r from-orange-400 via-rose-500 to-purple-600 
       bg-clip-text text-transparent">
-      Discography preview
+      Streaming services
       </h2>
       
       <p class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-        Explore Harald Revery's wide range of EDM genres, from melodic house music to intense trap beats. Skim through some of the tracks, see what you like!
+      The music is avialmble in following Streaming services
       </p>
+
+
+      
+      <div class="flex flex-wrap gap-4">
+    <a href="YOUR_SPOTIFY_LINK" target="_blank" 
+       class="flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all duration-300 group">
+      <span class="text-sm md:text-base font-medium">Spotify</span>
+      <svg class="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+    </a>
+
+    <a href="YOUR_APPLE_LINK" target="_blank" 
+       class="flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all duration-300 group">
+      <span class="text-sm md:text-base font-medium">Apple Music</span>
+      <svg class="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+    </a>
+
+    <a href="YOUR_YOUTUBE_LINK" target="_blank" 
+       class="flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all duration-300 group">
+      <span class="text-sm md:text-base font-medium">YouTube Music</span>
+      <svg class="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+    </a>
+  </div>
+
+
+      
+      
       <div class="flex gap-4 mt-8">
         <span class="text-xs uppercase tracking-[0.3em] opacity-50">Melodic House</span>
         <span class="text-xs uppercase tracking-[0.3em] opacity-50">Synthwave</span>
