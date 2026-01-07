@@ -123,9 +123,9 @@
 /* Standard cycle for images 2 and 3 */
 @keyframes crossfade {
   0% { opacity: 0; }
-  5% { opacity: 1; }   /* Fade in quickly */
-  33% { opacity: 1; }  /* Stay visible */
-  38% { opacity: 0; }  /* Fade out */
+  3% { opacity: 1; }   /* Fade in quickly */
+  22% { opacity: 1; }  /* Stay visible for roughly 1/4 of the time */
+  25% { opacity: 0; }  /* Fade out */
   100% { opacity: 0; }
 }
 
@@ -138,10 +138,9 @@
 
 .animate-crossfade {
   opacity: 0;
-  /* Reduced time to 12s for testing; increase to 30s+ for slow effect */
-  animation: crossfade 55s infinite; 
+  /* Total duration is 16s (4 images x 4s each) */
+  animation: crossfade 16s infinite; 
 }
-
 
     
 
@@ -467,10 +466,13 @@ body {
                    style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: 0s;"></div>
               
               <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
-                   style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 5s;"></div>
+                   style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 4s;"></div>
               
               <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
-                   style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 10s;"></div>
+                   style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 8s;"></div>
+            
+              <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+                   style="background-image: url('./dist/assets/audioplayer_texture3.jpg'); animation-delay: 12s;"></div>
             </div>
         
   <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
