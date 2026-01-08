@@ -1,7 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark" x-data="{ 
+    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true' 
+  }" 
+  x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
+  :class="{ 'dark': darkMode }">
+
 
 <head>
+  <!--  Remember darkmode/lightmode-->
+<script>
+  // Immediately apply the dark class based on localStorage to prevent flashing
+  if (localStorage.getItem('darkMode') === 'true' || 
+     (localStorage.getItem('darkMode') === null)) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+</script>
+
   
   <style>
 /* Custom Background Image Layer */
