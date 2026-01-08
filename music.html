@@ -261,55 +261,40 @@ body {
 
 
 /* Horizontal Scrolling Gallery */
-@keyframes scrollGallery {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
+/* 1. The Container: Handles the height and the transparent fading edges */
 .scrolling-container {
   position: relative;
   width: 100%;
   height: 15vh; /* 15% of screen height */
   overflow: hidden;
-  margin: 4rem 0; /* Add spacing above/below */
+  margin: 4rem 0;
+  
+  /* The mask creates true transparency at the edges so the background shows through */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-/* Side Fading Effect */
-.scrolling-container::before,
-.scrolling-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 15%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.scrolling-container::before {
-  left: 0;
-  background: linear-gradient(to right, #000, transparent);
-}
-
-.scrolling-container::after {
-  right: 0;
-  background: linear-gradient(to left, #000, transparent);
-}
-
-/* The moving track */
+/* 2. The Moving Track: Holds the images in a row */
 .scrolling-track {
   display: flex;
   width: max-content;
   height: 100%;
-  animation: scrollGallery 30s linear infinite; /* Adjust speed here */
+  animation: scrollGallery 30s linear infinite; /* Adjust speed for faster/slower scroll */
 }
 
+/* 3. The Images: Ensures they stay square and fit the 15vh height */
 .scrolling-track img {
   height: 100%;
   width: auto;
   aspect-ratio: 1/1;
   object-fit: cover;
-  padding: 0 10px; /* Gap between images */
+  padding: 0 10px; /* Space between images */
+}
+
+/* 4. The Animation: Moves the track from right to left */
+@keyframes scrollGallery {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Matches the duplicated set for seamless looping */
 }
 
     
