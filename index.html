@@ -591,11 +591,18 @@ html, body {
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
       
       <div class="grid grid-cols-3 gap-4 relative z-10">
-        <template x-for="img in images" :key="img">
-              <a :href="path + img" class="glightbox" data-gallery="music-art">
-                <img :src="path + img" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
-              </a>
-         </template>
+            <template x-for="img in images" :key="img.file">
+                <a :href="path + img.file" 
+                   class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800" 
+                   :data-title="img.title"
+                   data-gallery="gallery1">
+                    
+                    <img :src="path + img.file" 
+                         :alt="img.title"
+                         class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
+                         loading="lazy">
+                </a>
+            </template>
       </div>
     </div>
     
