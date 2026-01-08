@@ -370,45 +370,33 @@ html, body {
   overflow: hidden;
 }
 
-/* --- GLightbox Transparent Theme --- */
+/* --- GLightbox Caption Styling --- */
 
-.glightbox-container .gcontainer {
-  /* Set background to fully transparent */
-  background: transparent !important; 
-  
-  /* Adds a subtle frosted glass effect over your site content */
-  /* Remove the line below if you want zero blur at all */
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
+/* Remove the solid white background from the text container */
+.gslide-description {
+  background: transparent !important;
 }
 
-/* Ensure the overlay behind the image is also clear */
-.goverlay {
-  background: rgba(0, 0, 0, 0.15) !important; /* Very faint dimming to keep art visible */
+/* Ensure the text container doesn't have a shadow or border that looks like a box */
+.gslide-description.description-bottom {
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Font styles - matching your brand */
+/* Force the text to be your brand color (white) if it's defaulting to black */
 .gslide-title {
-  font-family: 'HaraldMono', monospace !important;
   color: #FFFFFF !important;
-  letter-spacing: 0.15em !important;
-  text-transform: uppercase;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Adds readability over transparent bg */
+  font-family: 'HaraldMono', monospace !important;
 }
 
 .gslide-desc {
+  color: #FFFFFF !important;
   font-family: 'HaraldText', sans-serif !important;
-  color: #FFFFFF !important;
-  opacity: 0.9;
-  text-shadow: 0 1px 5px rgba(0,0,0,0.5);
 }
-
-/* UI Elements */
-.gnext svg, .gprev svg, .gclose svg {
-  color: #FFFFFF !important;
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+.gslide-title, .gslide-desc {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
-
+    
     
   </style>
 
