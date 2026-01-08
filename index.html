@@ -372,22 +372,7 @@ html, body {
     
   </style>
 
-<script>
-  tailwind.config = {
-    content: ["./dist/*.{html,js}"],
-    theme: {
-      extend: {
-        fontFamily: {
-          'signika': ['HaraldMono', 'monospace'],
-          'sans': ['HaraldText', 'sans-serif'], // Keep this here!
-          'body': ['HaraldText', 'sans-serif'],
-          'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
-        },
-      },
-    },
-    plugins: [],
-  }
-</script>
+
   
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -416,22 +401,25 @@ html, body {
   
  <!--  <script src="https://cdn.tailwindcss.com"></script>-->
   <script src="./dist/tailwind.js"></script>
-  <script>
-    tailwind.config = {
-      content: ["./dist/*.{html,js}"],
-      theme: {
-        extend: {
-          fontFamily: {
-            'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
-            /* This re-routes your 'font-signika' classes to use HaraldMono */
-            'signika': ['HaraldMono', 'monospace'],
-            'body': ['HaraldText', 'sans-serif'],
-          },
+<script>
+  tailwind.config = {
+    content: ["./dist/*.{html,js}"],
+    theme: {
+      extend: {
+        fontFamily: {
+          /* Re-routes 'font-signika' to use HaraldMono */
+          'signika': ['HaraldMono', 'monospace'],
+          /* Standard HaraldText for sans and body */
+          'sans': ['HaraldText', 'sans-serif'],
+          'body': ['HaraldText', 'sans-serif'],
+          /* Decorative font */
+          'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
         },
       },
-      plugins: [],
-    }
-  </script>
+    },
+    plugins: [],
+  }
+</script>
 </head>
 
 
