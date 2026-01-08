@@ -466,11 +466,8 @@ html, body {
 </script>
 </head>
 
-<body class="min-h-screen transition-colors duration-500 bg-fixed bg-[length:250%_250%] animate-gradient-slow 
-             text-black dark:text-white 
-             bg-white dark:bg-gradient-to-br dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F] 
-             px-5 md:px-20 opacity-0 animate-fade-in">
-    
+
+  <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
   <!-- Navbar -->
 <header id="main-header" 
         class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-black/60 backdrop-blur-md pointer-events-none">
@@ -597,43 +594,6 @@ html, body {
   </div>
 </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- dumm bitpo n-->
-<button @click="darkMode = !darkMode" 
-        class="text-sm font-medium uppercase tracking-widest focus:outline-none transition-colors duration-300
-               text-gray-800 hover:text-purple-600 
-               dark:text-white dark:hover:text-orange-400">
-      
-  <div class="relative h-8 flex items-center justify-center min-w-[200px]">
-    <span x-show="!darkMode" 
-          class="absolute inset-0 flex items-center justify-center"
-          x-transition:enter="transition opacity duration-500"
-          x-transition:leave="transition opacity duration-300">
-      Let the moon arrive
-    </span>
-    <span x-show="darkMode" 
-          class="absolute inset-0 flex items-center justify-center"
-          x-transition:enter="transition opacity duration-500"
-          x-transition:leave="transition opacity duration-300">
-      Let there be light
-    </span>
-  </div>
-</button>
-
-    
-    
-    
   
 <!-- Grid to the left + Text to the right -->
 <div class="container mx-auto py-20 px-5 md:px-0">
