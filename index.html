@@ -370,36 +370,43 @@ html, body {
   overflow: hidden;
 }
 
-/* --- GLightbox Custom Theme --- */
+/* --- GLightbox Transparent Theme --- */
 
-/* 1. Change the background to match your site's dark theme */
 .glightbox-container .gcontainer {
-  background: rgba(15, 15, 15, 0.95) !important; /* Dark charcoal/black with slight transparency */
-  backdrop-filter: blur(10px); /* Adds a modern glass effect */
+  /* Set background to fully transparent */
+  background: transparent !important; 
+  
+  /* Adds a subtle frosted glass effect over your site content */
+  /* Remove the line below if you want zero blur at all */
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* 2. Force the custom fonts on titles and descriptions */
+/* Ensure the overlay behind the image is also clear */
+.goverlay {
+  background: rgba(0, 0, 0, 0.15) !important; /* Very faint dimming to keep art visible */
+}
+
+/* Font styles - matching your brand */
 .gslide-title {
   font-family: 'HaraldMono', monospace !important;
   color: #FFFFFF !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: 0.15em !important;
   text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Adds readability over transparent bg */
 }
 
 .gslide-desc {
   font-family: 'HaraldText', sans-serif !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  line-height: 1.6 !important;
+  color: #FFFFFF !important;
+  opacity: 0.9;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.5);
 }
 
-/* 3. Style the navigation arrows to be minimal */
-.gnext svg, .gprev svg {
+/* UI Elements */
+.gnext svg, .gprev svg, .gclose svg {
   color: #FFFFFF !important;
-}
-
-/* 4. Style the Close button */
-.gclose svg {
-  color: #FFFFFF !important;
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
 }
 
     
