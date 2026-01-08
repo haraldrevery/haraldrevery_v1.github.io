@@ -529,7 +529,7 @@
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
     }">
       
-      <canvas id="particle-canvas" class="absolute inset-0 z-[-1] pointer-events-none"></canvas>
+      <canvas id="particle-canvas" class="absolute -inset-10 z-[-1] pointer-events-none"></canvas>
 
       <div class="grid grid-cols-3 gap-4 relative z-10">
          <template x-for="img in images" :key="img">
@@ -940,10 +940,9 @@ cards.forEach(clickedCard => {
   let particles = [];
 
   function initCanvas() {
-    // Force the canvas to fill the parent container
-    const parent = canvas.parentElement;
-    canvas.width = parent.clientWidth;
-    canvas.height = parent.clientHeight;
+    // This captures the expanded size from your CSS -inset-10
+    canvas.width = canvas.offsetWidth; 
+    canvas.height = canvas.offsetHeight;
   }
 
   class Particle {
@@ -961,12 +960,15 @@ cards.forEach(clickedCard => {
     update() {
       this.x += this.speedX;
       this.y += this.speedY;
+
+      // Allow particles to go 40px off-canvas for a "drift" effect
+      const buffer = 40; 
       
-      // Wrap around instead of resetting for smoother movement
-      if (this.x > canvas.width) this.x = 0;
-      if (this.x < 0) this.x = canvas.width;
-      if (this.y > canvas.height) this.y = 0;
-      if (this.y < 0) this.y = canvas.height;
+      if (this.x > canvas.width + buffer) this.x = -buffer;
+      else if (this.x < -buffer) this.x = canvas.width + buffer;
+      
+      if (this.y > canvas.height + buffer) this.y = -buffer;
+      else if (this.y < -buffer) this.y = canvas.height + buffer;
     }
     draw() {
       ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
@@ -992,7 +994,6 @@ cards.forEach(clickedCard => {
     requestAnimationFrame(animate);
   }
 
-  // CRITICAL: Initialize only after everything (images) has loaded
   window.addEventListener('load', () => {
     initCanvas();
     createParticles();
@@ -1001,6 +1002,7 @@ cards.forEach(clickedCard => {
 
   window.addEventListener('resize', () => {
     initCanvas();
+    // We don't recreate particles on resize so they don't "jump"
   });
 </script>
     
