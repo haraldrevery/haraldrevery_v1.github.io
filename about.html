@@ -54,9 +54,9 @@
 }
 
   /* Prevent layout jump: hide the H2 initially */
-  h2[data-animate="true"] {
-    opacity: 0;
-  }
+[data-animate="true"] {
+  opacity: 0 !important;
+}
   h2.active {
     opacity: 1 !important;
   }
@@ -325,10 +325,9 @@ body {
       <div>
 
 
-    <p data-animate="true" class="
-        animated-heading text-4xl md:text-4xl mb-6 
-        block w-full max-w-max break-normal whitespace-normal
-        ">
+    <p data-animate="true" class="animated-heading text-4xl md:text-4xl mb-6 block w-full max-w-max break-normal whitespace-normal">
+    Music that can be played sunset to sunset
+</p>
         Music that can be played sunset to sunset
     </p>
             
