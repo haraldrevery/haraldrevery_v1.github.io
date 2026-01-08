@@ -1127,6 +1127,28 @@ cards.forEach(clickedCard => {
   
   animate();
 </script>
+
+
+<!-- Load the other pages in the background so it doesn't blink as much -->
+    <script>
+  window.addEventListener('load', () => {
+
+    setTimeout(() => {
+      const specScript = document.createElement('script');
+      specScript.type = 'speculationrules';
+      specScript.textContent = JSON.stringify({
+        "prerender": [
+          {
+            "source": "list",
+            "urls": ["music.html", "about.html", "contact.html"]
+          }
+        ]
+      });
+      document.head.appendChild(specScript);
+    }, 3000); // ms delay
+  });
+</script>
+
     
 </body>
 
