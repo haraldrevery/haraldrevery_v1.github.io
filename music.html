@@ -257,6 +257,61 @@ body {
 .text-container p {
   text-align: justify;
 }
+
+
+
+/* Horizontal Scrolling Gallery */
+@keyframes scrollGallery {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.scrolling-container {
+  position: relative;
+  width: 100%;
+  height: 15vh; /* 15% of screen height */
+  overflow: hidden;
+  margin: 4rem 0; /* Add spacing above/below */
+}
+
+/* Side Fading Effect */
+.scrolling-container::before,
+.scrolling-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scrolling-container::before {
+  left: 0;
+  background: linear-gradient(to right, #000, transparent);
+}
+
+.scrolling-container::after {
+  right: 0;
+  background: linear-gradient(to left, #000, transparent);
+}
+
+/* The moving track */
+.scrolling-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: scrollGallery 30s linear infinite; /* Adjust speed here */
+}
+
+.scrolling-track img {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  padding: 0 10px; /* Gap between images */
+}
+
     
   </style>
 
@@ -376,7 +431,32 @@ body {
   </section>
 </div>
 
+    
+<!-- Scrolling images -->  
+<div class="scrolling-container">
+  <div class="scrolling-track">
+    <img src="./dist/assets/cover1.jpg" alt="Artcover 1">
+    <img src="./dist/assets/cover2.jpg" alt="Artcover 2">
+    <img src="./dist/assets/cover3.jpg" alt="Artcover 3">
+    <img src="./dist/assets/cover4.jpg" alt="Artcover 4">
+    <img src="./dist/assets/cover5.jpg" alt="Artcover 5">
+    <img src="./dist/assets/cover6.jpg" alt="Artcover 6">
+    <img src="./dist/assets/cover7.jpg" alt="Artcover 7">
+    <img src="./dist/assets/cover8.jpg" alt="Artcover 8">
+    <img src="./dist/assets/cover9.jpg" alt="Artcover 9">
 
+    <img src="./dist/assets/cover1.jpg" alt="Artcover 1">
+    <img src="./dist/assets/cover2.jpg" alt="Artcover 2">
+    <img src="./dist/assets/cover3.jpg" alt="Artcover 3">
+    <img src="./dist/assets/cover4.jpg" alt="Artcover 4">
+    <img src="./dist/assets/cover5.jpg" alt="Artcover 5">
+    <img src="./dist/assets/cover6.jpg" alt="Artcover 6">
+    <img src="./dist/assets/cover7.jpg" alt="Artcover 7">
+    <img src="./dist/assets/cover8.jpg" alt="Artcover 8">
+    <img src="./dist/assets/cover9.jpg" alt="Artcover 9">
+  </div>
+</div>
+    
     
 <!-- Audio player to the right, text to the left -->  
 <div class="container mx-auto py-12 px-4">
