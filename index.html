@@ -996,8 +996,8 @@ cards.forEach(clickedCard => {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
       
-      // HIGH SPEED ENERGY
-      const speedMultiplier = Math.random() * 4 + 2; 
+      // Speed set for the particles
+      const speedMultiplier = Math.random() * 0.8 + 0.2; 
       this.vx = (Math.random() - 0.5) * speedMultiplier;
       this.vy = (Math.random() - 0.5) * speedMultiplier;
       
