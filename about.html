@@ -16,7 +16,7 @@
   
   <style>
     /* 2. Added a safeguard: Force background to be dark immediately 
-        This prevents any white flashes during script execution */
+       This prevents any white flashes during script execution */
     .dark body {
       background-color: #000 !important;
       color: #fff !important;
@@ -28,40 +28,40 @@
       to { opacity: 1; }
     }
 
-    .fade-letter {
-        /* remove display: inline-block if letters look gapped */
-        opacity: 0;
-        animation: letterFade 0.8s ease-out forwards;
-    }
+.fade-letter {
+    /* remove display: inline-block if letters look gapped */
+    opacity: 0;
+    animation: letterFade 0.8s ease-out forwards;
+}
 
-    /* Prevent layout jump: hide the H2 initially */
-    h2[data-animate="true"] {
-        opacity: 0;
-    }
-    h2.active {
-        opacity: 1 !important;
-    }
+  /* Prevent layout jump: hide the H2 initially */
+  h2[data-animate="true"] {
+    opacity: 0;
+  }
+  h2.active {
+    opacity: 1 !important;
+  }
 
     
-    /* fading words */
+     /* fading words */
 
-    .word {
-        display: inline-block;
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    
-    @keyframes fadeInWord {
-        to {
-        opacity: 1;
-        transform: translateY(0);
+        .word {
+          display: inline-block;
+          opacity: 0;
+          transform: translateY(5px);
         }
-    }
-    
-    /* This triggers when the IntersectionObserver adds the class */
-    .start-animation .word {
-        animation: fadeInWord 0.6s ease-out forwards;
-    }
+        
+        @keyframes fadeInWord {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        /* This triggers when the IntersectionObserver adds the class */
+        .start-animation .word {
+          animation: fadeInWord 0.6s ease-out forwards;
+        }
 
 
     
@@ -122,47 +122,47 @@
 
 
     /* Background ANIMATIONS */
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    .animate-gradient-slow {
-      animation: gradientMove 15s ease infinite;
-    }
+.animate-gradient-slow {
+  animation: gradientMove 15s ease infinite;
+}
 
-    /* Apply a smooth transition to the entire page and all its children */
-    * {
-        transition: background-color 0.96s ease-in-out, color 0.6s ease-in-out, border-color 0.6s ease-in-out;
-    }
+/* Apply a smooth transition to the entire page and all its children */
+* {
+    transition: background-color 0.96s ease-in-out, color 0.6s ease-in-out, border-color 0.6s ease-in-out;
+}
 
-    /* Specific smoothing for the background gradient */
-    body {
-        transition: background 0.8s ease-in-out !important;
-    }
+/* Specific smoothing for the background gradient */
+body {
+    transition: background 0.8s ease-in-out !important;
+}
     
-    /* making text text-justify alignment not have odd gaps */
-    .text-justify {
-      text-justify: inter-word;
-      hyphens: auto;
-    }
+/* making text text-justify alignment not have odd gaps */
+.text-justify {
+  text-justify: inter-word;
+  hyphens: auto;
+}
 
-    .text-container p {
-      text-align: justify;
-    }
+.text-container p {
+  text-align: justify;
+}
 
 
     /* Add this to your <style> block */
-    .bg-neutral-200, .dark\:bg-neutral-800 {
-        background-size: 200% 100%;
-        animation: skeleton-pulse 2s infinite linear;
-    }
+.bg-neutral-200, .dark\:bg-neutral-800 {
+    background-size: 200% 100%;
+    animation: skeleton-pulse 2s infinite linear;
+}
 
-    @keyframes skeleton-pulse {
-        0% { background-position: 100% 0; }
-        100% { background-position: -100% 0; }
-    }
+@keyframes skeleton-pulse {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
     
   </style>
 
@@ -184,12 +184,22 @@
     }
   </script>
 
+
+
+
+
+  
+
   <script defer src="./dist/alpine.min.js"></script>
 </head>
 
 <link rel="stylesheet" href="./dist/glightbox.min.css" />
 <script src="./dist/glightbox_min.js"></script>
 
+  
+<!-- 
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
+-->
   
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
@@ -257,6 +267,10 @@
 
   <div class="container mx-auto">
     
+<!-- <h1 class="text-4xl pt-10 pb-8"><b>ABOUT</b></h1> -->   
+
+
+<!-- images to the left, text to the right -->      
 <div class="container mx-auto py-20 px-5 md:px-0">
   <div class="flex flex-col lg:flex-row-reverse gap-16 items-center">
     
@@ -319,6 +333,7 @@
 </div>
 
 
+    <!-- text to the left, card to the right -->   
     <div class="grid grid-cols-2 gap-14 md:gap-20">  
       <div class="col-span-2 md:col-span-1">
         <div
@@ -381,7 +396,8 @@
 </div> 
 
 
-  <section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
+  <!-- center the dark mode button -->  
+<section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
   <div class="text-container">
 
     <button @click="darkMode = !darkMode" 
@@ -420,8 +436,10 @@
 
     
 
+
     
- <footer>
+ <!-- footer--> 
+  <footer>
         
     <div class="max-w-screen-xl py-16 mx-auto">
       <div class="grid grid-cols-1 gap-8 text-center mx-auto">
@@ -496,7 +514,7 @@
         </div>
       </div>
       <p class="mt-8 text-xs text-gray-600 dark:text-gray-300 text-center">
-        © <span id="year"></span> Harald Revery. All Rights Reserved (fonts, images and brand logo) <br />
+        ©  <span id="year"></span> Harald Revery. All Rights Reserved (fonts, images and brand logo) <br />
         <small>Site Template by <a href="https://github.com/JoaoFranco03" target="_blank">Joao Franco</a></small>
       </p>
     </div>
@@ -508,6 +526,7 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
     
+<!-- fading words script -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const containers = document.querySelectorAll('.text-container');
@@ -547,7 +566,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<script>
+<!-- fading letters script -->
+ <script>
 document.addEventListener('DOMContentLoaded', () => {
   const headings = document.querySelectorAll('.animated-heading');
   
@@ -598,7 +618,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
     
-<script>
+<!-- image grid -->
+    <script>
   const lightbox = GLightbox({
     selector: '.glightbox',
     touchNavigation: true,
