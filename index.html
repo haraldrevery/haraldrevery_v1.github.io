@@ -422,19 +422,25 @@ html, body {
 
 /* cross fade from page to page */
 /* Initial state of the body is already opacity-0 in your code */
-.fade-out {
-  opacity: 0 !important;
-  transition: opacity 0.5s ease-in-out !important;
+html {
+    background-color: #000; /* Or match your dark/light theme */
 }
 
-/* Ensure the fade-in is smooth on load */
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-in-out forwards;
+body {
+    opacity: 0;
+    /* Faster opacity transition for a snappier feel */
+    transition: opacity 0.4s ease-in-out !important; 
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+body.page-loaded {
+    opacity: 1;
+}
+
+/* This class is applied just before we leave the page */
+body.fade-out {
+    opacity: 0 !important;
+    /* We make the fade out slightly faster than the fade in */
+    transition: opacity 0.3s ease-in-out !important;
 }
     
     
@@ -1199,25 +1205,34 @@ cards.forEach(clickedCard => {
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
 
-  // 1. Fade in smoothly after load
-  // RequestAnimationFrame ensures the browser is ready to paint
-  requestAnimationFrame(() => {
+  // 1. Instant Fade In
+  // Use a tiny timeout to ensure the browser has painted the 0 opacity state first
+  setTimeout(() => {
     body.classList.add('page-loaded');
-  });
+  }, 50);
 
-  // 2. Intercept clicks for internal links
+  // 2. Intercept clicks for seamless transition
   document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', e => {
       const href = link.getAttribute('href');
-      const isInternal = href && (href.includes('.html') || href.startsWith('../')) && !href.startsWith('#');
+      
+      // Verification: is it an internal link?
+      const isInternal = href && 
+                         (href.includes('.html') || href.startsWith('../') || href.startsWith('./')) && 
+                         !href.startsWith('#') &&
+                         !link.hasAttribute('download');
       
       if (isInternal && !link.target && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
+        
+        // Add the fade-out class
         body.classList.add('fade-out');
 
+        // Navigate away slightly before the transition fully ends 
+        // to minimize the "dead time" between pages
         setTimeout(() => {
           window.location.href = href;
-        }, 600); // Matches the 0.6s CSS transition
+        }, 350); // Slightly shorter than the CSS transition
       }
     });
   });
