@@ -5,28 +5,11 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="view-transition" content="same-origin" />
   <title>Harald Revery - Music</title> 
   <script src="./dist/tailwind.js"></script>
 
   <style>
 
-/* page to page cross fade */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.5s; /* Adjust timing here */
-  }
-
-  /* Ensure the background stays stable during transition */
-  body {
-    view-transition-name: main-content;
-  }
-
-
-    
-    
-
-    
 /* Enhanced Ambient Background Blobs */
 @keyframes meshMove {
   0% { transform: translate(0, 0) scale(1) rotate(0deg); }
@@ -365,7 +348,10 @@ body {
   <script defer src="./dist/alpine.min.js"></script>
 </head>
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 bg-fixed bg-[length:250%_250%] animate-gradient-slow bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F]">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out animate-gradient-slow 
+             bg-gradient-to-br from-slate-100 via-white to-slate-200 
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]
+             bg-[length:200%_200%] bg-fixed">
   
   <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -1046,36 +1032,6 @@ function audioPlayer() {
   }, 3000);
 });
 </script>
-
-  <!-- Page to page fade script -->
-<script>
-  // Intercept link clicks for smooth transitions
-  window.addEventListener('click', (e) => {
-    const link = e.target.closest('a');
-    if (
-      link && 
-      link.origin === location.origin && 
-      !link.getAttribute('target') &&
-      document.startViewTransition
-    ) {
-      e.preventDefault();
-      const href = link.href;
-
-      document.startViewTransition(async () => {
-        const response = await fetch(href);
-        const text = await response.text();
-        const newHtml = new DOMParser().parseFromString(text, 'text/html');
-        
-        // Replace only the content, keeping the background/scripts intact
-        document.documentElement.innerHTML = newHtml.documentElement.innerHTML;
-        // Optionally re-run specific initializers like GLightbox if needed
-        if (window.initLightbox) initLightbox();
-      });
-    }
-  });
-</script>
-    
-
     
 </body>
 </html>
