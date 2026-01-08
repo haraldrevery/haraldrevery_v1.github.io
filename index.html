@@ -566,7 +566,7 @@ html, body {
 <div class="container mx-auto py-20">
   <div class="flex flex-col lg:flex-row gap-12 items-center">
     
-    <div class="w-full lg:w-1/2 relative overflow-visible" x-data="{ 
+    <div class="w-full lg:w-1/2 relative overflow-hidden" x-data="{ 
         path: './artcovers/', 
         images: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg',
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
@@ -982,56 +982,52 @@ cards.forEach(clickedCard => {
 <script>
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
-  let particles = [];
 
-  function initCanvas() {
-    // We use getBoundingClientRect for more precision in some browsers
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-  }
+  let particles = [];
+  // Increased count slightly for more texture
+  const particleCount = 80; 
 
   class Particle {
     constructor() {
-      this.reset();
+      this.init();
     }
-    reset() {
-      // If canvas width is 0 during init, we give it a fallback 
-      // so particles aren't born at 0,0
-      const w = canvas.width || window.innerWidth;
-      const h = canvas.height || window.innerHeight;
-      
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.size = Math.random() * 2 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.4;
-      this.speedY = (Math.random() - 0.5) * 0.4;
-      this.opacity = Math.random() * 0.5;
-    }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
 
-      const buffer = 50; 
-      if (this.x > canvas.width + buffer) this.x = -buffer;
-      else if (this.x < -buffer) this.x = canvas.width + buffer;
-      
-      if (this.y > canvas.height + buffer) this.y = -buffer;
-      else if (this.y < -buffer) this.y = canvas.height + buffer;
+    init() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      // SPEED BOOST: Multiplier set to 3.5 for high energy
+      this.vx = (Math.random() - 0.5) * 3.5; 
+      this.vy = (Math.random() - 0.5) * 3.5; 
+      this.size = Math.random() * 2 + 0.5;
+      this.alpha = Math.random() * 0.5 + 0.1;
     }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Wrap around logic
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
+    }
+
     draw() {
-      // Use a slightly visible color for dark/light mode compatibility
-      // If you want them strictly white, keep 255, 255, 255
-      ctx.fillStyle = `rgba(200, 200, 200, ${this.opacity})`;
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  function createParticles() {
+  function resize() {
+    // We account for the -inset-12 by adding 96px (48px each side) 
+    // to the internal resolution so it stays sharp
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
     particles = [];
-    for (let i = 0; i < 96; i++) {
+    for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
     }
   }
@@ -1045,18 +1041,9 @@ cards.forEach(clickedCard => {
     requestAnimationFrame(animate);
   }
 
-  // Use a ResizeObserver to handle the canvas size dynamically
-  const resizeObserver = new ResizeObserver(() => {
-    initCanvas();
-  });
-
-  window.addEventListener('load', () => {
-    initCanvas();
-    createParticles();
-    animate();
-    // Start observing the parent container for size changes
-    resizeObserver.observe(canvas.parentElement);
-  });
+  window.addEventListener('resize', resize);
+  resize();
+  animate();
 </script>
     
 </body>
