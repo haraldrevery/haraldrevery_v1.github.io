@@ -165,6 +165,21 @@ body {
 }
 
 
+    /* swup page transition */
+/* Duration of the fade */
+.transition-fade {
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-out;
+  opacity: 1;
+}
+
+/* State when the page is leaving */
+html.is-leaving .transition-fade {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+
+    
   </style>
 
   <script>
@@ -270,6 +285,9 @@ body {
     
 <!-- <h1 class="text-4xl pt-10 pb-8"><b>ABOUT</b></h1> -->   
 
+ <!-- Start of "swup" page transistion -->
+<main id="swup" class="transition-fade">
+    
 
 <!-- images to the left, text to the right -->      
 <div class="container mx-auto py-20 px-5 md:px-0">
@@ -521,6 +539,13 @@ body {
     </div>
   </footer>
 
+
+<!-- end of the "swup" page transition -->
+</main>
+
+
+
+  
   <script src="./dist/fade_in.js"></script>
   <script src="./dist/menu.js"></script>
   <script>
@@ -629,6 +654,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
+    <!-- swup script -->
+    <script>
+// Initialize Swup
+const swup = new Swup();
+
+// This function runs every time a new page is swapped in
+swup.hooks.on('page:view', () => {
+    
+    // 1. Re-initialize GLightbox for your art covers
+    if (typeof GLightbox !== 'undefined') {
+        GLightbox({ selector: '.glightbox' });
+    }
+
+    // 2. Re-trigger Alpine.js components if needed
+    if (window.Alpine) {
+        window.Alpine.discover();
+    }
+
+    // 3. Optional: Scroll to top on new page
+    window.scrollTo(0, 0);
+
+    console.log("Page transitioned successfully.");
+});    
+   </script>
+    
     
 </body>
 </html>
