@@ -122,7 +122,6 @@
 
 
     /* Background ANIMATIONS */
-/* 1. Background Gradient Animation */
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -130,22 +129,7 @@
 }
 
 .animate-gradient-slow {
-  background-size: 400% 400% !important;
-  animation: gradientMove 15s ease infinite !important;
-}
-
-/* 2. Simplified Cross-Fade Logic */
-body {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out, background-color 0.8s ease-in-out !important;
-}
-
-body.page-loaded {
-  opacity: 1;
-}
-
-body.fade-out {
-  opacity: 0 !important;
+  animation: gradientMove 15s ease infinite;
 }
 
 /* Apply a smooth transition to the entire page and all its children */
@@ -179,33 +163,8 @@ body {
     0% { background-position: 100% 0; }
     100% { background-position: -100% 0; }
 }
-    
 
-/* cross fade from page to page */
-/* Initial state of the body is already opacity-0 in your code */
-/* Ensure the canvas is never "empty" */
-html {
-    background-color: #000; /* Or match your dark/light theme */
-}
 
-body {
-    opacity: 0;
-    /* Faster opacity transition for a snappier feel */
-    transition: opacity 0.4s ease-in-out !important; 
-}
-
-body.page-loaded {
-    opacity: 1;
-}
-
-/* This class is applied just before we leave the page */
-body.fade-out {
-    opacity: 0 !important;
-    /* We make the fade out slightly faster than the fade in */
-    transition: opacity 0.3s ease-in-out !important;
-}
-
-    
   </style>
 
   <script>
@@ -239,12 +198,13 @@ body.fade-out {
 <script src="./dist/glightbox_min.js"></script>
 
   
-
+<!-- 
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
+-->
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 bg-fixed 
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
-             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F] 
-             animate-gradient-slow">
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
   <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -669,46 +629,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
-
-
-    <!-- cross fade from page to page -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const body = document.body;
-
-  // 1. Instant Fade In
-  // Use a tiny timeout to ensure the browser has painted the 0 opacity state first
-  setTimeout(() => {
-    body.classList.add('page-loaded');
-  }, 50);
-
-  // 2. Intercept clicks for seamless transition
-  document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', e => {
-      const href = link.getAttribute('href');
-      
-      // Verification: is it an internal link?
-      const isInternal = href && 
-                         (href.includes('.html') || href.startsWith('../') || href.startsWith('./')) && 
-                         !href.startsWith('#') &&
-                         !link.hasAttribute('download');
-      
-      if (isInternal && !link.target && !e.metaKey && !e.ctrlKey) {
-        e.preventDefault();
-        
-        // Add the fade-out class
-        body.classList.add('fade-out');
-
-        // Navigate away slightly before the transition fully ends 
-        // to minimize the "dead time" between pages
-        setTimeout(() => {
-          window.location.href = href;
-        }, 350); // Slightly shorter than the CSS transition
-      }
-    });
-  });
-});
-</script>  
     
 </body>
 </html>
