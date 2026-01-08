@@ -522,25 +522,23 @@
 <!-- Grid to the left + Text to the right -->
 <div class="container mx-auto py-20">
   <div class="flex flex-col lg:flex-row gap-12 items-center">
-    <!-- Grid settings -->
-    <div class="w-full lg:w-1/2" x-data="{ 
+    
+    <div class="w-full lg:w-1/2 relative overflow-visible" x-data="{ 
         path: './artcovers/', 
         images: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg',
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
     }">
-      <div class="grid grid-cols-3 gap-4">
+      
+      <canvas id="particle-canvas" class="absolute inset-0 z-[-1] pointer-events-none"></canvas>
 
-         <!-- Grid images -->
-            <template x-for="img in images" :key="img">
+      <div class="grid grid-cols-3 gap-4 relative z-10">
+         <template x-for="img in images" :key="img">
               <a :href="path + img" class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800" data-gallery="gallery1">
-                <img :src="path + img" 
-                     class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
-                     loading="lazy">
+                <img :src="path + img" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
               </a>
-            </template>
-        
+         </template>
       </div>
-    </div> 
+    </div>
     
       <!-- Text part -->
     <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
@@ -934,7 +932,70 @@ cards.forEach(clickedCard => {
 });
 </script>    
     
+    
+<!-- Particles behind grid script -->
+<script>
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
 
+  function initCanvas() {
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.parentElement.offsetHeight;
+  }
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = Math.random() * 0.5 - 0.25;
+      this.speedY = Math.random() * 0.5 - 0.25;
+      this.opacity = Math.random() * 0.5;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
+        this.reset();
+      }
+    }
+    draw() {
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function createParticles() {
+    particles = [];
+    for (let i = 0; i < 50; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    initCanvas();
+    createParticles();
+  });
+
+  initCanvas();
+  createParticles();
+  animate();
+</script>
     
 </body>
 
