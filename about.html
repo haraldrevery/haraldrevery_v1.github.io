@@ -335,10 +335,10 @@ body {
 
 
     <!-- text to the left, card to the right -->   
-   <div class="container mx-auto py-20 px-5 md:px-0">
-  <div class="flex flex-col md:flex-row gap-16 items-center"> 
+<div class="container mx-auto py-20 px-5 md:px-0">
+  <div class="flex flex-col md:flex-row gap-16 items-center justify-center"> 
     
-    <div class="w-full md:w-1/2">
+    <div class="w-full md:w-1/3 max-w-sm">
       <div
         x-data="{
           rotateX: 0,
@@ -361,22 +361,22 @@ body {
         @mousemove="handleMouseMove"
         @mouseleave="resetRotation"
         :style="`transform: perspective(${perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg); transition: transform 0.1s ease-out;`"
-        /* Removed m-6 md:m-12 to ensure perfect alignment */
-        class="bg-white dark:bg-neutral-900 p-5 pb-28 shadow-2xl border border-gray-100 dark:border-neutral-800 relative group overflow-hidden"
+        /* Reduced padding from p-5 pb-28 to p-4 pb-16 */
+        class="bg-white dark:bg-neutral-900 p-4 pb-16 shadow-2xl border border-gray-100 dark:border-neutral-800 relative group overflow-hidden"
       >
         <div class="absolute inset-0 opacity-0 group-hover:opacity-0 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-transparent via-white to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
         <img src="./dist/assets/haraldrevery11techbw.gif" alt="Harald Revery"
              class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto shadow-inner" />
         
         <div class="absolute bottom-0 left-0 right-0 text-center">
-          <p class="text-gray-800 dark:text-slate-200 pb-7 h-full font-signika text-6xl md:text-7xl tracking-wide leading-none group-hover:scale-110 transition-transform duration-300">
+          <p class="text-gray-800 dark:text-slate-200 pb-4 h-full font-signika text-5xl md:text-6xl tracking-wide leading-none group-hover:scale-110 transition-transform duration-300">
             ½
           </p>
         </div>
       </div>
     </div>
 
-    <section class="w-full md:w-1/2 font-normal text-center md:text-start">
+    <section class="w-full md:w-2/3 font-normal text-center md:text-start">
       <div class="block md:hidden">
         <p data-animate="true" class="animated-heading text-4xl font-serif mb-1">
           Logo  
