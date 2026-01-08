@@ -165,6 +165,15 @@ body {
 }
 
 
+
+/* Header crossing */
+      #main-header {
+        will-change: transform, opacity;
+      }
+      /* Ensure the active link underbars don't jump */
+      #ulMenu li a span {
+        transition: max-width 0.5s ease-in-out, background-color 0.5s;
+      }
   </style>
 
   <script>
@@ -206,7 +215,7 @@ body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
-  <header class="flex w-full overflow-hidden pt-3 pb-1">
+  <header id="main-header" class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
         <div class="mr-4 md:mr-8">
