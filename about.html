@@ -163,8 +163,26 @@ body {
     0% { background-position: 100% 0; }
     100% { background-position: -100% 0; }
 }
+    
 
+/* cross fade from page to page */
+/* Initial state of the body is already opacity-0 in your code */
+.fade-out {
+  opacity: 0 !important;
+  transition: opacity 0.5s ease-in-out !important;
+}
 
+/* Ensure the fade-in is smooth on load */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+    
   </style>
 
   <script>
@@ -629,6 +647,39 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
+
+
+    <!-- cross fade from page to page -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const body = document.body;
+
+  // 1. Fade in on page load (You already have opacity-0 on body)
+  // This ensures the page is visible once loaded
+  setTimeout(() => {
+    body.classList.add('animate-fade-in');
+    body.style.opacity = '1';
+  }, 10);
+
+  // 2. Intercept clicks on links
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+
+      // Only transition for internal HTML links (not # anchors or external sites)
+      if (href && href.includes('.html') && !href.startsWith('#') && !link.target) {
+        e.preventDefault(); // Stop the browser from leaving immediately
+        body.classList.add('fade-out'); // Trigger CSS fade
+
+        // Wait for the animation to finish (500ms matches the CSS transition)
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500);
+      }
+    });
+  });
+});
+</script>  
     
 </body>
 </html>
