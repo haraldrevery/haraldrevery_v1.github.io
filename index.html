@@ -396,33 +396,7 @@ html, body {
 .gslide-title, .gslide-desc {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
-
-
-
-    /* Create a pseudo-element for the grain */
-#logo-container::before {
-  content: "";
-  position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
-  /* Use a tiny 100x100px noise PNG (easily found online) */
-  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-  opacity: 0.04;
-  pointer-events: none;
-  animation: grain 8s steps(10) infinite;
-  z-index: 50;
-}
-
-@keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  30% { transform: translate(-15%, 5%); }
-  50% { transform: translate(7%, 9%); }
-  70% { transform: translate(-3%, 15%); }
-  90% { transform: translate(12%, -5%); }
-}
+    
     
   </style>
 
@@ -846,19 +820,12 @@ container.addEventListener('mousemove', (e) => {
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
   
-  
   const percentX = (e.clientX - centerX) / (rect.width / 2);
   const percentY = (e.clientY - centerY) / (rect.height / 2);
 
   const deg = 30;
   const rotateX = percentY * -deg;
   const rotateY = percentX * deg;
-  
-  // Inside the mousemove event
-  const shadowX = percentX * -15; // Move shadow opposite to mouse
-  const shadowY = percentY * -15;
-
-logo.style.filter = `drop-shadow(${shadowX}px ${shadowY}px 15px rgba(255,255,255,0.2))`;
 
   // Apply to the main logo
   logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
