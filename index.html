@@ -397,6 +397,22 @@ html, body {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
     
+
+
+/* swup page transition */
+/* Duration of the fade */
+.transition-fade {
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-out;
+  opacity: 1;
+}
+
+/* State when the page is leaving */
+html.is-leaving .transition-fade {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+
     
   </style>
 
@@ -520,7 +536,8 @@ html, body {
   </header>
   <!-- Content -->
 
-
+ <!-- Start of "swup" page transistion -->
+<main id="swup" class="transition-fade">
   
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
@@ -786,7 +803,12 @@ html, body {
       </p>
     </div>
   </footer>
-  
+
+<!-- end of the "swup" page transition -->
+</main>
+
+    
+    
   <!-- Script for the LightBox -->
 <script>
   // This waits for Alpine.js to finish building the grid
@@ -806,7 +828,13 @@ html, body {
   <script>
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
-  
+
+
+<!--  "swup" page transition script -->
+<script src="./dist/Swup.umd.js"></script>
+
+
+    
   <!--For the 3D logo thing to react to the mouse -->
 <script>
  const container = document.getElementById('logo-container');
@@ -1148,6 +1176,32 @@ cards.forEach(clickedCard => {
     }, 3000); // ms delay
   });
 </script>
+
+    
+<!-- swup script -->
+    <script>
+// Initialize Swup
+const swup = new Swup();
+
+// This function runs every time a new page is swapped in
+swup.hooks.on('page:view', () => {
+    
+    // 1. Re-initialize GLightbox for your art covers
+    if (typeof GLightbox !== 'undefined') {
+        GLightbox({ selector: '.glightbox' });
+    }
+
+    // 2. Re-trigger Alpine.js components if needed
+    if (window.Alpine) {
+        window.Alpine.discover();
+    }
+
+    // 3. Optional: Scroll to top on new page
+    window.scrollTo(0, 0);
+
+    console.log("Page transitioned successfully.");
+});    
+   </script>
 
     
 </body>
