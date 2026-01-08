@@ -1004,42 +1004,57 @@ cards.forEach(clickedCard => {
   const particleCount = 80;
 
   class Particle {
-    constructor() { this.init(); }
-    init() {
-      // Use parent dimensions if canvas hasn't calculated yet
-      const w = canvas.width > 0 ? canvas.width : window.innerWidth;
-      const h = canvas.height > 0 ? canvas.height : window.innerHeight;
-      
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      
-      // Speed set for the particles
-      const speedMultiplier = Math.random() * 0.5 + 0.2; 
-      this.vx = (Math.random() - 0.5) * speedMultiplier;
-      this.vy = (Math.random() - 0.5) * speedMultiplier;
-      
-      this.size = Math.random() * 2 + 0.5;
-      this.alpha = Math.random() * 0.5 + 0.2;
-    }
+  constructor() { this.init(); }
+  init() {
+    const w = canvas.width > 0 ? canvas.width : window.innerWidth;
+    const h = canvas.height > 0 ? canvas.height : window.innerHeight;
+    
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    
+    const speedMultiplier = Math.random() * 0.5 + 0.2; 
+    this.vx = (Math.random() - 0.5) * speedMultiplier;
+    this.vy = (Math.random() - 0.5) * speedMultiplier;
+    
+    this.size = Math.random() * 2 + 0.5;
 
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
+    // --- NEW STUFF FOR SLOW FADE ---
+    this.maxAlpha = Math.random() * 0.5 + 0.2; // The brightest it can get
+    this.alpha = 0;                            // Starts invisible
+    this.fadeSpeed = Math.random() * 0.005 + 0.002; // How fast it fades (smaller = slower)
+    this.fadingIn = true;                      // Direction of fade
+  }
 
-      if (this.x < 0) this.x = canvas.width;
-      if (this.x > canvas.width) this.x = 0;
-      if (this.y < 0) this.y = canvas.height;
-      if (this.y > canvas.height) this.y = 0;
-    }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
 
-    draw() {
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-      ctx.beginPath();
-      // Using a full circle prevents "line" stretching
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
+    // Boundary logic
+    if (this.x < 0) this.x = canvas.width;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.y < 0) this.y = canvas.height;
+    if (this.y > canvas.height) this.y = 0;
+
+    // --- ANIMATE THE ALPHA ---
+    if (this.fadingIn) {
+      this.alpha += this.fadeSpeed;
+      if (this.alpha >= this.maxAlpha) this.fadingIn = false;
+    } else {
+      this.alpha -= this.fadeSpeed;
+      if (this.alpha <= 0) {
+        // Once it's fully gone, reset it to a new position to keep it fresh
+        this.init(); 
+      }
     }
   }
+
+  draw() {
+    ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
 
   function resize() {
     // Look at the actual container's size
