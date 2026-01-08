@@ -9,6 +9,11 @@
   
   <script src="./dist/tailwind.js"></script>
 
+  
+  <link rel="preconnect" href="./fonts/" crossorigin>
+  <link rel="preconnect" href="./photos/" crossorigin>
+
+  
   <style>
     /* 2. Added a safeguard: Force background to be dark immediately 
        This prevents any white flashes during script execution */
@@ -291,6 +296,7 @@ body {
           <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <img :src="path + img" 
+               loading="lazy"
                @load="loadedCount++"
                class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-1000 ease-out group-hover:scale-105" 
                alt="Harald Revery Art Cover">
