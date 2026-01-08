@@ -453,7 +453,8 @@ html, body {
 
   <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
   <!-- Navbar -->
-<header id="main-header" class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-black/60 backdrop-blur-md">
+<header id="main-header" 
+        class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-black/60 backdrop-blur-md pointer-events-none">
   <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
     <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap px-5 md:px-0">
       
@@ -941,28 +942,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- navigation bar pop up when scroll-->
 <script>
-  let lastScrollTop = 0;
   const header = document.getElementById('main-header');
 
-  // 1. Initial fade-in when page loads
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      header.classList.remove('-translate-y-full', 'opacity-0');
-    }, 100);
-  });
-
-  // 2. Scroll visibility logic
   window.addEventListener('scroll', function() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
-    if (scrollTop > lastScrollTop && scrollTop > 100) {
-      // Hide when scrolling down
-      header.classList.add('-translate-y-full');
+    // threshold: 200px (adjust this to decide when it should appear)
+    if (scrollTop > 200) {
+      // SCROLLED DOWN: Show the navbar
+      header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
     } else {
-      // Show when scrolling up
-      header.classList.remove('-translate-y-full');
+      // AT THE TOP: Hide the navbar
+      header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
     }
-    lastScrollTop = scrollTop;
   });
 </script>
 
