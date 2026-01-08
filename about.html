@@ -165,15 +165,6 @@ body {
 }
 
 
-
-/* Header crossing */
-      #main-header {
-        will-change: transform, opacity;
-      }
-      /* Ensure the active link underbars don't jump */
-      #ulMenu li a span {
-        transition: max-width 0.5s ease-in-out, background-color 0.5s;
-      }
   </style>
 
   <script>
@@ -215,9 +206,7 @@ body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
-  <header id="main-header" 
-        class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) bg-black/60 backdrop-blur-md">
-
+  <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
         <div class="mr-4 md:mr-8">
@@ -672,26 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 4500);
 });
 </script>
-
-    <!-- cross fade  navbar  -->
-  <script>  
-    document.addEventListener('DOMContentLoaded', () => {
-  const header = document.getElementById('main-header');
-  // Force visibility on subpages immediately
-  header.style.transform = 'translateY(0)';
-  header.style.opacity = '1';
-  header.style.pointerEvents = 'auto';
-});
-    </script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const header = document.getElementById('main-header');
-    header.style.opacity = '1';
-    header.style.transform = 'translateY(0)';
-    header.style.pointerEvents = 'auto';
-  });
-</script>
+    
     
 </body>
 </html>
