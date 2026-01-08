@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="view-transition" content="same-origin" />
   <title>Harald Revery - About</title>
   
   <script src="./dist/tailwind.js"></script>
@@ -16,24 +15,6 @@
   <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>
   
   <style>
-
-  /* page to page cross fade */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.5s; /* Adjust timing here */
-  }
-
-  /* Ensure the background stays stable during transition */
-  body {
-    view-transition-name: main-content;
-  }
-
-
-
-
-
-
-    
     /* 2. Added a safeguard: Force background to be dark immediately 
        This prevents any white flashes during script execution */
     .dark body {
@@ -54,9 +35,9 @@
 }
 
   /* Prevent layout jump: hide the H2 initially */
-[data-animate="true"] {
-  opacity: 0 !important;
-}
+  h2[data-animate="true"] {
+    opacity: 0;
+  }
   h2.active {
     opacity: 1 !important;
   }
@@ -221,7 +202,9 @@ body {
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
 -->
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 bg-fixed bg-[length:250%_250%] animate-gradient-slow bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F]">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+             bg-gradient-to-br from-slate-100 via-white to-slate-200 
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
   <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -325,9 +308,10 @@ body {
       <div>
 
 
-    <p data-animate="true" class="animated-heading text-4xl md:text-4xl mb-6 block w-full max-w-max break-normal whitespace-normal">
-    Music that can be played sunset to sunset
-</p>
+    <p data-animate="true" class="
+        animated-heading text-4xl md:text-4xl mb-6 
+        block w-full max-w-max break-normal whitespace-normal
+        ">
         Music that can be played sunset to sunset
     </p>
             
