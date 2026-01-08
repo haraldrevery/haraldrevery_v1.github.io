@@ -282,13 +282,12 @@ body {
   animation: scrollGallery 30s linear infinite; /* Adjust speed for faster/slower scroll */
 }
 
-/* 3. The Images: Ensures they stay square and fit the 15vh height */
+/* 3. The Images: Fit vertically without cropping */
 .scrolling-track img {
-  height: 100%;
-  width: auto;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  padding: 0 10px; /* Space between images */
+  height: 100%;       /* Fills the 15vh height of the container */
+  width: auto;        /* Automatically adjusts width to maintain aspect ratio */
+  object-fit: contain; /* Ensures the whole image is visible (no cropping) */
+  padding: 0 10px;    /* Space between images */
 }
 
 /* 4. The Animation: Moves the track from right to left */
