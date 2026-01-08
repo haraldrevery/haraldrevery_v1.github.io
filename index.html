@@ -985,7 +985,6 @@ cards.forEach(clickedCard => {
   const ctx = canvas.getContext('2d');
 
   let particles = [];
-  // Increased count slightly for more texture
   const particleCount = 80; 
 
   class Particle {
@@ -994,11 +993,19 @@ cards.forEach(clickedCard => {
     }
 
     init() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      // SPEED BOOST: Multiplier set to 3.5 for high energy
-      this.vx = (Math.random() - 0.5) * 3.5; 
-      this.vy = (Math.random() - 0.5) * 3.5; 
+      // Safety check: if canvas hasn't sized yet, use window defaults
+      const w = canvas.width || window.innerWidth;
+      const h = canvas.height || window.innerHeight;
+      
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+
+      // SPEED VARIATION: 
+      // Some move at 1.5x speed, others at 5.0x speed for a "busy" feel
+      const speedMultiplier = Math.random() * 3.5 + 1.5; 
+      this.vx = (Math.random() - 0.5) * speedMultiplier; 
+      this.vy = (Math.random() - 0.5) * speedMultiplier; 
+      
       this.size = Math.random() * 2 + 0.5;
       this.alpha = Math.random() * 0.5 + 0.1;
     }
@@ -1007,11 +1014,11 @@ cards.forEach(clickedCard => {
       this.x += this.vx;
       this.y += this.vy;
 
-      // Wrap around logic
-      if (this.x < 0) this.x = canvas.width;
-      if (this.x > canvas.width) this.x = 0;
-      if (this.y < 0) this.y = canvas.height;
-      if (this.y > canvas.height) this.y = 0;
+      // Wrap around logic - using the actual canvas dimensions
+      if (this.x < -50) this.x = canvas.width + 50;
+      if (this.x > canvas.width + 50) this.x = -50;
+      if (this.y < -50) this.y = canvas.height + 50;
+      if (this.y > canvas.height + 50) this.y = -50;
     }
 
     draw() {
@@ -1023,10 +1030,16 @@ cards.forEach(clickedCard => {
   }
 
   function resize() {
-    // We account for the -inset-12 by adding 96px (48px each side) 
-    // to the internal resolution so it stays sharp
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    // If offsetWidth is 0, we retry after a tiny delay or use parent width
+    const displayWidth = canvas.offsetWidth || canvas.parentElement.clientWidth;
+    const displayHeight = canvas.offsetHeight || canvas.parentElement.clientHeight;
+
+    // Set internal resolution to match display size
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+    }
+
     particles = [];
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
@@ -1034,15 +1047,20 @@ cards.forEach(clickedCard => {
   }
 
   function animate() {
+    // Basic drawing loop
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
+    
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+    }
     requestAnimationFrame(animate);
   }
 
+  // Listen for resize and initial load
   window.addEventListener('resize', resize);
+  
+  // Start-up sequence
   resize();
   animate();
 </script>
