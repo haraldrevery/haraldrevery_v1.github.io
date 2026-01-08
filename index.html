@@ -466,7 +466,9 @@ html, body {
 </script>
 </head>
 
-
+<div x-data="{ darkMode: false }" 
+     :class="darkMode ? 'bg-black text-white' : 'bg-white text-black'" class="transition-colors duration-500 min-h-screen">
+    
   <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
   <!-- Navbar -->
 <header id="main-header" 
@@ -819,7 +821,8 @@ html, body {
       </p>
     </div>
   </footer>
-  
+ </div>
+    
   <!-- Script for the LightBox -->
 <script>
   // This waits for Alpine.js to finish building the grid
