@@ -307,8 +307,34 @@
   animation: welcomeFade 1.2s ease-out forwards;
   animation-delay: 4s; /* Change this number to adjust wait time */
 }
-    
 
+
+ /* center glow "*/ 
+.center-glow {
+    /* Adjust the color here: 255,255,255 is white. 
+       Change to a brand color if desired. */
+    background: radial-gradient(
+      circle at center, 
+      rgba(255, 255, 255, 0.15) 0%, 
+      rgba(255, 255, 255, 0.05) 40%, 
+      transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: pulse-glow 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+    
   </style>
 
 <script>
@@ -531,6 +557,8 @@
       
       <canvas id="particle-canvas" class="absolute -inset-12 z-[-1] pointer-events-none w-full h-full"></canvas>
 
+      <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
+      
       <div class="grid grid-cols-3 gap-4 relative z-10">
          <template x-for="img in images" :key="img">
               <a :href="path + img" class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800" data-gallery="gallery1">
