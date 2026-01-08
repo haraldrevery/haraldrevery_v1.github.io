@@ -949,14 +949,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- navigation bar pop up when scroll-->
 <script>
-window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', () => {
     const header = document.getElementById('main-header');
     if (window.scrollY > 100) {
-      // Show header when scrolling down
       header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
       header.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
     } else {
-      // Fade out/Lift up when at the top
       header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
       header.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
     }
