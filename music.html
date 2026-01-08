@@ -265,11 +265,17 @@ body {
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 20vh; /* % of screen height */
+  height: 20vh;
   overflow: hidden;
-  margin: 4rem 0;
   
-  /* The mask creates true transparency at the edges so the background shows through */
+  /* REDUCED SPACE: margin-top changed from 4rem to 1rem */
+  margin: 1rem 0 4rem 0; 
+  
+  /* FADE IN ON LOAD: Added these lines */
+  opacity: 0;
+  animation: fadeIn 0.8s ease-in forwards;
+  animation-delay: 0.5s; /* Slight delay so it appears after the main text */
+
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
@@ -391,7 +397,7 @@ body {
 
 
 <!-- Full width section -->  
-<div class="container mx-auto py-20 px-5 md:px-0">
+<div class="container mx-auto pt-20 pb-8 px-5 md:px-0">
   <section class="w-full">
     <h2 data-animate="true" class="font-signika animated-heading text-4xl md:text-4xl mb-6 w-fit">
       Explore the music
