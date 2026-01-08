@@ -598,15 +598,18 @@ html, body {
         },
         
         swapRandom() {
-            // Pick a random slot in the 3x3 grid (0-8)
-            const gridIndex = Math.floor(Math.random() * this.activeImages.length);
-            // Pick a random image from the pool
-            const newImg = this.pool[Math.floor(Math.random() * this.pool.length)];
-            
-            // Only swap if it's actually a different image
-            if (this.activeImages[gridIndex] !== newImg) {
-                this.activeImages[gridIndex] = newImg;
-            }
+    // 1. Pick a random slot (0-8)
+    const gridIndex = Math.floor(Math.random() * this.activeImages.length);
+    
+    // 2. Filter the pool to find images NOT currently shown
+    const availablePool = this.pool.filter(item => !this.activeImages.includes(item));
+    
+    // 3. If we have something new to show, swap it
+    if (availablePool.length > 0) {
+        const newImg = availablePool[Math.floor(Math.random() * availablePool.length)];
+        this.activeImages[gridIndex] = newImg;
+    }
+}
         }
      }">
       
