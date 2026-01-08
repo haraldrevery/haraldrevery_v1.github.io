@@ -334,6 +334,23 @@
       opacity: 1;
     }
   }
+
+
+/* This prevents the "zooming out" or side-to-side wobble */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Ensure these absolute elements don't create "phantom" width */
+#particle-canvas, 
+.center-glow, 
+.bg-image-fade,
+#logo-container {
+  max-width: 100vw;
+  overflow: hidden;
+}
     
   </style>
 
@@ -356,7 +373,7 @@
   
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Harald Revery - Official website</title>
   <meta name="description"
     content="Updates and information related to Harald Revery.">
