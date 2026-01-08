@@ -264,25 +264,26 @@ body {
       }" x-init="setTimeout(() => loaded = true, 100)">
   
   <div class="grid grid-cols-3 gap-3 md:gap-5">
-      <template x-for="(img, index) in images" :key="img">
-        <a :href="path + img" 
-           class="glightbox group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-1000 ease-out hover:shadow-2xl"
-           :class="[
-             index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square',
-             loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-           ]"
-           :style="`transition-delay: ${index * 150}s`"
-           data-gallery="gallery1">
-          
-          <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          
-          <img :src="path + img" 
-               class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
-               loading="lazy"
-               alt="Harald Revery Art Cover">
-        </a>
-      </template>
-  </div>
+  <template x-for="(img, index) in images" :key="img">
+    <a :href="path + img" 
+       class="glightbox group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-1000 ease-out hover:shadow-2xl"
+       :class="[
+         index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square',
+         loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+       ]"
+       :style="`transition-delay: ${index * 0.15}s`"
+       data-gallery="gallery1">
+      
+      <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      
+      <img :src="path + img" 
+           class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-700 ease-out group-hover:scale-105" 
+           loading="lazy"
+           alt="Harald Revery Art Cover">
+    </a>
+  </template>
+</div>
+  
 </div>
 
     <div class="w-full lg:w-1/2 space-y-8 text-base md:text-lg lg:text-xl leading-relaxed">
