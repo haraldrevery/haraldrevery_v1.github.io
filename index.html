@@ -572,10 +572,19 @@ html, body {
   <div class="flex flex-col lg:flex-row gap-12 items-center">
     
     <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{ 
-        path: './artcovers/', 
-        images: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg',
-      'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
-    }">
+    path: './artcovers/', 
+    images: [
+      { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads' },
+      { file: 'phrases11.jpg', title: 'Phrases' },
+      { file: 'forestrain11.jpg', title: 'Forest Rain' },
+      { file: 'hollow11.jpg', title: 'Hollow' },
+      { file: 'isolated11.jpg', title: 'Isolated' },
+      { file: 'lookingforsnow11.jpg', title: 'Looking for Snow' },
+      { file: 'mysterycard11.jpg', title: 'Mystery Card' },
+      { file: 'spiritless11.jpg', title: 'Spiritless' },
+      { file: 'uninhabitedisland11.jpg', title: 'Uninhabited Island' }
+    ] 
+}">
       
      <canvas id="particle-canvas" class="absolute inset-0 z-[-1] pointer-events-none"></canvas>
 
