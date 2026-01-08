@@ -573,7 +573,7 @@ html, body {
       'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
     }">
       
-      <canvas id="particle-canvas" class="absolute -inset-12 z-[-1] pointer-events-none w-full h-full"></canvas>
+     <canvas id="particle-canvas" class="absolute inset-0 z-[-1] pointer-events-none"></canvas>
 
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
       
@@ -984,56 +984,66 @@ cards.forEach(clickedCard => {
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
-  const particleCount = 100; // Slightly more for density
+  const particleCount = 80;
 
   class Particle {
     constructor() { this.init(); }
-
     init() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      // HIGH SPEED: Random speed between 2.0 and 5.5
-      const speed = Math.random() * 3.5 + 2.0;
-      const angle = Math.random() * Math.PI * 2;
-      this.vx = Math.cos(angle) * speed;
-      this.vy = Math.sin(angle) * speed;
+      // Use parent dimensions if canvas hasn't calculated yet
+      const w = canvas.width > 0 ? canvas.width : window.innerWidth;
+      const h = canvas.height > 0 ? canvas.height : window.innerHeight;
+      
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      
+      // HIGH SPEED ENERGY
+      const speedMultiplier = Math.random() * 4 + 2; 
+      this.vx = (Math.random() - 0.5) * speedMultiplier;
+      this.vy = (Math.random() - 0.5) * speedMultiplier;
+      
       this.size = Math.random() * 2 + 0.5;
-      this.alpha = Math.random() * 0.6 + 0.2;
+      this.alpha = Math.random() * 0.5 + 0.2;
     }
 
     update() {
       this.x += this.vx;
       this.y += this.vy;
-      // Wrap logic with padding to prevent edge "pop"
-      if (this.x < -10) this.x = canvas.width + 10;
-      if (this.x > canvas.width + 10) this.x = -10;
-      if (this.y < -10) this.y = canvas.height + 10;
-      if (this.y > canvas.height + 10) this.y = -10;
+
+      if (this.x < 0) this.x = canvas.width;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.y < 0) this.y = canvas.height;
+      if (this.y > canvas.height) this.y = 0;
     }
 
     draw() {
       ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
       ctx.beginPath();
+      // Using a full circle prevents "line" stretching
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
   function resize() {
-    // Sharp resolution handling
+    // Look at the actual container's size
     const container = canvas.parentElement;
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
+    const rect = container.getBoundingClientRect();
+    
+    // Safety check: if the grid is hidden or 0 width, don't crash
+    if (rect.width === 0 || rect.height === 0) return;
+
+    // Set internal resolution to match display size exactly
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
     particles = [];
-    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
   }
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Add a very slight trail effect (optional: change 0 to 0.1 for trails)
-    // ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
     particles.forEach(p => {
       p.update();
       p.draw();
@@ -1041,8 +1051,14 @@ cards.forEach(clickedCard => {
     requestAnimationFrame(animate);
   }
 
+  // Handle resize and a small delay for initial load to ensure layout is ready
   window.addEventListener('resize', resize);
+  
+  // Initial fire
   resize();
+  // Fire again after 100ms just in case the layout shifted
+  setTimeout(resize, 100);
+  
   animate();
 </script>
     
