@@ -670,7 +670,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 4500);
 });
 </script>
-    
-    
+
+    <!-- cross fade  navbar  -->
+  <script>  
+    document.addEventListener('DOMContentLoaded', () => {
+  const header = document.getElementById('main-header');
+  // Force visibility on subpages immediately
+  header.style.transform = 'translateY(0)';
+  header.style.opacity = '1';
+  header.style.pointerEvents = 'auto';
+});
+    </script>
 </body>
 </html>
