@@ -584,56 +584,24 @@ html, body {
 <div class="container mx-auto py-20">
   <div class="flex flex-col lg:flex-row gap-12 items-center">
     
-   <div class="w-full lg:w-1/2 relative overflow-bleed" 
-     x-data="{ 
+    <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{ 
         path: './artcovers/', 
-        // 1. Current images shown in the grid
-        activeImages: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg', 'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'],
-        // 2. All available pool of images (add as many as you want here)
-        pool: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg', 'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg', 'cloudsandroads11.jpg'],
-        
-        init() {
-            // Swap one image every 5 seconds
-            setInterval(() => this.swapRandom(), 5000);
-        },
-        
-        swapRandom() {
-    // 1. Pick a random slot (0-8)
-    const gridIndex = Math.floor(Math.random() * this.activeImages.length);
-    
-    // 2. Filter the pool to find images NOT currently shown
-    const availablePool = this.pool.filter(item => !this.activeImages.includes(item));
-    
-    // 3. If we have something new to show, swap it
-    if (availablePool.length > 0) {
-        const newImg = availablePool[Math.floor(Math.random() * availablePool.length)];
-        this.activeImages[gridIndex] = newImg;
-    }
-}
-        }
-     }">
+        images: ['cloudsandroads11.jpg', 'phrases11.jpg', 'forestrain11.jpg', 'hollow11.jpg', 'isolated11.jpg',
+      'lookingforsnow11.jpg','mysterycard11.jpg','spiritless11.jpg','uninhabitedisland11.jpg'] 
+    }">
       
-  <canvas id="particle-canvas" class="absolute inset-0 z-[-1] pointer-events-none"></canvas>
-  <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
-      
-  <div class="grid grid-cols-3 gap-4 relative z-10">
-  <template x-for="(img, index) in activeImages" :key="index">
-    <div class="overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800 relative">
-      
-      <img :src="path + img" class="absolute inset-0 object-cover w-full h-full">
+     <canvas id="particle-canvas" class="absolute inset-0 z-[-1] pointer-events-none"></canvas>
 
-      <img :src="path + img" 
-           :key="img"
-           x-transition:enter="transition opacity duration-2000"
-           x-transition:enter-start="opacity-0"
-           x-transition:enter-end="opacity-100"
-           class="absolute inset-0 object-cover w-full h-full transition duration-500 hover:scale-110" 
-           loading="lazy">
+      <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
+      
+      <div class="grid grid-cols-3 gap-4 relative z-10">
+         <template x-for="img in images" :key="img">
+              <a :href="path + img" class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800" data-gallery="gallery1">
+                <img :src="path + img" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
+              </a>
+         </template>
+      </div>
     </div>
-  </template>
-</div>
-
-    
     
       <!-- Text part -->
     <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
