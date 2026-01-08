@@ -122,6 +122,7 @@
 
 
     /* Background ANIMATIONS */
+/* 1. Background Gradient Animation */
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -129,7 +130,22 @@
 }
 
 .animate-gradient-slow {
-  animation: gradientMove 15s ease infinite;
+  background-size: 400% 400% !important;
+  animation: gradientMove 15s ease infinite !important;
+}
+
+/* 2. Simplified Cross-Fade Logic */
+body {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out, background-color 0.8s ease-in-out !important;
+}
+
+body.page-loaded {
+  opacity: 1;
+}
+
+body.fade-out {
+  opacity: 0 !important;
 }
 
 /* Apply a smooth transition to the entire page and all its children */
@@ -216,13 +232,12 @@ body {
 <script src="./dist/glightbox_min.js"></script>
 
   
-<!-- 
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
--->
+
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 bg-fixed 
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
-             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F] 
+             animate-gradient-slow">
   
   <header class="flex w-full overflow-hidden pt-3 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -651,30 +666,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- cross fade from page to page -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
 
-  // 1. Fade in on page load (You already have opacity-0 on body)
-  // This ensures the page is visible once loaded
-  setTimeout(() => {
-    body.classList.add('animate-fade-in');
-    body.style.opacity = '1';
-  }, 10);
+  // 1. Fade in smoothly after load
+  // RequestAnimationFrame ensures the browser is ready to paint
+  requestAnimationFrame(() => {
+    body.classList.add('page-loaded');
+  });
 
-  // 2. Intercept clicks on links
+  // 2. Intercept clicks for internal links
   document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', e => {
       const href = link.getAttribute('href');
+      const isInternal = href && (href.includes('.html') || href.startsWith('../')) && !href.startsWith('#');
+      
+      if (isInternal && !link.target && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        body.classList.add('fade-out');
 
-      // Only transition for internal HTML links (not # anchors or external sites)
-      if (href && href.includes('.html') && !href.startsWith('#') && !link.target) {
-        e.preventDefault(); // Stop the browser from leaving immediately
-        body.classList.add('fade-out'); // Trigger CSS fade
-
-        // Wait for the animation to finish (500ms matches the CSS transition)
         setTimeout(() => {
           window.location.href = href;
-        }, 500);
+        }, 600); // Matches the 0.6s CSS transition
       }
     });
   });
