@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harald Revery - Privacy Policy</title>
+  <script src="./dist/tailwind.js"></script>
+
+  <style>
+    /* Safeguard for dark mode background to prevent white flash */
+    .dark body {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+
+    /* Font Definitions */
+    @font-face {
+      font-family: 'HaraldText';
+      src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'HaraldMono';
+      src: url('../fonts/HaraldReveryMonoFont.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Base Styles */
+    html { font-size: 1.427rem; }
+    body {
+      font-family: 'HaraldText', sans-serif;
+      font-size: 2.28rem;
+      line-height: 1.58;
+      letter-spacing: 0.018em;
+    }
+
+    /* Gradient Background Animation */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-gradient-slow {
+      animation: gradientMove 15s ease infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-in forwards;
+    }
+
+    .text-justify {
+      text-justify: inter-word;
+      hyphens: auto;
+    }
+
+    /* Styling for the content sections */
+    .policy-section h3 {
+        font-family: 'HaraldMono', monospace;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'signika': ['HaraldMono', 'monospace'],
+            'sans': ['HaraldText', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <script defer src="./dist/alpine.min.js"></script>
+</head>
+
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out animate-gradient-slow 
+             bg-gradient-to-br from-slate-100 via-white to-slate-200 
+             dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]
+             bg-[length:200%_200%] bg-fixed">
+
+  <header class="flex w-full overflow-hidden pt-3 pb-1">
+    <nav x-data="{ open: false }" class="w-full">
+      <div class="container mx-auto flex flex-wrap items-center">
+        <div class="mr-4 md:mr-8">
+          <a href="../index.html" class="text-2xl font-signika tracking-[0.15em] transition duration-300 hover:opacity-75">HARALD REVERY</a>
+        </div>
+        <div class="ml-auto md:hidden">
+          <button @click="open = !open" class="text-black dark:text-white focus:outline-none">
+            <span class="sr-only">Menu</span>
+            <div class="w-5 h-5 relative">
+                <span class="block absolute h-0.5 w-5 bg-current transition duration-500" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+                <span class="block absolute h-0.5 w-5 bg-current transition duration-500" :class="{'opacity-0': open }"></span>
+                <span class="block absolute h-0.5 w-5 bg-current transition duration-500" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+            </div>
+          </button>
+        </div>
+        <div class="w-full md:w-auto md:flex-grow md:flex md:items-center" :class="{'block': open, 'hidden': !open}">
+          <ul class="flex flex-col md:flex-row md:ml-auto space-y-4 md:space-y-0 md:space-x-5 mt-5 md:mt-0">
+            <li><a href="../index.html" class="font-signika text-2xl tracking-widest">HOME</a></li>
+            <li><a href="music.html" class="font-signika text-2xl tracking-widest">MUSIC</a></li>
+            <li><a href="about.html" class="font-signika text-2xl tracking-widest">ABOUT</a></li>
+            <li><a href="contact.html" class="font-signika text-2xl tracking-widest">CONTACT</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container mx-auto pt-20 pb-20 max-w-4xl">
+    <h2 class="font-signika text-4xl md:text-5xl mb-12 w-fit">Privacy Policy</h2>
+    
+    <div class="text-container space-y-8 text-base md:text-lg leading-relaxed text-justify policy-section">
+      
+      <section>
+          <p>Your privacy is important to us. This policy explains how Harald Revery collects, uses, and protects your information when you visit this website.</p>
+      </section>
+
+      <section>
+        <h3>1. Information We Collect</h3>
+        <p>We may collect personal information that you voluntarily provide, such as your name and email address when you use the contact form or subscribe to updates. We also collect non-personal data through cookies to improve site performance.</p>
+      </section>
+
+      <section>
+        <h3>2. Use of Information</h3>
+        <p>The information we collect is used to respond to your inquiries, provide music updates, and analyze website traffic to improve the user experience. We do not sell or share your personal data with third parties for marketing purposes.</p>
+      </section>
+
+      <section>
+        <h3>3. Cookies</h3>
+        <p>This site uses cookies to remember your preferences (like Dark Mode) and to analyze traffic. You can choose to disable cookies through your browser settings, though some site features may not function correctly.</p>
+      </section>
+
+      <section>
+        <h3>4. External Links</h3>
+        <p>Our website contains links to external streaming services like Spotify, Apple Music, and SoundCloud. Please be aware that we are not responsible for the privacy practices of these external sites.</p>
+      </section>
+
+      <section>
+        <h3>5. Contact</h3>
+        <p>If you have any questions about this Privacy Policy, please reach out via our <a href="contact.html" class="underline hover:opacity-75 transition">Contact Page</a>.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="container mx-auto py-10 border-t border-black/10 dark:border-white/10 opacity-50 text-xs uppercase tracking-widest font-signika">
+    &copy; <script>document.write(new Date().getFullYear())</script> Harald Revery. All rights reserved.
+  </footer>
+
+</body>
+</html>
