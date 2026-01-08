@@ -2,8 +2,23 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
-  
+  <meta name="view-transition" content="same-origin" />
   <style>
+
+/* page to page cross fade */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.5s; /* Adjust timing here */
+  }
+
+  /* Ensure the background stays stable during transition */
+  body {
+    view-transition-name: main-content;
+  }
+
+
+
+    
 /* Custom Background Image Layer */
 .bg-image-fade {
   position: absolute;
@@ -450,8 +465,7 @@ html, body {
 </script>
 </head>
 
-
-  <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
+<body class="min-h-screen text-black dark:text-white px-5 md:px-20 bg-fixed bg-[length:250%_250%] animate-gradient-slow bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F]">
   <!-- Navbar -->
 <header id="main-header" 
         class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-black/60 backdrop-blur-md pointer-events-none">
@@ -1133,6 +1147,36 @@ cards.forEach(clickedCard => {
 });
 </script>
 
+
+  <!-- Page to page fade script -->
+<script>
+  // Intercept link clicks for smooth transitions
+  window.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (
+      link && 
+      link.origin === location.origin && 
+      !link.getAttribute('target') &&
+      document.startViewTransition
+    ) {
+      e.preventDefault();
+      const href = link.href;
+
+      document.startViewTransition(async () => {
+        const response = await fetch(href);
+        const text = await response.text();
+        const newHtml = new DOMParser().parseFromString(text, 'text/html');
+        
+        // Replace only the content, keeping the background/scripts intact
+        document.documentElement.innerHTML = newHtml.documentElement.innerHTML;
+        // Optionally re-run specific initializers like GLightbox if needed
+        if (window.initLightbox) initLightbox();
+      });
+    }
+  });
+</script>
+
+  
     
 </body>
 
