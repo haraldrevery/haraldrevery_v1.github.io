@@ -397,14 +397,7 @@ html, body {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
     
-/* Header crossing */
-      #main-header {
-        will-change: transform, opacity;
-      }
-      /* Ensure the active link underbars don't jump */
-      #ulMenu li a span {
-        transition: max-width 0.5s ease-in-out, background-color 0.5s;
-      }
+    
   </style>
 
 
@@ -949,14 +942,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- navigation bar pop up when scroll-->
 <script>
-  window.addEventListener('scroll', () => {
-    const header = document.getElementById('main-header');
-    if (window.scrollY > 100) {
+  const header = document.getElementById('main-header');
+
+  window.addEventListener('scroll', function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // threshold: 200px (adjust this to decide when it should appear)
+    if (scrollTop > 200) {
+      // SCROLLED DOWN: Show the navbar
       header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-      header.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
     } else {
+      // AT THE TOP: Hide the navbar
       header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-      header.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
     }
   });
 </script>
@@ -1135,33 +1132,7 @@ cards.forEach(clickedCard => {
   }, 3000);
 });
 </script>
-    
-<script>
-  window.addEventListener('scroll', () => {
-    const header = document.getElementById('main-header');
-    // If we have scrolled more than 100px down
-    if (window.scrollY > 100) {
-      header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-      header.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
-    } else {
-      // If we are at the top (where the bar shouldn't be visible on index)
-      header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-      header.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
-    }
-  });
-</script>
 
-    <script>
-  window.addEventListener('scroll', () => {
-    const header = document.getElementById('main-header');
-    if (window.scrollY > 100) {
-      header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-    } else {
-      header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-    }
-  });
-</script>
-    
     
 </body>
 
