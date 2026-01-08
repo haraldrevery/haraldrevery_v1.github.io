@@ -949,25 +949,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- navigation bar pop up when scroll-->
 <script>
-  const header = document.getElementById('main-header');
-
-  window.addEventListener('scroll', () => {
-  const header = document.getElementById('main-header');
-  const scrollY = window.scrollY;
-  const threshold = 100; // Point where header becomes fully visible
-
-  if (scrollY > threshold) {
-    // Visible state (Standard across all pages)
-    header.style.transform = 'translateY(0)';
-    header.style.opacity = '1';
-    header.style.pointerEvents = 'auto';
-  } else {
-    // Fade out state (Only happens on Index when at the top)
-    header.style.transform = 'translateY(-10px)'; // Gentle lift instead of full hide
-    header.style.opacity = '0';
-    header.style.pointerEvents = 'none';
-  }
-});
+window.addEventListener('scroll', () => {
+    const header = document.getElementById('main-header');
+    if (window.scrollY > 100) {
+      // Show header when scrolling down
+      header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      header.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+    } else {
+      // Fade out/Lift up when at the top
+      header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      header.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+    }
+  });
 </script>
 
 <!-- Photo glass thing -->
