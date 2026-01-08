@@ -760,16 +760,17 @@ html, body {
   </footer>
   
   <!-- Script for the LightBox -->
-  <script>
+<script>
+  // This waits for Alpine.js to finish building the grid
   document.addEventListener('DOMContentLoaded', () => {
     const lightbox = GLightbox({
-      selector: '.glightbox', // This matches the class on your <a> tags
+      selector: '.glightbox',
       touchNavigation: true,
       loop: true,
-      autoplayVideos: true
+      descPosition: 'bottom' // Positions the title/description at the bottom
     });
   });
-  </script>
+</script>
     
   <script src="dist/fade_in.js"></script>
   <script src="dist/menu.js"></script>
