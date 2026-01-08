@@ -12,7 +12,7 @@
   
   <link rel="preconnect" href="./fonts/" crossorigin>
   <link rel="preconnect" href="./photos/" crossorigin>
-
+  <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>
   
   <style>
     /* 2. Added a safeguard: Force background to be dark immediately 
@@ -163,7 +163,15 @@ body {
     0% { background-position: 100% 0; }
     100% { background-position: -100% 0; }
 }
-    
+
+
+    @media (prefers-reduced-motion: reduce) {
+  .fade-letter, .word {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
   </style>
 
   <script>
