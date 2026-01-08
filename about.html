@@ -629,6 +629,32 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 </script>
 
+
+    <!-- Load the other pages in the background so it doesn't blink as much -->
+    <script>
+  window.addEventListener('load', () => {
+  setTimeout(() => {
+    const urls = ["music.html", "about.html", "contact.html"];
+
+    // 1. For Chrome/Edge (Speculation Rules)
+    const specScript = document.createElement('script');
+    specScript.type = 'speculationrules';
+    specScript.textContent = JSON.stringify({
+      "prerender": [{ "source": "list", "urls": urls }]
+    });
+    document.head.appendChild(specScript);
+
+    // 2. For Firefox (Traditional Prefetch)
+    urls.forEach(url => {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = url;
+      document.head.appendChild(link);
+    });
+  }, 4500);
+});
+</script>
+    
     
 </body>
 </html>
