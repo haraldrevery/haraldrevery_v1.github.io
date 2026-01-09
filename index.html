@@ -480,14 +480,14 @@ html, body {
 
 #image-grid a.group:hover {
   /* Pop out towards the user and subtle lift */
-  transform: translateZ(50px) translateY(-5px);
+  transform: translateZ(50px) translateY(-15px) scale(1.05);
   z-index: 50; /* Ensure it stays above other grid items */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* 3. Optional: Adjust the internal image so it doesn't zoom */
 #image-grid a.group:hover img {
-  opacity: 0.9; /* Slight glow effect instead of zoom */
+  opacity: 1; /* Slight glow effect instead of zoom */
   /* Remove the scale-110 by keeping it 100% */
   transform: scale(1); 
 }
