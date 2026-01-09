@@ -470,26 +470,20 @@ html, body {
   position: relative;
   width: 600px;
   max-width: 90vw;
-  /* Match your SVG's viewBox ratio (1000/1100) */
-  aspect-ratio: 1000 / 1100; 
+  aspect-ratio: 1000 / 1100;
   transform-style: preserve-3d;
   margin: 0 auto;
 }
 
-#plexus-canvas, #tilting-logo {
-  position: absolute;
-  top: 0;
-  left: 0;
+#tilting-logo {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-#plexus-canvas {
-  z-index: 20;
-  /* Link to the mask */
-  clip-path: url(#logoClip);
-  -webkit-clip-path: url(#logoClip);
+/* ForeignObject needs to be visible */
+foreignObject {
+  overflow: visible;
 }
     
   </style>
@@ -611,23 +605,27 @@ html, body {
   <div id="logo-mover">
     <canvas id="plexus-canvas"></canvas>
 
-    <svg id="tilting-logo" viewBox="0 0 1000 1100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <clipPath id="logoClip" clipPathUnits="userSpaceOnUse">
-          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-        </clipPath>
-      </defs>
-      
-      <g class="animate-logo" stroke-width="2">
-        <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-        <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-        <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-        <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-      </g>
-    </svg>
+<svg id="tilting-logo" viewBox="0 0 1000 1100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="logoClip">
+      <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+      <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+      <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+      <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+    </clipPath>
+  </defs>
+
+  <foreignObject x="0" y="0" width="1000" height="1100" clip-path="url(#logoClip)">
+    <canvas id="plexus-canvas" width="1000" height="1100" style="width:1000px; height:1100px;"></canvas>
+  </foreignObject>
+
+  <g class="animate-logo" fill="none" stroke="#FFFFFF" stroke-width="2">
+      <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+      <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+      <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+      <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+  </g>
+</svg>
   </div>
 </div>
   
@@ -863,74 +861,57 @@ html, body {
       
   <!-- Plexus + 3D  -->
 <script>
-  const canvas = document.getElementById('plexus-canvas');
-  const ctx = canvas.getContext('2d');
-  const mover = document.getElementById('logo-mover');
-    
-function syncResolution() {
-    // This ensures the drawing grid (1000x1100) 
-    // matches the visual size of the canvas perfectly.
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = 1000; 
-    canvas.height = 1100;
-}
-window.addEventListener('resize', syncResolution);
-syncResolution();
+ const canvas = document.getElementById('plexus-canvas');
+const ctx = canvas.getContext('2d');
 
+// Standard particle logic (Stay with 1000x1100)
+let particles = [];
+const particleCount = 250;
 
-  let particles = [];
-  const particleCount = 250; 
-  const connectionDist = 120;
-
-  class Particle {
-    constructor() {
-      // Particles must be spawned within the 1000x1100 range
-      this.x = Math.random() * 1000;
-      this.y = Math.random() * 1100;
-      this.vx = (Math.random() - 0.5) * 1.5;
-      this.vy = (Math.random() - 0.5) * 1.5;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      // Bounce within the 1000x1100 boundary
-      if (this.x < 0 || this.x > 1000) this.vx *= -1;
-      if (this.y < 0 || this.y > 1100) this.vy *= -1;
-    }
+class Particle {
+  constructor() {
+    this.x = Math.random() * 1000;
+    this.y = Math.random() * 1100;
+    this.vx = (Math.random() - 0.5) * 1.5;
+    this.vy = (Math.random() - 0.5) * 1.5;
   }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > 1000) this.vx *= -1;
+    if (this.y < 0 || this.y > 1100) this.vy *= -1;
+  }
+}
 
-  for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
-  function animate() {
-    ctx.clearRect(0, 0, 1000, 1100);
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)"; // White plexus lines
-    ctx.lineWidth = 1.5;
-
-    for (let i = 0; i < particles.length; i++) {
-      let p1 = particles[i];
-      p1.update();
-      for (let j = i + 1; j < particles.length; j++) {
-        let p2 = particles[j];
-        let dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-        if (dist < connectionDist) {
-          ctx.globalAlpha = 1 - (dist / connectionDist);
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-        }
+function animate() {
+  ctx.clearRect(0, 0, 1000, 1100);
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/100})`;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
       }
     }
-    requestAnimationFrame(animate);
   }
-  animate();
+  requestAnimationFrame(animate);
+}
+animate();
 
-  // Mouse tilt logic - ensure it tilts the MOVER div
-  document.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth) - 0.5;
-    const y = (e.clientY / window.innerHeight) - 0.5;
-    mover.style.transform = `rotateX(${y * -25}deg) rotateY(${x * 25}deg)`;
-  });
+// Mouse Rotation Logic remains the same, targeting #logo-mover
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth) - 0.5;
+  const y = (e.clientY / window.innerHeight) - 0.5;
+  document.getElementById('logo-mover').style.transform = `rotateX(${y * -20}deg) rotateY(${x * 20}deg)`;
+});
 </script>
 
 <!-- fading words script -->
