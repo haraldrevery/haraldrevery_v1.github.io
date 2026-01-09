@@ -136,32 +136,26 @@
 
 
 
-/* 1. Logo Drawing Animation */
-@keyframes logoDraw {
-  0% { 
-    stroke-dashoffset: 4000; 
-  }
-  80% {
-    /* Stroke finished drawing, fill is mostly in */
-    stroke-dashoffset: 0;
 
-  }
-  100% { 
-    stroke-dashoffset: 0; 
-    fill-opacity: 0;
-    /* Optional: make the blue lines disappear so only the white logo remains */
-    stroke: transparent; 
-  }
-}
 /* Total animation time to generate the logo */
 .animate-logo path {
-
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  stroke: #FFFFFF; /* Keeping the blue drawing line for contrast */
-  fill: url(#logoGradient);
-  fill-opacity: 0;
+  stroke: #FFFFFF; 
+  /* CHANGE THIS: */
+  fill: none !important; 
+  fill-opacity: 0 !important;
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Ensure the animation doesn't bring the fill back */
+@keyframes logoDraw {
+  0% { stroke-dashoffset: 4000; }
+  100% { 
+    stroke-dashoffset: 0; 
+    fill: none !important; 
+    fill-opacity: 0 !important; 
+  }
 }
     
 /* Ensure the floating animation starts only AFTER the 8s drawing is done */
