@@ -465,8 +465,34 @@ html, body {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Add these for 3D support */
+  transform-style: preserve-3d;
+  perspective: 1000px;
+
 }
 
+/* 2. New Pop-out Effect */
+/* Instead of just scaling the image, we move the entire anchor tag forward in Z-space */
+#image-grid a.group {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  will-change: transform;
+}
+
+#image-grid a.group:hover {
+  /* Pop out towards the user and subtle lift */
+  transform: translateZ(50px) translateY(-5px);
+  z-index: 50; /* Ensure it stays above other grid items */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 3. Optional: Adjust the internal image so it doesn't zoom */
+#image-grid a.group:hover img {
+  opacity: 0.9; /* Slight glow effect instead of zoom */
+  /* Remove the scale-110 by keeping it 100% */
+  transform: scale(1); 
+}
+      
+      
 .grid-item-reveal.revealed {
   opacity: 1;
   transform: translateY(0);
@@ -708,7 +734,7 @@ html, body {
                :style="`transition-delay: ${200}ms`"
                :data-title="img.title" 
                data-gallery="gallery1">
-              <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
+             <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full transition duration-500 group-hover:opacity-90" loading="lazy">
             </a>
           </template>
         </div>
