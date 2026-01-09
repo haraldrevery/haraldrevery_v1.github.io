@@ -461,28 +461,27 @@ html, body {
 
 
 /* Animation for the grid items - Now Fade Only */
+/* Optimized Smooth Fade-In for Grid Items */
 .grid-item-reveal {
   opacity: 0;
-  /* Remove transform: translateY(30px); to stop the upward movement */
-  
-  /* Keep the smooth transition for opacity */
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  visibility: hidden; 
+  visibility: hidden;
+  /* Use a slightly longer duration and ease-out for a professional feel */
+  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+  /* Optional: Keep a very slight upward movement (e.g., 10px) to make the fade feel "active" */
+  transform: translateY(10px);
+  will-change: opacity, transform;
 }
 
 .grid-item-reveal.revealed {
-  opacity: 1; 
-  /* Ensure transform is set to none or removed so it stays in place */
-  transform: none; 
+  opacity: 1;
   visibility: visible;
+  transform: translateY(0); /* Ends at its natural position */
 }
 
-/* Updated hover state to be cleaner without the Y-offset */
+/* Hover effect remains independent */
 .grid-item-reveal:hover {
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              opacity 0.5s ease 0ms;
-  /* Keeps your hover zoom effect intact */
-  transform: scale(1.1); 
+  transform: scale(1.05) !important;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
       
     
@@ -1056,22 +1055,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridItems = document.querySelectorAll('.grid-item-reveal');
   
   const observerOptions = {
-    threshold: 0.15 
+    threshold: 0.10 // Trigger slightly earlier for a smoother transition as you scroll
   };
 
   const observer = new IntersectionObserver((entries) => {
-    // Filter items entering the viewport
     const visibleEntries = entries.filter(entry => entry.isIntersecting);
 
     if (visibleEntries.length > 0) {
       visibleEntries.forEach((entry, index) => {
-        // Stagger the reveal of each image
+        // Increase the stagger delay from 200ms to 300ms for a more graceful sequence
         setTimeout(() => {
-          // This triggers BOTH the opacity fade and the translateY move
           entry.target.classList.add('revealed');
-        }, index * 150); // 150ms delay between each image
+        }, index * 300); 
 
-        // Stop observing once revealed
         observer.unobserve(entry.target);
       });
     }
