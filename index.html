@@ -377,17 +377,24 @@
 }
 
 /* Ensure the canvas actually covers the extra bleed area */
-#particle-canvas {
+#particle-canvas, 
+#particle-canvas-front {
   position: absolute;
-  /* Adjust these values to control how far they "bleed" out, basically I set where the particles are here*/
   top: -10%;
   left: -14%;
   width: 140% !important;
   height: 120% !important;
-  z-index: -1;
   pointer-events: none;
 }
-    
+#particle-canvas {
+  z-index: -1;
+}
+
+/* Foreground layer stays on top (higher than z-10 grid) */
+#particle-canvas-front {
+  z-index: 20;
+}
+      
 /* This prevents the "zooming out" or side-to-side wobble */
 html, body {
   width: 100%;
@@ -686,7 +693,7 @@ html, body {
             </a>
           </template>
         </div>
-
+    <canvas id="particle-canvas-front" class="absolute inset-0 z-20 pointer-events-none"></canvas>
         
     </div>
     
