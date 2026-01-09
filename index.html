@@ -599,42 +599,34 @@ html, body {
   
  <!-- Logo intro -->
 <div id="logo-container" class="relative h-screen h-[72vh] w-full flex items-center justify-center overflow-hidden px-7" style="perspective: 1000px;">
-  
-  <div class="absolute -translate-x-[4.15vw] inset-0 flex items-center justify-center pointer-events-none" style="z-index: 0;">
-  </div>
 
-  <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10" style="transform-style: preserve-3d;">
     
-    <div id="logo-rotator" class="relative w-full h-full flex items-center justify-center transition-transform duration-200 ease-out" style="transform-style: preserve-3d;">
+  <div class="absolute -translate-x-[4.15vw] inset-0 flex items-center justify-center pointer-events-none" style="z-index: 0;">
+
       
-      <canvas id="plexus-canvas" 
-          class="absolute inset-0 z-20 pointer-events-none" 
-          style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%; transform: translateZ(1px);">
-      </canvas>
-      
-      <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full p-10" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" /> 
-            <stop offset="100%" stop-color="#F0F0F0" />
-          </linearGradient>
-          <clipPath id="logoClip">
-            <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-            <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-            <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-            <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-          </clipPath>
-        </defs>
-        <g class="animate-logo" stroke="url(#logoGradient)" stroke-width="4" fill="url(#logoGradient)">
+    <svg viewBox="0 0 1000 1100" class="w-full h-full p-10 opacity-40 overflow-visible" preserveAspectRatio="xMidYMid meet">
+      <g fill="none" stroke="#FFFFFF" stroke-width="2">
+        <g class="echo-ring echo-1" fill="none" stroke="white" stroke-width="2">
           <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
           <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
           <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
           <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
         </g>
-      </svg>
-    </div>
+        <g class="echo-ring echo-2" fill="none" stroke="white" stroke-width="1">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </g>
+         <g class="echo-ring echo-3" fill="none" stroke="white" stroke-width="2">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </g>
+      </g>
+    </svg>
   </div>
-</div>
 
   <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
 
@@ -899,27 +891,37 @@ html, body {
   <!--For the 3D logo thing to react to the mouse -->
 <script>
 const container = document.getElementById('logo-container');
-const rotator = document.getElementById('logo-rotator'); // Target the new wrapper
+const logo = document.getElementById('tilting-logo');
+const plexus = document.getElementById('plexus-canvas'); // Select the canvas
+const echoes = document.querySelectorAll('.echo-ring');
 
 container.addEventListener('mousemove', (e) => {
   const rect = container.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
   
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-  
-  // Calculate rotation angles
-  const rotateX = (centerY - y) / 10; 
-  const rotateY = (x - centerX) / 10;
-  
-  // Apply transformation to the ROTATOR
-  rotator.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  const percentX = (e.clientX - centerX) / (rect.width / 2);
+  const percentY = (e.clientY - centerY) / (rect.height / 2);
+
+  const deg = 30;
+  const rotateX = percentY * -deg;
+  const rotateY = percentX * deg;
+
+  // Apply transform to BOTH the SVG and the Canvas
+  const transformStyle = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  logo.style.transform = transformStyle;
+  plexus.style.transform = transformStyle;
+
+  echoes.forEach((echo) => {
+    echo.style.transform = `rotateX(${rotateX * 0.8}deg) rotateY(${rotateY * 0.8}deg)`;
+  });
 });
 
-// Reset on mouse leave
 container.addEventListener('mouseleave', () => {
-  rotator.style.transform = `rotateX(0deg) rotateY(0deg)`;
+  const resetStyle = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  logo.style.transform = resetStyle;
+  plexus.style.transform = resetStyle;
+
 });
 </script>
 
