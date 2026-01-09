@@ -123,85 +123,7 @@
 
 
 
-/* Radio Signal "Implosion" - Waves travel inward */
-@keyframes signalEcho {
-  0% { 
-    transform: scale(3); /* Start large */
-    opacity: 0; 
-  }
-  20% { 
-    opacity: 0.4; /* Fade in quickly */
-  }
-  100% { 
-    transform: scale(0.8); /* Shrink inward */
-    opacity: 0; 
-  }
-}
 
-.echo-ring {
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: transform 0.3s ease-out;
-  pointer-events: none;
-  
-  /* Initial state */
-  opacity: 0;
-  
-  animation: signalEcho 1.84s ease-out forwards;
-  animation-iteration-count: 1;
-}
-
-/* Slightly staggered start times */
-.echo-1 { animation-delay: 0.40s; } 
-.echo-2 { animation-delay: 0.75s; }
-.echo-3 { animation-delay: 1.21s; }
-
-
-
-/* 1. Logo Drawing Animation */
-@keyframes logoDraw {
-  0% { 
-    stroke-dashoffset: 4000; 
-    fill-opacity: 0;
-  }
-  80% {
-    /* Stroke finished drawing, fill is mostly in */
-    stroke-dashoffset: 0;
-    fill-opacity: 0.96;
-  }
-  100% { 
-    stroke-dashoffset: 0; 
-    fill-opacity: 1;
-    /* Optional: make the blue lines disappear so only the white logo remains */
-    stroke: transparent; 
-  }
-}
-/* Total animation time to generate the logo */
-.animate-logo path {
-
-  stroke-dasharray: 4000;
-  stroke-dashoffset: 4000;
-  stroke: #FFFFFF; /* Keeping the blue drawing line for contrast */
-  fill: url(#logoGradient);
-  fill-opacity: 0;
-  animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-    
-/* Ensure the floating animation starts only AFTER the 8s drawing is done */
-.logo-float {
-  animation: logoFloat 6s ease-in-out infinite 8s;
-  transform-style: preserve-3d;
-}
-
-    @keyframes logoFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-
-    #tilting-logo {
-      transition: transform 0.21s ease-out; /* Smooths mouse movement */
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
-    }
         
         /* Enhancing the gradient movement as requested previously */
         @keyframes shiftGradient {
@@ -329,8 +251,6 @@
   hyphens: auto;
 }
 
-
-
  /* Custom delay animation for the "welcome! scroll down"*/
 @keyframes welcomeFade {
   0% { opacity: 0; transform: translateY(10px); }
@@ -445,20 +365,6 @@ html, body {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
- /* plexus settings */
-#plexus-canvas {
-  width: 100%;
-  height: 100%;
-  /* Ensures the plexus covers the same area as the SVG paths */
-  object-fit: contain; 
-}
-
-/* Optional: Make the logo lines slightly transparent so 
-   the plexus shows through them more clearly */
-.animate-logo path {
-  fill-opacity: 0.8; 
-}
-
 
 /* Animation for the grid items */
 .grid-item-reveal {
@@ -481,7 +387,78 @@ html, body {
 }
 
 
-      
+
+      /* --- 3D LOGO & ANIMATIONS --- */
+
+/* 1. Logo Drawing Animation: Handles the initial SVG stroke "drawing" effect */
+@keyframes logoDraw {
+  0% { 
+    stroke-dashoffset: 4000; 
+    fill-opacity: 0;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0.96;
+  }
+  100% { 
+    stroke-dashoffset: 0; 
+    fill-opacity: 1;
+    stroke: transparent; 
+  }
+}
+
+.animate-logo path {
+  stroke-dasharray: 4000;
+  stroke-dashoffset: 4000;
+  stroke: #FFFFFF;
+  fill: url(#logoGradient);
+  fill-opacity: 0;
+  animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 2. Floating Animation: Starts after the logo is drawn (8s delay) */
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.logo-float {
+  animation: logoFloat 6s ease-in-out infinite 8s;
+  transform-style: preserve-3d;
+}
+
+/* 3. Tilt & Shadow: Base styles for the interactive tilting logo */
+#tilting-logo {
+  transition: transform 0.21s ease-out; /* Smooths mouse movement */
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+}
+
+/* 4. Radio Signal "Implosion" Rings: CSS for the background echo effects */
+@keyframes signalEcho {
+  0% { transform: scale(3); opacity: 0; }
+  20% { opacity: 0.4; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
+.echo-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.3s ease-out;
+  pointer-events: none;
+  opacity: 0;
+  animation: signalEcho 1.84s ease-out forwards;
+}
+
+.echo-1 { animation-delay: 0.40s; } 
+.echo-2 { animation-delay: 0.75s; }
+.echo-3 { animation-delay: 1.21s; }
+
+/* Plexus/Logo Masking */
+#plexus-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+}
     
   </style>
 
