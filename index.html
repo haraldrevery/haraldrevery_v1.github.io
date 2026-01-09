@@ -387,18 +387,20 @@
   pointer-events: none;
 }
 #particle-canvas {
-  z-index: -1;
+  z-index: -10;
 }
 
 /* Foreground layer stays on top of the grid */
 #particle-canvas-front {
-  z-index: 1;
+  z-index: 10;
 }
 
 /* The grid itself is in the middle */
 #image-grid {
   position: relative;
-  z-index: 0;
+  z-index: 1; /* Keep this at 10 or lower than the front canvas */
+  transition: transform 0.15s ease-out;
+  will-change: transform;
 }
       
 /* This prevents the "zooming out" or side-to-side wobble */
