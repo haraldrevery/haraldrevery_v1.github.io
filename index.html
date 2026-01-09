@@ -545,10 +545,6 @@ html, body {
     
   <div class="absolute -translate-x-[4.15vw] inset-0 flex items-center justify-center pointer-events-none" style="z-index: 0;">
 
-      <canvas id="plexus-canvas" 
-            class="absolute inset-0 z-10 pointer-events-none" 
-            style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip);">
-    </canvas>
       
     <svg viewBox="0 0 1000 1100" class="w-full h-full p-10 opacity-40 overflow-visible" preserveAspectRatio="xMidYMid meet">
       <g fill="none" stroke="#FFFFFF" stroke-width="2">
@@ -575,6 +571,12 @@ html, body {
   </div>
 
   <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
+
+      <canvas id="plexus-canvas" 
+          class="absolute inset-0 z-20 pointer-events-none" 
+          style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
+  </canvas>
+      
     <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full p-10 transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
   <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -828,14 +830,13 @@ html, body {
   
   <!--For the 3D logo thing to react to the mouse -->
 <script>
- const container = document.getElementById('logo-container');
+const container = document.getElementById('logo-container');
 const logo = document.getElementById('tilting-logo');
-// Select both echo rings
+const plexus = document.getElementById('plexus-canvas'); // Select the canvas
 const echoes = document.querySelectorAll('.echo-ring');
 
 container.addEventListener('mousemove', (e) => {
   const rect = container.getBoundingClientRect();
-  
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
   
@@ -846,23 +847,21 @@ container.addEventListener('mousemove', (e) => {
   const rotateX = percentY * -deg;
   const rotateY = percentX * deg;
 
-  // Apply to the main logo
-  logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  // Apply transform to BOTH the SVG and the Canvas
+  const transformStyle = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  logo.style.transform = transformStyle;
+  plexus.style.transform = transformStyle;
 
-  // Apply to each echo ring with a slight multiplier for a "parallax" depth effect
   echoes.forEach((echo) => {
-    // We use a slightly smaller degree (0.8x) so the echoes feel like they are "deeper" in the screen
     echo.style.transform = `rotateX(${rotateX * 0.8}deg) rotateY(${rotateY * 0.8}deg)`;
-    echo.style.transition = "transform 0.4s ease-out"; // Softer follow for the echoes
   });
 });
 
-// Optional: Reset position when mouse leaves
 container.addEventListener('mouseleave', () => {
-  logo.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-  echoes.forEach((echo) => {
-    echo.style.transform = `rotateX(0deg) rotateY(0deg)`;
-  });
+  const resetStyle = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  logo.style.transform = resetStyle;
+  plexus.style.transform = resetStyle;
+
 });
 </script>
 
