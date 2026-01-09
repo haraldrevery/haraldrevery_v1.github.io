@@ -142,13 +142,11 @@
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
   stroke: #FFFFFF; 
-  /* CHANGE THIS: */
-  fill: none !important; 
-  fill-opacity: 0 !important;
+  fill: none !important;        /* MUST BE NONE to see through to canvas */
+  fill-opacity: 0 !important;   /* MUST BE 0 */
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Ensure the animation doesn't bring the fill back */
 @keyframes logoDraw {
   0% { stroke-dashoffset: 4000; }
   100% { 
@@ -563,8 +561,7 @@ html, body {
     </svg>
   </div>
 
-  <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
-  
+<div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
   <canvas id="plexus-canvas" 
           class="absolute inset-0 z-20 pointer-events-none" 
           style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%; object-fit: contain;">
@@ -865,74 +862,46 @@ container.addEventListener('mouseleave', () => {
   const plexusCanvas = document.getElementById('plexus-canvas');
   const pCtx = plexusCanvas.getContext('2d');
   let plexusParticles = [];
-  const plexusParticleCount = 124; // Adjust for density
-  const connectionDistance = 150; // Distance where lines start to draw
+  const plexusParticleCount = 124; 
+  const connectionDistance = 120; // Adjusted for 1000-unit scale
 
   class PlexusParticle {
     constructor() {
       this.init();
     }
     init() {
-      this.x = Math.random() * plexusCanvas.width;
-      this.y = Math.random() * plexusCanvas.height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
+      // Use 1000x1100 to match the SVG viewBox
+      this.x = Math.random() * 1000;
+      this.y = Math.random() * 1100;
+      this.vx = (Math.random() - 0.5) * 0.8;
+      this.vy = (Math.random() - 0.5) * 0.8;
       this.size = 1.5;
     }
     update() {
       this.x += this.vx;
       this.y += this.vy;
 
-      if (this.x < 0 || this.x > plexusCanvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > plexusCanvas.height) this.vy *= -1;
+      if (this.x < 0 || this.x > 1000) this.vx *= -1;
+      if (this.y < 0 || this.y > 1100) this.vy *= -1;
     }
     draw() {
-      pCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+      pCtx.fillStyle = 'rgba(255, 255, 255, 0.6)';
       pCtx.beginPath();
       pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       pCtx.fill();
     }
   }
     
-function resize() {
-  const rect = canvas.getBoundingClientRect();
-  
-  // Match internal pixel count to the actual display size
-  canvas.width = rect.width;
-  canvas.height = rect.height;
-
-  // Re-initialize particles to fill the new dimensions
-  particles = [];
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-}
+  function resizePlexus() {
+    // SYNC: Set internal resolution to match SVG viewBox exactly
+    plexusCanvas.width = 1000; 
+    plexusCanvas.height = 1100;
     
-function resizePlexus() {
-  // Instead of rect.width, we force the canvas to use the SVG's coordinate system
-  plexusCanvas.width = 1000; 
-  plexusCanvas.height = 1100;
-  
-  plexusParticles = [];
-  for (let i = 0; i < plexusParticleCount; i++) {
-    plexusParticles.push(new PlexusParticle());
+    plexusParticles = [];
+    for (let i = 0; i < plexusParticleCount; i++) {
+      plexusParticles.push(new PlexusParticle());
+    }
   }
-}
-
-// Ensure the connection distance is relative to the 1000-unit scale
-const connectionDistance = 120;
-
-
-  // 2. Re-initialize particles so they distribute correctly in the new space
-  plexusParticles = [];
-  for (let i = 0; i < plexusParticleCount; i++) {
-    plexusParticles.push(new PlexusParticle());
-  }
-}
-
-// Ensure it fires on load and resize
-window.addEventListener('resize', resizePlexus);
-resizePlexus();
 
   function animatePlexus() {
     pCtx.clearRect(0, 0, plexusCanvas.width, plexusCanvas.height);
@@ -949,9 +918,8 @@ resizePlexus();
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < connectionDistance) {
-          // Calculate opacity based on distance
           const opacity = 1 - (distance / connectionDistance);
-          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.21})`;
+          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
           pCtx.lineWidth = 1;
           pCtx.beginPath();
           pCtx.moveTo(p1.x, p1.y);
@@ -963,7 +931,7 @@ resizePlexus();
     requestAnimationFrame(animatePlexus);
   }
 
-
+  window.addEventListener('resize', resizePlexus);
   resizePlexus();
   animatePlexus();
 </script>
