@@ -1325,7 +1325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set a staggered delay (e.g., 100ms * index)
         setTimeout(() => {
           entry.target.classList.add('revealed');
-        }, index * 500); // Adjust 100 to make it faster or slower
+        }, 500); // Adjust 100 to make it faster or slower
 
         // Stop observing once it has been revealed
         observer.unobserve(entry.target);
