@@ -474,30 +474,30 @@ html, body {
 }
 
 /* 2. New Pop-out Effect */
-/* Instead of just scaling the image, we move the entire anchor tag forward in Z-space */
+/* Ensure individual items can move in 3D space */
+.grid-item-reveal {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* This targets the individual links/images within the grid */
 #image-grid a.group {
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
   will-change: transform;
+  display: block;
 }
 
 #image-grid a.group:hover {
-  /* Pop out towards the user and subtle lift */
-  transform: translateZ(50px) translateY(-15px) scale(1.05);
-  z-index: 50; /* Ensure it stays above other grid items */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  /* This moves ONLY the hovered image 50px towards the user */
+  transform: translateZ(80px) translateY(-10px) scale(1.05);
+  z-index: 50; /* Keeps the popped-out image on top of neighbors */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
 }
 
-/* 3. Optional: Adjust the internal image so it doesn't zoom */
+/* Optional: Keep the image clear and remove any internal zoom */
 #image-grid a.group:hover img {
-  opacity: 1; /* Slight glow effect instead of zoom */
-  /* Remove the scale-110 by keeping it 100% */
   transform: scale(1); 
-}
-      
-      
-.grid-item-reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
+  filter: brightness(1.1);
 }
 
       
@@ -1367,31 +1367,21 @@ cards.forEach(clickedCard => {
 
    <!-- Images rotation -->   
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('image-grid');
-    const container = grid.parentElement;
+container.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-    container.addEventListener('mousemove', (e) => {
-      const rect = container.getBoundingClientRect();
-      
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
+  const rotateX = y * -15; 
+  const rotateY = x * 15;
+  
+  // Removed translateZ from here so the whole grid doesn't move forward
+  grid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});
 
-      const rotateX = y * -15; 
-      const rotateY = x * 15;
-      
-      // Added: Moves the whole grid closer to the camera when hovering
-      const translateZ = 40; 
-
-      // Added translateZ(${translateZ}px) to the transform string
-      grid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
-    });
-
-    // Reset rotation AND translation when mouse leaves
-    container.addEventListener('mouseleave', () => {
-      grid.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
-    });
-  });
+container.addEventListener('mouseleave', () => {
+  grid.style.transform = `rotateX(0deg) rotateY(0deg)`;
+});
 </script>
       
 </body>
