@@ -463,8 +463,11 @@ html, body {
 /* Animation for the grid items */
 .grid-item-reveal {
   opacity: 0;
-  transform: translateY(20px); /* Increased for a more dramatic slow rise */
-  transition: opacity 5.0s linear, transform 4.0s cubic-bezier(0.2, 0, 0.2, 1); 
+  transform: translateY(30px); /* Slightly more movement for a "floating" effect */
+  /* Using ease-out for a natural deceleration */
+  transition: 
+    opacity 2.5s ease-out, 
+    transform 2.5s cubic-bezier(0.16, 1, 0.3, 1); 
   will-change: opacity, transform;
 }
 
