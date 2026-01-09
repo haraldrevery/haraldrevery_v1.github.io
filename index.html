@@ -463,25 +463,18 @@ html, body {
 /* Animation for the grid items */
 .grid-item-reveal {
   opacity: 0;
-  /* Use 3D for smoothness, but keep the distance small (1.5rem) 
-     so the GPU has less 'painting' to do across the screen */
   transform: translate3d(0, 1.5rem, 0); 
-  
   transition: 
     opacity 2000ms cubic-bezier(0.2, 1, 0.3, 1), 
     transform 2000ms cubic-bezier(0.2, 1, 0.3, 1);
-
-  /* This tells the browser: "Get the GPU ready, but only for these two things" */
   will-change: opacity, transform;
-  
-  /* Prevents a common bug on old Chrome/Android where 
-     text looks blurry during the move */
   -webkit-font-smoothing: antialiased;
 }
 
 .grid-item-reveal.revealed {
   opacity: 1;
-  transform: translateY(0);
+  /* Keep it in 3D space to avoid a 'layer exit' flicker */
+  transform: translate3d(0, 0, 0);
 }
 
 
