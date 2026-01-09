@@ -449,8 +449,7 @@ html, body {
 #plexus-canvas {
   width: 100%;
   height: 100%;
-  /* Ensures the plexus covers the same area as the SVG paths */
-  object-fit: contain; 
+  object-fit: contain; /* This is the key to perfect alignment */
 }
 
 /* Optional: Make the logo lines slightly transparent so 
@@ -935,7 +934,7 @@ update() {
   this.x += this.vx;
   this.y += this.vy;
 
-  // Bounce off virtual walls 1000 and 1100
+  // Bounce off the 1000x1100 "virtual walls"
   if (this.x < 0 || this.x > 1000) this.vx *= -1;
   if (this.y < 0 || this.y > 1100) this.vy *= -1;
 }
@@ -953,9 +952,8 @@ update() {
   }
     
     function resizePlexus() {
-  // IGNORE the screen size (rect.width). 
-  // Force the internal drawing board to 1000x1100.
-  // This locks the dots to the SVG mask coordinates.
+  // FORCE the canvas internal resolution to match the SVG's 1000x1100.
+  // This makes 1 unit on the canvas equal 1 unit in the SVG.
   plexusCanvas.width = 1000;
   plexusCanvas.height = 1100;
   
