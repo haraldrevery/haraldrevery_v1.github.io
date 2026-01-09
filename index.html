@@ -387,20 +387,18 @@
   pointer-events: none;
 }
 #particle-canvas {
-  z-index: -10;
+  z-index: -1;
 }
 
 /* Foreground layer stays on top of the grid */
 #particle-canvas-front {
-  z-index: 10;
+  z-index: 1;
 }
 
 /* The grid itself is in the middle */
 #image-grid {
   position: relative;
-  z-index: 1; /* Keep this at 10 or lower than the front canvas */
-  transition: transform 0.15s ease-out;
-  will-change: transform;
+  z-index: 0;
 }
       
 /* This prevents the "zooming out" or side-to-side wobble */
@@ -467,53 +465,14 @@ html, body {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    /* Add these for 3D support */
-  transform-style: preserve-3d;
-  perspective: 1000px;
-
 }
 
-/* 2. New Pop-out Effect */
-/* Ensure individual items can move in 3D space */
-.grid-item-reveal {
-  transform-style: preserve-3d;
-  perspective: 1000px;
+.grid-item-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
-
-/* This targets the individual links/images within the grid */
-#image-grid a.group {
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-  will-change: transform;
-  display: block;
-}
-
-#image-grid a.group:hover {
-  /* This moves ONLY the hovered image 50px towards the user */
-  transform: translateZ(80px) translateY(-10px) scale(1.05);
-  z-index: 50; /* Keeps the popped-out image on top of neighbors */
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-}
-
-/* Optional: Keep the image clear and remove any internal zoom */
-#image-grid a.group:hover img {
-  transform: scale(1); 
-  filter: brightness(1.1);
-}
-
       
-/* Container for the 3D effect */
-.perspective-container {
-  perspective: 800px; /* Lowering this value makes the Z-depth more intense */
-  transform-style: preserve-3d;
-}
-
-/* The grid itself with smooth transition */
-#image-grid {
-  position: relative;
-  z-index: 10;
-  transition: transform 0.15s ease-out; /* Smooth follow effect */
-  will-change: transform;
-}    
+    
   </style>
 
 
@@ -710,13 +669,13 @@ html, body {
 <div class="container mx-auto py-20 px-5 md:px-0">
  <div class="flex flex-col lg:flex-row gap-16 items-center">
     
-    <div class="w-full lg:w-1/2 relative overflow-bleed" perspective-container x-data="{ 
+    <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{ 
     path: './artcovers/', 
     images: [
       { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads | ISRC: QZHN32004027' },
       { file: 'phrases11.jpg', title: 'Phrases | ISRC: QZWFL2416355' },
-      { file: 'hollow11.jpg', title: 'Hollow | ISRC: QZAPG1891917' },
       { file: 'forestrain11.jpg', title: 'Forest Rain | ISRC: QZES81920321' },
+      { file: 'hollow11.jpg', title: 'Hollow | ISRC: QZAPG1891917' },
       { file: 'isolated11.jpg', title: 'Isolated | ISRC: QZ4JJ1822081' },
       { file: 'lookingforsnow11.jpg', title: 'Looking for Snow | ISRC: QZTBB2487093' },
       { file: 'mysterycard11.jpg', title: 'Mystery Card | ISRC: QZ9JZ1740891' },
@@ -736,7 +695,7 @@ html, body {
                :style="`transition-delay: ${200}ms`"
                :data-title="img.title" 
                data-gallery="gallery1">
-             <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full transition duration-500 group-hover:opacity-90" loading="lazy">
+              <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
             </a>
           </template>
         </div>
@@ -1364,26 +1323,8 @@ cards.forEach(clickedCard => {
     gridItems.forEach(item => observer.observe(item));
   });
 </script>
-
-   <!-- Images rotation -->   
-<script>
-container.addEventListener('mousemove', (e) => {
-  const rect = container.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width - 0.5;
-  const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-  const rotateX = y * -15; 
-  const rotateY = x * 15;
-  
-  // Removed translateZ from here so the whole grid doesn't move forward
-  grid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-});
-
-container.addEventListener('mouseleave', () => {
-  grid.style.transform = `rotateX(0deg) rotateY(0deg)`;
-});
-</script>
       
+    
 </body>
 
 </html>
