@@ -326,10 +326,20 @@ body {
 
 /* 3. The Images: Fit vertically without cropping */
 .scrolling-track img {
-  height: 100%;       /* Fills the 15vh height of the container */
-  width: auto;        /* Automatically adjusts width to maintain aspect ratio */
-  object-fit: contain; /* Ensures the whole image is visible (no cropping) */
-  padding: 0 0.75rem;    /* Space between images */
+  height: 100%;       /* Fills the container height */
+  width: auto;        
+  object-fit: contain; 
+  padding: 0 0.75rem;   
+  
+  /* ADDED: Smooth transition for the scale effect */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* ADDED: Scale up the image when hovered */
+.scrolling-track img:hover {
+  transform: scale(1.15); /* Adjust 1.15 to your preferred scale size */
+  z-index: 10;           /* Ensures the scaled image stays on top of others */
 }
 
 /* 4. The Animation: Moves the track from right to left */
