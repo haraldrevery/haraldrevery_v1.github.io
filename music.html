@@ -306,8 +306,9 @@ body {
   /* Vertical Padding creates the symmetry/breathing room */
   padding: 1.5rem 0;
 
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+/* UPDATED: Increased transparent zones from 15% to 30% for a longer fade */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
 }
 
 /* Dark Mode lines */
