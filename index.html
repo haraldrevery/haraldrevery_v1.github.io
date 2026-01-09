@@ -445,6 +445,19 @@ html, body {
 .animate-logo path {
   fill-opacity: 0.8; 
 }
+
+
+      /* Animation for the grid items */
+.grid-item-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.grid-item-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
       
     
   </style>
@@ -662,20 +675,19 @@ html, body {
 
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
       
-      <div class="grid grid-cols-3 gap-4 relative z-10">
-            <template x-for="img in images" :key="img.file">
-                <a :href="path + img.file" 
-                   class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800" 
-                   :data-title="img.title"
-                   data-gallery="gallery1">
-                    
-                    <img :src="path + img.file" 
-                         :alt="img.title"
-                         class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" 
-                         loading="lazy">
-                </a>
-            </template>
-      </div>
+      <div id="image-grid" class="grid grid-cols-3 gap-4 relative z-10">
+          <template x-for="(img, index) in images" :key="img.file">
+            <a :href="path + img.file" 
+               class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal" 
+               :style="`transition-delay: ${index * 100}ms`"
+               :data-title="img.title" 
+               data-gallery="gallery1">
+              <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
+            </a>
+          </template>
+        </div>
+
+        
     </div>
     
       <!-- Text part -->
@@ -1256,6 +1268,30 @@ cards.forEach(clickedCard => {
 });
 </script>
 
+<!-- Images animating in when scrolling -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const gridItems = document.querySelectorAll('.grid-item-reveal');
+    
+    const observerOptions = {
+      threshold: 0.15 // Trigger when 15% of the grid is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Add the revealed class to the element
+          entry.target.classList.add('revealed');
+          // Optional: Stop observing once animated
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    gridItems.forEach(item => observer.observe(item));
+  });
+</script>
+      
     
 </body>
 
