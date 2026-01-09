@@ -466,7 +466,7 @@ html, body {
   opacity: 0;
   visibility: hidden;
   /* Use a slightly longer duration and ease-out for a professional feel */
-  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+  transition: opacity 2.2s ease-out, transform 2.2s ease-out;
   /* Optional: Keep a very slight upward movement (e.g., 10px) to make the fade feel "active" */
   transform: translateY(10px);
   will-change: opacity, transform;
@@ -1325,7 +1325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           // This adds the class that sets opacity: 1 and transform: translateY(0)
           entry.target.classList.add('revealed');
-        }, index * 200); // 150ms delay between each image's start
+        }, index * 500); // 150ms delay between each image's start
 
         // Stop observing once revealed
         observer.unobserve(entry.target);
