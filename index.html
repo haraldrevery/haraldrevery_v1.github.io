@@ -922,36 +922,32 @@ container.addEventListener('mouseleave', () => {
   const connectionDistance = 150;
 
   class PlexusParticle {
-    constructor() {
-      this.init();
-    }
+    constructor() { this.init(); }
     init() {
-      // Use 1000 and 1100 as the boundaries, not the screen size
+      // Use 1000 and 1100 as the virtual boundaries
       this.x = Math.random() * 1000;
       this.y = Math.random() * 1100;
-      this.vx = (Math.random() - 0.5) * 0.8;
-      this.vy = (Math.random() - 0.5) * 0.8;
-      this.size = 1.8;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.size = 1.5;
     }
     update() {
       this.x += this.vx;
       this.y += this.vy;
-
-      // Bounce off the 1000x1100 "Virtual" walls
       if (this.x < 0 || this.x > 1000) this.vx *= -1;
       if (this.y < 0 || this.y > 1100) this.vy *= -1;
     }
     draw() {
-      pCtx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      pCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
       pCtx.beginPath();
       pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       pCtx.fill();
     }
   }
 
-  function initPlexus() {
-    // CRITICAL: Force the drawing board to 1000x1100 units.
-    // This makes the mask (clip-path) overlap the particles perfectly.
+  function setupPlexus() {
+    // FORCE the drawing resolution to match the SVG viewBox (1000x1100)
+    // This ensures the clip-path mask and the particles use the same coordinates.
     plexusCanvas.width = 1000;
     plexusCanvas.height = 1100;
     
@@ -963,22 +959,19 @@ container.addEventListener('mouseleave', () => {
 
   function animatePlexus() {
     pCtx.clearRect(0, 0, 1000, 1100);
-    
     for (let i = 0; i < plexusParticles.length; i++) {
       const p1 = plexusParticles[i];
       p1.update();
       p1.draw();
-
       for (let j = i + 1; j < plexusParticles.length; j++) {
         const p2 = plexusParticles[j];
         const dx = p1.x - p2.x;
         const dy = p1.y - p2.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-
         if (distance < connectionDistance) {
           const opacity = 1 - (distance / connectionDistance);
-          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
-          pCtx.lineWidth = 1.2;
+          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.21})`;
+          pCtx.lineWidth = 1;
           pCtx.beginPath();
           pCtx.moveTo(p1.x, p1.y);
           pCtx.lineTo(p2.x, p2.y);
@@ -989,10 +982,12 @@ container.addEventListener('mouseleave', () => {
     requestAnimationFrame(animatePlexus);
   }
 
-  // Use initPlexus instead of your old resizePlexus
-  // We don't want to change width/height on resize, we want it fixed at 1000x1100
-  initPlexus();
+  // Initialize
+  setupPlexus();
   animatePlexus();
+
+  // On window resize, we only need to recalculate if you change 
+  // the 1000x1100 resolution, otherwise leave it alone!
 </script>
 
 
