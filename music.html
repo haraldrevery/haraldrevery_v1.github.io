@@ -282,19 +282,29 @@ body {
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 24vh;
+  height: 28vh; /* Increased slightly to account for padding */
   overflow: hidden;
+  margin: 4rem 0; 
   
-  /* REDUCED SPACE: margin-top changed from 4rem to 1rem */
-  margin: 4rem 0 4rem 0; 
-  
-  /* FADE IN ON LOAD: Added these lines */
+  /* Fade-in Animation */
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
-  animation-delay: 0.5s; /* Slight delay so it appears after the main text */
+  animation-delay: 0.5s;
+
+  /* The Lines */
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
+  /* Vertical Padding creates the symmetry/breathing room */
+  padding: 1.5rem 0;
 
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+/* Dark Mode lines */
+.dark .scrolling-container {
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* 2. The Moving Track: Holds the images in a row */
@@ -462,7 +472,7 @@ body {
 
 
 <!-- line  --> 
- <div class="scrolling-container border-y border-black/10 dark:border-white/10">     
+ <div class="scrolling-container border-y border-black/10 dark:border-white/10"> 
 <!-- Scrolling images -->  
 <div class="scrolling-container">
   <div class="scrolling-track">
