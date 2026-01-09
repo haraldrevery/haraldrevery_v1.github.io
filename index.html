@@ -679,7 +679,7 @@ html, body {
           <template x-for="(img, index) in images" :key="img.file">
             <a :href="path + img.file" 
                class="glightbox group overflow-hidden rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal" 
-               :style="`transition-delay: ${Math.floor(index / 3) * 200}ms`"
+               :style="`transition-delay: ${200}ms`"
                :data-title="img.title" 
                data-gallery="gallery1">
               <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full transition duration-500 group-hover:scale-110 group-hover:opacity-80" loading="lazy">
