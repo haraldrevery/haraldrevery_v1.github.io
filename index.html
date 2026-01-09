@@ -916,9 +916,12 @@ function resize() {
     
 function resizePlexus() {
   const rect = plexusCanvas.getBoundingClientRect();
+  
+  // High-DPI Fix: Matches internal resolution to display size
   plexusCanvas.width = rect.width;
   plexusCanvas.height = rect.height;
   
+  // Re-generate particles so they aren't "stretched"
   plexusParticles = [];
   for (let i = 0; i < plexusParticleCount; i++) {
     plexusParticles.push(new PlexusParticle());
