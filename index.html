@@ -622,15 +622,14 @@ html, body {
     </svg>
   </div>
 
-<div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
-    <div id="tilt-container" class="relative w-full h-full transition-transform duration-200 ease-out">
-        
-        <canvas id="plexus-canvas" 
-                class="absolute inset-0 z-20 pointer-events-none" 
-                style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
-        </canvas>
-        
-        <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
+
+      <canvas id="plexus-canvas" 
+          class="absolute inset-0 z-20 pointer-events-none" 
+          style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
+  </canvas>
+      
+    <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full p-10 transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
   <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
     <stop offset="0%" stop-color="#ffffff" /> 
@@ -653,7 +652,7 @@ html, body {
     </svg>  
   </div>
 </div>
-</div>  
+  
 
   
   
@@ -885,40 +884,38 @@ html, body {
   
   <!--For the 3D logo thing to react to the mouse -->
 <script>
-/**
- * SOLUTION 1: Synchronized 3D Tilt
- * This ensures the Canvas and SVG move together as one unit.
- */
-const tiltContainer = document.getElementById('tilt-container');
+const container = document.getElementById('logo-container');
+const logo = document.getElementById('tilting-logo');
+const plexus = document.getElementById('plexus-canvas'); // Select the canvas
+const echoes = document.querySelectorAll('.echo-ring');
 
-// Configuration
-const tiltIntensity = 15; // Degrees of rotation
+container.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const percentX = (e.clientX - centerX) / (rect.width / 2);
+  const percentY = (e.clientY - centerY) / (rect.height / 2);
 
-document.addEventListener('mousemove', (e) => {
-    // 1. Get mouse position relative to window
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
+  const deg = 30;
+  const rotateX = percentY * -deg;
+  const rotateY = percentX * deg;
 
-    // 2. Calculate rotation percentages (-0.5 to 0.5)
-    const xPos = (clientX / innerWidth) - 0.5;
-    const yPos = (clientY / innerHeight) - 0.5;
+  // Apply transform to BOTH the SVG and the Canvas
+  const transformStyle = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  logo.style.transform = transformStyle;
+  plexus.style.transform = transformStyle;
 
-    // 3. Apply rotation to the SHARED PARENT
-    // rotateX uses Y-axis mouse movement, rotateY uses X-axis mouse movement
-    const xRotation = yPos * tiltIntensity; 
-    const yRotation = xPos * -tiltIntensity;
-
-    // Use perspective to give it 3D depth
-    tiltContainer.style.transform = `
-        perspective(1000px) 
-        rotateX(${xRotation}deg) 
-        rotateY(${yRotation}deg)
-    `;
+  echoes.forEach((echo) => {
+    echo.style.transform = `rotateX(${rotateX * 0.8}deg) rotateY(${rotateY * 0.8}deg)`;
+  });
 });
 
-// Optional: Reset position when mouse leaves
-document.addEventListener('mouseleave', () => {
-    tiltContainer.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+container.addEventListener('mouseleave', () => {
+  const resetStyle = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  logo.style.transform = resetStyle;
+  plexus.style.transform = resetStyle;
+
 });
 </script>
 
@@ -1344,35 +1341,8 @@ document.addEventListener('DOMContentLoaded', () => {
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
-
- <!-- Getting the plexus and logo to match -->     
-    <script>
-  const tiltContainer = document.getElementById('tilt-container');
-  const canvas = document.getElementById('plexus-canvas');
-
-  // 1. Unified Tilt Logic (Replaces individual SVG tilting)
-  document.addEventListener('mousemove', (e) => {
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-    const xRotation = ((clientY / innerHeight) - 0.5) * 15;
-    const yRotation = ((clientX / innerWidth) - 0.5) * -15;
-
-    tiltContainer.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
-  });
-
-  // 2. Alignment Logic (Replaces static canvas sizing)
-  function syncCanvas() {
-    const rect = tiltContainer.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    // If your plexus script needs a resize trigger, call it here
-  }
-
-  window.addEventListener('resize', syncCanvas);
-  syncCanvas();
-</script>
       
+    
 </body>
 
 </html>
