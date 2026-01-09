@@ -390,9 +390,15 @@
   z-index: -1;
 }
 
-/* Foreground layer stays on top (higher than z-10 grid) */
+/* Foreground layer stays on top of the grid */
 #particle-canvas-front {
   z-index: 20;
+}
+
+/* The grid itself is in the middle */
+#image-grid {
+  position: relative;
+  z-index: 10;
 }
       
 /* This prevents the "zooming out" or side-to-side wobble */
