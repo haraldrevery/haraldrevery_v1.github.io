@@ -463,9 +463,8 @@ html, body {
 /* Animation for the grid items */
 .grid-item-reveal {
   opacity: 0;
-  transform: translateY(10px);
-  /* Use 'all' or list both to ensure hover doesn't break opacity */
-  transition: opacity 10.2s ease-out, transform 8.2s ease-out; 
+  transform: translateY(20px); /* Increased for a more dramatic slow rise */
+  transition: opacity 2.0s linear, transform 2.0s cubic-bezier(0.2, 0, 0.2, 1); 
   will-change: opacity, transform;
 }
 
