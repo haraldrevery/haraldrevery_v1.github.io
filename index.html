@@ -630,6 +630,9 @@ html, body {
 
   <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
 
+
+      <div class="relative w-full h-full -translate-x-[4.15vw] flex items-center justify-center"> 
+          
       <canvas id="plexus-canvas" 
           class="absolute inset-0 z-20 pointer-events-none" 
           style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
@@ -656,6 +659,9 @@ html, body {
         <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
       </g>
     </svg>  
+
+  </div>
+      
   </div>
 </div>
   
@@ -932,48 +938,51 @@ container.addEventListener('mouseleave', () => {
   const plexusCanvas = document.getElementById('plexus-canvas');
   const pCtx = plexusCanvas.getContext('2d');
   let plexusParticles = [];
-  const plexusParticleCount = 124; // Adjust for density
-  const connectionDistance = 150; // Distance where lines start to draw
+  const plexusParticleCount = 124;
+  const connectionDistance = 150;
 
   class PlexusParticle {
     constructor() {
       this.init();
     }
     init() {
-      this.x = Math.random() * plexusCanvas.width;
-      this.y = Math.random() * plexusCanvas.height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.size = 1.5;
+      // Use 1000 and 1100 as the boundaries, not the screen size
+      this.x = Math.random() * 1000;
+      this.y = Math.random() * 1100;
+      this.vx = (Math.random() - 0.5) * 0.8;
+      this.vy = (Math.random() - 0.5) * 0.8;
+      this.size = 1.8;
     }
     update() {
       this.x += this.vx;
       this.y += this.vy;
 
-      if (this.x < 0 || this.x > plexusCanvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > plexusCanvas.height) this.vy *= -1;
+      // Bounce off the 1000x1100 "Virtual" walls
+      if (this.x < 0 || this.x > 1000) this.vx *= -1;
+      if (this.y < 0 || this.y > 1100) this.vy *= -1;
     }
     draw() {
-      pCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+      pCtx.fillStyle = 'rgba(255, 255, 255, 0.6)';
       pCtx.beginPath();
       pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       pCtx.fill();
     }
   }
 
-function resizePlexus() {
-  const rect = plexusCanvas.getBoundingClientRect();
-  plexusCanvas.width = rect.width;
-  plexusCanvas.height = rect.height;
-  
-  plexusParticles = [];
-  for (let i = 0; i < plexusParticleCount; i++) {
-    plexusParticles.push(new PlexusParticle());
+  function initPlexus() {
+    // CRITICAL: Force the drawing board to 1000x1100 units.
+    // This makes the mask (clip-path) overlap the particles perfectly.
+    plexusCanvas.width = 1000;
+    plexusCanvas.height = 1100;
+    
+    plexusParticles = [];
+    for (let i = 0; i < plexusParticleCount; i++) {
+      plexusParticles.push(new PlexusParticle());
+    }
   }
-}
 
   function animatePlexus() {
-    pCtx.clearRect(0, 0, plexusCanvas.width, plexusCanvas.height);
+    pCtx.clearRect(0, 0, 1000, 1100);
     
     for (let i = 0; i < plexusParticles.length; i++) {
       const p1 = plexusParticles[i];
@@ -987,10 +996,9 @@ function resizePlexus() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < connectionDistance) {
-          // Calculate opacity based on distance
           const opacity = 1 - (distance / connectionDistance);
-          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.21})`;
-          pCtx.lineWidth = 1;
+          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
+          pCtx.lineWidth = 1.2;
           pCtx.beginPath();
           pCtx.moveTo(p1.x, p1.y);
           pCtx.lineTo(p2.x, p2.y);
@@ -1001,8 +1009,9 @@ function resizePlexus() {
     requestAnimationFrame(animatePlexus);
   }
 
-  window.addEventListener('resize', resizePlexus);
-  resizePlexus();
+  // Use initPlexus instead of your old resizePlexus
+  // We don't want to change width/height on resize, we want it fixed at 1000x1100
+  initPlexus();
   animatePlexus();
 </script>
 
