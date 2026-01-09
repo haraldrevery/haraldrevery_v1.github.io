@@ -605,7 +605,7 @@ html, body {
        </svg>
   </div>
 
-  <div class="relative w-full h-full -translate-x-[4.15vw] flex items-center justify-center z-10"> 
+  <div class="relative w-full h-full flex items-center justify-center z-10"> 
           
       <canvas id="plexus-canvas"  
           class="absolute inset-0 z-20 pointer-events-none"  
@@ -924,26 +924,21 @@ container.addEventListener('mouseleave', () => {
   class PlexusParticle {
     constructor() { this.init(); }
     init() {
-      // Use 1000 and 1100 as the virtual boundaries
-      this.x = Math.random() * 1000;
-      this.y = Math.random() * 1100;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.size = 1.5;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > 1000) this.vx *= -1;
-      if (this.y < 0 || this.y > 1100) this.vy *= -1;
-    }
-    draw() {
-      pCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-      pCtx.beginPath();
-      pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      pCtx.fill();
-    }
-  }
+  this.x = Math.random() * 1000; // Match width
+  this.y = Math.random() * 1100; // Match height
+  this.vx = (Math.random() - 0.5) * 0.5;
+  this.vy = (Math.random() - 0.5) * 0.5;
+  this.size = 1.5;
+}
+
+update() {
+  this.x += this.vx;
+  this.y += this.vy;
+
+  // Bounce off virtual walls 1000 and 1100
+  if (this.x < 0 || this.x > 1000) this.vx *= -1;
+  if (this.y < 0 || this.y > 1100) this.vy *= -1;
+}
 
   function setupPlexus() {
     // FORCE the drawing resolution to match the SVG viewBox (1000x1100)
@@ -956,6 +951,19 @@ container.addEventListener('mouseleave', () => {
       plexusParticles.push(new PlexusParticle());
     }
   }
+    
+    function resizePlexus() {
+  // IGNORE the screen size (rect.width). 
+  // Force the internal drawing board to 1000x1100.
+  // This locks the dots to the SVG mask coordinates.
+  plexusCanvas.width = 1000;
+  plexusCanvas.height = 1100;
+  
+  plexusParticles = [];
+  for (let i = 0; i < plexusParticleCount; i++) {
+    plexusParticles.push(new PlexusParticle());
+  }
+}
 
   function animatePlexus() {
     pCtx.clearRect(0, 0, 1000, 1100);
