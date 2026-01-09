@@ -626,10 +626,15 @@ html, body {
 
   <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
 
-      <canvas id="plexus-canvas" 
-          class="absolute inset-0 z-20 pointer-events-none" 
-          style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
-  </canvas>
+      <div class="position-wrapper ... relative">
+    <canvas id="plexus-canvas" 
+            class="absolute inset-0 z-20 pointer-events-none" 
+            style="clip-path: url(#logoClip); width: 100%; height: 100%;">
+    </canvas>
+    
+    <svg id="tilting-logo" viewBox="0 0 1000 1100" ...>
+       </svg>
+</div>
       
     <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full p-10 transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
@@ -959,9 +964,12 @@ container.addEventListener('mouseleave', () => {
 
 function resizePlexus() {
   const rect = plexusCanvas.getBoundingClientRect();
-  plexusCanvas.width = rect.width;
-  plexusCanvas.height = rect.height;
   
+  // Set the internal drawing resolution to match the SVG viewBox for alignment
+  plexusCanvas.width = 1000; 
+  plexusCanvas.height = 1100;
+
+  // Re-initialize particles if needed
   plexusParticles = [];
   for (let i = 0; i < plexusParticleCount; i++) {
     plexusParticles.push(new PlexusParticle());
