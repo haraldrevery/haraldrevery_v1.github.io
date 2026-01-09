@@ -471,8 +471,21 @@ html, body {
   opacity: 1;
   transform: translateY(0);
 }
+
       
-    
+/* Container for the 3D effect */
+.perspective-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* The grid itself with smooth transition */
+#image-grid {
+  position: relative;
+  z-index: 10;
+  transition: transform 0.15s ease-out; /* Smooth follow effect */
+  will-change: transform;
+}    
   </style>
 
 
@@ -669,7 +682,7 @@ html, body {
 <div class="container mx-auto py-20 px-5 md:px-0">
  <div class="flex flex-col lg:flex-row gap-16 items-center">
     
-    <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{ 
+    <div class="w-full lg:w-1/2 relative overflow-bleed" perspective-container x-data="{ 
     path: './artcovers/', 
     images: [
       { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads | ISRC: QZHN32004027' },
@@ -1323,8 +1336,34 @@ cards.forEach(clickedCard => {
     gridItems.forEach(item => observer.observe(item));
   });
 </script>
+
+   <!-- Images rotation -->   
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('image-grid');
+    const container = grid.parentElement;
+
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
       
-    
+      // Calculate mouse position relative to the center of the container (from -0.5 to 0.5)
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      // Degree of rotation (adjust numbers for more/less tilt)
+      const rotateX = y * -15; // Vertical tilt
+      const rotateY = x * 15;  // Horizontal tilt
+
+      grid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    // Reset rotation when mouse leaves
+    container.addEventListener('mouseleave', () => {
+      grid.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    });
+  });
+</script>
+      
 </body>
 
 </html>
