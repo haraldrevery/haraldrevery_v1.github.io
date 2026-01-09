@@ -503,7 +503,7 @@ html, body {
       
 /* Container for the 3D effect */
 .perspective-container {
-  perspective: 1000px;
+  perspective: 800px; /* Lowering this value makes the Z-depth more intense */
   transform-style: preserve-3d;
 }
 
@@ -1367,27 +1367,29 @@ cards.forEach(clickedCard => {
 
    <!-- Images rotation -->   
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('image-grid');
     const container = grid.parentElement;
 
     container.addEventListener('mousemove', (e) => {
       const rect = container.getBoundingClientRect();
       
-      // Calculate mouse position relative to the center of the container (from -0.5 to 0.5)
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-      // Degree of rotation (adjust numbers for more/less tilt)
-      const rotateX = y * -15; // Vertical tilt
-      const rotateY = x * 15;  // Horizontal tilt
+      const rotateX = y * -15; 
+      const rotateY = x * 15;
+      
+      // Added: Moves the whole grid closer to the camera when hovering
+      const translateZ = 40; 
 
-      grid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      // Added translateZ(${translateZ}px) to the transform string
+      grid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
     });
 
-    // Reset rotation when mouse leaves
+    // Reset rotation AND translation when mouse leaves
     container.addEventListener('mouseleave', () => {
-      grid.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      grid.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
     });
   });
 </script>
