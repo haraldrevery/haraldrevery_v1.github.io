@@ -470,12 +470,13 @@ html, body {
   position: relative;
   width: 600px; 
   max-width: 90vw;
-  aspect-ratio: 1000 / 1100; /* Match the SVG viewBox ratio exactly */
+  /* CRITICAL: This must match your SVG 1000/1100 ratio */
+  aspect-ratio: 1000 / 1100; 
   transform-style: preserve-3d;
   transition: transform 0.15s ease-out;
 }
 
-/* Force both elements to fill the mover perfectly */
+/* Force both elements to be exactly the same size and position */
 #plexus-canvas,
 #tilting-logo {
   position: absolute;
@@ -483,7 +484,9 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
+  display: block;
 }
+      
  #plexus-canvas {
   z-index: 20;
   clip-path: url(#logoClip);
