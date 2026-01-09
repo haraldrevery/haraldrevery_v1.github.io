@@ -465,7 +465,7 @@ html, body {
   opacity: 0;
   transform: translateY(10px);
   /* Use 'all' or list both to ensure hover doesn't break opacity */
-  transition: opacity 8.2s ease-out, transform 6.2s ease-out; 
+  transition: opacity 10.2s ease-out, transform 8.2s ease-out; 
   will-change: opacity, transform;
 }
 
@@ -1330,7 +1330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           // This adds the class that sets opacity: 1 and transform: translateY(0)
           entry.target.classList.add('revealed');
-        }, index * 500); // 150ms delay between each image's start
+        }, index * 700); // 150ms delay between each image's start
 
         // Stop observing once revealed
         observer.unobserve(entry.target);
