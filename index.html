@@ -1003,41 +1003,54 @@ function resizePlexus() {
 
 <!-- fading words script -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const containers = document.querySelectorAll('.text-container');
+// Add this function to index.html
+function animateWords(el) {
+  const text = el.innerText;
+  el.innerHTML = '';
+  el.style.opacity = '1';
+  el.classList.add('active');
 
-  containers.forEach(container => {
-    const paragraphs = container.querySelectorAll('p');
+  // Split by space to get individual words
+  const words = text.split(' ');
+  words.forEach((word, wordIndex) => {
+    // Create a wrapper for the word to keep it together
+    const wordSpan = document.createElement('span');
+    wordSpan.style.display = 'inline-block';
+    wordSpan.style.whiteSpace = 'nowrap'; 
+
+    // Put letters inside the word wrapper
+    [...word].forEach((char, charIndex) => {
+      const letterSpan = document.createElement('span');
+      letterSpan.textContent = char;
+      letterSpan.className = 'fade-letter';
+      // Calculate delay based on total progress
+      letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
+      wordSpan.appendChild(letterSpan);
+    });
     
-    paragraphs.forEach(p => {
-      // Use textContent instead of innerText to ensure we get the text 
-      // even if the element is currently invisible/opacity 0
-      const text = p.textContent.trim();
-      const words = text.split(/\s+/);
-      
-      p.innerHTML = words.map((word) => {
-        // Random delay between 0.1s and 1.0s
-        const randomDelay = (Math.random() * 0.9 + 0.1).toFixed(2);
-        return `<span class="word" style="animation-delay: ${randomDelay}s">${word}</span>`;
-      }).join(' ');
-    });
+    el.appendChild(wordSpan);
 
-    // Observer to trigger when scrolled into view
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Add the class to the container to start the child animations
-          entry.target.classList.add('start-animation');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { 
-      // Trigger when 10% of the block is visible
-      threshold: 0.1 
-    });
-
-    observer.observe(container);
+    // Add a space after the word
+    if (wordIndex < words.length - 1) {
+      el.appendChild(document.createTextNode(' '));
+    }
   });
+}
+
+// Then, update your existing IntersectionObserver callback to call it:
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // This line triggers the actual letter splitting
+      animateWords(entry.target); 
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+// Ensure your headings are being observed
+document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
+  observer.observe(h2);
 });
 </script>
 
