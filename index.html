@@ -460,27 +460,29 @@ html, body {
 }
 
 
-/* Animation for the grid items */
+/* Animation for the grid items - Now Fade Only */
 .grid-item-reveal {
   opacity: 0;
-  transform: translateY(30px);
-  /* Keep your existing smooth transition */
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Optional: Ensure visibility is hidden until the transition starts */
+  /* Remove transform: translateY(30px); to stop the upward movement */
+  
+  /* Keep the smooth transition for opacity */
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   visibility: hidden; 
 }
 
 .grid-item-reveal.revealed {
   opacity: 1; 
-  transform: translateY(0);
+  /* Ensure transform is set to none or removed so it stays in place */
+  transform: none; 
   visibility: visible;
 }
 
-/* Ensure the hover state remains snappy */
+/* Updated hover state to be cleaner without the Y-offset */
 .grid-item-reveal:hover {
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms,
               opacity 0.5s ease 0ms;
+  /* Keeps your hover zoom effect intact */
+  transform: scale(1.1); 
 }
       
     
