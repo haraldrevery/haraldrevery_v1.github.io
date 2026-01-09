@@ -157,6 +157,35 @@
 .echo-3 { animation-delay: 1.21s; }
 
 
+
+/* 1. Logo Drawing Animation */
+@keyframes logoDraw {
+  0% { 
+    stroke-dashoffset: 4000; 
+    fill-opacity: 0;
+  }
+  80% {
+    /* Stroke finished drawing, fill is mostly in */
+    stroke-dashoffset: 0;
+    fill-opacity: 0.96;
+  }
+  100% { 
+    stroke-dashoffset: 0; 
+    fill-opacity: 1;
+    /* Optional: make the blue lines disappear so only the white logo remains */
+    stroke: transparent; 
+  }
+}
+/* Total animation time to generate the logo */
+.animate-logo path {
+
+  stroke-dasharray: 4000;
+  stroke-dashoffset: 4000;
+  stroke: #FFFFFF; /* Keeping the blue drawing line for contrast */
+  fill: url(#logoGradient);
+  fill-opacity: 0;
+  animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
     
 /* Ensure the floating animation starts only AFTER the 8s drawing is done */
 .logo-float {
@@ -169,7 +198,11 @@
       50% { transform: translateY(-20px); }
     }
 
-
+    #tilting-logo {
+      transition: transform 0.21s ease-out; /* Smooths mouse movement */
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+    }
+        
         /* Enhancing the gradient movement as requested previously */
         @keyframes shiftGradient {
           0% { x1: 0%; y1: 0%; }
@@ -413,6 +446,18 @@ html, body {
 }
 
  /* plexus settings */
+#plexus-canvas {
+  width: 100%;
+  height: 100%;
+  /* Ensures the plexus covers the same area as the SVG paths */
+  object-fit: contain; 
+}
+
+/* Optional: Make the logo lines slightly transparent so 
+   the plexus shows through them more clearly */
+.animate-logo path {
+  fill-opacity: 0.8; 
+}
 
 
 /* Animation for the grid items */
@@ -436,55 +481,7 @@ html, body {
 }
 
 
-
-/* --- NEW VERSION--- */
-
-/* 1. Logo Drawing Animation */
-@keyframes logoDraw {
-  0% { stroke-dashoffset: 4000; }
-  70% { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 0; }
-}
-
-.animate-logo path {
-  stroke-dasharray: 4000;
-  stroke-dashoffset: 4000;
-  stroke: #FFFFFF; 
-  fill: none; /* REMOVED SOLID COLOR */
-  animation: logoDraw 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Container for 3D effect */
-#logo-stage {
-  perspective: 1000px;
-  width: 100%;
-  height: 75vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* The actual moving element */
-/* Ensure the mover sets the stage for both */
-#logo-mover {
-  position: relative;
-  width: 600px;
-  max-width: 90vw;
-  aspect-ratio: 1000 / 1100;
-  transform-style: preserve-3d;
-  margin: 0 auto;
-}
-
-#tilting-logo {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* ForeignObject needs to be visible */
-foreignObject {
-  overflow: visible;
-}
+      
     
   </style>
 
@@ -601,31 +598,64 @@ foreignObject {
   
   
  <!-- Logo intro -->
-<div id="logo-stage">
-  <div id="logo-mover">
-    <canvas id="plexus-canvas"></canvas>
+<div id="logo-container" class="relative h-screen h-[72vh] w-full flex items-center justify-center overflow-hidden px-7" style="perspective: 1000px;">
 
-<svg id="tilting-logo" viewBox="0 0 1000 1100" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <clipPath id="logoClip">
-      <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-      <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-      <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-      <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-    </clipPath>
-  </defs>
+    
+  <div class="absolute -translate-x-[4.15vw] inset-0 flex items-center justify-center pointer-events-none" style="z-index: 0;">
 
-  <foreignObject x="0" y="0" width="1000" height="1100" clip-path="url(#logoClip)">
-    <canvas id="plexus-canvas" width="1000" height="1100" style="width:1000px; height:1100px;"></canvas>
-  </foreignObject>
+      
+    <svg viewBox="0 0 1000 1100" class="w-full h-full p-10 opacity-40 overflow-visible" preserveAspectRatio="xMidYMid meet">
+      <g fill="none" stroke="#FFFFFF" stroke-width="2">
+        <g class="echo-ring echo-1" fill="none" stroke="white" stroke-width="2">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </g>
+        <g class="echo-ring echo-2" fill="none" stroke="white" stroke-width="1">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </g>
+         <g class="echo-ring echo-3" fill="none" stroke="white" stroke-width="2">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </g>
+      </g>
+    </svg>
+  </div>
 
-  <g class="animate-logo" fill="none" stroke="#FFFFFF" stroke-width="2">
-      <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-      <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-      <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-      <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-  </g>
-</svg>
+  <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
+
+      <canvas id="plexus-canvas" 
+          class="absolute inset-0 z-20 pointer-events-none" 
+          style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
+  </canvas>
+      
+    <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full p-10 transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+<defs>
+  <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#ffffff" /> 
+    <stop offset="100%" stop-color="#F0F0F0" />
+  </linearGradient>
+
+  <clipPath id="logoClip">
+    <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+    <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+    <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+    <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+  </clipPath>
+</defs>
+      <g class="animate-logo" stroke="url(#logoGradient)" stroke-width="4" fill="url(#logoGradient)" filter="url(#noiseFilter)">
+        <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+        <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+        <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+        <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+      </g>
+    </svg>  
   </div>
 </div>
   
@@ -857,62 +887,125 @@ foreignObject {
   <script>
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
-
-      
-  <!-- Plexus + 3D  -->
+  
+  <!--For the 3D logo thing to react to the mouse -->
 <script>
- const canvas = document.getElementById('plexus-canvas');
-const ctx = canvas.getContext('2d');
+const container = document.getElementById('logo-container');
+const logo = document.getElementById('tilting-logo');
+const plexus = document.getElementById('plexus-canvas'); // Select the canvas
+const echoes = document.querySelectorAll('.echo-ring');
 
-// Standard particle logic (Stay with 1000x1100)
-let particles = [];
-const particleCount = 250;
+container.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const percentX = (e.clientX - centerX) / (rect.width / 2);
+  const percentY = (e.clientY - centerY) / (rect.height / 2);
 
-class Particle {
-  constructor() {
-    this.x = Math.random() * 1000;
-    this.y = Math.random() * 1100;
-    this.vx = (Math.random() - 0.5) * 1.5;
-    this.vy = (Math.random() - 0.5) * 1.5;
-  }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > 1000) this.vx *= -1;
-    if (this.y < 0 || this.y > 1100) this.vy *= -1;
-  }
-}
+  const deg = 30;
+  const rotateX = percentY * -deg;
+  const rotateY = percentX * deg;
 
-for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+  // Apply transform to BOTH the SVG and the Canvas
+  const transformStyle = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  logo.style.transform = transformStyle;
+  plexus.style.transform = transformStyle;
 
-function animate() {
-  ctx.clearRect(0, 0, 1000, 1100);
-  for (let i = 0; i < particles.length; i++) {
-    particles[i].update();
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 100) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/100})`;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(animate);
-}
-animate();
+  echoes.forEach((echo) => {
+    echo.style.transform = `rotateX(${rotateX * 0.8}deg) rotateY(${rotateY * 0.8}deg)`;
+  });
+});
 
-// Mouse Rotation Logic remains the same, targeting #logo-mover
-document.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth) - 0.5;
-  const y = (e.clientY / window.innerHeight) - 0.5;
-  document.getElementById('logo-mover').style.transform = `rotateX(${y * -20}deg) rotateY(${x * 20}deg)`;
+container.addEventListener('mouseleave', () => {
+  const resetStyle = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  logo.style.transform = resetStyle;
+  plexus.style.transform = resetStyle;
+
 });
 </script>
+
+
+  
+  <!-- Plexus  -->
+<script>
+  const plexusCanvas = document.getElementById('plexus-canvas');
+  const pCtx = plexusCanvas.getContext('2d');
+  let plexusParticles = [];
+  const plexusParticleCount = 124; // Adjust for density
+  const connectionDistance = 150; // Distance where lines start to draw
+
+  class PlexusParticle {
+    constructor() {
+      this.init();
+    }
+    init() {
+      this.x = Math.random() * plexusCanvas.width;
+      this.y = Math.random() * plexusCanvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.size = 1.5;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (this.x < 0 || this.x > plexusCanvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > plexusCanvas.height) this.vy *= -1;
+    }
+    draw() {
+      pCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+      pCtx.beginPath();
+      pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      pCtx.fill();
+    }
+  }
+
+function resizePlexus() {
+  const rect = plexusCanvas.getBoundingClientRect();
+  plexusCanvas.width = rect.width;
+  plexusCanvas.height = rect.height;
+  
+  plexusParticles = [];
+  for (let i = 0; i < plexusParticleCount; i++) {
+    plexusParticles.push(new PlexusParticle());
+  }
+}
+
+  function animatePlexus() {
+    pCtx.clearRect(0, 0, plexusCanvas.width, plexusCanvas.height);
+    
+    for (let i = 0; i < plexusParticles.length; i++) {
+      const p1 = plexusParticles[i];
+      p1.update();
+      p1.draw();
+
+      for (let j = i + 1; j < plexusParticles.length; j++) {
+        const p2 = plexusParticles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < connectionDistance) {
+          // Calculate opacity based on distance
+          const opacity = 1 - (distance / connectionDistance);
+          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.21})`;
+          pCtx.lineWidth = 1;
+          pCtx.beginPath();
+          pCtx.moveTo(p1.x, p1.y);
+          pCtx.lineTo(p2.x, p2.y);
+          pCtx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animatePlexus);
+  }
+
+  window.addEventListener('resize', resizePlexus);
+  resizePlexus();
+  animatePlexus();
+</script>
+
 
 <!-- fading words script -->
 <script>
