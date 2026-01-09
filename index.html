@@ -865,48 +865,50 @@ html, body {
       
   <!-- Plexus + 3D  -->
 <script>
-  const mover = document.getElementById('logo-mover');
   const canvas = document.getElementById('plexus-canvas');
   const ctx = canvas.getContext('2d');
+  const mover = document.getElementById('logo-mover');
 
+  // CRITICAL: Force the internal drawing resolution to match the SVG viewBox
   canvas.width = 1000;
   canvas.height = 1100;
-    
+
   let particles = [];
-  const particleCount = 250; // INCREASED PARTICLE COUNT
-  const connectionDist = 110;
+  const particleCount = 250; 
+  const connectionDist = 120;
 
   class Particle {
     constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
+      // Particles must be spawned within the 1000x1100 range
+      this.x = Math.random() * 1000;
+      this.y = Math.random() * 1100;
       this.vx = (Math.random() - 0.5) * 1.5;
       this.vy = (Math.random() - 0.5) * 1.5;
     }
     update() {
-      this.x += this.vx; this.y += this.vy;
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      this.x += this.vx;
+      this.y += this.vy;
+      // Bounce within the 1000x1100 boundary
+      if (this.x < 0 || this.x > 1000) this.vx *= -1;
+      if (this.y < 0 || this.y > 1100) this.vy *= -1;
     }
   }
 
   for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+    ctx.clearRect(0, 0, 1000, 1100);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)"; // White plexus lines
+    ctx.lineWidth = 1.5;
+
     for (let i = 0; i < particles.length; i++) {
       let p1 = particles[i];
       p1.update();
-      
       for (let j = i + 1; j < particles.length; j++) {
         let p2 = particles[j];
         let dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-        
         if (dist < connectionDist) {
-          // CHANGE: White lines (255, 255, 255) instead of black
-          ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/connectionDist})`; 
-          ctx.lineWidth = 1.0;
+          ctx.globalAlpha = 1 - (dist / connectionDist);
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
@@ -918,7 +920,7 @@ html, body {
   }
   animate();
 
-  // Mouse Rotation Sync
+  // Mouse tilt logic - ensure it tilts the MOVER div
   document.addEventListener('mousemove', (e) => {
     const x = (e.clientX / window.innerWidth) - 0.5;
     const y = (e.clientY / window.innerHeight) - 0.5;
