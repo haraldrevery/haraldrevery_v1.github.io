@@ -466,8 +466,8 @@ html, body {
   transform: translateY(30px); /* Slightly more movement for a "floating" effect */
   /* Using ease-out for a natural deceleration */
   transition: 
-    opacity 4.5s ease-out, 
-    transform 4.5s cubic-bezier(0.16, 1, 0.3, 1); 
+    opacity 8.5s ease-out, 
+    transform 8.5s cubic-bezier(0.16, 1, 0.3, 1); 
   will-change: opacity, transform;
 }
 
@@ -1338,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           // This adds the class that sets opacity: 1 and transform: translateY(0)
           entry.target.classList.add('revealed');
-        }, index * 500); // 150ms delay between each image's start
+        }, index * 800); // 150ms delay between each image's start
 
         // Stop observing once revealed
         observer.unobserve(entry.target);
