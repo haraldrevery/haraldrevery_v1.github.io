@@ -140,16 +140,15 @@
 @keyframes logoDraw {
   0% { 
     stroke-dashoffset: 4000; 
-    fill-opacity: 0;
   }
   80% {
     /* Stroke finished drawing, fill is mostly in */
     stroke-dashoffset: 0;
-    fill-opacity: 0.96;
+
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill-opacity: 1;
+    fill-opacity: 0;
     /* Optional: make the blue lines disappear so only the white logo remains */
     stroke: transparent; 
   }
@@ -900,7 +899,21 @@ container.addEventListener('mouseleave', () => {
       pCtx.fill();
     }
   }
+    
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  
+  // Match internal pixel count to the actual display size
+  canvas.width = rect.width;
+  canvas.height = rect.height;
 
+  // Re-initialize particles to fill the new dimensions
+  particles = [];
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+    
 function resizePlexus() {
   const rect = plexusCanvas.getBoundingClientRect();
   plexusCanvas.width = rect.width;
