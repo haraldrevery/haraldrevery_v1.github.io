@@ -464,19 +464,20 @@ html, body {
 .grid-item-reveal {
   opacity: 0;
   transform: translateY(30px);
-  /* Removed the 200ms delay so JavaScript can control the stagger precisely */
-  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Ensure both opacity and transform are transitioned */
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .grid-item-reveal.revealed {
-  opacity: 1;
+  opacity: 1; /* This triggers the fade-in */
   transform: translateY(0);
 }
 
-/* Add this to ensure the hover scale is instant (0ms delay) */
+/* Ensure the hover state remains snappy */
 .grid-item-reveal:hover {
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              opacity 0.5s ease 0ms;
 }
       
     
@@ -1317,17 +1318,18 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const observer = new IntersectionObserver((entries) => {
-    // Filter to only items that are entering the viewport
+    // Filter items entering the viewport
     const visibleEntries = entries.filter(entry => entry.isIntersecting);
 
     if (visibleEntries.length > 0) {
       visibleEntries.forEach((entry, index) => {
-        // Set a staggered delay (e.g., 100ms * index)
+        // Stagger the reveal of each image
         setTimeout(() => {
+          // This adds the class that sets opacity: 1 and transform: translateY(0)
           entry.target.classList.add('revealed');
-        }, 500); // Adjust 100 to make it faster or slower
+        }, index * 150); // 150ms delay between each image's start
 
-        // Stop observing once it has been revealed
+        // Stop observing once revealed
         observer.unobserve(entry.target);
       });
     }
