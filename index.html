@@ -441,18 +441,29 @@ html, body {
 
 /* 1. Logo Drawing Animation */
 @keyframes logoDraw {
-  0% { stroke-dashoffset: 4000; fill-opacity: 0; }
-  70% { stroke-dashoffset: 0; fill-opacity: 0; }
-  100% { stroke-dashoffset: 0; fill-opacity: 1; }
+  0% { stroke-dashoffset: 4000; }
+  70% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
 }
 
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
   stroke: #FFFFFF; 
-  fill: #FFFFFF;
-  fill-opacity: 0;
+  fill: none; /* REMOVED SOLID COLOR */
   animation: logoDraw 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Ensure the canvas is visible and clipped */
+#plexus-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  clip-path: url(#logoClip);
+  -webkit-clip-path: url(#logoClip);
+  pointer-events: none;
 }
 
 /* Container for 3D effect */
@@ -473,19 +484,6 @@ html, body {
   aspect-ratio: 1000/1100;
   transform-style: preserve-3d;
   transition: transform 0.15s ease-out;
-}
-
-/* Canvas clipped to the logo shape */
-#plexus-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 20;
-  /* This clips the canvas to the SVG path defined in the SVG defs */
-  clip-path: url(#logoClip);
-  -webkit-clip-path: url(#logoClip);
-  pointer-events: none;
 }
 
 #tilting-logo {
@@ -872,21 +870,19 @@ html, body {
   const canvas = document.getElementById('plexus-canvas');
   const ctx = canvas.getContext('2d');
 
-  // 1. PLEXUS SETTINGS
-  let particles = [];
-  const particleCount = 100;
-  const connectionDist = 120;
-  
-  // Force canvas resolution to match SVG viewBox
   canvas.width = 1000;
   canvas.height = 1100;
+
+  let particles = [];
+  const particleCount = 250; // INCREASED PARTICLE COUNT
+  const connectionDist = 110;
 
   class Particle {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.vx = (Math.random() - 0.5) * 0.8;
-      this.vy = (Math.random() - 0.5) * 0.8;
+      this.vx = (Math.random() - 0.5) * 1.5;
+      this.vy = (Math.random() - 0.5) * 1.5;
     }
     update() {
       this.x += this.vx; this.y += this.vy;
@@ -899,7 +895,6 @@ html, body {
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 1.5;
     
     for (let i = 0; i < particles.length; i++) {
       let p1 = particles[i];
@@ -907,12 +902,12 @@ html, body {
       
       for (let j = i + 1; j < particles.length; j++) {
         let p2 = particles[j];
-        let dx = p1.x - p2.x;
-        let dy = p1.y - p2.y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
+        let dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
         
         if (dist < connectionDist) {
-          ctx.strokeStyle = `rgba(0, 0, 0, ${1 - dist/connectionDist})`; // Black lines inside white logo
+          // CHANGE: White lines (255, 255, 255) instead of black
+          ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/connectionDist})`; 
+          ctx.lineWidth = 1.0;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
@@ -924,22 +919,11 @@ html, body {
   }
   animate();
 
-  // 2. 3D MOUSE ROTATION
+  // Mouse Rotation Sync
   document.addEventListener('mousemove', (e) => {
-    const halfW = window.innerWidth / 2;
-    const halfH = window.innerHeight / 2;
-    
-    // Calculate rotation (-1 to 1 range)
-    const rotX = (e.clientY - halfH) / halfH; 
-    const rotY = (e.clientX - halfW) / halfW;
-
-    const maxDeg = 25;
-    mover.style.transform = `rotateX(${rotX * -maxDeg}deg) rotateY(${rotY * maxDeg}deg)`;
-  });
-
-  // Reset rotation when mouse leaves window
-  document.addEventListener('mouseleave', () => {
-    mover.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    const x = (e.clientX / window.innerWidth) - 0.5;
+    const y = (e.clientY / window.innerHeight) - 0.5;
+    mover.style.transform = `rotateX(${y * -25}deg) rotateY(${x * 25}deg)`;
   });
 </script>
 
