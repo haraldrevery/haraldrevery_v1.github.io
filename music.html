@@ -219,22 +219,30 @@
       letter-spacing: 0.018em;
     }
     
-    /* 3. ANIMATIONS */
-    @keyframes wave-animation {
-      0% { transform: rotate(0.0deg); }
-      10% { transform: rotate(14.0deg); }
-      20% { transform: rotate(-8.0deg); }
-      30% { transform: rotate(14.0deg); }
-      40% { transform: rotate(-4.0deg); }
-      50% { transform: rotate(10.0deg); }
-      60% { transform: rotate(0.0deg); }
-      100% { transform: rotate(0.0deg); }
-    }
-    .animate-wave {
-      display: inline-block;
-      animation: wave-animation 2.5s infinite;
-      transform-origin: 70% 70%;
-    }
+/* 3. ANIMATIONS */
+/* Animation definition */
+@keyframes wave-animation {
+  0% { transform: rotate(0.0deg); }
+  10% { transform: rotate(14.0deg); }
+  20% { transform: rotate(-8.0deg); }
+  30% { transform: rotate(14.0deg); }
+  40% { transform: rotate(-4.0deg); }
+  50% { transform: rotate(10.0deg); }
+  60% { transform: rotate(0.0deg); }
+  100% { transform: rotate(0.0deg); }
+}
+
+/* Apply the animation only on hover */
+.hover-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.hover-wave:hover {
+  animation: wave-animation 2.5s infinite;
+}
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -750,7 +758,7 @@ body {
               <b><small class="text-base uppercase tracking-widest opacity-100">Revery Division</small></b>
             </p>
             
-            <p><span class="animate-wave">½</span></p>
+            <p><span class="hover-wave">½</span></p>
             
           <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
             Gothenburg, Sweden <br />
