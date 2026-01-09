@@ -464,14 +464,17 @@ html, body {
 .grid-item-reveal {
   opacity: 0;
   transform: translateY(30px);
-  /* Ensure both opacity and transform are transitioned */
+  /* Keep your existing smooth transition */
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
               transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Optional: Ensure visibility is hidden until the transition starts */
+  visibility: hidden; 
 }
 
 .grid-item-reveal.revealed {
-  opacity: 1; /* This triggers the fade-in */
+  opacity: 1; 
   transform: translateY(0);
+  visibility: visible;
 }
 
 /* Ensure the hover state remains snappy */
@@ -1048,34 +1051,31 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Use a class selector to find ALL headings
-  const headings = document.querySelectorAll('.animated-heading');
+  const gridItems = document.querySelectorAll('.grid-item-reveal');
   
-  const headingObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateLetters(entry.target);
-        headingObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 }); // Lower threshold often works better for mobile
+  const observerOptions = {
+    threshold: 0.15 
+  };
 
-  headings.forEach(h => headingObserver.observe(h));
+  const observer = new IntersectionObserver((entries) => {
+    // Filter items entering the viewport
+    const visibleEntries = entries.filter(entry => entry.isIntersecting);
 
-  function animateLetters(el) {
-    const text = el.innerText;
-    el.innerHTML = ''; 
-    el.style.opacity = '1'; // Ensure it's visible
-    el.classList.add('active'); 
+    if (visibleEntries.length > 0) {
+      visibleEntries.forEach((entry, index) => {
+        // Stagger the reveal of each image
+        setTimeout(() => {
+          // This triggers BOTH the opacity fade and the translateY move
+          entry.target.classList.add('revealed');
+        }, index * 150); // 150ms delay between each image
 
-    [...text].forEach((char, index) => {
-      const span = document.createElement('span');
-      span.textContent = char === ' ' ? '\u00A0' : char; 
-      span.className = 'fade-letter';
-      span.style.animationDelay = `${index * 0.05}s`;
-      el.appendChild(span);
-    });
-  }
+        // Stop observing once revealed
+        observer.unobserve(entry.target);
+      });
+    }
+  }, observerOptions);
+
+  gridItems.forEach(item => observer.observe(item));
 });
 </script>
 
