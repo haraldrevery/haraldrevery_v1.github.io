@@ -1338,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           // This adds the class that sets opacity: 1 and transform: translateY(0)
           entry.target.classList.add('revealed');
-        }, index * 800); // 150ms delay between each image's start
+        }, index * 600); // 150ms delay between each image's start
 
         // Stop observing once revealed
         observer.unobserve(entry.target);
