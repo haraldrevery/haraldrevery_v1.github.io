@@ -466,10 +466,12 @@ html, body {
 </script>
 </head>
 
-<div x-data="{ darkMode: false }" 
-     :class="darkMode ? 'bg-black text-white' : 'bg-white text-black'" class="transition-colors duration-500 min-h-screen">
+
     
   <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
+
+      <div x-data="{ darkMode: false }" 
+     :class="darkMode ? 'bg-black text-white' : 'bg-white text-black'" class="transition-colors duration-500 min-h-screen">
   <!-- Navbar -->
 <header id="main-header" 
         class="fixed top-0 left-0 z-50 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-black/60 backdrop-blur-md pointer-events-none">
