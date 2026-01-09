@@ -461,28 +461,20 @@ html, body {
 
 
 /* Animation for the grid items - Now Fade Only */
-/* Optimized Smooth Fade-In for Grid Items */
 .grid-item-reveal {
   opacity: 0;
-  visibility: hidden;
-  /* Use a slightly longer duration and ease-out for a professional feel */
-  transition: opacity 2.2s ease-out, transform 2.2s ease-out;
-  /* Optional: Keep a very slight upward movement (e.g., 10px) to make the fade feel "active" */
   transform: translateY(10px);
+  /* Use 'all' or list both to ensure hover doesn't break opacity */
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out; 
   will-change: opacity, transform;
 }
 
 .grid-item-reveal.revealed {
   opacity: 1;
-  visibility: visible;
-  transform: translateY(0); /* Ends at its natural position */
+  transform: translateY(0);
 }
 
-/* Hover effect remains independent */
-.grid-item-reveal:hover {
-  transform: scale(1.05) !important;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
+
       
     
   </style>
