@@ -460,12 +460,12 @@ html, body {
 }
 
 
-/* Animation for the grid items - Now Fade Only */
+/* Animation for the grid items */
 .grid-item-reveal {
   opacity: 0;
   transform: translateY(10px);
   /* Use 'all' or list both to ensure hover doesn't break opacity */
-  transition: opacity 6.2s ease-out, transform 4.2s ease-out; 
+  transition: opacity 8.2s ease-out, transform 6.2s ease-out; 
   will-change: opacity, transform;
 }
 
@@ -1317,7 +1317,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridItems = document.querySelectorAll('.grid-item-reveal');
   
   const observerOptions = {
-    threshold: 0.15 
+    threshold: 0.19 
   };
 
   const observer = new IntersectionObserver((entries) => {
