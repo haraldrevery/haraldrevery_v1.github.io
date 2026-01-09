@@ -622,15 +622,15 @@ html, body {
     </svg>
   </div>
 
-  <div class="relative w-full h-full -translate-x-[4.15vw]">
-        <div id="tilt-container" class="relative w-full h-full transition-transform duration-200 ease-out">
-            
-      <canvas id="plexus-canvas" 
-                class="absolute top-0 left-0 w-full h-full pointer-events-none" 
-                style="clip-path: url(#logoClip); z-index: 10;">
+<div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
+    <div id="tilt-container" class="relative w-full h-full transition-transform duration-200 ease-out">
+        
+        <canvas id="plexus-canvas" 
+                class="absolute inset-0 z-20 pointer-events-none" 
+                style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
         </canvas>
-      
-    <svg class="block w-full h-full" viewBox="0 0 1000 1100" style="z-index: 5;">
+        
+        <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
   <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
     <stop offset="0%" stop-color="#ffffff" /> 
