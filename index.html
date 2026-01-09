@@ -140,16 +140,15 @@
 @keyframes logoDraw {
   0% { 
     stroke-dashoffset: 4000; 
-    fill-opacity: 0;
   }
   80% {
     /* Stroke finished drawing, fill is mostly in */
     stroke-dashoffset: 0;
-    fill-opacity: 0.96;
+
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill-opacity: 1;
+    fill-opacity: 0;
     /* Optional: make the blue lines disappear so only the white logo remains */
     stroke: transparent; 
   }
@@ -573,7 +572,7 @@ html, body {
   <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
 
       <canvas id="plexus-canvas" 
-          class="absolute inset-0 z-20 pointer-events-none" 
+          class="absolute inset-0 z-20 pointer-events-none p-10" 
           style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
   </canvas>
       
@@ -900,17 +899,38 @@ container.addEventListener('mouseleave', () => {
       pCtx.fill();
     }
   }
+    
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  
+  // Match internal pixel count to the actual display size
+  canvas.width = rect.width;
+  canvas.height = rect.height;
 
+  // Re-initialize particles to fill the new dimensions
+  particles = [];
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+    
 function resizePlexus() {
   const rect = plexusCanvas.getBoundingClientRect();
+  
+  // 1. Match the internal drawing resolution to the actual screen size
   plexusCanvas.width = rect.width;
   plexusCanvas.height = rect.height;
-  
+
+  // 2. Re-initialize particles so they distribute correctly in the new space
   plexusParticles = [];
   for (let i = 0; i < plexusParticleCount; i++) {
     plexusParticles.push(new PlexusParticle());
   }
 }
+
+// Ensure it fires on load and resize
+window.addEventListener('resize', resizePlexus);
+resizePlexus();
 
   function animatePlexus() {
     pCtx.clearRect(0, 0, plexusCanvas.width, plexusCanvas.height);
@@ -941,7 +961,7 @@ function resizePlexus() {
     requestAnimationFrame(animatePlexus);
   }
 
-  window.addEventListener('resize', resizePlexus);
+
   resizePlexus();
   animatePlexus();
 </script>
