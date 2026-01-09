@@ -140,28 +140,43 @@
 @keyframes logoDraw {
   0% { 
     stroke-dashoffset: 4000; 
-    fill-opacity: 0;
   }
   80% {
     /* Stroke finished drawing, fill is mostly in */
     stroke-dashoffset: 0;
-    fill-opacity: 0.96;
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill-opacity: 1;
+    fill-opacity: 0;
     /* Optional: make the blue lines disappear so only the white logo remains */
     stroke: transparent; 
   }
 }
 /* Total animation time to generate the logo */
-.animate-logo path {
+/* Update this section in your <style> tag */
+@keyframes logoDraw {
+  0% { 
+    stroke-dashoffset: 4000; 
+    /* Remove fill-opacity: 0; */
+  }
+  80% {
+    stroke-dashoffset: 0;
+    /* Remove fill-opacity: 0.96; */
+  }
+  100% { 
+    stroke-dashoffset: 0; 
+    /* Change this to keep it transparent */
+    fill-opacity: 0; 
+    stroke: transparent; 
+  }
+}
 
+/* Ensure the path itself doesn't have a default fill */
+.animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  stroke: #FFFFFF; /* Keeping the blue drawing line for contrast */
-  fill: url(#logoGradient);
-  fill-opacity: 0;
+  stroke: #FFFFFF; 
+  fill: none !important; /* Force no fill */
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
     
@@ -544,11 +559,6 @@ html, body {
 
     
   <div class="absolute -translate-x-[4.15vw] inset-0 flex items-center justify-center pointer-events-none" style="z-index: 0;">
-
-      <canvas id="plexus-canvas" 
-            class="absolute inset-0 z-10 pointer-events-none" 
-            style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip);">
-    </canvas>
       
     <svg viewBox="0 0 1000 1100" class="w-full h-full p-10 opacity-40 overflow-visible" preserveAspectRatio="xMidYMid meet">
       <g fill="none" stroke="#FFFFFF" stroke-width="2">
@@ -575,6 +585,12 @@ html, body {
   </div>
 
   <div class="position-wrapper -translate-x-[4.15vw] w-full h-full flex items-center justify-center relative z-10">
+
+      <canvas id="plexus-canvas" 
+            class="absolute inset-0 z-0 pointer-events-none" 
+            style="clip-path: url(#logoClip); -webkit-clip-path: url(#logoClip); width: 100%; height: 100%;">
+    </canvas>
+      
     <svg id="tilting-logo" viewBox="0 0 1000 1100" class="w-full h-full p-10 transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
   <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
