@@ -460,13 +460,13 @@ html, body {
 }
 
 
-      /* Animation for the grid items */
+/* Animation for the grid items */
 .grid-item-reveal {
   opacity: 0;
   transform: translateY(30px);
-  /* The 200ms delay now only applies to the reveal animation */
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) 200ms, 
-              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 200ms;
+  /* Removed the 200ms delay so JavaScript can control the stagger precisely */
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .grid-item-reveal.revealed {
@@ -1309,26 +1309,32 @@ cards.forEach(clickedCard => {
 
 <!-- Images animating in when scrolling -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const gridItems = document.querySelectorAll('.grid-item-reveal');
-    
-    const observerOptions = {
-      threshold: 0.15 // Trigger when 15% of the grid is visible
-    };
+document.addEventListener('DOMContentLoaded', () => {
+  const gridItems = document.querySelectorAll('.grid-item-reveal');
+  
+  const observerOptions = {
+    threshold: 0.15 
+  };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Add the revealed class to the element
+  const observer = new IntersectionObserver((entries) => {
+    // Filter to only items that are entering the viewport
+    const visibleEntries = entries.filter(entry => entry.isIntersecting);
+
+    if (visibleEntries.length > 0) {
+      visibleEntries.forEach((entry, index) => {
+        // Set a staggered delay (e.g., 100ms * index)
+        setTimeout(() => {
           entry.target.classList.add('revealed');
-          // Optional: Stop observing once animated
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
+        }, index * 100); // Adjust 100 to make it faster or slower
 
-    gridItems.forEach(item => observer.observe(item));
-  });
+        // Stop observing once it has been revealed
+        observer.unobserve(entry.target);
+      });
+    }
+  }, observerOptions);
+
+  gridItems.forEach(item => observer.observe(item));
+});
 </script>
       
     
