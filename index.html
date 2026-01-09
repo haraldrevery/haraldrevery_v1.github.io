@@ -895,7 +895,7 @@ container.addEventListener('mouseleave', () => {
       if (this.y < 0 || this.y > plexusCanvas.height) this.vy *= -1;
     }
     draw() {
-      pCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      pCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
       pCtx.beginPath();
       pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       pCtx.fill();
@@ -930,7 +930,7 @@ function resizePlexus() {
         if (distance < connectionDistance) {
           // Calculate opacity based on distance
           const opacity = 1 - (distance / connectionDistance);
-          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+          pCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.21})`;
           pCtx.lineWidth = 1;
           pCtx.beginPath();
           pCtx.moveTo(p1.x, p1.y);
