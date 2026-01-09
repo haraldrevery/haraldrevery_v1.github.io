@@ -454,18 +454,6 @@ html, body {
   animation: logoDraw 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Ensure the canvas is visible and clipped */
-#plexus-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 20;
-  clip-path: url(#logoClip);
-  -webkit-clip-path: url(#logoClip);
-  pointer-events: none;
-}
-
 /* Container for 3D effect */
 #logo-stage {
   perspective: 1000px;
@@ -477,21 +465,31 @@ html, body {
 }
 
 /* The actual moving element */
+/* Ensure the mover sets the stage for both */
 #logo-mover {
   position: relative;
-  width: 600px; /* Base size, scales via CSS */
+  width: 600px; 
   max-width: 90vw;
-  aspect-ratio: 1000/1100;
+  aspect-ratio: 1000 / 1100; /* Match the SVG viewBox ratio exactly */
   transform-style: preserve-3d;
   transition: transform 0.15s ease-out;
 }
 
+/* Force both elements to fill the mover perfectly */
+#plexus-canvas,
 #tilting-logo {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+}
+
+#plexus-canvas {
+  z-index: 20;
+  clip-path: url(#logoClip);
+  -webkit-clip-path: url(#logoClip);
+  pointer-events: none;
 }
       
     
@@ -872,7 +870,7 @@ html, body {
 
   canvas.width = 1000;
   canvas.height = 1100;
-
+    
   let particles = [];
   const particleCount = 250; // INCREASED PARTICLE COUNT
   const connectionDist = 110;
