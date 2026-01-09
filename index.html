@@ -464,12 +464,19 @@ html, body {
 .grid-item-reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  /* The 200ms delay now only applies to the reveal animation */
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) 200ms, 
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 200ms;
 }
 
 .grid-item-reveal.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Add this to ensure the hover scale is instant (0ms delay) */
+.grid-item-reveal:hover {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
       
     
@@ -689,19 +696,15 @@ html, body {
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
       
             <div id="image-grid" class="grid grid-cols-3 gap-4 relative z-10">
-              <template x-for="(img, index) in images" :key="img.file">
-                <a :href="path + img.file" 
-                   class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-transform duration-500 hover:scale-110 hover:z-20 shadow-xl" 
-                   :style="`transition-delay: ${200}ms`" 
-                   :data-title="img.title" 
-                   data-gallery="gallery1">
-                  
-                  <img :src="path + img.file" 
-                       :alt="img.title" 
-                       class="object-cover w-full h-full rounded" 
-                       loading="lazy">
-                </a>
-              </template>
+                <template x-for="(img, index) in images" :key="img.file">
+                  <a :href="path + img.file" 
+                     class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-transform duration-500 hover:scale-110 hover:z-20 shadow-xl" 
+                     :data-title="img.title" 
+                     data-gallery="gallery1">
+                    
+                    <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full rounded" loading="lazy">
+                  </a>
+                </template>
             </div>
         
     <canvas id="particle-canvas-front" class="absolute inset-0 pointer-events-none"></canvas>
