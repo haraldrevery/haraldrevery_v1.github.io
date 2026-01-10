@@ -1070,11 +1070,12 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-// Variable to store the animation ID so we can stop it
+// 1. Define the animation ID globally so it can be cancelled
 let plexusRequestId;
 
-window.initPlexus = function() {
-  // 1. Stop any existing animation before starting a new one
+// 2. Define the function as window.restartPlexus to match your button's watcher
+window.restartPlexus = function() {
+  // Stop the current loop before starting a new one
   if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
 
   const canvas = document.getElementById('plexus-canvas');
@@ -1082,7 +1083,7 @@ window.initPlexus = function() {
   const ctx = canvas.getContext('2d');
   const width = 1000, height = 1100;
   
-  // 2. Determine colors: White for dark mode, Dark Grey for light mode
+  // 3. Dynamic Color Check
   const isDark = document.documentElement.classList.contains('dark');
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26"; 
   
@@ -1116,7 +1117,7 @@ window.initPlexus = function() {
       currentParticleCount++;
     }
 
-    // 3. Use the dynamic RGB variable for particles
+    // Use the dynamic RGB for particles
     ctx.fillStyle = `rgba(${rgb}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
       posX[i] += velX[i];
@@ -1136,7 +1137,7 @@ window.initPlexus = function() {
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
           ctx.beginPath();
-          // 4. Use the dynamic RGB variable for lines
+          // Use the dynamic RGB for lines
           ctx.strokeStyle = `rgba(${rgb}, ${alpha.toFixed(2)})`;
           ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
@@ -1149,11 +1150,11 @@ window.initPlexus = function() {
   animate();
 };
 
-// Start the animation on initial page load
+// Initial run
 document.addEventListener('DOMContentLoaded', () => {
-  window.initPlexus();
+  window.restartPlexus();
 });
-
+    
 // mouse rotation
 // Replace the mouse rotation logic at the bottom of index.html
 window.addEventListener('mousemove', (e) => {
