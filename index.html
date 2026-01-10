@@ -682,7 +682,7 @@ html, body {
 </div>
   
   
-<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
+<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer relative z-20">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed hover:opacity-70 transition-opacity">
       <p>Welcome! Scroll down ↓</p>
   </div>
@@ -1132,12 +1132,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (trigger) {
       trigger.addEventListener('click', () => {
-        // Calculate the height of the user's current viewport
-        const viewportHeight = window.innerHeight;
+        // This gets the exact height of the user's current window
+        const fullScreenHeight = window.innerHeight;
         
-        // Scroll down exactly one screen height from the current position
+        // Scrolls down exactly that much
         window.scrollBy({ 
-          top: viewportHeight, 
+          top: fullScreenHeight, 
           behavior: 'smooth' 
         });
       });
