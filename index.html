@@ -899,9 +899,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Internal resolution matches the SVG viewBox
   const width = 1000;
   const height = 1100;
-  
-  const targetParticleCount = 800;
-  const connectionDistance = 120;
+    // Detect mobile or small screen
+  const isMobile = window.innerWidth < 768;
+  const targetParticleCount = isMobile ? 150 : 580;
+ 
+  const connectionDistance = 150;
   const connDistSq = connectionDistance * connectionDistance; // Optimization: Squared distance
   const growthDuration = 3000; 
   const startTime = Date.now();
