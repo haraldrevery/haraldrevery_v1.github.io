@@ -591,8 +591,7 @@ html, body {
   <script defer src="./dist/alpine.min.js"></script>
   
   <!-- Start - Fonts -->
-
-  
+ 
   <!-- End - Fonts -->
   
   <!-- Start - glightbox Scripts -->
@@ -743,17 +742,19 @@ html, body {
   </div>
 </section>
 
+     
     <!-- dark mode button -->
-<div class="fixed bottom-8 right-8 z-[10000]">
+<div class="fixed bottom-6 right-6 z-[10000]">
   <button 
     @click="darkMode = !darkMode" 
-    class="font-signika text-3xl p-4 rounded-full shadow-2xl bg-white/20 dark:bg-black/40 backdrop-blur-xl border border-black/10 dark:border-white/10 hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none flex items-center justify-center w-16 h-16"
+    class="font-signika text-2xl transition-all duration-300 hover:scale-110 active:scale-90 focus:outline-none"
     aria-label="Toggle Mode"
   >
-    <span x-show="!darkMode">🌙</span>
-    <span x-show="darkMode">☀️</span>
+    <span x-show="!darkMode" class="block">🌙</span>
+    <span x-show="darkMode" class="block">☀</span>
   </button>
 </div>
+
      
 
 <!-- Grid to the left + Text to the right -->
