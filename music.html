@@ -755,45 +755,6 @@ body {
     
 
 
-
-    
-  <!-- center the dark mode button -->  
-<section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
-  <div class="text-container">
-
-    <button @click="darkMode = !darkMode" 
-            class="text-sm font-medium uppercase tracking-widest focus:outline-none hover:text-purple-400 dark:text-white dark:hover:text-orange-400 transition-colors duration-300">
-      
-      <div class="relative h-8 flex items-center justify-center min-w-[200px]">
-        
-        <span x-show="!darkMode" 
-              class="absolute inset-0 flex items-center justify-center"
-              x-transition:enter="transition opacity duration-500"
-              x-transition:enter-start="opacity-0"
-              x-transition:enter-end="opacity-100"
-              x-transition:leave="transition opacity duration-300"
-              x-transition:leave-start="opacity-100"
-              x-transition:leave-end="opacity-0">
-          Let the moon arrive
-        </span>
-        <span x-show="darkMode" 
-              style="display: none;"
-              class="absolute inset-0 flex items-center justify-center"
-              x-transition:enter="transition opacity duration-500"
-              x-transition:enter-start="opacity-0"
-              x-transition:enter-end="opacity-100"
-              x-transition:leave="transition opacity duration-300"
-              x-transition:leave-start="opacity-100"
-              x-transition:leave-end="opacity-0">
-          Let there be light
-        </span>
-        
-      </div>
-    </button>
-
-  </div>
-</section>
-
  <!-- footer--> 
   <footer>
         
