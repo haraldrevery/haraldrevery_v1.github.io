@@ -421,18 +421,18 @@ html, body {
   0% { 
     stroke-dashoffset: 4000; 
     fill-opacity: 0;
+    stroke: currentColor; /* Ensure stroke starts visible */
   }
   80% {
     stroke-dashoffset: 0;
     fill-opacity: 0.04; 
+    stroke: currentColor; /* Stroke still visible while finishing drawing */
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill-opacity: 0.04; /* Keep the fill visible */
-    stroke: transparent; 
-    /* Remove 'opacity: 0' if present here */
+    fill-opacity: 0.04;    /* Keep the fill visible as requested */
+    stroke: transparent;   /* Fade the stroke out completely */
   }
-}
 }
 
       
@@ -449,30 +449,33 @@ html, body {
   }
 }
     
-
-  /* Overriding the animation specifically for mobile to fade out */
-@keyframes logoDraw {
-  0% { 
-    stroke-dashoffset: 4000; 
-    fill-opacity: 0;
-    opacity: 0;
-  }
-  80% {
-    stroke-dashoffset: 0;
-    fill-opacity: 0.19; 
-    opacity: 1;
-  }
-  100% { 
-    stroke-dashoffset: 0; 
-    fill-opacity: 0.19;    /* Keep the solid fill color */
-    stroke: transparent;   /* Fade out the stroke/lines only */
-    opacity: 1;            /* Ensure the overall element stays visible */
+/* Mobile specific version (matches your 0.19 fill-opacity) */
+@media (max-width: 767px) {
+  @keyframes logoDraw {
+    0% { 
+      stroke-dashoffset: 4000; 
+      fill-opacity: 0;
+      opacity: 0;
+      stroke: currentColor;
+    }
+    80% {
+      stroke-dashoffset: 0;
+      fill-opacity: 0.19; 
+      opacity: 1;
+      stroke: currentColor;
+    }
+    100% { 
+      stroke-dashoffset: 0; 
+      fill-opacity: 0.19;    /* Keeps the solid fill */
+      stroke: transparent;   /* Fades out the stroke/lines only */
+      opacity: 1;            /* Keeps the overall logo visible */
+    }
   }
 }
-}
+      
 .animate-logo path {
   /* ... existing properties ... */
-  transition: stroke 0.5s ease; 
+  
 }      
 
 /* 2. Ensure the base path follows the same rule */
@@ -483,7 +486,8 @@ html, body {
   fill: #000000;   /* Dark fill for light mode */
   fill-opacity: 0.05; 
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  transition: stroke 0.5s ease, fill 0.5s ease; /* Smooth transition */
+  transition: stroke 0.7s ease, fill 0.7s ease; /* Smooth transition */
+
 }
 
 /* 2. Floating Animation: Starts after the logo is drawn (8s delay) */
