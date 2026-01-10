@@ -1053,8 +1053,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
       
+      const isDark = document.documentElement.classList.contains('dark');
+      ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)';
+    
       // Optimization: Using fillRect instead of arc()
-      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
+        
     }
 
     // 2. Batch line drawing by alpha steps to reduce state changes
@@ -1068,7 +1072,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
           ctx.beginPath(); // Standard lines still need paths, but logic is leaner
-          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          // WITH THIS DYNAMIC LOGIC:
+            const isDark = document.documentElement.classList.contains('dark');
+            const color = isDark ? '255, 255, 255' : '0, 0, 0'; // White for dark mode, Black for light mode
+            ctx.strokeStyle = `rgba(${color}, ${alpha.toFixed(2)})`;
+            
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(posX[j], posY[j]);
+            ctx.stroke();
           ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
