@@ -481,24 +481,50 @@ html, body {
 }
 
 /* 4. Radio Signal "Implosion" Rings: CSS for the background echo effects */
-@keyframes signalEcho {
-  0% { transform: scale(3); opacity: 0; }
-  20% { opacity: 0.4; }
-  100% { transform: scale(0.8); opacity: 0; }
+/* Imploding Rings Container */
+.implosion-wrapper {
+  z-index: 5; /* Sit between the background and the logo paths */
 }
 
 .echo-ring {
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: transform 0.3s ease-out;
-  pointer-events: none;
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  width: 100vw;
+  height: 100vw;
   opacity: 0;
-  animation: signalEcho 1.84s ease-out forwards;
+  will-change: transform, opacity;
+  /* Use a cubic-bezier that starts fast and slows down at the center */
+  animation: implodeWave 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.echo-1 { animation-delay: 0.40s; } 
-.echo-2 { animation-delay: 0.75s; }
-.echo-3 { animation-delay: 1.21s; }
+@keyframes implodeWave {
+  0% {
+    transform: scale(3); /* Start way outside the viewport */
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5; /* Fade in quickly at the edge */
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(0.1); /* Collapse toward the logo center */
+    opacity: 0;
+  }
+}
+
+/* Stagger the waves */
+.ring-1 { animation-delay: 0.2s; }
+.ring-2 { animation-delay: 0.6s; }
+.ring-3 { animation-delay: 1.0s; }
+.ring-4 { animation-delay: 1.4s; }
+
+/* Optional: Make the rings glow slightly */
+.echo-ring {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1), inset 0 0 30px rgba(255, 255, 255, 0.1);
+}
 
 /* Plexus/Logo Masking */
 #plexus-canvas {
@@ -665,6 +691,15 @@ html, body {
   
  <!-- Logo intro -->
 <div id="logo-container" style="pointer-events: none;>
+
+    <div class="implosion-wrapper absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
+  <div class="echo-ring ring-1"></div>
+  <div class="echo-ring ring-2"></div>
+  <div class="echo-ring ring-3"></div>
+  <div class="echo-ring ring-4"></div>
+</div>
+
+    
   <div class="position-wrapper flex items-center justify-center relative z-10">
     
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
