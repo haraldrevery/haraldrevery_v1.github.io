@@ -641,17 +641,18 @@ html, body {
 </div>
   
 
-  
-  
-<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer">
-  <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-      <p>Welcome! Scroll down ↓</p>
+<section id="hero-trigger" 
+         onclick="document.getElementById('next-section').scrollIntoView({ behavior: 'smooth' });"
+         class="welcome-text-delayed absolute bottom-10 left-0 w-full font-normal text-center text-base cursor-pointer z-20 hover:opacity-70 transition-opacity">
+  <div class="text-container">
+      <p class="animate-bounce">Welcome! Scroll down ↓</p>
   </div>
 </section>
-
+      
+  
 <section id="next-section" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-      <p></p>
+      <p>Your content here...</p>
   </div>
 </section>
 
