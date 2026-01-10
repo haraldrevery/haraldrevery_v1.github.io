@@ -31,7 +31,7 @@
   z-index: -11;
   background-image: url('./dist/assets/bgtexture.jpg');
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
-   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+
   
   /* 'cover' ensures the image fills the screen without stretching or gaps */
   background-size: cover; 
@@ -283,7 +283,11 @@
   }
 }
 
-
+#main-header {
+  -webkit-backdrop-filter: blur(12px); /* CRITICAL for Safari */
+  backdrop-filter: blur(12px);
+}
+      
  /* center glow "*/ 
 .center-glow {
     /* Adjust the color here: 255,255,255 is white. 
@@ -748,7 +752,7 @@ html, body {
   
   
  <!-- Logo intro -->
-<div id="logo-container" style="pointer-events: none;>
+<div id="logo-container" style="pointer-events: none;">
     
   <div class="position-wrapper flex items-center justify-center relative z-10">
     
