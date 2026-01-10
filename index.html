@@ -682,7 +682,7 @@ html, body {
 </div>
   
   
-<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer relative z-20">
+<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed hover:opacity-70 transition-opacity">
       <p>Welcome! Scroll down ↓</p>
   </div>
@@ -930,97 +930,119 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-const canvas = document.getElementById('plexus-canvas');
-const ctx = canvas.getContext('2d');
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('plexus-canvas');
+  const ctx = canvas.getContext('2d');
+  const width = 1000, height = 1100;
+  
+  const isMobile = window.innerWidth < 768;
+  const targetParticleCount = isMobile ? 150 : 421;
+  const connectionDistance = isMobile ? 120 : 150;
+  const connDistSq = connectionDistance * connectionDistance;
+  
+  const posX = new Float32Array(targetParticleCount);
+  const posY = new Float32Array(targetParticleCount);
+  const velX = new Float32Array(targetParticleCount);
+  const velY = new Float32Array(targetParticleCount);
+  
+  let currentParticleCount = 0;
+  const startTime = Date.now();
 
-let particles = [];
-const particleCount = 60; // Slightly lower count for better 3D performance
-const connectionDistance = 120;
-const perspective = 400; // Determines the "strength" of the 3D effect
+  function createParticle(i) {
+    posX[i] = Math.random() * width;
+    posY[i] = Math.random() * height;
+    velX[i] = (Math.random() - 0.5) * 0.8;
+    velY[i] = (Math.random() - 0.5) * 0.8;
+  }
 
-function init() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    particles = [];
-    for (let i = 0; i < particleCount; i++) {
-        particles.push({
-            // Initialize in 3D space
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            z: Math.random() * perspective, 
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: (Math.random() - 0.5) * 1.5,
-            vz: (Math.random() - 0.5) * 1.5, // Depth velocity
-            radius: 1.5
-        });
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    const progress = Math.min((Date.now() - startTime) / 3000, 1);
+    const targetThisFrame = Math.floor(progress * targetParticleCount);
+
+    while (currentParticleCount < targetThisFrame) {
+      createParticle(currentParticleCount);
+      currentParticleCount++;
     }
-}
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
+    // 1. Draw all particles first as fast Rectangles
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    for (let i = 0; i < currentParticleCount; i++) {
+      posX[i] += velX[i];
+      posY[i] += velY[i];
+      if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
+      if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
+      
+      // Optimization: Using fillRect instead of arc()
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
+    }
 
-    for (let i = 0; i < particles.length; i++) {
-        let p = particles[i];
+    // 2. Batch line drawing by alpha steps to reduce state changes
+    ctx.lineWidth = 0.8;
+    for (let i = 0; i < currentParticleCount; i++) {
+      const x1 = posX[i], y1 = posY[i];
+      for (let j = i + 1; j < currentParticleCount; j++) {
+        const dx = x1 - posX[j], dy = y1 - posY[j];
+        const distSq = dx * dx + dy * dy;
 
-        // Update 3D position
-        p.x += p.vx;
-        p.y += p.vy;
-        p.z += p.vz;
-
-        // Boundary checks for Z-axis (Looping depth)
-        if (p.z <= 0) p.z = perspective;
-        if (p.z > perspective) p.z = 0;
-        
-        // Bounce X and Y
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        // Project 3D coordinates to 2D screen
-        // Perspective formula: scale = perspective / (perspective + depth)
-        const scale = perspective / (perspective + p.z);
-        const screenX = (p.x - cx) * scale + cx;
-        const screenY = (p.y - cy) * scale + cy;
-        const screenRadius = p.radius * scale;
-
-        // Set opacity based on depth (further particles are fainter)
-        const opacity = scale * 0.8;
-        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-
-        ctx.beginPath();
-        ctx.arc(screenX, screenY, screenRadius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Connect lines in 3D
-        for (let j = i + 1; j < particles.length; j++) {
-            let p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dz = p.z - p2.z;
-            const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
-
-            if (dist < connectionDistance) {
-                const scale2 = perspective / (perspective + p2.z);
-                const screenX2 = (p2.x - cx) * scale2 + cx;
-                const screenY2 = (p2.y - cy) * scale2 + cy;
-
-                ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - dist/connectionDistance) * opacity})`;
-                ctx.lineWidth = 0.5 * scale;
-                ctx.beginPath();
-                ctx.moveTo(screenX, screenY);
-                ctx.lineTo(screenX2, screenY2);
-                ctx.stroke();
-            }
+        if (distSq < connDistSq) {
+          const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
+          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(posX[j], posY[j]);
+          ctx.stroke();
         }
+      }
     }
-    requestAnimationFrame(draw);
-}
+    requestAnimationFrame(animate);
+  }
+  animate();
 
-window.addEventListener('resize', init);
-init();
-draw();
+// mouse rotation
+// Replace the mouse rotation logic at the bottom of index.html
+window.addEventListener('mousemove', (e) => {
+  const logoSvg = document.getElementById('main-logo-svg');
+  if (!logoSvg) return;
+
+  const rect = logoSvg.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const mouseX = e.clientX - centerX;
+  const mouseY = e.clientY - centerY;
+
+  // Convert distance to rotation degrees
+  const rotateY = mouseX / 30; 
+  const rotateX = (mouseY / 30) * -1; 
+
+  const limit = 16; // Tighten the limit for more elegance
+  const finalX = Math.max(Math.min(rotateX, limit), -limit);
+  const finalY = Math.max(Math.min(rotateY, limit), -limit);
+
+  /* THE FIX: 
+     1. translateZ(100px) brings the logo toward the viewer.
+     2. Multiplying by a base Z keeps the center of the logo from 
+        feeling like it's stuck to a flat sheet of paper.
+  */
+ // Inside the mousemove listener:
+logoSvg.style.transform = `
+  perspective(2500px) 
+  translateX(-9.81%)
+  rotateX(${finalX}deg) 
+  rotateY(${finalY}deg) 
+  translateZ(29px)
+`;
+});
+
+// Reset logic
+document.getElementById('logo-container').addEventListener('mouseleave', () => {
+  const logoSvg = document.getElementById('main-logo-svg');
+  logoSvg.style.transform = `translateX(-9.81%) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+});
+});
 </script>
+
 
 <!-- fading words script -->
 <script>
@@ -1110,12 +1132,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (trigger) {
       trigger.addEventListener('click', () => {
-        // This gets the exact height of the user's current window
-        const fullScreenHeight = window.innerHeight;
+        // Calculate the height of the user's current viewport
+        const viewportHeight = window.innerHeight;
         
-        // Scrolls down exactly that much
+        // Scroll down exactly one screen height from the current position
         window.scrollBy({ 
-          top: fullScreenHeight, 
+          top: viewportHeight, 
           behavior: 'smooth' 
         });
       });
