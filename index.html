@@ -1097,9 +1097,18 @@ let mouseX = 0, mouseY = 0;
 let targetX = 0, targetY = 0;
 
 // Update mouse position globally so it persists through restarts
+// Replace your existing document.addEventListener('mousemove'...) with this:
+let isMouseIn = false;
+
 document.addEventListener('mousemove', (e) => {
-  mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-  mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    isMouseIn = true;
+    mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+    mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+});
+
+// Detect when the mouse leaves the screen
+document.addEventListener('mouseleave', () => {
+    isMouseIn = false;
 });
 
 window.restartPlexus = function() {
@@ -1141,38 +1150,34 @@ window.restartPlexus = function() {
 
   function animate() {
 
-   // Inside the animate() function in the Plexus script
 for (let i = 0; i < currentParticleCount; i++) {
-  // Inside the animate() function for for-loop (currentParticleCount)
-const mX = (mouseX + 1) * (width / 2);
-const mY = (mouseY + 1) * (height / 2);
-const dxMouse = mX - posX[i];
-const dyMouse = mY - posY[i];
-const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+    // 1. Convert mouse coordinates
+    const mX = (mouseX + 1) * (width / 2);
+    const mY = (mouseY + 1) * (height / 2);
+    const dxMouse = mX - posX[i];
+    const dyMouse = mY - posY[i];
+    const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-// 1. Subtler attraction: Increased divisor (2500 -> 8000)
-if (distMouse < 250) {
-  const force = (250 - distMouse) / 8000; 
-  velX[i] += dxMouse * force * 0.1;
-  velY[i] += dyMouse * force * 0.1;
-}
+    // 2. Smaller Attraction Radius & Reset Logic
+    // Only apply attraction if mouse is inside the window AND close to particle
+    const attractionRadius = 100; // Reduced from 250
+    
+    if (isMouseIn && distMouse < attractionRadius) {
+        const force = (attractionRadius - distMouse) / 5000; // Higher divisor = subtler pull
+        velX[i] += dxMouse * force * 0.1;
+        velY[i] += dyMouse * force * 0.1;
+    }
 
-// 2. REMOVED Friction: No more *= 0.95. This keeps the animation going.
+    // 3. Keep them moving! 
+    // We remove the hard friction (velX[i] *= 0.95) so they keep their momentum
+    // But we add a tiny bit of "air resistance" (0.99) so they don't speed up forever
+    velX[i] *= 0.99; 
+    velY[i] *= 0.99;
 
-// 3. Constant speed cap (Optional but recommended)
-// Prevents particles from getting too fast over time from mouse kicks
-const speed = Math.sqrt(velX[i]**2 + velY[i]**2);
-const maxSpeed = 1.5; 
-if (speed > maxSpeed) {
-  velX[i] = (velX[i] / speed) * maxSpeed;
-  velY[i] = (velY[i] / speed) * maxSpeed;
-}
+    // 4. Update position and boundaries
+    posX[i] += velX[i];
+    posY[i] += velY[i];
 
-// 4. Update position and boundary checks as before
-posX[i] += velX[i];
-posY[i] += velY[i];
-
-    // Boundary checks
     if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
     if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
 
