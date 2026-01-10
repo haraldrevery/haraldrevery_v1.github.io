@@ -45,9 +45,9 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abombination, 100 % vibe coded with Gemini and Grok (xAI) btw. Also removed the Fancybox since it requires purchased license to be used, instead I opted for GLightbox with the MIT licence.
+I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abombination, 99% vibe coded with Gemini and Grok (xAI) to really push those models. I removed the Fancybox stuff since it requires purchased license to be used, instead I opted for GLightbox with the MIT licence.
 
-## 🛠️ Built With <a name="built-with"></a>
+## Built With <a name="built-with"></a>
 
 - [![HTML][html-badge]][html-url]
 - [![CSS][css-badge]][css-url]
@@ -59,14 +59,14 @@ I took this repository https://github.com/JoaoFranco03/photography-portfolio and
 
 <!-- LICENSE -->
 
-## 📜 License <a name="license"></a>
+## License <a name="license"></a>
 
-Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs and brand assets in the folder are Copyright © 2025 Harald Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
+Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs and brand assets in various folder are Copyright © 2025 Harald Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
 
 
 <!-- CONTACT -->
 
-## 📧 Contact <a name="contact"></a>
+## Contact <a name="contact"></a>
 
 João Franco - https://www.linkedin.com/in/joão-franco-452161195/
 
@@ -76,7 +76,7 @@ Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://g
 
 <!-- ACKNOWLEDGMENTS -->
 
-## 🌟 Acknowledgments <a name="acknowledgments"></a>
+## Acknowledgments <a name="acknowledgments"></a>
 
 - [GLightbox](https://github.com/biati-digital)
 - [Tailwind Documentation](https://tailwindcss.com/docs/installation)
@@ -104,4 +104,4 @@ Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://g
 [license-url]: https://github.com/JoaoFranco03/photography-portfolio/blob/main/LICENSE.md
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/joão-franco-452161195/
-[product-screenshot]: dist/assets/mockup.png
+
