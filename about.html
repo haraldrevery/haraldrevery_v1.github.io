@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark" x-data="{ 
+<html lang="en" class="scroll-smooth dark" x-cloak x-data="{ 
     darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true' 
   }" 
   x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
@@ -84,7 +84,9 @@
           animation: fadeInWord 0.6s ease-out forwards;
         }
 
-
+[x-cloak] { 
+  display: none !important; 
+}
     
 /* 1. FONT DEFINITIONS */
 @font-face {
@@ -109,15 +111,30 @@
 
     /* 2. BASE STYLES */
     html { font-size: 1.427rem; }
-    body {
-      font-family: 'HaraldText', sans-serif;
-      font-size: 2.28rem;     /* ≈28px on 16px root */
-      line-height: 1.58;
-      letter-spacing: 0.018em;
-    
-    }
+body {
+  /* Fallback for older browsers */
+  min-height: 100vh; 
+  /* Modern fix for iOS Safari */
+  min-height: 100dvh; 
+  font-family: 'HaraldText', sans-serif;
+  font-size: 2.28rem;
+  line-height: 1.58;
+  letter-spacing: 0.018em;
+}
 
-
+.bg-image-fade, #logo-container {
+  height: 100vh; /* Fallback for very old browsers */
+  height: 100dvh; /* The correct unit for modern Safari/iOS */
+}
+#main-header {
+  -webkit-backdrop-filter: blur(12px); /* Required for Safari */
+  backdrop-filter: blur(12px);
+}
+ .grid-item-reveal, #tilting-logo {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0); /* Forces GPU rendering in Safari */
+}     
 
     
 /* Animation definition remains the same */
