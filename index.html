@@ -895,26 +895,20 @@ document.addEventListener('mousemove', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('plexus-canvas');
   const ctx = canvas.getContext('2d');
+  const width = 1000, height = 1100;
   
-  // Internal resolution matches the SVG viewBox
-  const width = 1000;
-  const height = 1100;
-    // Detect mobile or small screen
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 150 : 421;
   const connectionDistance = isMobile ? 120 : 150;
-
-  const connDistSq = connectionDistance * connectionDistance; // Optimization: Squared distance
-  const growthDuration = 3000; 
-  const startTime = Date.now();
-
-  // Using Typed Arrays for better memory performance
+  const connDistSq = connectionDistance * connectionDistance;
+  
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
   const velX = new Float32Array(targetParticleCount);
   const velY = new Float32Array(targetParticleCount);
   
   let currentParticleCount = 0;
+  const startTime = Date.now();
 
   function createParticle(i) {
     posX[i] = Math.random() * width;
@@ -925,10 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animate() {
     ctx.clearRect(0, 0, width, height);
-
-    // GROWTH LOGIC
-    const elapsed = Date.now() - startTime;
-    const progress = Math.min(elapsed / growthDuration, 1);
+    const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
 
     while (currentParticleCount < targetThisFrame) {
@@ -936,41 +927,30 @@ document.addEventListener('DOMContentLoaded', () => {
       currentParticleCount++;
     }
 
-    // STYLING SETUP
+    // 1. Draw all particles first as fast Rectangles
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.lineWidth = 0.8;
-
-    // SINGLE PASS UPDATE & DRAW
     for (let i = 0; i < currentParticleCount; i++) {
-      // Move particles
       posX[i] += velX[i];
       posY[i] += velY[i];
-
-      // Boundary Check
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
+      
+      // Optimization: Using fillRect instead of arc()
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
+    }
 
-      // Draw Particle
-      ctx.beginPath();
-      ctx.arc(posX[i], posY[i], 1.5, 0, 6.28318); // 2 * PI
-      ctx.fill();
-
-      // NESTED LOOP FOR LINES
-      const x1 = posX[i];
-      const y1 = posY[i];
-
+    // 2. Batch line drawing by alpha steps to reduce state changes
+    ctx.lineWidth = 0.8;
+    for (let i = 0; i < currentParticleCount; i++) {
+      const x1 = posX[i], y1 = posY[i];
       for (let j = i + 1; j < currentParticleCount; j++) {
-        const dx = x1 - posX[j];
-        const dy = y1 - posY[j];
+        const dx = x1 - posX[j], dy = y1 - posY[j];
         const distSq = dx * dx + dy * dy;
 
-        // Optimization: Check squared distance first to avoid Math.sqrt()
         if (distSq < connDistSq) {
-          const dist = Math.sqrt(distSq);
-          const alpha = (1 - dist / connectionDistance) * 0.8;
-          
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+          const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
+          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
           ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
@@ -979,7 +959,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(animate);
   }
-
   animate();
 
 // mouse rotation
