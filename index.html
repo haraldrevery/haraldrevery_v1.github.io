@@ -562,7 +562,7 @@ html, body {
 
 /* Increase perspective to reduce lens distortion */
 #logo-container {
-  perspective: 1000px;
+  perspective: 2500px;
   height: 100vh !important; /* Force full viewport height */
   width: 100vw;
   max-width: 100% !important;
@@ -1054,24 +1054,35 @@ html, body {
   
   <!--For the 3D logo thing to react to the mouse -->
 <script>
-document.addEventListener('mousemove', (e) => {
-  const logo = document.getElementById('tilting-logo');
-  if (!logo) return;
+  let targetRotateX = 0;
+  let targetRotateY = 0;
+  let currentRotateX = 0;
+  let currentRotateY = 0;
 
-  const { clientX, clientY } = e;
-  const { innerWidth, innerHeight } = window;
+  document.addEventListener('mousemove', (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
 
-  // Calculate rotation based on mouse position
-  // Adjust the '20' to increase or decrease the tilt intensity
-  const rotateY = ((clientX / innerWidth) - 0.5) * 40; 
-  const rotateX = ((clientY / innerHeight) - 0.5) * -40;
+    // Calculate the target rotation (Reduced intensity to 25 for realism)
+    targetRotateY = ((clientX / innerWidth) - 0.5) * 25;
+    targetRotateX = ((clientY / innerHeight) - 0.5) * -25;
+  });
 
-  logo.style.transform = `
-    rotateX(${rotateX}deg) 
-    rotateY(${rotateY}deg) 
-    translateZ(50px)
-  `;
-});
+  function updateLogoRotation() {
+    const logo = document.getElementById('tilting-logo');
+    if (logo) {
+      // "Lerping" formula: current + (target - current) * factor
+      // 0.05 creates a smooth, heavy feel. Increase to 0.1 for faster response.
+      currentRotateX += (targetRotateX - currentRotateX) * 0.05;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.05;
+
+      logo.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+    }
+    requestAnimationFrame(updateLogoRotation);
+  }
+
+  // Start the animation loop
+  updateLogoRotation();
 </script>
 
 
