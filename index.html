@@ -460,9 +460,9 @@ html, body {
   object-fit: contain; 
 }
       
-/* Updated Logo Container for true 3D */
+
+/* Increase perspective to reduce lens distortion */
 #logo-container {
-  /* Increase perspective to reduce lens distortion/squashing */
   perspective: 3000px; 
   perspective-origin: center;
   overflow: visible !important;
@@ -470,8 +470,8 @@ html, body {
 
 #main-logo-svg {
   transform-style: preserve-3d;
-  /* Set origin to center so it rotates around its own 'origo' */
-  transform-origin: center center; 
+  /* Add a very slight base Z-translation to 'lift' it off the background */
+  transform: translateZ(50px);
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform;
 }
@@ -955,33 +955,37 @@ window.addEventListener('mousemove', (e) => {
   if (!logoSvg) return;
 
   const rect = logoSvg.getBoundingClientRect();
-  
-  // 1. Find the exact center of the logo on the screen
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
   
-  // 2. Calculate mouse distance from that center
   const mouseX = e.clientX - centerX;
   const mouseY = e.clientY - centerY;
 
-  // 3. Convert distance to rotation degrees
-  // Dividing by 40-50 makes the movement subtle and elegant
-  const rotateY = mouseX / 45; 
-  const rotateX = (mouseY / 45) * -1; 
+  // Convert distance to rotation degrees
+  const rotateY = mouseX / 30; 
+  const rotateX = (mouseY / 30) * -1; 
 
-  // 4. Set a hard limit to prevent extreme "squashing" angles
-  const limit = 15; // Max 15 degrees of tilt
+  const limit = 15; // Tighten the limit for more elegance
   const finalX = Math.max(Math.min(rotateX, limit), -limit);
   const finalY = Math.max(Math.min(rotateY, limit), -limit);
 
-  // 5. Apply the transform
-  logoSvg.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg)`;
+  /* THE FIX: 
+     1. translateZ(100px) brings the logo toward the viewer.
+     2. Multiplying by a base Z keeps the center of the logo from 
+        feeling like it's stuck to a flat sheet of paper.
+  */
+  logoSvg.style.transform = `
+    perspective(3000px) 
+    rotateX(${finalX}deg) 
+    rotateY(${finalY}deg) 
+    translateZ(100px)
+  `;
 });
 
-// Update the reset listener as well
+// Reset logic
 document.getElementById('logo-container').addEventListener('mouseleave', () => {
   const logoSvg = document.getElementById('main-logo-svg');
-  logoSvg.style.transform = `rotateX(0deg) rotateY(0deg)`;
+  logoSvg.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
 });
 });
 </script>
