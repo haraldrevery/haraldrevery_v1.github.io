@@ -1133,8 +1133,8 @@ window.restartPlexus = function() {
     targetY += (mouseY - targetY) * 0.1;
 
     // Apply the 3D tilt to the SVG
-    const rotateX = targetY * -16; // Vertical tilt
-    const rotateY = targetX * 16;  // Horizontal tilt
+    const rotateX = targetY * -19; // Vertical tilt
+    const rotateY = targetX * 19;  // Horizontal tilt
       
     svg.style.transform = `translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(29px)`;
 
