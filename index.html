@@ -682,8 +682,8 @@ html, body {
 </div>
   
   
-<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer">
-  <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+<section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
+  <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed hover:opacity-70 transition-opacity">
       <p>Welcome! Scroll down ↓</p>
   </div>
 </section>
@@ -1129,14 +1129,16 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const trigger = document.getElementById('hero-trigger');
-    const target = document.getElementById('next-section');
 
-    if (trigger && target) {
+    if (trigger) {
       trigger.addEventListener('click', () => {
-        // This calculates the position and scrolls smoothly
-        target.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+        // Calculate the height of the user's current viewport
+        const viewportHeight = window.innerHeight;
+        
+        // Scroll down exactly one screen height from the current position
+        window.scrollBy({ 
+          top: viewportHeight, 
+          behavior: 'smooth' 
         });
       });
     }
