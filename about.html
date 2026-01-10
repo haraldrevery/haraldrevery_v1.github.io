@@ -436,10 +436,10 @@ body {
       </section>
 </div> 
 
-    <!-- dark mode button -->
-<div class="fixed bottom-[32px] right-[32px] z-[10000]" 
+    <!-- dark mode button (after 1000ms )-->
+<div class="fixed bottom-8 right-8 z-[10000]" 
      x-data="{ showToggle: false }" 
-     x-init="setTimeout(() => showToggle = true, 1200)">
+     x-init="setTimeout(() => showToggle = true, 1000)">
   <button 
     @click="darkMode = !darkMode" 
     class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
@@ -450,7 +450,6 @@ body {
     <span x-show="darkMode" class="block">☀</span>
   </button>
 </div>
-
       
   <!-- center the dark mode button -->  
 <section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
