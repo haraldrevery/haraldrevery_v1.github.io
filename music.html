@@ -370,7 +370,23 @@ body {
 .logo-item:nth-child(3) { transition-delay: 0.5s; }
 .logo-item:nth-child(4) { transition-delay: 0.6s; }
 .logo-item:nth-child(5) { transition-delay: 0.7s; }
-    
+
+
+/* Dark mode button fade in */
+/* Initial state for the toggle button */
+.mode-toggle-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* State when revealed */
+.mode-toggle-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+      
+      
   </style>
 
   <script>
@@ -722,8 +738,20 @@ body {
 </div>
 
 
-
-
+  <!-- Dark mode button -->  
+<div class="fixed bottom-[32px] right-[32px] z-[10000]" 
+     x-data="{ showToggle: false }" 
+     x-init="setTimeout(() => showToggle = true, 2800)">
+  <button 
+    @click="darkMode = !darkMode" 
+    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
+    :class="{ 'mode-toggle-visible': showToggle }"
+    aria-label="Toggle Mode"
+  >
+    <span x-show="!darkMode" class="block">🌙</span>
+    <span x-show="darkMode" class="block">☀</span>
+  </button>
+</div>
     
 
 
