@@ -560,6 +560,7 @@ html, body {
 
 /* Increase perspective to reduce lens distortion */
 #logo-container {
+  perspective: 2500px;
   height: 100vh !important; /* Force full viewport height */
   width: 100vw;
   max-width: 100% !important;
@@ -1062,7 +1063,11 @@ document.addEventListener('mousemove', (e) => {
   const rotateY = ((clientX / innerWidth) - 0.5) * 40; 
   const rotateX = ((clientY / innerHeight) - 0.5) * -40;
 
-  logo.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  logo.style.transform = `
+    rotateX(${rotateX}deg) 
+    rotateY(${rotateY}deg) 
+    translateZ(50px)
+  `;
 });
 </script>
 
