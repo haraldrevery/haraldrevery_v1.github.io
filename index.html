@@ -436,15 +436,14 @@ html, body {
 }
 
       
+/* Update the mobile override around line 430 */
 @media (max-width: 767px) {
   .animate-logo path {
-    fill: #000000 !important; /* Light mode mobile */
-    stroke: #000000 !important;
+    fill: #000000 !important;
     fill-opacity: 0.25 !important; 
   }
   .dark .animate-logo path {
-    fill: #FFFFFF !important; /* Dark mode mobile */
-    stroke: #FFFFFF !important;
+    fill: #FFFFFF !important;
     fill-opacity: 0.25 !important;
   }
 }
@@ -635,7 +634,7 @@ html, body {
 
 /* Ensure dark mode flips the colors back to white */
 .dark .animate-logo path {
-  stroke: #FFFFFF !important;
+  /* REMOVE stroke: #FFFFFF !important; */
   fill: #FFFFFF !important;
   fill-opacity: 0.05 !important;
 }
