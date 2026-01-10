@@ -1066,11 +1066,11 @@ html, body {
     targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 30;
     targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -30;
   });
-
-  document.addEventListener('mouseleave', () => {
-    targetRotateX = 0;
-    targetRotateY = 0;
-  });
+// Reset rotation when the mouse leaves the browser window
+document.addEventListener('mouseleave', () => {
+  targetRotateY = 0;
+  targetRotateX = 0;
+});
 
   function smoothRotate() {
     if (logoSvg) {
