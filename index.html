@@ -895,20 +895,16 @@ document.addEventListener('mousemove', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('plexus-canvas');
   const ctx = canvas.getContext('2d');
-  const logoSvg = document.getElementById('main-logo-svg');
   
   // Internal resolution matches the SVG viewBox for 1:1 alignment
   const width = 1000;
   const height = 1100;
     
-
-const PARTICLE_COUNT = 150;     // Increase this (e.g., from 80 to 150)
-const CONNECTION_DISTANCE = 120; // Increase this (e.g., from 100 to 120) for more lines
-const PARTICLE_SPEED = 0.4;      // Keep it subtle so it doesn't look chaotic
-    
   const particles = [];
-  const particleCount = 65;
+  const targetParticleCount = 800; // Your new target
   const connectionDistance = 120;
+  const growthDuration = 3000; // 3 seconds
+  const startTime = Date.now();
 
   class Particle {
     constructor() {
@@ -934,12 +930,18 @@ const PARTICLE_SPEED = 0.4;      // Keep it subtle so it doesn't look chaotic
     }
   }
 
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-
   function animate() {
     ctx.clearRect(0, 0, width, height);
+
+    // --- GROWTH LOGIC ---
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / growthDuration, 1);
+    const currentTarget = Math.floor(progress * targetParticleCount);
+
+    // Add particles until we reach the current target for this millisecond
+    while (particles.length < currentTarget) {
+      particles.push(new Particle());
+    }
 
     for (let i = 0; i < particles.length; i++) {
       const p1 = particles[i];
@@ -956,7 +958,9 @@ const PARTICLE_SPEED = 0.4;      // Keep it subtle so it doesn't look chaotic
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / connectionDistance})`;
+          // Fade lines in as particles grow for a smoother effect
+          const alpha = (1 - dist / connectionDistance) * 0.8;
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
