@@ -1070,23 +1070,34 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-// 1. Define the animation ID globally so it can be cancelled
+// 1. GLOBAL SCOPE: Animation ID and Persistent Mouse Coordinates
 let plexusRequestId;
+let mouseX = 0, mouseY = 0;
+let targetX = 0, targetY = 0;
 
-// 2. Define the function as window.restartPlexus to match your button's watcher
+// Update mouse position globally so it persists through restarts
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+  mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+});
+
 window.restartPlexus = function() {
-  // Stop the current loop before starting a new one
+  // Clear previous loop
   if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
 
   const canvas = document.getElementById('plexus-canvas');
-  if (!canvas) return;
+  const svg = document.getElementById('main-logo-svg');
+  if (!canvas || !svg) return;
   const ctx = canvas.getContext('2d');
+  
+  // Use the dimensions from your original code
   const width = 1000, height = 1100;
   
-  // 3. Dynamic Color Check
+  // Dynamic Color
   const isDark = document.documentElement.classList.contains('dark');
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26"; 
-  
+
+  // Particle Settings
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 150 : 421;
   const connectionDistance = isMobile ? 120 : 150;
@@ -1108,6 +1119,17 @@ window.restartPlexus = function() {
   }
 
   function animate() {
+    // --- PART 1: RESTORE 3D ROTATION ---
+    // Smooth the mouse movement (Lerp)
+    targetX += (mouseX - targetX) * 0.1;
+    targetY += (mouseY - targetY) * 0.1;
+
+    // Apply the 3D tilt to the SVG
+    const rotateX = targetY * -15; // Vertical tilt
+    const rotateY = targetX * 15;  // Horizontal tilt
+    svg.style.transform = `translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+    // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
@@ -1117,7 +1139,7 @@ window.restartPlexus = function() {
       currentParticleCount++;
     }
 
-    // Use the dynamic RGB for particles
+    // Draw Particles
     ctx.fillStyle = `rgba(${rgb}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
       posX[i] += velX[i];
@@ -1127,6 +1149,7 @@ window.restartPlexus = function() {
       ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
     }
 
+    // Draw Lines
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
       const x1 = posX[i], y1 = posY[i];
@@ -1137,7 +1160,6 @@ window.restartPlexus = function() {
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
           ctx.beginPath();
-          // Use the dynamic RGB for lines
           ctx.strokeStyle = `rgba(${rgb}, ${alpha.toFixed(2)})`;
           ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
@@ -1150,52 +1172,9 @@ window.restartPlexus = function() {
   animate();
 };
 
-// Initial run
+// Start initially
 document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
-});
-    
-// mouse rotation
-// Replace the mouse rotation logic at the bottom of index.html
-window.addEventListener('mousemove', (e) => {
-  const logoSvg = document.getElementById('main-logo-svg');
-  if (!logoSvg) return;
-
-  const rect = logoSvg.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  
-  const mouseX = e.clientX - centerX;
-  const mouseY = e.clientY - centerY;
-
-  // Convert distance to rotation degrees
-  const rotateY = mouseX / 30; 
-  const rotateX = (mouseY / 30) * -1; 
-
-  const limit = 16; // Tighten the limit for more elegance
-  const finalX = Math.max(Math.min(rotateX, limit), -limit);
-  const finalY = Math.max(Math.min(rotateY, limit), -limit);
-
-  /* THE FIX: 
-     1. translateZ(100px) brings the logo toward the viewer.
-     2. Multiplying by a base Z keeps the center of the logo from 
-        feeling like it's stuck to a flat sheet of paper.
-  */
- // Inside the mousemove listener:
-logoSvg.style.transform = `
-  perspective(2500px) 
-  translateX(-9.81%)
-  rotateX(${finalX}deg) 
-  rotateY(${finalY}deg) 
-  translateZ(29px)
-`;
-});
-
-// Reset logic
-document.getElementById('logo-container').addEventListener('mouseleave', () => {
-  const logoSvg = document.getElementById('main-logo-svg');
-  logoSvg.style.transform = `translateX(-9.81%) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
-});
 });
 </script>
 
