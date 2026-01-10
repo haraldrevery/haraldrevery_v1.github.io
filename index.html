@@ -818,9 +818,13 @@ html, body {
     <!-- dark mode button (after 2800ms )-->
 <div class="fixed bottom-8 right-8 z-[10000]" 
      x-data="{ showToggle: false }" 
-     x-init="setTimeout(() => showToggle = true, 2800)">
-  <button 
-    @click="darkMode = !darkMode" 
+     x-init="
+       setTimeout(() => showToggle = true, 2800);
+       $watch('darkMode', () => {
+         setTimeout(() => window.restartPlexus(), 50);
+       });
+     ">
+  <button @click="darkMode = !darkMode" 
     class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
     :class="{ 'mode-toggle-visible': showToggle }"
     aria-label="Toggle Mode"
@@ -1066,10 +1070,21 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+// Variable to store the animation ID so we can stop it
+let plexusRequestId;
+
+window.initPlexus = function() {
+  // 1. Stop any existing animation before starting a new one
+  if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
+
   const canvas = document.getElementById('plexus-canvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const width = 1000, height = 1100;
+  
+  // 2. Determine colors: White for dark mode, Dark Grey for light mode
+  const isDark = document.documentElement.classList.contains('dark');
+  const rgb = isDark ? "255, 255, 255" : "26, 26, 26"; 
   
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 150 : 421;
@@ -1101,19 +1116,16 @@ document.addEventListener('DOMContentLoaded', () => {
       currentParticleCount++;
     }
 
-    // 1. Draw all particles first as fast Rectangles
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    // 3. Use the dynamic RGB variable for particles
+    ctx.fillStyle = `rgba(${rgb}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
       posX[i] += velX[i];
       posY[i] += velY[i];
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-      
-      // Optimization: Using fillRect instead of arc()
       ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
     }
 
-    // 2. Batch line drawing by alpha steps to reduce state changes
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
       const x1 = posX[i], y1 = posY[i];
@@ -1123,17 +1135,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
-          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
-          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          ctx.beginPath();
+          // 4. Use the dynamic RGB variable for lines
+          ctx.strokeStyle = `rgba(${rgb}, ${alpha.toFixed(2)})`;
           ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
         }
       }
     }
-    requestAnimationFrame(animate);
+    plexusRequestId = requestAnimationFrame(animate);
   }
   animate();
+};
+
+// Start the animation on initial page load
+document.addEventListener('DOMContentLoaded', () => {
+  window.initPlexus();
+});
 
 // mouse rotation
 // Replace the mouse rotation logic at the bottom of index.html
