@@ -892,18 +892,16 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('plexus-canvas');
+const canvas = document.getElementById('plexus-canvas');
   const ctx = canvas.getContext('2d');
   
-  // Internal resolution matches the SVG viewBox for 1:1 alignment
   const width = 1000;
   const height = 1100;
     
   const particles = [];
-  const targetParticleCount = 800; // Your new target
+  const targetParticleCount = 800; 
   const connectionDistance = 120;
-  const growthDuration = 3000; // 3 seconds
+  const growthDuration = 3000; 
   const startTime = Date.now();
 
   class Particle {
@@ -917,7 +915,6 @@ document.addEventListener('DOMContentLoaded', () => {
     update() {
       this.x += this.vx;
       this.y += this.vy;
-
       if (this.x < 0 || this.x > width) this.vx *= -1;
       if (this.y < 0 || this.y > height) this.vy *= -1;
     }
@@ -933,12 +930,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function animate() {
     ctx.clearRect(0, 0, width, height);
 
-    // --- GROWTH LOGIC ---
     const elapsed = Date.now() - startTime;
     const progress = Math.min(elapsed / growthDuration, 1);
     const currentTarget = Math.floor(progress * targetParticleCount);
 
-    // Add particles until we reach the current target for this millisecond
     while (particles.length < currentTarget) {
       particles.push(new Particle());
     }
@@ -955,14 +950,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < connectionDistance) {
+          // Draw the line
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
-          // Fade lines in as particles grow for a smoother effect
-          const alpha = (1 - dist / connectionDistance) * 0.8;
+          const alpha = (1 - dist / connectionDistance) * 0.5;
           ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-          ctx.lineWidth = 0.8;
+          ctx.lineWidth = 0.5;
           ctx.stroke();
+
+          // TRIANGLE LOGIC: Check for a third particle to close a triangle
+          for (let k = j + 1; k < particles.length; k++) {
+            const p3 = particles[k];
+            const dx2 = p1.x - p3.x;
+            const dy2 = p1.y - p3.y;
+            const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+            const dx3 = p2.x - p3.x;
+            const dy3 = p2.y - p3.y;
+            const dist3 = Math.sqrt(dx3 * dx3 + dy3 * dy3);
+
+            // If all three sides are connected
+            if (dist2 < connectionDistance && dist3 < connectionDistance) {
+              // 4% chance to fill the triangle
+              if (Math.random() < 0.04) {
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.lineTo(p3.x, p3.y);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; // 40% Opacity
+                ctx.fill();
+              }
+            }
+          }
         }
       }
     }
