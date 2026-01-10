@@ -1155,7 +1155,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 </script>
+ <script>
+document.getElementById('hero-trigger').addEventListener('click', () => {
+  const nextSection = document.getElementById('next-section');
+  const header = document.getElementById('main-header');
   
+  // Calculate the height of the header to use as an offset
+  const headerHeight = header ? header.offsetHeight : 0;
+  
+  // Get the position of the next section
+  const sectionPosition = nextSection.getBoundingClientRect().top + window.pageYOffset;
+
+  // Scroll to the position minus the header height (and an optional 20px extra buffer)
+  window.scrollTo({
+    top: sectionPosition - headerHeight - 20,
+    behavior: 'smooth'
+  });
+});
+</script> 
 
 <!-- navigation bar pop up when scroll-->
 <script>
