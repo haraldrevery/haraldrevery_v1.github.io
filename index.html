@@ -1054,19 +1054,15 @@ html, body {
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
   
-  <!--For the 3D logo thing to react to the mouse -->
 <script>
-  let targetRotateX = 0;
-  let targetRotateY = 0;
-  let currentRotateX = 0;
-  let currentRotateY = 0;
+  let targetRotateX = 0, targetRotateY = 0;
+  let currentRotateX = 0, currentRotateY = 0;
+  const logoSvg = document.getElementById('main-logo-svg');
 
   document.addEventListener('mousemove', (e) => {
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-    // Normalized coordinates (-1 to 1)
-    targetRotateY = ((clientX / innerWidth) - 0.5) * 25;
-    targetRotateX = ((clientY / innerHeight) - 0.5) * -25;
+    // Math for the tilt intensity
+    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 30;
+    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -30;
   });
 
   document.addEventListener('mouseleave', () => {
@@ -1074,19 +1070,19 @@ html, body {
     targetRotateY = 0;
   });
 
-  function updateLogoRotation() {
-    // We target 'main-logo-svg' directly so it moves in one piece
-    const svg = document.getElementById('main-logo-svg');
-    if (svg) {
+  function smoothRotate() {
+    if (logoSvg) {
+      // Smooth interpolation (lerp)
       currentRotateX += (targetRotateX - currentRotateX) * 0.05;
       currentRotateY += (targetRotateY - currentRotateY) * 0.05;
       
-      // Keep your specific translateX and translateZ values
-      svg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+      // We apply the transform here. 
+      // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
+      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
     }
-    requestAnimationFrame(updateLogoRotation);
+    requestAnimationFrame(smoothRotate);
   }
-  updateLogoRotation();
+  smoothRotate();
 </script>
 
 
@@ -1148,7 +1144,7 @@ window.restartPlexus = function() {
     const rotateX = targetY * -19; // Vertical tilt
     const rotateY = targetX * 19;  // Horizontal tilt
       
-    svg.style.transform = `translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(29px)`;
+
 
     // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
