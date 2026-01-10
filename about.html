@@ -422,7 +422,19 @@ body {
       </section>
 </div> 
 
+    <!-- dark mode button -->
+<div class="fixed bottom-6 right-6 z-[10000]">
+  <button 
+    @click="darkMode = !darkMode" 
+    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none"
+    aria-label="Toggle Mode"
+  >
+    <span x-show="!darkMode" class="block">🌙</span>
+    <span x-show="darkMode" class="block">☀</span>
+  </button>
+</div>
 
+      
   <!-- center the dark mode button -->  
 <section id="hero-trigger" class="hero py-12 flex justify-center items-center cursor-pointer">
   <div class="text-container">
