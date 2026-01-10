@@ -472,17 +472,13 @@ html, body {
   }
 }
       
-.animate-logo path {
-  /* ... existing properties ... */
-  
-}      
 
 /* 2. Ensure the base path follows the same rule */
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  stroke: #000000; /* Dark stroke for light mode */
-  fill: #000000;   /* Dark fill for light mode */
+  stroke: currentColor; /* Dark stroke for light mode */
+  fill: currentColor;   /* Dark fill for light mode */
   fill-opacity: 0.05; 
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   transition: stroke 0.7s ease, fill 0.7s ease; /* Smooth transition */
