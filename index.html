@@ -7,7 +7,7 @@
 
 
 <head>
-  <!--  Remember darkmode/lightmode -->
+  <!--  Remember darkmode/lightmode-->
 <script>
   // Immediately apply the dark class based on localStorage to prevent flashing
   if (localStorage.getItem('darkMode') === 'true' || 
@@ -560,7 +560,6 @@ html, body {
 
 /* Increase perspective to reduce lens distortion */
 #logo-container {
-  perspective: 2500px; /* This creates the "Camera" depth */
   height: 100vh !important; /* Force full viewport height */
   width: 100vw;
   max-width: 100% !important;
@@ -1128,10 +1127,8 @@ window.restartPlexus = function() {
     // Apply the 3D tilt to the SVG
     const rotateX = targetY * -15; // Vertical tilt
     const rotateY = targetX * 15;  // Horizontal tilt
+    svg.style.transform = `translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
-      svg.style.transformStyle = "preserve-3d";
-    svg.style.transform = `perspective(2500px) translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      
     // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
