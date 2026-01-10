@@ -30,6 +30,8 @@
   height: 100vh; 
   z-index: -11;
   background-image: url('./dist/assets/bgtexture.jpg');
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
   
   /* 'cover' ensures the image fills the screen without stretching or gaps */
   background-size: cover; 
@@ -487,10 +489,17 @@ html, body {
   transform-style: preserve-3d;
 }
 
+#logo-container, .bg-image-fade {
+  height: 100vh; /* Fallback */
+  height: 100dvh; 
+}
 /* 3. Tilt & Shadow: Base styles for the interactive tilting logo */
 #tilting-logo {
   transition: transform 0.21s ease-out; /* Smooths mouse movement */
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+    -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* 4. Radio Signal "Implosion" Rings: CSS for the background echo effects */
