@@ -586,11 +586,6 @@ html, body {
   opacity: 1;
   pointer-events: auto;
 }
-
-/* Add this to your <style> block */
-html:not(.dark) .bg-image-fade {
-  opacity: 0.03; /* Lower opacity for light mode */
-}
       
   </style>
 
@@ -644,10 +639,10 @@ html:not(.dark) .bg-image-fade {
 </head>
 
 
- <body class="min-h-screen px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 
-             /* Light Mode Settings */
+<body class="min-h-screen px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 
+             /* Light Mode Background & Text */
              text-black bg-white 
-             /* Dark Mode Settings */
+             /* Dark Mode Background & Text */
              dark:text-white dark:bg-gradient-to-br dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F] 
              bg-[length:250%_250%] animate-gradient-slow bg-fixed">
   <!-- Navbar -->
