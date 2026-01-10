@@ -1208,7 +1208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- navigation bar pop up when scroll-->
 <script>
   const header = document.getElementById('main-header');
-
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
   window.addEventListener('scroll', function() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
@@ -1216,9 +1216,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scrollTop > 200) {
       // SCROLLED DOWN: Show the navbar
       header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      darkModeToggle.classList.remove('translate-y-[200%]', 'opacity-0'); // Add this line
     } else {
       // AT THE TOP: Hide the navbar
       header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+      darkModeToggle.classList.add('translate-y-[200%]', 'opacity-0'); // Add this line
     }
   });
 </script>
