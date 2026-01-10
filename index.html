@@ -400,21 +400,22 @@ html, body {
   }
   80% {
     stroke-dashoffset: 0;
-    fill-opacity: 0.96;
+    fill-opacity: 0.05; /* Changed from 0.96 to 5% */
   }
   100% { 
     stroke-dashoffset: 0; 
-    fill-opacity: 1;
+    fill-opacity: 0.05; /* Changed from 1 to 5% */
     stroke: transparent; 
   }
 }
 
+/* 2. Ensure the base path follows the same rule */
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
   stroke: #FFFFFF;
   fill: url(#logoGradient);
-  fill-opacity: 0;
+  fill-opacity: 0.05; /* Set base opacity to 5% */
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
@@ -900,7 +901,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Internal resolution matches the SVG viewBox for 1:1 alignment
   const width = 1000;
   const height = 1100;
-  
+    
+
+const PARTICLE_COUNT = 150;     // Increase this (e.g., from 80 to 150)
+const CONNECTION_DISTANCE = 120; // Increase this (e.g., from 100 to 120) for more lines
+const PARTICLE_SPEED = 0.4;      // Keep it subtle so it doesn't look chaotic
+    
   const particles = [];
   const particleCount = 65;
   const connectionDistance = 120;
