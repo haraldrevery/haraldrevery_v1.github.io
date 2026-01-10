@@ -878,28 +878,86 @@ container.addEventListener('mouseleave', () => {
   <!-- Plexus  -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const rotationGroup = document.getElementById('plexus-logo-group');
-  const container = document.getElementById('logo-container');
+  const canvas = document.getElementById('plexus-canvas');
+  const ctx = canvas.getContext('2d');
+  const logoSvg = document.getElementById('main-logo-svg');
+  
+  // Internal resolution matches the SVG viewBox for 1:1 alignment
+  const width = 1000;
+  const height = 1100;
+  
+  const particles = [];
+  const particleCount = 65;
+  const connectionDistance = 120;
 
-  // ... (keep your existing Plexus Particle class and animate function) ...
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 0.8;
+      this.vy = (Math.random() - 0.5) * 0.8;
+    }
 
-  // Restored Rotation Logic
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p1 = particles[i];
+      p1.update();
+      p1.draw();
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < connectionDistance) {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / connectionDistance})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Handle the 3D Tilting on the whole SVG group
   window.addEventListener('mousemove', (e) => {
-    const rect = container.getBoundingClientRect();
-    
-    // Calculate mouse position relative to center of the container
+    const rect = logoSvg.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    const mouseX = e.clientX - centerX;
-    const mouseY = e.clientY - centerY;
+    // Calculate rotation (adjust sensitivity with the divisor)
+    const rotateY = (e.clientX - centerX) / 25;
+    const rotateX = (centerY - e.clientY) / 25;
 
-    // Original rotation sensitivity
-    const rotateX = (-mouseY / rect.height) * 20; // Up/Down tilt
-    const rotateY = (mouseX / rect.width) * 20;   // Left/Right tilt
-
-    // Apply transform to the whole group (Canvas + SVG)
-    rotationGroup.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    logoSvg.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
 });
 </script>
