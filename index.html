@@ -459,7 +459,24 @@ html, body {
   height: 100%;
   object-fit: contain; 
 }
-    
+/* Updated Logo Container for true 3D */
+#logo-container {
+  perspective: 1200px; /* Creates the 3D depth field */
+  perspective-origin: center;
+  overflow: visible !important; /* Allow edges to rotate toward viewer */
+}
+
+#main-logo-svg {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Smoother "leathery" movement */
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Optional: Adds a subtle shadow that moves opposite to the tilt for realism */
+.logo-3d-shadow {
+  filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.5));
+}
+      
   </style>
 
 
@@ -928,18 +945,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   animate();
 
-  // Handle the 3D Tilting on the whole SVG group
-  window.addEventListener('mousemove', (e) => {
-    const rect = logoSvg.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+// mouse rotation
+    window.addEventListener('mousemove', (e) => {
+      const logoSvg = document.getElementById('main-logo-svg');
+      if (!logoSvg) return;
     
-    // Calculate rotation (adjust sensitivity with the divisor)
-    const rotateY = (e.clientX - centerX) / 25;
-    const rotateX = (centerY - e.clientY) / 25;
-
-    logoSvg.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
+      const rect = logoSvg.getBoundingClientRect();
+      
+      // Calculate mouse position relative to the center of the logo
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const mouseX = e.clientX - centerX;
+      const mouseY = e.clientY - centerY;
+    
+      // Sensitivity settings: Higher number = less movement
+      // rotateY is horizontal rotation (looking left/right)
+      // rotateX is vertical rotation (looking up/down)
+      const rotateY = mouseX / 15; 
+      const rotateX = (mouseY / 15) * -1; // Invert so it follows mouse correctly
+    
+      // Constrain rotation to prevent the logo from flipping over (max 35 degrees)
+      const limit = 35;
+      const finalX = Math.max(Math.min(rotateX, limit), -limit);
+      const finalY = Math.max(Math.min(rotateY, limit), -limit);
+    
+      // Apply the 3D transform
+      // translateZ adds a slight "pop" toward the user
+      logoSvg.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg) translateZ(50px)`;
+    });
+    
+    // Reset logo when mouse leaves the container
+    document.getElementById('logo-container').addEventListener('mouseleave', () => {
+      const logoSvg = document.getElementById('main-logo-svg');
+      logoSvg.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+    });
 });
 </script>
 
