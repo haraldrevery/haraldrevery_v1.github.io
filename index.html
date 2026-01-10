@@ -462,15 +462,16 @@ html, body {
       
 /* Updated Logo Container for true 3D */
 #logo-container {
-  /* Increasing perspective from 1200 to 2500 removes the 'spherical' lens distortion */
-  perspective: 2500px; 
+  /* Increase perspective to reduce lens distortion/squashing */
+  perspective: 3000px; 
   perspective-origin: center;
   overflow: visible !important;
 }
 
 #main-logo-svg {
-  /* Ensure transform-style is preserve-3d to keep the plexus particles inside it sharp */
   transform-style: preserve-3d;
+  /* Set origin to center so it rotates around its own 'origo' */
+  transform-origin: center center; 
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform;
 }
@@ -955,7 +956,7 @@ window.addEventListener('mousemove', (e) => {
 
   const rect = logoSvg.getBoundingClientRect();
   
-  // 1. Find the exact center of the logo
+  // 1. Find the exact center of the logo on the screen
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
   
@@ -964,17 +965,16 @@ window.addEventListener('mousemove', (e) => {
   const mouseY = e.clientY - centerY;
 
   // 3. Convert distance to rotation degrees
-  // Dividing by 25-30 keeps the movement elegant rather than "floppy"
-  const rotateY = mouseX / 25; 
-  const rotateX = (mouseY / 25) * -1; 
+  // Dividing by 40-50 makes the movement subtle and elegant
+  const rotateY = mouseX / 45; 
+  const rotateX = (mouseY / 45) * -1; 
 
-  // 4. Set a hard limit to prevent the "squash" at extreme angles
-  const limit = 20;
+  // 4. Set a hard limit to prevent extreme "squashing" angles
+  const limit = 15; // Max 15 degrees of tilt
   const finalX = Math.max(Math.min(rotateX, limit), -limit);
   const finalY = Math.max(Math.min(rotateY, limit), -limit);
 
-  // 5. Apply the transform WITHOUT translateZ
-  // This ensures the logo stays on its origin (origol)
+  // 5. Apply the transform
   logoSvg.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg)`;
 });
 
