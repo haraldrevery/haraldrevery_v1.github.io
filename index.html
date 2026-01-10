@@ -584,10 +584,12 @@ html, body {
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
-  transform: translateZ(1px); /* Force hardware acceleration and 3D depth */
-  will-change: transform;
+transform-style: preserve-3d !important;
 }
-
+#logo-shape-definition, foreignObject {
+  transform-style: preserve-3d;
+}
+      
 /* Adjust the positioning wrapper to be centered */
 .position-wrapper {
   transform: none !important; /* Remove the horizontal offset for better centering */
@@ -1073,17 +1075,29 @@ html, body {
   });
 
   function smoothRotate() {
-    if (logoSvg) {
-      // Smooth interpolation (lerp)
-      currentRotateX += (targetRotateX - currentRotateX) * 0.05;
-      currentRotateY += (targetRotateY - currentRotateY) * 0.05;
-      
-      // We apply the transform here. 
-      // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
-      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+  if (logoSvg) {
+    currentRotateX += (targetRotateX - currentRotateX) * 0.05;
+    currentRotateY += (targetRotateY - currentRotateY) * 0.05;
+    
+    // 1. The main container tilt
+    logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+
+    // 2. TARGET THE PATHS (The "Metal" part of the logo)
+    // By giving these a different translateZ, they will appear to "float" above the plexus
+    const paths = document.getElementById('logo-shape-definition');
+    if (paths) {
+       paths.style.transform = `translateZ(30px)`; // Pushes the lines forward
     }
-    requestAnimationFrame(smoothRotate);
+
+    // 3. TARGET THE PLEXUS (The "Inner" glow)
+    const plexus = document.getElementById('plexus-canvas');
+    if (plexus) {
+       // Moving this slightly back (-20px) creates a gap between the lines and the dots
+       plexus.style.transform = `translateZ(-20px) scale(0.95)`; 
+    }
   }
+  requestAnimationFrame(smoothRotate);
+}
   smoothRotate();
 </script>
 
