@@ -584,6 +584,8 @@ html, body {
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
+  transform: translateZ(1px); /* Force hardware acceleration and 3D depth */
+  will-change: transform;
 }
 
 /* Adjust the positioning wrapper to be centered */
