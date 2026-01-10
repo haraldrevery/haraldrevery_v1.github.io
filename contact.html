@@ -87,21 +87,25 @@
 
     
     /* 1. FONT DEFINITIONS */
-    @font-face {
-      font-family: 'HaraldText';
-      src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+@font-face {
+  font-family: 'HaraldText';
+  src: url('./fonts/HaraldReveryTextFont.woff2') format('woff2'),
+       url('./fonts/HaraldReveryTextFont.woff') format('woff'),
+       url('./fonts/HaraldReveryTextFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
-    @font-face {
-      font-family: 'HaraldMono';
-      src: url('../fonts/HaraldReveryMonoFont.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+@font-face {
+  font-family: 'HaraldMono';
+  src: url('./fonts/HaraldReveryMonoFont.woff2') format('woff2'),
+       url('./fonts/HaraldReveryMonoFont.woff') format('woff'),
+       url('./fonts/HaraldReveryMonoFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
     /* 2. BASE STYLES */
     html { font-size: 1.427rem; }
