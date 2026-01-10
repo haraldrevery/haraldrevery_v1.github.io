@@ -1138,17 +1138,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <!-- Click to scroll thing-->
 <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     const trigger = document.getElementById('hero-trigger');
 
     if (trigger) {
       trigger.addEventListener('click', () => {
-        // Calculate the height of the user's current viewport
-        const viewportHeight = window.innerHeight;
+        // Calculate 85% of the user's current viewport height
+        const scrollDistance = window.innerHeight * 0.85;
         
-        // Scroll down exactly one screen height from the current position
+        // Scroll down 85% of the screen height from the current position
         window.scrollBy({ 
-          top: viewportHeight, 
+          top: scrollDistance, 
           behavior: 'smooth' 
         });
       });
