@@ -670,20 +670,18 @@ html, body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
-<header id="main-header" style="z-index: 9999;" 
-        class="fixed top-0 left-0 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 
-               bg-white/80 dark:bg-black/60 backdrop-blur-md pointer-events-none border-b border-black/5 dark:border-white/5">
+<header id="main-header" style="z-index: 9999;" class="fixed top-0 left-0 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-black/60 backdrop-blur-md pointer-events-none">
   <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
     <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap px-5 md:px-0">
       
       <div class="mr-4 md:mr-8">
-        <a href="index.html" class="text-2xl font-signika tracking-[0.15em] transition duration-300 hover:opacity-75 tap-highlight-transparent text-black dark:text-white">
+        <a href="index.html" class="text-2xl font-signika tracking-[0.15em] transition duration-300 hover:opacity-75 tap-highlight-transparent">
           HARALD REVERY
         </a>
       </div>
 
       <div class="ml-auto md:hidden flex items-center justify-start">
-        <button @click="open = !open" class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
+        <button @click="open = !open" class="tap-highlight-transparent text-white w-5 h-5 relative focus:outline-none">
           <span class="sr-only">Open main menu</span>
           <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
@@ -696,23 +694,23 @@ html, body {
       <div id="menu" class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden" :class="open ? 'h-auto opacity-100' : 'h-0 opacity-0 md:h-auto md:opacity-100'">
         <ul id="ulMenu" class="flex flex-col duration-300 ease-out md:space-x-5 sm:transition-none mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0">
           <li class="group transition duration-300">
-            <a href="index.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent text-black dark:text-white">HOME
-              <span class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
+            <a href="index.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">HOME
+              <span class="hidden md:block h-0.5 bg-white"></span>
             </a>
           </li>
           <li class="group transition duration-300">
-            <a href="music.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent text-black dark:text-white">MUSIC
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+            <a href="music.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">MUSIC
+              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
             </a>
           </li>
           <li class="group transition duration-300">
-            <a href="about.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent text-black dark:text-white">ABOUT
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+            <a href="about.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">ABOUT
+              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
             </a>
           </li>
           <li class="group transition duration-300">
-            <a href="contact.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent text-black dark:text-white">CONTACT
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+            <a href="contact.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">CONTACT
+              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
             </a>
           </li>
         </ul>
@@ -731,8 +729,10 @@ html, body {
   
   
  <!-- Logo intro -->
-<div id="logo-container" style="pointer-events: none;">
+<div id="logo-container" style="pointer-events: none;>
+    
   <div class="position-wrapper flex items-center justify-center relative z-10">
+    
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 
 <defs>
@@ -796,7 +796,7 @@ html, body {
      x-data="{ showToggle: false }" 
      x-init="setTimeout(() => showToggle = true, 2800)">
   <button 
-    @click="darkMode = !darkMode; setTimeout(() => startPlexus(), 10);" 
+    @click="darkMode = !darkMode" 
     class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
     :class="{ 'mode-toggle-visible': showToggle }"
     aria-label="Toggle Mode"
@@ -1042,50 +1042,16 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-let plexusInterval;
-
-// Combined Function for Plexus and Mouse Interaction
-function startPlexus() {
+document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('plexus-canvas');
-  const logoSvg = document.getElementById('main-logo-svg');
-  if (!canvas || !logoSvg) return;
-  
   const ctx = canvas.getContext('2d');
-  const isDark = document.documentElement.classList.contains('dark');
-  const colorRGB = isDark ? "0, 0, 0" : "255, 255, 255"; 
-
-  if (plexusInterval) cancelAnimationFrame(plexusInterval);
+  const width = 1000, height = 1100;
   
-  const width = canvas.width = 1000;
-  const height = canvas.height = 1100;
-
-  // --- MOUSE STATE ---
-  const mouse = { x: null, y: null, radius: 150 };
-
-  window.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = (e.clientX - rect.left) * (width / rect.width);
-    mouse.y = (e.clientY - rect.top) * (height / rect.height);
-
-    // --- LOGO TILT LOGIC (Re-added) ---
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const rotateX = (e.clientY - centerY) / 25; 
-    const rotateY = (e.clientX - centerX) / 25;
-    logoSvg.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
-  });
-
-  window.addEventListener('mouseout', () => {
-    mouse.x = null;
-    mouse.y = null;
-    logoSvg.style.transform = `rotateX(0deg) rotateY(0deg)`;
-  });
-
-  // --- PLEXUS CORE ---
-  const targetParticleCount = 65;
-  const connectionDistance = 180;
+  const isMobile = window.innerWidth < 768;
+  const targetParticleCount = isMobile ? 150 : 421;
+  const connectionDistance = isMobile ? 120 : 150;
   const connDistSq = connectionDistance * connectionDistance;
-
+  
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
   const velX = new Float32Array(targetParticleCount);
@@ -1111,50 +1077,84 @@ function startPlexus() {
       currentParticleCount++;
     }
 
-    ctx.fillStyle = `rgba(${colorRGB}, 0.8)`;
+    // 1. Draw all particles first as fast Rectangles
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     for (let i = 0; i < currentParticleCount; i++) {
       posX[i] += velX[i];
       posY[i] += velY[i];
-
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-
-      // Mouse push/pull
-      if (mouse.x !== null) {
-        let dx = mouse.x - posX[i];
-        let dy = mouse.y - posY[i];
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < mouse.radius) {
-          posX[i] -= (dx / dist) * ((mouse.radius - dist) / mouse.radius) * 5;
-          posY[i] -= (dy / dist) * ((mouse.radius - dist) / mouse.radius) * 5;
-        }
-      }
-      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
+      
+      // Optimization: Using fillRect instead of arc()
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
     }
 
+    // 2. Batch line drawing by alpha steps to reduce state changes
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
+      const x1 = posX[i], y1 = posY[i];
       for (let j = i + 1; j < currentParticleCount; j++) {
-        const dx = posX[i] - posX[j];
-        const dy = posY[i] - posY[j];
-        const dSq = dx*dx + dy*dy;
-        if (dSq < connDistSq) {
-          const alpha = (1 - Math.sqrt(dSq) / connectionDistance) * 0.8;
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(${colorRGB}, ${alpha})`;
-          ctx.moveTo(posX[i], posY[i]);
+        const dx = x1 - posX[j], dy = y1 - posY[j];
+        const distSq = dx * dx + dy * dy;
+
+        if (distSq < connDistSq) {
+          const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
+          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
         }
       }
     }
-    plexusInterval = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
   animate();
-}
 
-document.addEventListener('DOMContentLoaded', startPlexus);
+// mouse rotation
+// Replace the mouse rotation logic at the bottom of index.html
+window.addEventListener('mousemove', (e) => {
+  const logoSvg = document.getElementById('main-logo-svg');
+  if (!logoSvg) return;
+
+  const rect = logoSvg.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const mouseX = e.clientX - centerX;
+  const mouseY = e.clientY - centerY;
+
+  // Convert distance to rotation degrees
+  const rotateY = mouseX / 30; 
+  const rotateX = (mouseY / 30) * -1; 
+
+  const limit = 16; // Tighten the limit for more elegance
+  const finalX = Math.max(Math.min(rotateX, limit), -limit);
+  const finalY = Math.max(Math.min(rotateY, limit), -limit);
+
+  /* THE FIX: 
+     1. translateZ(100px) brings the logo toward the viewer.
+     2. Multiplying by a base Z keeps the center of the logo from 
+        feeling like it's stuck to a flat sheet of paper.
+  */
+ // Inside the mousemove listener:
+logoSvg.style.transform = `
+  perspective(2500px) 
+  translateX(-9.81%)
+  rotateX(${finalX}deg) 
+  rotateY(${finalY}deg) 
+  translateZ(29px)
+`;
+});
+
+// Reset logic
+document.getElementById('logo-container').addEventListener('mouseleave', () => {
+  const logoSvg = document.getElementById('main-logo-svg');
+  logoSvg.style.transform = `translateX(-9.81%) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+});
+});
 </script>
+
 
 <!-- fading words script -->
 <script>
