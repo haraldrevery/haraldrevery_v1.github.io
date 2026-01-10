@@ -471,7 +471,7 @@ html, body {
 #main-logo-svg {
   transform-style: preserve-3d;
   /* Add a very slight base Z-translation to 'lift' it off the background */
-  transform: translateZ(50px);
+  transform: translateZ(1px);
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform;
 }
@@ -962,8 +962,8 @@ window.addEventListener('mousemove', (e) => {
   const mouseY = e.clientY - centerY;
 
   // Convert distance to rotation degrees
-  const rotateY = mouseX / 30; 
-  const rotateX = (mouseY / 30) * -1; 
+  const rotateY = mouseX / 10; 
+  const rotateX = (mouseY / 10) * -1; 
 
   const limit = 15; // Tighten the limit for more elegance
   const finalX = Math.max(Math.min(rotateX, limit), -limit);
