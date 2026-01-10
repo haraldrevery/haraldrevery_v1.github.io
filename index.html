@@ -1010,86 +1010,74 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-(function() {
-    const canvas = document.getElementById('plexus-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    let width = canvas.width;
-    let height = canvas.height;
-    
-    // 1. PERFORMANCE FIX: Store color state in a variable to avoid DOM lookups every frame
-    let plexusRGB = document.documentElement.classList.contains('dark') ? "255, 255, 255" : "0, 0, 0";
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('plexus-canvas');
+  const ctx = canvas.getContext('2d');
+  const width = 1000, height = 1100;
+  
+  const isMobile = window.innerWidth < 768;
+  const targetParticleCount = isMobile ? 150 : 421;
+  const connectionDistance = isMobile ? 120 : 150;
+  const connDistSq = connectionDistance * connectionDistance;
+  
+  const posX = new Float32Array(targetParticleCount);
+  const posY = new Float32Array(targetParticleCount);
+  const velX = new Float32Array(targetParticleCount);
+  const velY = new Float32Array(targetParticleCount);
+  
+  let currentParticleCount = 0;
+  const startTime = Date.now();
 
-    // Update color only when the mode changes
-    function updatePlexusColor() {
-        const isDark = document.documentElement.classList.contains('dark');
-        plexusRGB = isDark ? "255, 255, 255" : "0, 0, 0";
+  function createParticle(i) {
+    posX[i] = Math.random() * width;
+    posY[i] = Math.random() * height;
+    velX[i] = (Math.random() - 0.5) * 0.8;
+    velY[i] = (Math.random() - 0.5) * 0.8;
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    const progress = Math.min((Date.now() - startTime) / 3000, 1);
+    const targetThisFrame = Math.floor(progress * targetParticleCount);
+
+    while (currentParticleCount < targetThisFrame) {
+      createParticle(currentParticleCount);
+      currentParticleCount++;
     }
 
-    // Listener for mode toggle (Works with your Alpine.js setup)
-    window.addEventListener('click', () => {
-        // Short timeout to allow Alpine.js to update the 'dark' class on the HTML tag
-        setTimeout(updatePlexusColor, 20);
-    });
-
-    // Particle Settings
-    const maxParticles = 85;
-    const connectionDistance = 150;
-    const connDistSq = connectionDistance * connectionDistance;
-    
-    let posX = new Float32Array(maxParticles);
-    let posY = new Float32Array(maxParticles);
-    let velX = new Float32Array(maxParticles);
-    let velY = new Float32Array(maxParticles);
-
-    function init() {
-        for (let i = 0; i < maxParticles; i++) {
-            posX[i] = Math.random() * width;
-            posY[i] = Math.random() * height;
-            velX[i] = (Math.random() - 0.5) * 0.5;
-            velY[i] = (Math.random() - 0.5) * 0.5;
-        }
+    // 1. Draw all particles first as fast Rectangles
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    for (let i = 0; i < currentParticleCount; i++) {
+      posX[i] += velX[i];
+      posY[i] += velY[i];
+      if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
+      if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
+      
+      // Optimization: Using fillRect instead of arc()
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
     }
 
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        
-        // Use the pre-calculated plexusRGB for dots
-        ctx.fillStyle = `rgba(${plexusRGB}, 0.5)`;
+    // 2. Batch line drawing by alpha steps to reduce state changes
+    ctx.lineWidth = 0.8;
+    for (let i = 0; i < currentParticleCount; i++) {
+      const x1 = posX[i], y1 = posY[i];
+      for (let j = i + 1; j < currentParticleCount; j++) {
+        const dx = x1 - posX[j], dy = y1 - posY[j];
+        const distSq = dx * dx + dy * dy;
 
-        for (let i = 0; i < maxParticles; i++) {
-            posX[i] += velX[i];
-            posY[i] += velY[i];
-
-            if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
-            if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-
-            ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
+        if (distSq < connDistSq) {
+          const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
+          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(posX[j], posY[j]);
+          ctx.stroke();
         }
-
-        ctx.lineWidth = 0.8;
-        for (let i = 0; i < maxParticles; i++) {
-            const x1 = posX[i], y1 = posY[i];
-            for (let j = i + 1; j < maxParticles; j++) {
-                const dx = x1 - posX[j], dy = y1 - posY[j];
-                const distSq = dx * dx + dy * dy;
-
-                if (distSq < connDistSq) {
-                    const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.6;
-                    ctx.beginPath();
-                    // PERFORMANCE FIX: String template uses the cached plexusRGB variable
-                    ctx.strokeStyle = `rgba(${plexusRGB}, ${alpha.toFixed(2)})`;
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(posX[j], posY[j]);
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animate);
+      }
     }
-
-    init();
-    animate();
+    requestAnimationFrame(animate);
+  }
+  animate();
 
 // mouse rotation
 // Replace the mouse rotation logic at the bottom of index.html
