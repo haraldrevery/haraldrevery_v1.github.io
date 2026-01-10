@@ -1143,29 +1143,34 @@ window.restartPlexus = function() {
 
    // Inside the animate() function in the Plexus script
 for (let i = 0; i < currentParticleCount; i++) {
-    // 1. Calculate distance from particle to mouse
-    // Convert mouseX/Y (-1 to 1) to canvas coordinates (0 to 1000/1100)
-    const mX = (mouseX + 1) * (width / 2);
-    const mY = (mouseY + 1) * (height / 2);
-    
-    const dxMouse = mX - posX[i];
-    const dyMouse = mY - posY[i];
-    const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+  // Inside the animate() function for for-loop (currentParticleCount)
+const mX = (mouseX + 1) * (width / 2);
+const mY = (mouseY + 1) * (height / 2);
+const dxMouse = mX - posX[i];
+const dyMouse = mY - posY[i];
+const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-    // 2. Apply attraction if the mouse is nearby (e.g., within 250 pixels)
-    if (distMouse < 250) {
-        const force = (250 - distMouse) / 2500; // Adjust 2500 to change strength
-        velX[i] += dxMouse * force * 0.1;
-        velY[i] += dyMouse * force * 0.1;
-    }
+// 1. Subtler attraction: Increased divisor (2500 -> 8000)
+if (distMouse < 250) {
+  const force = (250 - distMouse) / 8000; 
+  velX[i] += dxMouse * force * 0.1;
+  velY[i] += dyMouse * force * 0.1;
+}
 
-    // 3. Apply friction so they don't accelerate infinitely
-    velX[i] *= 0.95;
-    velY[i] *= 0.95;
+// 2. REMOVED Friction: No more *= 0.95. This keeps the animation going.
 
-    // 4. Update position
-    posX[i] += velX[i];
-    posY[i] += velY[i];
+// 3. Constant speed cap (Optional but recommended)
+// Prevents particles from getting too fast over time from mouse kicks
+const speed = Math.sqrt(velX[i]**2 + velY[i]**2);
+const maxSpeed = 1.5; 
+if (speed > maxSpeed) {
+  velX[i] = (velX[i] / speed) * maxSpeed;
+  velY[i] = (velY[i] / speed) * maxSpeed;
+}
+
+// 4. Update position and boundary checks as before
+posX[i] += velX[i];
+posY[i] += velY[i];
 
     // Boundary checks
     if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
