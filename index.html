@@ -534,10 +534,9 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: contain; 
-  transition: opacity 0.3s ease;
 }
       
-  
+
 /* Increase perspective to reduce lens distortion */
 #logo-container {
   height: 100vh !important; /* Force full viewport height */
@@ -793,15 +792,20 @@ html, body {
 
      
     <!-- dark mode button (after 2800ms )-->
-<button 
-  @click="darkMode = !darkMode; setTimeout(() => startPlexus(), 10);" 
-  class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
-  :class="{ 'mode-toggle-visible': showToggle }"
-  aria-label="Toggle Mode"
->
-  <span x-show="!darkMode" class="block">🌙</span>
-  <span x-show="darkMode" class="block">☀</span>
-</button>
+<div class="fixed bottom-8 right-8 z-[10000]" 
+     x-data="{ showToggle: false }" 
+     x-init="setTimeout(() => showToggle = true, 2800)">
+  <button 
+    @click="darkMode = !darkMode" 
+    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
+    :class="{ 'mode-toggle-visible': showToggle }"
+    aria-label="Toggle Mode"
+  >
+    <span x-show="!darkMode" class="block">🌙</span>
+    <span x-show="darkMode" class="block">☀</span>
+  </button>
+</div>
+     
 
 <!-- Grid to the left + Text to the right -->
 <div id="discography-section" class="container mx-auto py-20 px-5 md:px-0">
@@ -1038,27 +1042,16 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-let plexusInterval; // Global reference to stop previous animation
-
-function startPlexus() {
+document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('plexus-canvas');
-  if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const width = 1000, height = 1100;
   
-  // 1. Determine color based on current theme
-  const isDark = document.documentElement.classList.contains('dark');
-  // In Dark Mode: use dark particles/lines. In Light Mode: use white particles/lines.
-  const colorRGB = isDark ? "0, 0, 0" : "255, 255, 255"; 
-
-  // Reset Canvas & State
-  if (plexusInterval) cancelAnimationFrame(plexusInterval);
-  const width = canvas.width = 1000;
-  const height = canvas.height = 1100;
-
-  const targetParticleCount = 65;
-  const connectionDistance = 180;
+  const isMobile = window.innerWidth < 768;
+  const targetParticleCount = isMobile ? 150 : 421;
+  const connectionDistance = isMobile ? 120 : 150;
   const connDistSq = connectionDistance * connectionDistance;
-
+  
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
   const velX = new Float32Array(targetParticleCount);
@@ -1076,7 +1069,6 @@ function startPlexus() {
 
   function animate() {
     ctx.clearRect(0, 0, width, height);
-    
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
 
@@ -1085,40 +1077,39 @@ function startPlexus() {
       currentParticleCount++;
     }
 
-    // Draw particles
-    ctx.fillStyle = `rgba(${colorRGB}, 0.8)`;
+    // 1. Draw all particles first as fast Rectangles
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     for (let i = 0; i < currentParticleCount; i++) {
       posX[i] += velX[i];
       posY[i] += velY[i];
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
+      
+      // Optimization: Using fillRect instead of arc()
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
     }
 
-    // Draw lines
+    // 2. Batch line drawing by alpha steps to reduce state changes
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
+      const x1 = posX[i], y1 = posY[i];
       for (let j = i + 1; j < currentParticleCount; j++) {
-        const dx = posX[i] - posX[j];
-        const dy = posY[i] - posY[j];
+        const dx = x1 - posX[j], dy = y1 - posY[j];
         const distSq = dx * dx + dy * dy;
+
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(${colorRGB}, ${alpha.toFixed(2)})`;
-          ctx.moveTo(posX[i], posY[i]);
+          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          ctx.moveTo(x1, y1);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
         }
       }
     }
-    plexusInterval = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
   animate();
-}
-
-// Initial start
-document.addEventListener('DOMContentLoaded', startPlexus);
 
 // mouse rotation
 // Replace the mouse rotation logic at the bottom of index.html
