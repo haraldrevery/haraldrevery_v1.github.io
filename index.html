@@ -902,8 +902,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Detect mobile or small screen
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 150 : 580;
- 
-  const connectionDistance = 150;
+  const connectionDistance = isMobile ? 80 : 150;
+
   const connDistSq = connectionDistance * connectionDistance; // Optimization: Squared distance
   const growthDuration = 3000; 
   const startTime = Date.now();
