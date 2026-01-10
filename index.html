@@ -578,13 +578,13 @@ html, body {
 
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
-  /* Combine into one line: offset first, then 3D depth */
-  transform: translateX(-9.81%) translateZ(1px); 
-  
-  transform-style: preserve-3d;
-  max-height: 76vh;
+    /* This shifts the logo 10% of its own width to the right 
+     and 5% of its own height down. Adjust as needed. */
+  transform: translateX(-9.81%);
+  max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
+  transform: translateZ(1px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
 }
 
