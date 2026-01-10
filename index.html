@@ -1065,16 +1065,21 @@ html, body {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
 
-    // Calculate the target rotation (Reduced intensity to 25 for realism)
+    // Calculate the target rotation
     targetRotateY = ((clientX / innerWidth) - 0.5) * 25;
     targetRotateX = ((clientY / innerHeight) - 0.5) * -25;
+  });
+
+  // NEW: Reset targets to 0 when the mouse leaves the window
+  document.addEventListener('mouseleave', () => {
+    targetRotateX = 0;
+    targetRotateY = 0;
   });
 
   function updateLogoRotation() {
     const logo = document.getElementById('tilting-logo');
     if (logo) {
-      // "Lerping" formula: current + (target - current) * factor
-      // 0.05 creates a smooth, heavy feel. Increase to 0.1 for faster response.
+      // The Lerping formula handles the smooth return automatically
       currentRotateX += (targetRotateX - currentRotateX) * 0.05;
       currentRotateY += (targetRotateY - currentRotateY) * 0.05;
 
@@ -1083,7 +1088,6 @@ html, body {
     requestAnimationFrame(updateLogoRotation);
   }
 
-  // Start the animation loop
   updateLogoRotation();
 </script>
 
