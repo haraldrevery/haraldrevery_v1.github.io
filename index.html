@@ -731,10 +731,8 @@ html, body {
   
   
  <!-- Logo intro -->
-<div id="logo-container" style="pointer-events: none;>
-    
+<div id="logo-container" style="pointer-events: none;">
   <div class="position-wrapper flex items-center justify-center relative z-10">
-    
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 
 <defs>
@@ -1046,38 +1044,44 @@ document.addEventListener('mousemove', (e) => {
 <script>
 let plexusInterval;
 
+// Combined Function for Plexus and Mouse Interaction
 function startPlexus() {
   const canvas = document.getElementById('plexus-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const logoSvg = document.getElementById('main-logo-svg');
+  if (!canvas || !logoSvg) return;
   
+  const ctx = canvas.getContext('2d');
   const isDark = document.documentElement.classList.contains('dark');
   const colorRGB = isDark ? "0, 0, 0" : "255, 255, 255"; 
 
   if (plexusInterval) cancelAnimationFrame(plexusInterval);
   
-  // Set dimensions
   const width = canvas.width = 1000;
   const height = canvas.height = 1100;
 
-  // --- MOUSE CONTROL START ---
-  const mouse = { x: null, y: null, radius: 150 }; // Radius of interaction
-  
-  // Track mouse position relative to the canvas
+  // --- MOUSE STATE ---
+  const mouse = { x: null, y: null, radius: 150 };
+
   window.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
-    // Calculate position based on the internal canvas scaling (1000x1100)
     mouse.x = (e.clientX - rect.left) * (width / rect.width);
     mouse.y = (e.clientY - rect.top) * (height / rect.height);
+
+    // --- LOGO TILT LOGIC (Re-added) ---
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const rotateX = (e.clientY - centerY) / 25; 
+    const rotateY = (e.clientX - centerX) / 25;
+    logoSvg.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
   });
 
-  // Clear mouse position when it leaves the window
   window.addEventListener('mouseout', () => {
     mouse.x = null;
     mouse.y = null;
+    logoSvg.style.transform = `rotateX(0deg) rotateY(0deg)`;
   });
-  // --- MOUSE CONTROL END ---
 
+  // --- PLEXUS CORE ---
   const targetParticleCount = 65;
   const connectionDistance = 180;
   const connDistSq = connectionDistance * connectionDistance;
@@ -1099,7 +1103,6 @@ function startPlexus() {
 
   function animate() {
     ctx.clearRect(0, 0, width, height);
-    
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
 
@@ -1110,31 +1113,22 @@ function startPlexus() {
 
     ctx.fillStyle = `rgba(${colorRGB}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
-      // Move particles
       posX[i] += velX[i];
       posY[i] += velY[i];
 
-      // Bounce off edges
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
 
-      // --- MOUSE INTERACTION LOGIC ---
-      if (mouse.x !== null && mouse.y !== null) {
+      // Mouse push/pull
+      if (mouse.x !== null) {
         let dx = mouse.x - posX[i];
         let dy = mouse.y - posY[i];
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < mouse.radius) {
-          // Push particles away from mouse
-          const force = (mouse.radius - distance) / mouse.radius;
-          const moveX = (dx / distance) * force * 5;
-          const moveY = (dy / distance) * force * 5;
-          posX[i] -= moveX;
-          posY[i] -= moveY;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < mouse.radius) {
+          posX[i] -= (dx / dist) * ((mouse.radius - dist) / mouse.radius) * 5;
+          posY[i] -= (dy / dist) * ((mouse.radius - dist) / mouse.radius) * 5;
         }
       }
-      // -------------------------------
-
       ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
     }
 
@@ -1143,11 +1137,11 @@ function startPlexus() {
       for (let j = i + 1; j < currentParticleCount; j++) {
         const dx = posX[i] - posX[j];
         const dy = posY[i] - posY[j];
-        const distSq = dx * dx + dy * dy;
-        if (distSq < connDistSq) {
-          const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
+        const dSq = dx*dx + dy*dy;
+        if (dSq < connDistSq) {
+          const alpha = (1 - Math.sqrt(dSq) / connectionDistance) * 0.8;
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(${colorRGB}, ${alpha.toFixed(2)})`;
+          ctx.strokeStyle = `rgba(${colorRGB}, ${alpha})`;
           ctx.moveTo(posX[i], posY[i]);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
