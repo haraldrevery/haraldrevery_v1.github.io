@@ -572,7 +572,20 @@ html, body {
   scroll-margin-top: 2rem;
 }      
 
-      
+
+
+/* Dark mode button fade in */
+.mode-toggle-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease-in-out; /* Slightly longer transition for a premium feel */
+}
+
+/* Revealed state */
+.mode-toggle-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
   </style>
 
 
@@ -743,11 +756,14 @@ html, body {
 </section>
 
      
-    <!-- dark mode button -->
-<div class="fixed bottom-6 right-6 z-[10000]">
+    <!-- dark mode button (after 2000ms )-->
+<div class="fixed bottom-6 right-6 z-[10000]" 
+     x-data="{ showToggle: false }" 
+     x-init="setTimeout(() => showToggle = true, 2000)">
   <button 
     @click="darkMode = !darkMode" 
-    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none"
+    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
+    :class="{ 'mode-toggle-visible': showToggle }"
     aria-label="Toggle Mode"
   >
     <span x-show="!darkMode" class="block">🌙</span>
