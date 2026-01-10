@@ -320,26 +320,24 @@ body {
 <div class="w-full lg:w-1/2" 
      x-data="{ 
         path: './photos/', 
-        images: ['2025Harald_on_Galdhopiggen2.jpg', '2025Harald_on_Galdhopiggen1.jpg', 'HRldbnr.jpg', '2025Sunne_1.jpg', '2024HaraldMT.jpg','2025Harald_on_Galdhopiggen3.jpg'],
+        images: ['2025Harald_on_Galdhopiggen2.jpg'], 
         loadedCount: 0,
         get allLoaded() { return this.loadedCount === this.images.length }
      }">
 
-  <div class="grid grid-cols-3 gap-3 md:gap-5">
-      <template x-for="(img, index) in images" :key="img">
+  <div class="grid grid-cols-1"> <template x-for="(img, index) in images" :key="img">
                     <a :href="path + img" 
-                       class="glightbox group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-[2000ms] ease-out hover:shadow-2xl"
+                       class="glightbox group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-[2000ms] ease-out hover:shadow-2xl block"
                        :class="[
-                         index === 0 ? 'col-span-2 row-span-2' : 'col-span-1 aspect-square',
-                         allLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                         'opacity-100 translate-y-0' 
                        ]"
-                       :style="`transition-delay: ${index * 0.3}s`"
-                       data-gallery="harald-gallery"> <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                       data-gallery="harald-gallery"> 
+                      <div class="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       
                       <img :src="path + img" 
                            loading="lazy"
                            @load="loadedCount++; if(allLoaded) { initLightbox() }" 
-                           class="object-cover w-full h-full filter saturate-[0.8] group-hover:saturate-100 transition duration-1000 ease-out group-hover:scale-105" 
+                           class="object-cover w-full h-auto filter saturate-[0.8] group-hover:saturate-100 transition duration-1000 ease-out group-hover:scale-105" 
                            alt="Harald Revery Art">
                     </a>
       </template>
