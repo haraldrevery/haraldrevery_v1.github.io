@@ -959,20 +959,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const mouseX = e.clientX - centerX;
       const mouseY = e.clientY - centerY;
     
-      // Sensitivity settings: Higher number = less movement
-      // rotateY is horizontal rotation (looking left/right)
-      // rotateX is vertical rotation (looking up/down)
-      const rotateY = mouseX / 15; 
-      const rotateX = (mouseY / 15) * -1; // Invert so it follows mouse correctly
-    
-      // Constrain rotation to prevent the logo from flipping over (max 35 degrees)
-      const limit = 35;
-      const finalX = Math.max(Math.min(rotateX, limit), -limit);
-      const finalY = Math.max(Math.min(rotateY, limit), -limit);
-    
-      // Apply the 3D transform
-      // translateZ adds a slight "pop" toward the user
-      logoSvg.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg) translateZ(50px)`;
+// Sensitivity settings: Higher number = less movement
+// 1. Normalize the mouse position (-1 to 1 range)
+const normX = mouseX / (rect.width / 2);
+const normY = mouseY / (rect.height / 2);
+
+// 2. Use a smaller max rotation (e.g., 15-20deg) to keep it looking flat
+const finalX = normY * -15; // Vertical tilt
+const finalY = normX * 15;  // Horizontal tilt
+
+// 3. Keep translateZ(50px) to give it depth, but the normalized math 
+// removes the "gliding" sensation.
+logoSvg.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg) translateZ(50px)`;
     });
     
     // Reset logo when mouse leaves the container
