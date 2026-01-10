@@ -457,7 +457,10 @@ html, body {
     }
   }
 }
-      
+.animate-logo path {
+  /* ... existing properties ... */
+  transition: stroke 0.5s ease; 
+}      
 
 /* 2. Ensure the base path follows the same rule */
 .animate-logo path {
@@ -605,7 +608,9 @@ html, body {
 
 /* Update the drawing animation stroke for dark mode */
 .dark .animate-logo path {
-  stroke: #333333 !important; /* Darker grey for the drawing lines */
+  /* Set the initial stroke color for the drawing phase */
+  stroke: #333333; 
+  /* Inherit the stroke: transparent from the base @keyframes logoDraw */
 }
 
 /* Update the implosion rings/waves for dark mode */
