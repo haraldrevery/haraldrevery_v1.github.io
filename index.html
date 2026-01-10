@@ -253,16 +253,31 @@
 
  /* Custom delay animation for the "welcome! scroll down"*/
 @keyframes welcomeFade {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% { 
+    opacity: 0; 
+    transform: translateY(10px); 
+    pointer-events: none; 
+  }
+  99% {
+    pointer-events: none;
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+    pointer-events: auto; /* Enable clicking here */
+  }
 }
-
+.welcome-text-delayed {
+  animation: welcomeFade 1.2s ease-out forwards;
+  animation-delay: 2s;
+    
 /* Locate this section in your <style> tag */
 .welcome-text-delayed {
   opacity: 0; 
   animation: welcomeFade 1.2s ease-out forwards;
   animation-delay: 2s; 
-  z-index: 40 !important; 
+  z-index: 40 !important; /* Changed from 50 to 40 to sit behind the navbar */
+  pointer-events: none;   /* Disable clicking while invisible */
 }
 
 
