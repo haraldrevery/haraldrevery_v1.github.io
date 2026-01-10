@@ -642,17 +642,16 @@ html, body {
   
 
 <section id="hero-trigger" 
-         onclick="document.getElementById('next-section').scrollIntoView({ behavior: 'smooth' });"
-         class="welcome-text-delayed absolute bottom-10 left-0 w-full font-normal text-center text-base cursor-pointer z-20 hover:opacity-70 transition-opacity">
+         class="welcome-text-delayed absolute bottom-10 left-0 w-full font-normal text-center text-base cursor-pointer z-20 hover:opacity-70 transition-opacity duration-300">
   <div class="text-container">
       <p class="animate-bounce">Welcome! Scroll down ↓</p>
   </div>
 </section>
       
   
-<section id="next-section" class="hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
+<section id="next-section" class="scroll-mt-20 hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-      <p>Your content here...</p>
+      <p></p>
   </div>
 </section>
 
@@ -1094,9 +1093,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (trigger && target) {
       trigger.addEventListener('click', () => {
+        // This calculates the position and scrolls smoothly
         target.scrollIntoView({ 
           behavior: 'smooth', 
-          block: 'start' // Aligns the top of the next section to the top of the viewport
+          block: 'start' 
         });
       });
     }
