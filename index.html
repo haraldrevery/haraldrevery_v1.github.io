@@ -459,19 +459,21 @@ html, body {
   height: 100%;
   object-fit: contain; 
 }
+      
 /* Updated Logo Container for true 3D */
 #logo-container {
-  perspective: 1200px; /* Creates the 3D depth field */
+  /* Increasing perspective from 1200 to 2500 removes the 'spherical' lens distortion */
+  perspective: 2500px; 
   perspective-origin: center;
-  overflow: visible !important; /* Allow edges to rotate toward viewer */
+  overflow: visible !important;
 }
 
 #main-logo-svg {
-  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); /* Smoother "leathery" movement */
+  /* Ensure transform-style is preserve-3d to keep the plexus particles inside it sharp */
   transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform;
 }
-
 /* Optional: Adds a subtle shadow that moves opposite to the tilt for realism */
 .logo-3d-shadow {
   filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.5));
@@ -946,38 +948,40 @@ document.addEventListener('DOMContentLoaded', () => {
   animate();
 
 // mouse rotation
+// Replace the mouse rotation logic at the bottom of index.html
 window.addEventListener('mousemove', (e) => {
   const logoSvg = document.getElementById('main-logo-svg');
-  const container = document.getElementById('logo-container');
-  if (!logoSvg || !container) return;
+  if (!logoSvg) return;
 
   const rect = logoSvg.getBoundingClientRect();
   
-  // 1. Get center of the logo
+  // 1. Find the exact center of the logo
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
   
-  // 2. Calculate distance from center (-1 to 1 scale)
-  const percentX = (e.clientX - centerX) / (window.innerWidth / 2);
-  const percentY = (e.clientY - centerY) / (window.innerHeight / 2);
+  // 2. Calculate mouse distance from that center
+  const mouseX = e.clientX - centerX;
+  const mouseY = e.clientY - centerY;
 
-  // 3. Set Tilt Intensity (Degrees)
-  // Higher number = more tilt. 
-  const maxTilt = 25; 
-  
-  const rotateY = percentX * maxTilt; 
-  const rotateX = percentY * -maxTilt; // Invert for natural tracking
+  // 3. Convert distance to rotation degrees
+  // Dividing by 25-30 keeps the movement elegant rather than "floppy"
+  const rotateY = mouseX / 25; 
+  const rotateX = (mouseY / 25) * -1; 
 
-  // 4. Apply transform 
-  // We keep translateZ very low (10px) to keep it from "sphering" 
-  // but still give a tiny bit of 3D depth.
-  logoSvg.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+  // 4. Set a hard limit to prevent the "squash" at extreme angles
+  const limit = 20;
+  const finalX = Math.max(Math.min(rotateX, limit), -limit);
+  const finalY = Math.max(Math.min(rotateY, limit), -limit);
+
+  // 5. Apply the transform WITHOUT translateZ
+  // This ensures the logo stays on its origin (origol)
+  logoSvg.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg)`;
 });
 
-// Reset logic
+// Update the reset listener as well
 document.getElementById('logo-container').addEventListener('mouseleave', () => {
   const logoSvg = document.getElementById('main-logo-svg');
-  logoSvg.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+  logoSvg.style.transform = `rotateX(0deg) rotateY(0deg)`;
 });
 });
 </script>
