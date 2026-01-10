@@ -598,18 +598,14 @@ html, body {
 
 
 /* Change the fill and stroke when the .dark class is active on the html element */
-.dark .animate-logo path {
-  stroke: #000000 !important; /* Change outline to black */
-}
-
-/* Optional: Create a dark gradient in <defs> and swap to it */
 .dark .animate-logo {
-  fill: #1a1a1a !important; /* Or reference a dark gradient ID */
+  fill: url(#logoGradientDark) !important;
+  stroke: url(#logoGradientDark) !important;
 }
 
 /* Update the drawing animation stroke for dark mode */
 .dark .animate-logo path {
-  stroke: #000000 !important; /* Change outline to black */
+  stroke: #333333 !important; /* Darker grey for the drawing lines */
 }
 
 /* Update the implosion rings/waves for dark mode */
