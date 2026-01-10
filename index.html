@@ -798,7 +798,7 @@ html, body {
      x-data="{ showToggle: false }" 
      x-init="setTimeout(() => showToggle = true, 2800)">
   <button 
-    @click="darkMode = !darkMode" 
+    @click="darkMode = !darkMode; setTimeout(() => startPlexus(), 10);" 
     class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
     :class="{ 'mode-toggle-visible': showToggle }"
     aria-label="Toggle Mode"
@@ -1044,16 +1044,44 @@ document.addEventListener('mousemove', (e) => {
   
   <!-- Plexus  -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+let plexusInterval;
+
+function startPlexus() {
   const canvas = document.getElementById('plexus-canvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const width = 1000, height = 1100;
   
-  const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 150 : 421;
-  const connectionDistance = isMobile ? 120 : 150;
+  const isDark = document.documentElement.classList.contains('dark');
+  const colorRGB = isDark ? "0, 0, 0" : "255, 255, 255"; 
+
+  if (plexusInterval) cancelAnimationFrame(plexusInterval);
+  
+  // Set dimensions
+  const width = canvas.width = 1000;
+  const height = canvas.height = 1100;
+
+  // --- MOUSE CONTROL START ---
+  const mouse = { x: null, y: null, radius: 150 }; // Radius of interaction
+  
+  // Track mouse position relative to the canvas
+  window.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    // Calculate position based on the internal canvas scaling (1000x1100)
+    mouse.x = (e.clientX - rect.left) * (width / rect.width);
+    mouse.y = (e.clientY - rect.top) * (height / rect.height);
+  });
+
+  // Clear mouse position when it leaves the window
+  window.addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+  // --- MOUSE CONTROL END ---
+
+  const targetParticleCount = 65;
+  const connectionDistance = 180;
   const connDistSq = connectionDistance * connectionDistance;
-  
+
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
   const velX = new Float32Array(targetParticleCount);
@@ -1071,6 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animate() {
     ctx.clearRect(0, 0, width, height);
+    
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
 
@@ -1079,84 +1108,59 @@ document.addEventListener('DOMContentLoaded', () => {
       currentParticleCount++;
     }
 
-    // 1. Draw all particles first as fast Rectangles
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillStyle = `rgba(${colorRGB}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
+      // Move particles
       posX[i] += velX[i];
       posY[i] += velY[i];
+
+      // Bounce off edges
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-      
-      // Optimization: Using fillRect instead of arc()
-      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
+
+      // --- MOUSE INTERACTION LOGIC ---
+      if (mouse.x !== null && mouse.y !== null) {
+        let dx = mouse.x - posX[i];
+        let dy = mouse.y - posY[i];
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < mouse.radius) {
+          // Push particles away from mouse
+          const force = (mouse.radius - distance) / mouse.radius;
+          const moveX = (dx / distance) * force * 5;
+          const moveY = (dy / distance) * force * 5;
+          posX[i] -= moveX;
+          posY[i] -= moveY;
+        }
+      }
+      // -------------------------------
+
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
     }
 
-    // 2. Batch line drawing by alpha steps to reduce state changes
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
-      const x1 = posX[i], y1 = posY[i];
       for (let j = i + 1; j < currentParticleCount; j++) {
-        const dx = x1 - posX[j], dy = y1 - posY[j];
+        const dx = posX[i] - posX[j];
+        const dy = posY[i] - posY[j];
         const distSq = dx * dx + dy * dy;
-
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
-          ctx.beginPath(); // Standard lines still need paths, but logic is leaner
-          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
-          ctx.moveTo(x1, y1);
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(${colorRGB}, ${alpha.toFixed(2)})`;
+          ctx.moveTo(posX[i], posY[i]);
           ctx.lineTo(posX[j], posY[j]);
           ctx.stroke();
         }
       }
     }
-    requestAnimationFrame(animate);
+    plexusInterval = requestAnimationFrame(animate);
   }
   animate();
+}
 
-// mouse rotation
-// Replace the mouse rotation logic at the bottom of index.html
-window.addEventListener('mousemove', (e) => {
-  const logoSvg = document.getElementById('main-logo-svg');
-  if (!logoSvg) return;
-
-  const rect = logoSvg.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  
-  const mouseX = e.clientX - centerX;
-  const mouseY = e.clientY - centerY;
-
-  // Convert distance to rotation degrees
-  const rotateY = mouseX / 30; 
-  const rotateX = (mouseY / 30) * -1; 
-
-  const limit = 16; // Tighten the limit for more elegance
-  const finalX = Math.max(Math.min(rotateX, limit), -limit);
-  const finalY = Math.max(Math.min(rotateY, limit), -limit);
-
-  /* THE FIX: 
-     1. translateZ(100px) brings the logo toward the viewer.
-     2. Multiplying by a base Z keeps the center of the logo from 
-        feeling like it's stuck to a flat sheet of paper.
-  */
- // Inside the mousemove listener:
-logoSvg.style.transform = `
-  perspective(2500px) 
-  translateX(-9.81%)
-  rotateX(${finalX}deg) 
-  rotateY(${finalY}deg) 
-  translateZ(29px)
-`;
-});
-
-// Reset logic
-document.getElementById('logo-container').addEventListener('mouseleave', () => {
-  const logoSvg = document.getElementById('main-logo-svg');
-  logoSvg.style.transform = `translateX(-9.81%) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
-});
-});
+document.addEventListener('DOMContentLoaded', startPlexus);
 </script>
-
 
 <!-- fading words script -->
 <script>
