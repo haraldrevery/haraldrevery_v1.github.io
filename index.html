@@ -514,7 +514,7 @@ html, body {
 #main-logo-svg {
     /* This shifts the logo 10% of its own width to the right 
      and 5% of its own height down. Adjust as needed. */
-  transform: translateX(-8.72%);
+  transform: translateX(-9.27%);
   max-height: 85vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 90vw;
@@ -1028,7 +1028,7 @@ window.addEventListener('mousemove', (e) => {
  // Inside the mousemove listener:
 logoSvg.style.transform = `
   perspective(2500px) 
-  translateX(-8.72%)
+  translateX(-9.27%)
   rotateX(${finalX}deg) 
   rotateY(${finalY}deg) 
   translateZ(29px)
@@ -1038,7 +1038,7 @@ logoSvg.style.transform = `
 // Reset logic
 document.getElementById('logo-container').addEventListener('mouseleave', () => {
   const logoSvg = document.getElementById('main-logo-svg');
-  logoSvg.style.transform = `translateX(-8.72%) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+  logoSvg.style.transform = `translateX(-9.27%) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
 });
 });
 </script>
