@@ -1140,12 +1140,39 @@ window.restartPlexus = function() {
   }
 
   function animate() {
-    // --- PART 1: RESTORE 3D ROTATION ---
 
-    // Apply the 3D tilt to the SVG
-    const rotateX = targetY * -19; // Vertical tilt
-    const rotateY = targetX * 19;  // Horizontal tilt
-      
+   // Inside the animate() function in the Plexus script
+for (let i = 0; i < currentParticleCount; i++) {
+    // 1. Calculate distance from particle to mouse
+    // Convert mouseX/Y (-1 to 1) to canvas coordinates (0 to 1000/1100)
+    const mX = (mouseX + 1) * (width / 2);
+    const mY = (mouseY + 1) * (height / 2);
+    
+    const dxMouse = mX - posX[i];
+    const dyMouse = mY - posY[i];
+    const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+    // 2. Apply attraction if the mouse is nearby (e.g., within 250 pixels)
+    if (distMouse < 250) {
+        const force = (250 - distMouse) / 2500; // Adjust 2500 to change strength
+        velX[i] += dxMouse * force * 0.1;
+        velY[i] += dyMouse * force * 0.1;
+    }
+
+    // 3. Apply friction so they don't accelerate infinitely
+    velX[i] *= 0.95;
+    velY[i] *= 0.95;
+
+    // 4. Update position
+    posX[i] += velX[i];
+    posY[i] += velY[i];
+
+    // Boundary checks
+    if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
+    if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
+
+    ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
+}   
 
 
     // --- PART 2: PLEXUS ANIMATION ---
