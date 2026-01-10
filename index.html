@@ -560,7 +560,7 @@ html, body {
 
 /* Increase perspective to reduce lens distortion */
 #logo-container {
-  perspective: 1450px;
+  perspective: 1150px;
   height: 100vh !important; /* Force full viewport height */
   width: 100vw;
   max-width: 100% !important;
@@ -1133,7 +1133,7 @@ window.restartPlexus = function() {
     const rotateX = targetY * -16; // Vertical tilt
     const rotateY = targetX * 16;  // Horizontal tilt
       
-    svg.style.transform = `translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(40px)`;
+    svg.style.transform = `translateX(-9.81%) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(29px)`;
 
     // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
