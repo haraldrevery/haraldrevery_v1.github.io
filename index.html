@@ -28,7 +28,7 @@
   width: 100%;
   /* Use 100vh to match the exact height of the user's screen */
   height: 100vh; 
-  z-index: -1;
+  z-index: -11;
   background-image: url('./dist/assets/bgtexture.jpg');
   
   /* 'cover' ensures the image fills the screen without stretching or gaps */
@@ -257,8 +257,8 @@
   opacity: 0; 
   animation: welcomeFade 1.2s ease-out forwards;
   animation-delay: 2s; 
-  z-index: 60 !important; /* Increased to ensure it sits above the background layers */
-  pointer-events: none;   /* Keeps it unclickable ONLY while invisible */
+  z-index: 40 !important; 
+  pointer-events: auto; /* Change this from 'none' to 'auto' */
 }
 
 @keyframes welcomeFade {
