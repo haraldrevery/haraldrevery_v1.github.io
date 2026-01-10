@@ -1097,18 +1097,9 @@ let mouseX = 0, mouseY = 0;
 let targetX = 0, targetY = 0;
 
 // Update mouse position globally so it persists through restarts
-// Replace your existing document.addEventListener('mousemove'...) with this:
-let isMouseIn = false;
-
 document.addEventListener('mousemove', (e) => {
-    isMouseIn = true;
-    mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-    mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-});
-
-// Detect when the mouse leaves the screen
-document.addEventListener('mouseleave', () => {
-    isMouseIn = false;
+  mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+  mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
 });
 
 window.restartPlexus = function() {
@@ -1149,40 +1140,12 @@ window.restartPlexus = function() {
   }
 
   function animate() {
+    // --- PART 1: RESTORE 3D ROTATION ---
 
-for (let i = 0; i < currentParticleCount; i++) {
-    // 1. Convert mouse coordinates
-    const mX = (mouseX + 1) * (width / 2);
-    const mY = (mouseY + 1) * (height / 2);
-    const dxMouse = mX - posX[i];
-    const dyMouse = mY - posY[i];
-    const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-
-    // 2. Smaller Attraction Radius & Reset Logic
-    // Only apply attraction if mouse is inside the window AND close to particle
-    const attractionRadius = 100; // Reduced from 250
-    
-    if (isMouseIn && distMouse < attractionRadius) {
-        const force = (attractionRadius - distMouse) / 5000; // Higher divisor = subtler pull
-        velX[i] += dxMouse * force * 0.1;
-        velY[i] += dyMouse * force * 0.1;
-    }
-
-    // 3. Keep them moving! 
-    // We remove the hard friction (velX[i] *= 0.95) so they keep their momentum
-    // But we add a tiny bit of "air resistance" (0.99) so they don't speed up forever
-    velX[i] *= 0.99; 
-    velY[i] *= 0.99;
-
-    // 4. Update position and boundaries
-    posX[i] += velX[i];
-    posY[i] += velY[i];
-
-    if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
-    if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-
-    ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
-}   
+    // Apply the 3D tilt to the SVG
+    const rotateX = targetY * -19; // Vertical tilt
+    const rotateY = targetX * 19;  // Horizontal tilt
+      
 
 
     // --- PART 2: PLEXUS ANIMATION ---
