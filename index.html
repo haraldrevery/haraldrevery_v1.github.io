@@ -700,8 +700,8 @@ html, body {
 </section>
 
 <section class=" font-normal text-center text-base mx-3 col-span-2">
-  <div class="txt-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-      <p>Here</p>
+  <div id="discography-section" class="txt-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+      <p></p>
   </div>
 </section>
 
@@ -1140,16 +1140,14 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const trigger = document.getElementById('hero-trigger');
+    const target = document.getElementById('discography-section');
 
-    if (trigger) {
+    if (trigger && target) {
       trigger.addEventListener('click', () => {
-        // Calculate 85% of the user's current viewport height
-        const scrollDistance = window.innerHeight * 0.85;
-        
-        // Scroll down 85% of the screen height from the current position
-        window.scrollBy({ 
-          top: scrollDistance, 
-          behavior: 'smooth' 
+        // This will bring the 'discography-section' to the very top of the screen
+        target.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
         });
       });
     }
