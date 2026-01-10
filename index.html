@@ -437,15 +437,16 @@ html, body {
       
 @media (max-width: 767px) {
   .animate-logo path {
-    fill: #FFFFFF !important; 
+    fill: #000000 !important; /* Light mode mobile */
+    stroke: #000000 !important;
     fill-opacity: 0.25 !important; 
-    stroke: #FFFFFF !important;  
   }
   .dark .animate-logo path {
-    fill: #000000 !important; 
-    fill-opacity: 0.25 !important; 
-    stroke: #000000 !important;
+    fill: #FFFFFF !important; /* Dark mode mobile */
+    stroke: #FFFFFF !important;
+    fill-opacity: 0.25 !important;
   }
+}
     
 
   /* Overriding the animation specifically for mobile to fade out */
@@ -477,10 +478,11 @@ html, body {
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
-  stroke: #FFFFFF;
-  fill: url(#logoGradient);
-  fill-opacity: 0.05; /* Set base opacity to 5% */
+  stroke: #000000; /* Dark stroke for light mode */
+  fill: #000000;   /* Dark fill for light mode */
+  fill-opacity: 0.05; 
   animation: logoDraw 9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: stroke 0.5s ease, fill 0.5s ease; /* Smooth transition */
 }
 
 /* 2. Floating Animation: Starts after the logo is drawn (8s delay) */
@@ -625,13 +627,13 @@ html, body {
   stroke: url(#logoGradientDark) !important;
 }
 
-/* Update the drawing animation stroke for dark mode */
-.dark .animate-logo path {
-  /* Set the initial stroke color for the drawing phase */
-  stroke: #333333; 
-  /* Inherit the stroke: transparent from the base @keyframes logoDraw */
-}
 
+/* Ensure dark mode flips the colors back to white */
+.dark .animate-logo path {
+  stroke: #FFFFFF !important;
+  fill: #FFFFFF !important;
+  fill-opacity: 0.05 !important;
+}
 /* Update the implosion rings/waves for dark mode */
 .dark .wave-echo {
   stroke: rgba(255, 255, 255, 0.4) !important; /* Previously rgba(0, 0, 0, 0.4) */
