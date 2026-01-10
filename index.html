@@ -257,10 +257,12 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+
 .welcome-text-delayed {
-  opacity: 0; /* Keeps it hidden initially */
+  opacity: 0; 
   animation: welcomeFade 1.2s ease-out forwards;
-  animation-delay: 4s; /* Change this number to adjust wait time */
+  animation-delay: 2s; /* Reduced from 4s so users see it sooner */
+  z-index: 50 !important; /* Ensure it is above the logo and canvas */
 }
 
 
@@ -640,14 +642,13 @@ html, body {
   </div>
 </div>
   
-
 <section id="hero-trigger" 
-         class="welcome-text-delayed absolute bottom-10 left-0 w-full font-normal text-center text-base cursor-pointer z-20 hover:opacity-70 transition-opacity duration-300">
+         class="welcome-text-delayed absolute bottom-10 left-0 w-full font-normal text-center text-base cursor-pointer hover:opacity-70 transition-opacity duration-300"
+         style="z-index: 50;">
   <div class="text-container">
       <p class="animate-bounce">Welcome! Scroll down ↓</p>
   </div>
 </section>
-      
   
 <section id="next-section" class="scroll-mt-20 hero font-normal text-center text-base mx-3 col-span-2 my-auto cursor-pointer">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
