@@ -393,15 +393,6 @@ html, body {
       /* --- 3D LOGO & ANIMATIONS --- */
 
 /* 1. Logo Drawing Animation: Handles the initial SVG stroke "drawing" effect */
-/* Custom solid color for mobile devices (screens smaller than 768px) */
-@media (max-width: 767px) {
-  /* This targets the paths inside the logo for the drawing phase */
-  .animate-logo path {
-    fill: #FFFFFF !important; /* Change #FFFFFF to your desired custom hex color */
-    fill-opacity: 0.21 !important; /*  40% opacity */
-    stroke: #FFFFFF !important; /* Matches the stroke to the fill color */
-  }
-
   /* This ensures the 'drawn' state remains at 4% solid color */
   @keyframes logoDraw {
     0% { 
@@ -419,6 +410,36 @@ html, body {
     }
   }
 }
+
+      
+@media (max-width: 767px) {
+  .animate-logo path {
+    fill: #FFFFFF !important; 
+    fill-opacity: 0.21 !important; 
+    stroke: #FFFFFF !important;
+  }
+
+  /* Overriding the animation specifically for mobile to fade out */
+  @keyframes logoDraw {
+    0% { 
+      stroke-dashoffset: 4000; 
+      fill-opacity: 0;
+      opacity: 0;
+    }
+    80% {
+      stroke-dashoffset: 0;
+      fill-opacity: 0.04; 
+      opacity: 1;
+    }
+    100% { 
+      stroke-dashoffset: 0; 
+      fill-opacity: 0;    /* Fade out the fill */
+      stroke: transparent; 
+      opacity: 0;         /* Fade out the entire element */
+    }
+  }
+}
+      
 
 /* 2. Ensure the base path follows the same rule */
 .animate-logo path {
