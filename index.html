@@ -1064,30 +1064,28 @@ html, body {
   document.addEventListener('mousemove', (e) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
-
-    // Calculate the target rotation
+    // Normalized coordinates (-1 to 1)
     targetRotateY = ((clientX / innerWidth) - 0.5) * 25;
     targetRotateX = ((clientY / innerHeight) - 0.5) * -25;
   });
 
-  // NEW: Reset targets to 0 when the mouse leaves the window
   document.addEventListener('mouseleave', () => {
     targetRotateX = 0;
     targetRotateY = 0;
   });
 
   function updateLogoRotation() {
-    const logo = document.getElementById('tilting-logo');
-    if (logo) {
-      // The Lerping formula handles the smooth return automatically
+    // We target 'main-logo-svg' directly so it moves in one piece
+    const svg = document.getElementById('main-logo-svg');
+    if (svg) {
       currentRotateX += (targetRotateX - currentRotateX) * 0.05;
       currentRotateY += (targetRotateY - currentRotateY) * 0.05;
-
-      logo.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+      
+      // Keep your specific translateX and translateZ values
+      svg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
     }
     requestAnimationFrame(updateLogoRotation);
   }
-
   updateLogoRotation();
 </script>
 
@@ -1145,9 +1143,6 @@ window.restartPlexus = function() {
 
   function animate() {
     // --- PART 1: RESTORE 3D ROTATION ---
-    // Smooth the mouse movement (Lerp)
-    targetX += (mouseX - targetX) * 0.1;
-    targetY += (mouseY - targetY) * 0.1;
 
     // Apply the 3D tilt to the SVG
     const rotateX = targetY * -19; // Vertical tilt
