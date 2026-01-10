@@ -515,9 +515,9 @@ html, body {
     /* This shifts the logo 10% of its own width to the right 
      and 5% of its own height down. Adjust as needed. */
   transform: translateX(-9.81%);
-  max-height: 85vh; /* Prevents logo from touching edges */
+  max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
-  max-width: 90vw;
+  max-width: 81vw;
 }
 
 /* Adjust the positioning wrapper to be centered */
@@ -1016,7 +1016,7 @@ window.addEventListener('mousemove', (e) => {
   const rotateY = mouseX / 30; 
   const rotateX = (mouseY / 30) * -1; 
 
-  const limit = 18; // Tighten the limit for more elegance
+  const limit = 16; // Tighten the limit for more elegance
   const finalX = Math.max(Math.min(rotateX, limit), -limit);
   const finalY = Math.max(Math.min(rotateY, limit), -limit);
 
