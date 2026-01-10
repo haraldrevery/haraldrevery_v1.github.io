@@ -544,6 +544,10 @@ html, body {
 }
 
 
+#discography-section {
+  /* This adds 2rem of breathing room at the top when you scroll to it */
+  scroll-margin-top: 2rem;
+}      
 
       
   </style>
@@ -699,15 +703,9 @@ html, body {
   </div>
 </section>
 
-<section class=" font-normal text-center text-base mx-3 col-span-2">
-  <div id="discography-section" class="txt-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
-      <p></p>
-  </div>
-</section>
 
-  
 <!-- Grid to the left + Text to the right -->
-<div class="container mx-auto py-20 px-5 md:px-0">
+<div id="discography-section" class="container mx-auto py-20 px-5 md:px-0">
  <div class="flex flex-col lg:flex-row gap-16 items-center">
     
     <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{ 
@@ -1144,7 +1142,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (trigger && target) {
       trigger.addEventListener('click', () => {
-        // This will bring the 'discography-section' to the very top of the screen
+        // This scrolls the page so the top of the 'A collection' section 
+        // aligns with the top of your screen
         target.scrollIntoView({ 
           behavior: 'smooth', 
           block: 'start' 
@@ -1153,7 +1152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 </script>
-
 
 <!-- navigation bar pop up when scroll-->
 <script>
