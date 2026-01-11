@@ -568,7 +568,7 @@ html, body {
 
 /* Increase perspective to reduce lens distortion */
 #logo-container {
-  perspective: 2200px;
+  perspective: 2400px;
   height: 100vh !important; /* Force full viewport height */
   width: 100vw;
   max-width: 100% !important;
@@ -586,7 +586,6 @@ html, body {
 #main-logo-svg {
     /* This shifts the logo 10% of its own width to the right 
      and 5% of its own height down. Adjust as needed. */
-  transform-style: preserve-3d;
   transform: translateX(-9.81%);
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
@@ -1060,53 +1059,34 @@ html, body {
        <!-- Script 3D mouse rotation  --> 
 
 <script>
- // Replace your current mousemove script with this improved version
+  let targetRotateX = 0, targetRotateY = 0;
+  let currentRotateX = 0, currentRotateY = 0;
+  const logoSvg = document.getElementById('main-logo-svg');
 
-let targetRotateX = 0;
-let targetRotateY = 0;
-let currentRotateX = 0;
-let currentRotateY = 0;
-
-const logo = document.getElementById('main-logo-svg');
-const wrapper = document.getElementById('logo-wrapper'); // or use #logo-container if you apply perspective there
-
-const MAX_TILT = 18;          // degrees — keep it subtle but noticeable
-const PERSPECTIVE_FACTOR = 25; // how sensitive → higher = more extreme
-
-document.addEventListener('mousemove', (e) => {
-  // Calculate position relative to center of the **viewport** (most natural feel)
-  const x = (e.clientX / window.innerWidth) - 0.5;   // -0.5 → 0.5
-  const y = (e.clientY / window.innerHeight) - 0.5;
-
-  // Reverse direction → tilts TOWARDS cursor (most 3D/popular feel)
-  targetRotateX = y * -MAX_TILT;       // negative for natural look
-  targetRotateY = x * MAX_TILT;
-});
-
+  document.addEventListener('mousemove', (e) => {
+    // Math for the tilt intensity
+    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 30;
+    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -30;
+  });
+// Reset rotation when the mouse leaves the browser window
 document.addEventListener('mouseleave', () => {
-  targetRotateX = 0;
   targetRotateY = 0;
+  targetRotateX = 0;
 });
 
-function animate() {
-  // Very smooth lerp (higher = snappier, lower = lazier)
-  currentRotateX += (targetRotateX - currentRotateX) * 0.12;
-  currentRotateY += (targetRotateY - currentRotateY) * 0.12;
-
-  if (logo) {
-    logo.style.transform = `
-      translateX(-9.81%)
-      rotateX(${currentRotateX}deg)
-      rotateY(${currentRotateY}deg)
-      translateZ(40px)          /* ← adds real pop-out depth */
-      scale(1.02)               /* ← very subtle scale gives more 3D feel */
-    `;
+  function smoothRotate() {
+    if (logoSvg) {
+      // Smooth interpolation (lerp)
+      currentRotateX += (targetRotateX - currentRotateX) * 0.5;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.5;
+      
+      // We apply the transform here. 
+      // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
+      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
+    }
+    requestAnimationFrame(smoothRotate);
   }
-
-  requestAnimationFrame(animate);
-}
-
-animate();
+  smoothRotate();
 </script>
 
   
