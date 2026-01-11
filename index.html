@@ -17,23 +17,39 @@
 </script>
   <style>
 /* Base – hide initially to prevent flash */
-h2[data-animate="true"] {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
 
 h2.active,
 h2.start-animation {
   opacity: 1 !important;
 }
 
-/* Word wrapper – starts slightly below */
+      /* Word-by-word animation – matches About page */
 .word {
   display: inline-block;
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(5px);
 }
 
+.start-animation .word {
+  animation: fadeInWord 0.8s ease-out forwards;
+}
+
+@keyframes fadeInWord {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure headings start hidden */
+h2[data-animate="true"] {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+
+      
 /* Trigger class starts the animation */
 .start-animation .word {
   opacity: 1;
@@ -1132,56 +1148,50 @@ document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
 });
 </script>
-<!-- Word-by-word / letter-by-letter animation – FIXED & restored -->
+
+<!-- Word-by-word animation – matches About page style (random stagger) -->
 <script>
-// 1. Function that splits text into animated words/letters
-function animateWords(el) {
-  if (el.dataset.animated) return; // Prevent double-splitting
-  el.dataset.animated = "true";
+document.addEventListener('DOMContentLoaded', () => {
+  const headings = document.querySelectorAll('h2[data-animate="true"]');
 
-  const text = el.textContent.trim();
-  el.innerHTML = ''; // Clear original text
-  el.style.opacity = '1';
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        if (el.dataset.animated) return;
+        el.dataset.animated = 'true';
 
-  const words = text.split(' ');
-  words.forEach((word, wordIndex) => {
-    const wordSpan = document.createElement('span');
-    wordSpan.className = 'word';
-    wordSpan.style.display = 'inline-block';
-    wordSpan.style.whiteSpace = 'nowrap';
+        // Immediately hide original text to prevent flash
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
 
-    [...word].forEach((char, charIndex) => {
-      const letter = document.createElement('span');
-      letter.textContent = char;
-      letter.className = 'fade-letter';
-      letter.style.animationDelay = `${(wordIndex * 4 + charIndex) * 0.06}s`; // nice stagger
-      wordSpan.appendChild(letter);
+        const text = el.textContent.trim();
+        el.innerHTML = ''; // Clear content
+
+        const words = text.split(' ');
+        words.forEach((word, i) => {
+          const span = document.createElement('span');
+          span.className = 'word';
+          // Random delay between 0.1s and 1.0s – same feel as About page
+          span.style.animationDelay = `${Math.random() * 0.9 + 0.1}s`;
+          span.textContent = word + (i < words.length - 1 ? ' ' : '');
+          el.appendChild(span);
+        });
+
+        // Now reveal container and trigger animations
+        el.style.visibility = 'visible';
+        el.style.opacity = '1';
+        el.classList.add('start-animation');
+
+        observer.unobserve(el);
+      }
     });
-
-    el.appendChild(wordSpan);
-    if (wordIndex < words.length - 1) {
-      el.appendChild(document.createTextNode(' '));
-    }
+  }, {
+    threshold: 0.3,                  // Start when ~30% visible
+    rootMargin: '0px 0px -10% 0px'   // Trigger a bit earlier
   });
-}
 
-// 2. Observer – triggers when heading enters viewport
-const textObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('start-animation'); // This is the missing trigger!
-      animateWords(entry.target);
-      textObserver.unobserve(entry.target); // Only animate once
-    }
-  });
-}, {
-  threshold: 0.35,          // Trigger when ~35% visible
-  rootMargin: '0px 0px -10% 0px' // Slight earlier trigger
-});
-
-// 3. Observe all animated headings
-document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
-  textObserver.observe(h2);
+  headings.forEach(h => observer.observe(h));
 });
 </script>
       
