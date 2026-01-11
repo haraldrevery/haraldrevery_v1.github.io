@@ -24,13 +24,12 @@
   z-index: 1000;
   transform: translateY(-120%);
   opacity: 0;
-  visibility: hidden;           /* ← hides completely until scroll */
+  visibility: hidden;
   transition: 
     transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1),
     opacity 0.45s ease,
     visibility 0.45s ease;
   pointer-events: none;
-  overflow: hidden;             /* prevents any overflow affecting waves */
 }
 
 .site-header.visible {
@@ -40,43 +39,39 @@
   pointer-events: auto;
 }
 
+/* Glass + readable background (always present) */
 .site-header.glass {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(20, 20, 30, 0.45);          /* darker semi-transparent base */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.site-header.simple {
-  background: transparent;
-  backdrop-filter: none;
-  border-bottom: none;
-}
-
+/* Container - better alignment with page content */
 .nav-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1.1rem 2.8rem;
+  padding: 1.1rem 5% 1.1rem;                    /* 5% = matches typical page padding */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 70px; /* consistent height */
+  min-height: 70px;
+  box-sizing: border-box;
 }
 
-/* Logo with requested lower hover opacity */
+/* Logo */
 .logo {
   font-family: 'HaraldMono', monospace;
-  font-size: 2rem;
-  letter-spacing: 0.18em;
-  color: var(--text);
+  font-size: 1.95rem;
+  letter-spacing: 0.16em;
+  color: white;
   text-decoration: none;
-  pointer-events: auto;
-  white-space: nowrap;
   transition: opacity 0.3s ease;
+  white-space: nowrap;
 }
 
 .logo:hover {
-  opacity: 0.65; /* ← lower opacity on hover as requested */
+  opacity: 0.7;
 }
 
 /* Desktop Menu */
@@ -92,18 +87,18 @@
 
 .nav-list {
   display: flex;
-  gap: 3.8rem;
+  gap: 2.4rem;                          /* ← reduced spacing as requested */
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .nav-list a {
-  color: var(--text);
+  color: white;
   text-decoration: none;
   font-family: 'HaraldMono', monospace;
-  font-size: 1.4rem;
-  letter-spacing: 0.12em;
+  font-size: 1.32rem;
+  letter-spacing: 0.11em;
   position: relative;
   transition: color 0.3s ease;
 }
@@ -119,23 +114,30 @@
   transition: width 0.4s ease;
 }
 
-/* Active page underline (persistent) */
-.nav-list a.active::after,
-.nav-list a:hover::after {
+.nav-list a:hover::after,
+.nav-list a.active::after {
   width: 100%;
 }
 
-/* Hamburger – only when menu would overflow */
+/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 34px;
-  height: 24px;
+  width: 32px;
+  height: 22px;
   background: transparent;
   border: none;
   cursor: pointer;
   pointer-events: auto;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 2.8px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.4s ease;
 }
 
 @media (max-width: 1150px) {
@@ -151,7 +153,8 @@
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  background: rgba(10, 10, 20, 0.95);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,6 +171,21 @@
   pointer-events: auto;
 }
 
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.mobile-menu a {
+  display: block;
+  color: white;
+  font-size: 3.2rem;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  padding: 1.3rem 0;
+}
 /* No spacer needed – content starts at top naturally */
 
 
@@ -768,25 +786,21 @@ html, body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
+      
 <!-- === Navigation Bar v3.1 – No Top Push + Clean Start === -->
-<header id="site-header" class="site-header">
+<header id="site-header" class="site-header glass">
   <div class="nav-container">
-    <!-- Logo -->
-    <a href="index.html" class="logo">
-      HARALD REVERY
-    </a>
+    <a href="index.html" class="logo">HARALD REVERY</a>
 
-    <!-- Desktop Menu -->
     <nav class="main-nav" aria-label="Main navigation">
       <ul class="nav-list">
-        <li><a href="index.html" data-page="home">HOME</a></li>
-        <li><a href="music.html" data-page="music">MUSIC</a></li>
-        <li><a href="about.html" data-page="about">ABOUT</a></li>
-        <li><a href="contact.html" data-page="contact">CONTACT</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
 
-    <!-- Hamburger (only when needed) -->
     <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span></span>
       <span></span>
@@ -794,14 +808,13 @@ html, body {
     </button>
   </div>
 
-  <!-- Mobile Menu -->
   <div class="mobile-menu">
     <nav aria-label="Mobile navigation">
       <ul>
-        <li><a href="index.html">HOME</a></li>
-        <li><a href="music.html">MUSIC</a></li>
-        <li><a href="about.html">ABOUT</a></li>
-        <li><a href="contact.html">CONTACT</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
   </div>
@@ -1544,13 +1557,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       
    <script> 
-     document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const header = document.getElementById('site-header');
   const hamburger = document.querySelector('.hamburger');
   const mobileMenu = document.querySelector('.mobile-menu');
-  const scrollThreshold = 100;
+  const scrollThreshold = 80; // appears a bit earlier
 
-  // Show only after scrolling
   window.addEventListener('scroll', () => {
     if (window.scrollY > scrollThreshold) {
       header.classList.add('visible');
@@ -1559,15 +1571,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Optional: Force visible on specific pages (uncomment if needed)
-  // header.classList.add('visible');
-
-  // Hamburger logic
+  // Hamburger
   hamburger?.addEventListener('click', () => {
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', !expanded);
+    const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', !isOpen);
     mobileMenu?.classList.toggle('active');
-    document.body.style.overflow = expanded ? '' : 'hidden';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
   });
 
   // Close mobile menu on link click
@@ -1579,14 +1588,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Highlight current page
-  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-list a, .mobile-menu a').forEach(link => {
-    if (link.getAttribute('href') === currentPath) {
-      link.classList.add('active');
+  // Current page highlight
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-list a, .mobile-menu a').forEach(a => {
+    if (a.getAttribute('href') === current) {
+      a.classList.add('active');
     }
   });
-});  
+});
   </script>
 </body>
 </html>
