@@ -1,26 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark" x-data="{ 
-    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true' 
-  }" 
+<html lang="en" class="scroll-smooth dark" x-data="{
+    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
+  }"
   x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
   :class="{ 'dark': darkMode }">
-
-
 <head>
-  <!--  Remember darkmode/lightmode-->
+  <!-- Remember darkmode/lightmode-->
 <script>
   // Immediately apply the dark class based on localStorage to prevent flashing
-  if (localStorage.getItem('darkMode') === 'true' || 
+  if (localStorage.getItem('darkMode') === 'true' ||
      (localStorage.getItem('darkMode') === null)) {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
   }
 </script>
-
-  
+ 
   <style>
-      
+     
 /* Custom Background Image Layer */
 .bg-image-fade {
   position: absolute;
@@ -28,48 +25,43 @@
   left: 0;
   width: 100%;
   /* Use 100vh to match the exact height of the user's screen */
-  height: 100vh; 
+  height: 100vh;
   z-index: -11;
   background-image: url('./dist/assets/bgtexture.jpg');
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
-
-  
+ 
   /* 'cover' ensures the image fills the screen without stretching or gaps */
-  background-size: cover; 
+  background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-
   /* Smooth fade-out tied to the viewport height */
   mask-image: linear-gradient(
-    to bottom, 
-    rgba(0,0,0,1) 0%,      /* Solid at the top */
-    rgba(0,0,0,1) 30%,     /* Begins fade after 30% of screen height */
-    rgba(0,0,0,0) 100%     /* Fully gone by the bottom of the display */
+    to bottom,
+    rgba(0,0,0,1) 0%, /* Solid at the top */
+    rgba(0,0,0,1) 30%, /* Begins fade after 30% of screen height */
+    rgba(0,0,0,0) 100% /* Fully gone by the bottom of the display */
   );
   -webkit-mask-image: linear-gradient(
-    to bottom, 
-    rgba(0,0,0,1) 0%, 
-    rgba(0,0,0,1) 30%, 
+    to bottom,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 30%,
     rgba(0,0,0,0) 100%
   );
-  
+ 
   opacity: 0.12;
   pointer-events: none;
 }
-
-    
+   
 /* Standard letter fade animation */
   @keyframes letterFade {
     from { opacity: 0; }
     to { opacity: 1; }
   }
-
   .fade-letter {
     display: inline-block;
     opacity: 0;
     animation: letterFade 0.8s ease-out forwards;
   }
-
   /* Prevent layout jump: hide the H2 initially */
   h2[data-animate="true"] {
     opacity: 0;
@@ -77,28 +69,25 @@
   h2.active {
     opacity: 1 !important;
   }
-
-    
+   
      /* fading words */
-
         .word {
           display: inline-block;
           opacity: 0;
           transform: translateY(5px);
         }
-        
+       
         @keyframes fadeInWord {
           to {
             opacity: 1;
             transform: translateY(0);
           }
         }
-        
+       
         /* This triggers when the IntersectionObserver adds the class */
         .start-animation .word {
           animation: fadeInWord 0.6s ease-out forwards;
         }
-
 /* Wiggle hoover animation */
 @keyframes wave-animation {
   0% { transform: rotate(0.0deg); }
@@ -110,7 +99,6 @@
   60% { transform: rotate(0.0deg); }
   100% { transform: rotate(0.0deg); }
 }
-
 /* Apply the animation only on hover */
 .hover-wave {
   display: inline-block;
@@ -118,39 +106,29 @@
   transition: transform 0.3s ease;
   cursor: default;
 }
-
 .hover-wave:hover {
   animation: wave-animation 2.5s infinite;
 }
-
-
-
-
-
-        
+       
         /* Enhancing the gradient movement as requested previously */
         @keyframes shiftGradient {
           0% { x1: 0%; y1: 0%; }
           50% { x1: 100%; y1: 100%; }
           100% { x1: 0%; y1: 0%; }
         }
-
-
-          
+         
       /* Background ANIMATIONS */
       @keyframes gradientMove {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
-      
+     
       .animate-gradient-slow {
         animation: gradientMove 15s ease infinite;
       }
-
-
-    
-    
+   
+   
 /* 1. FONT DEFINITIONS */
 @font-face {
   font-family: 'HaraldText';
@@ -161,7 +139,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'HaraldMono';
   src: url('./fonts/HaraldReveryMonoFont.woff2') format('woff2'),
@@ -171,20 +148,19 @@
   font-style: normal;
   font-display: swap;
 }
-    
+   
     html {
-      font-size: 1.427rem;   /* ≈18px – gentle start */
+      font-size: 1.427rem; /* ≈18px – gentle start */
       /* or your target: 1.4rem / 1.5rem / 1.75rem / whatever feels right */
     }
-    
+   
     /* 2. TEXT SCALING */
     body {
       font-family: 'HaraldText', sans-serif;
-      font-size: 2.28rem;     /* ≈28px on 16px root */
+      font-size: 2.28rem; /* ≈28px on 16px root */
       line-height: 1.58;
         letter-spacing: 0.018em;
     }
-
     /* HaraldMono gets its own independent scale */
         .font-signika,
         code,
@@ -195,12 +171,11 @@
         .mono,
         .console-output {
           font-family: 'HaraldMono', monospace;
-          font-size: 1.7rem;      /* ≈22px – very common mono scale */
+          font-size: 1.7rem; /* ≈22px – very common mono scale */
           line-height: 1.2;
           letter-spacing: 0.025em;
         }
-    
-
+   
 /* --- Photo Glass Interactive Stage --- */
 .glass-stage {
   perspective: 2500px;
@@ -208,7 +183,6 @@
   margin: auto; /* Centers the stage in its grid column */
   position: relative;
 }
-
 .glass-card {
   position: absolute;
   inset: 0;
@@ -221,14 +195,12 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   backface-visibility: hidden; /* Prevents flickering on Safari */
 }
-
 /* --- 1. Default "Stacked" State (Mobile and Non-Hover) --- */
 .glass-stage:not(.fanned) .pos-1 { transform: translate3d(-40px, 0, -150px); opacity: 0; }
 .glass-stage:not(.fanned) .pos-2 { transform: translate3d(-20px, 0, -75px); opacity: 0.5; }
 .glass-stage:not(.fanned) .pos-3 { transform: translate3d(0, 0, 0); opacity: 1; z-index: 30; }
 .glass-stage:not(.fanned) .pos-4 { transform: translate3d(20px, 0, -75px); opacity: 0.5; }
 .glass-stage:not(.fanned) .pos-5 { transform: translate3d(40px, 0, -150px); opacity: 0; }
-
 /* --- 2. Fanned Out State (Large Screens / Hover) --- */
 @media (min-width: 768px) {
   .glass-stage.fanned .pos-1 { transform: translate3d(-240px, 0, -100px) rotateY(30deg); opacity: 0.6; z-index: 10; }
@@ -237,7 +209,6 @@
   .glass-stage.fanned .pos-4 { transform: translate3d(120px, 0, 0px) rotateY(-15deg); opacity: 0.9; z-index: 20; }
   .glass-stage.fanned .pos-5 { transform: translate3d(240px, 0, -100px) rotateY(-30deg); opacity: 0.6; z-index: 10; }
 }
-
 /* Mobile specific: If you want them to fan out less on phones */
 @media (max-width: 767px) {
   .glass-stage.fanned .pos-1 { transform: translate3d(-60px, 0, -50px); opacity: 0.4; }
@@ -246,64 +217,58 @@
   .glass-stage.fanned .pos-4 { transform: translate3d(30px, 0, 0); opacity: 0.8; }
   .glass-stage.fanned .pos-5 { transform: translate3d(60px, 0, -50px); opacity: 0.4; }
 }
-
 /* Helper to prevent clipping */
 .overflow-visible {
   overflow: visible !important;
 }
-
 /* avoid text-justify odd gaps */
 .text-justify {
   text-justify: inter-word;
   hyphens: auto;
 }
-
  /* Custom delay animation for the "welcome! scroll down"*/
 /* Locate this section in your <style> tag */
 .welcome-text-delayed {
-  opacity: 0; 
+  opacity: 0;
   animation: welcomeFade 1.2s ease-out forwards;
-  animation-delay: 2s; 
-  z-index: 40 !important; 
+  animation-delay: 2s;
+  z-index: 40 !important;
   pointer-events: auto; /* Change this from 'none' to 'auto' */
 }
-
 @keyframes welcomeFade {
-  0% { 
-    opacity: 0; 
-    transform: translateY(10px); 
-    pointer-events: none; 
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
   }
   99% {
     pointer-events: none;
   }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0); 
+  100% {
+    opacity: 1;
+    transform: translateY(0);
     pointer-events: auto; /* This re-enables clicking once the fade is done */
   }
 }
-
 #main-header {
   -webkit-backdrop-filter: blur(12px); /* CRITICAL for Safari */
   backdrop-filter: blur(12px);
 }
-      
- /* center glow "*/ 
+     
+ /* center glow "*/
 .center-glow {
-    /* Adjust the color here: 255,255,255 is white. 
+    /* Adjust the color here: 255,255,255 is white.
        Change to a brand color if desired. */
     background: radial-gradient(
-      circle at center, 
-      rgba(255, 255, 255, 0.29) 0%, 
-      rgba(255, 255, 255, 0.05) 40%, 
+      circle at center,
+      rgba(255, 255, 255, 0.29) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
       transparent 70%
     );
     border-radius: 50%;
     filter: blur(40px);
     animation: pulse-glow 6s ease-in-out infinite;
   }
-
   @keyframes pulse-glow {
     0%, 100% {
       transform: scale(0.8);
@@ -314,15 +279,13 @@
       opacity: 1;
     }
   }
-
 /* Allow the decorative elements to bleed out */
 .overflow-bleed {
   position: relative;
   overflow: visible !important;
 }
-
 /* Ensure the canvas actually covers the extra bleed area */
-#particle-canvas, 
+#particle-canvas,
 #particle-canvas-front {
   position: absolute;
   top: -10%;
@@ -334,18 +297,16 @@
 #particle-canvas {
   z-index: -1;
 }
-
 /* Foreground layer stays on top of the grid */
 #particle-canvas-front {
   z-index: 1;
 }
-
 /* The grid itself is in the middle */
 #image-grid {
   position: relative;
   z-index: 0;
 }
-      
+     
 /* This prevents the "zooming out" or side-to-side wobble */
 html, body {
   width: 100%;
@@ -353,35 +314,29 @@ html, body {
   overflow-x: hidden;
   position: relative; /* Added for stability */
 }
-
 /* Ensure these absolute elements don't create "phantom" width */
-#particle-canvas, 
-.center-glow, 
+#particle-canvas,
+.center-glow,
 .bg-image-fade,
 #logo-container {
   max-width: 100vw;
   overflow: hidden;
 }
-
 /* --- GLightbox Caption Styling --- */
-
 /* Remove the solid white background from the text container */
 .gslide-description {
   background: transparent !important;
 }
-
 /* Ensure the text container doesn't have a shadow or border that looks like a box */
 .gslide-description.description-bottom {
   border: none !important;
   box-shadow: none !important;
 }
-
 /* Force the text to be your brand color (white) if it's defaulting to black */
 .gslide-title {
   color: #FFFFFF !important;
   font-family: 'HaraldMono', monospace !important;
 }
-
 .gslide-desc {
   color: #FFFFFF !important;
   font-family: 'HaraldText', sans-serif !important;
@@ -389,122 +344,108 @@ html, body {
 .gslide-title, .gslide-desc {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
-
-
 /* Animation for the grid items */
 .grid-item-reveal {
   opacity: 0;
-  transform: translate3d(0, 5rem, 0); 
-  /* The '1' as the second-to-last number ensures it 
+  transform: translate3d(0, 5rem, 0);
+  /* The '1' as the second-to-last number ensures it
      hits the finish line with almost zero velocity.
   */
-  transition: 
-    opacity 1400ms cubic-bezier(0, 0.39, 0.4, 0.95), 
+  transition:
+    opacity 1400ms cubic-bezier(0, 0.39, 0.4, 0.95),
     transform 1400ms cubic-bezier(0, 0.39, 0.4, 0.95);
-
   will-change: opacity, transform;
   -webkit-font-smoothing: antialiased;
 }
-
 .grid-item-reveal.revealed {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-
-
-
       /* --- 3D LOGO & ANIMATIONS --- */
-
 /* 1. Logo Drawing Animation: Handles the initial SVG stroke "drawing" effect */
   /* This ensures the 'drawn' state remains at 4% solid color */
 @keyframes logoDraw {
-  0% { 
-    stroke-dashoffset: 4000; 
+  0% {
+    stroke-dashoffset: 4000;
     fill-opacity: 0;
     stroke: currentColor; /* Ensure stroke starts visible */
   }
   60% {
     stroke-dashoffset: 0;
-    fill-opacity: 0.01; 
+    fill-opacity: 0.01;
     stroke: currentColor; /* Stroke still visible while finishing drawing */
   }
-  100% { 
-    stroke-dashoffset: 0; 
-    fill-opacity: 0.06;    /* Keep the fill visible as requested */
-    stroke: transparent;   /* Fade the stroke out completely */
+  100% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0.06; /* Keep the fill visible as requested */
+    stroke: transparent; /* Fade the stroke out completely */
   }
 }
-
       /* Ensure dark mode flips the colors back to white */
 .dark .animate-logo path {
   /* REMOVE stroke: #FFFFFF !important; */
   fill: #FFFFFF !important;
   fill-opacity: 0.05 !important;
 }
-      
+     
 /* Update the mobile override around line 430 */
 @media (max-width: 767px) {
   .animate-logo path {
     fill: #000000 !important;
-    fill-opacity: 0.70!important; 
+    fill-opacity: 0.70!important;
   }
   .dark .animate-logo path {
     fill: #FFFFFF !important;
     fill-opacity: 0.70 !important;
   }
 }
-    
+   
 /* Mobile specific version (matches your 0.19 fill-opacity) */
 @media (max-width: 767px) {
   @keyframes logoDraw {
-    0% { 
-      stroke-dashoffset: 4000; 
+    0% {
+      stroke-dashoffset: 4000;
       fill-opacity: 0;
       opacity: 0;
       stroke: currentColor;
     }
     60% {
       stroke-dashoffset: 0;
-      fill-opacity: 0.10; 
+      fill-opacity: 0.10;
       opacity: 1;
       stroke: currentColor;
     }
-    100% { 
-      stroke-dashoffset: 0; 
-      fill-opacity: 0.21;    /* Keeps the solid fill */
-      stroke: transparent;   /* Fades out the stroke/lines only */
-      opacity: 1;            /* Keeps the overall logo visible */
+    100% {
+      stroke-dashoffset: 0;
+      fill-opacity: 0.21; /* Keeps the solid fill */
+      stroke: transparent; /* Fades out the stroke/lines only */
+      opacity: 1; /* Keeps the overall logo visible */
     }
   }
 }
-      
-
+     
 /* 2. Ensure the base path follows the same rule */
 .animate-logo path {
   stroke-dasharray: 4000;
   stroke-dashoffset: 4000;
   stroke: currentColor; /* Dark stroke for light mode */
-  fill: currentColor;   /* Dark fill for light mode */
-  fill-opacity: 0.05; 
+  fill: currentColor; /* Dark fill for light mode */
+  fill-opacity: 0.05;
   animation: logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards;
   transition: stroke 0.2s ease, fill 0.5s ease; /* Smooth transition */
-
 }
-
 /* 2. Floating Animation: Starts after the logo is drawn (8s delay) */
 @keyframes logoFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px); }
 }
-
 .logo-float {
   animation: logoFloat 0.1s ease-in-out infinite 8s;
   transform-style: preserve-3d;
 }
-
 #logo-container, .bg-image-fade {
   height: 100vh; /* Fallback */
-  height: 100dvh; 
+  height: 100dvh;
 }
 /* 3. Tilt & Shadow: Base styles for the interactive tilting logo */
 #tilting-logo {
@@ -514,7 +455,6 @@ html, body {
   backface-visibility: hidden;
   will-change: transform;
 }
-
 /* 4. Radio Signal "Implosion" Rings: CSS for the background echo effects */
 /* Styling for the SVG Shape Waves */
 /* Styling for the Imploding Outlines */
@@ -528,7 +468,6 @@ html, body {
   /* cubic-bezier(0.19, 1, 0.22, 1) creates a "vacuum" snap-in effect */
   animation: implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
-
 @keyframes implodingWave {
   0% {
     transform: scale(5); /* Start huge beyond screen edges */
@@ -547,28 +486,24 @@ html, body {
     stroke-width: 3px; /* Get slightly thicker as they collapse */
   }
 }
-
 /* Staggered delays for the radio pulse effect */
 .implosion-waves .echo-1 { animation-delay: 0.27s; }
 .implosion-waves .echo-2 { animation-delay: 0.77s; }
 .implosion-waves .echo-3 { animation-delay: 1.27s; }
-
 /* Allow the giant wave shapes to be seen even when scaled out */
 #main-logo-svg {
   overflow: visible !important;
 }
-
 /* Plexus/Logo Masking */
 #plexus-canvas {
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
 }
-      
-
+     
 /* Increase perspective to reduce lens distortion */
 #logo-container {
-  perspective: 2400px;
+  perspective: 1000px;
   height: 100vh !important; /* Force full viewport height */
   width: 100vw;
   max-width: 100% !important;
@@ -579,12 +514,12 @@ html, body {
   justify-content: center;
   overflow: hidden;
   position: relative;
-  translateZ(15)
+  transform-style: preserve-3d;
+  translateZ(15px);
 }
-
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
-    /* This shifts the logo 10% of its own width to the right 
+    /* This shifts the logo 10% of its own width to the right
      and 5% of its own height down. Adjust as needed. */
   transform: translateX(-9.81%);
   max-height: 76vh; /* Prevents logo from touching edges */
@@ -592,61 +527,46 @@ html, body {
   max-width: 81vw;
   transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
+  transform-style: preserve-3d;
 }
-
 /* Adjust the positioning wrapper to be centered */
 .position-wrapper {
   transform: none !important; /* Remove the horizontal offset for better centering */
   width: 100%;
   height: 100%;
+  transform-style: preserve-3d;
 }
 /* Optional: Adds a subtle shadow that moves opposite to the tilt for realism */
 .logo-3d-shadow {
   filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.5));
 }
-
-
 #discography-section {
   /* This adds 2rem of breathing room at the top when you scroll to it */
   scroll-margin-top: 2rem;
-}      
-
-
-
+}
 /* Dark mode button fade in */
 .mode-toggle-hidden {
   opacity: 0;
   pointer-events: none;
   transition: opacity 1.2s ease-in-out; /* Slightly longer transition for a premium feel */
 }
-
 /* Revealed state */
 .mode-toggle-visible {
   opacity: 1;
   pointer-events: auto;
 }
-
-
-
-
-
 /* Change the fill and stroke when the .dark class is active on the html element */
 .dark .animate-logo {
   fill: url(#logoGradientDark) !important;
   stroke: url(#logoGradientDark) !important;
 }
-
-
-
 /* Update the implosion rings/waves for dark mode */
 .dark .wave-echo {
   stroke: rgba(255, 255, 255, 0.4) !important; /* Previously rgba(0, 0, 0, 0.4) */
 }
-      
+     
   </style>
-
-
-  
+ 
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -659,19 +579,18 @@ html, body {
   <link rel="stylesheet" href="styles.css" />
   <!-- Alpine.js -->
   <script defer src="./dist/alpine.min.js"></script>
-  
-  <!-- Start - Fonts -->
  
+  <!-- Start - Fonts -->
   <!-- End - Fonts -->
-  
+ 
   <!-- Start - glightbox Scripts -->
   <link rel="stylesheet" href="./dist/glightbox.min.css" />
-  
+ 
   <script src="./dist/glightbox_min.js"
     integrity="sha256-xnxZzfmAeTsCFsnenG6/aIQYg4girx5QsJQ546oon/M=" crossorigin="anonymous"></script>
   <!-- End - glightbox Scripts -->
-  
- <!--  <script src="https://cdn.tailwindcss.com"></script>-->
+ 
+ <!-- <script src="https://cdn.tailwindcss.com"></script>-->
   <script src="./dist/tailwind.js"></script>
 <script>
   tailwind.config = {
@@ -694,23 +613,20 @@ html, body {
   }
 </script>
 </head>
-
-
-  <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
-             bg-gradient-to-br from-slate-100 via-white to-slate-200 
+  <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow
+             bg-gradient-to-br from-slate-100 via-white to-slate-200
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
-<header id="main-header" style="z-index: 9999;" 
+<header id="main-header" style="z-index: 9999;"
         class="fixed top-0 left-0 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-white/60 dark:bg-black/60 backdrop-blur-md pointer-events-none">
   <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
     <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap px-5 md:px-0">
-      
+     
       <div class="mr-4 md:mr-8">
         <a href="index.html" class="text-2xl font-signika tracking-[0.15em] transition duration-300 hover:opacity-75 tap-highlight-transparent text-black dark:text-white">
           HARALD REVERY
         </a>
       </div>
-
       <div class="ml-auto md:hidden flex items-center justify-start">
         <button @click="open = !open" class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
           <span class="sr-only">Open main menu</span>
@@ -721,7 +637,6 @@ html, body {
           </div>
         </button>
       </div>
-
       <div id="menu" class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden" :class="open ? 'h-auto opacity-100' : 'h-0 opacity-0 md:h-auto md:opacity-100'">
         <ul id="ulMenu" class="flex flex-col duration-300 ease-out md:space-x-5 sm:transition-none mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0 text-black dark:text-white">
           <li class="group transition duration-300">
@@ -750,22 +665,17 @@ html, body {
   </nav>
 </header>
   <!-- Content -->
-
-
-  
+ 
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
-
-
-  
-  
+ 
+ 
  <!-- Logo intro -->
 <div id="logo-container" style="pointer-events: none;">
-    
+   
   <div class="position-wrapper flex items-center justify-center relative z-10">
-    
+   
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-
 <defs>
   <g id="logo-shape-outline">
     <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
@@ -774,18 +684,16 @@ html, body {
     <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
   </g>
 </defs>
-        
+       
       <defs>
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ffffff" /> 
+          <stop offset="0%" stop-color="#ffffff" />
           <stop offset="100%" stop-color="#F0F0F0" />
         </linearGradient>
-
         <linearGradient id="logoGradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#1a1a1a" /> 
+          <stop offset="0%" stop-color="#1a1a1a" />
           <stop offset="100%" stop-color="#000000" />
         </linearGradient>
-
         <clipPath id="logoClip">
           <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
           <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
@@ -793,7 +701,6 @@ html, body {
           <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
         </clipPath>
       </defs>
-
         <g class="implosion-waves">
   <use href="#logo-shape-outline" class="wave-echo echo-1" />
   <use href="#logo-shape-outline" class="wave-echo echo-2" />
@@ -802,36 +709,33 @@ html, body {
       <foreignObject width="1000" height="1100" clip-path="url(#logoClip)">
         <canvas id="plexus-canvas" width="1000" height="1100" style="width: 100%; height: 100%;"></canvas>
       </foreignObject>
-
       <g id="logo-shape-definition" class="animate-logo" stroke="url(#logoGradient)" stroke-width="2" fill="url(#logoGradient)">
         <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
         <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
         <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
         <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
       </g>
-
     </svg>
   </div>
 </div>
-  
-  
+ 
+ 
 <section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed hover:opacity-70 transition-opacity">
       <p>Welcome! Scroll down ↓</p>
   </div>
 </section>
-
-     
+    
     <!-- dark mode button (after 2800ms )-->
-<div class="fixed bottom-8 right-8 z-[10000]" 
-     x-data="{ showToggle: false }" 
+<div class="fixed bottom-8 right-8 z-[10000]"
+     x-data="{ showToggle: false }"
      x-init="
        setTimeout(() => showToggle = true, 2800);
        $watch('darkMode', () => {
          setTimeout(() => window.restartPlexus(), 50);
        });
      ">
-  <button @click="darkMode = !darkMode" 
+  <button @click="darkMode = !darkMode"
     class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
     :class="{ 'mode-toggle-visible': showToggle }"
     aria-label="Toggle Mode"
@@ -840,14 +744,13 @@ html, body {
     <span x-show="darkMode" class="block">☀</span>
   </button>
 </div>
-     
-
+    
 <!-- Grid to the left + Text to the right -->
 <div id="discography-section" class="container mx-auto py-20 px-5 md:px-0">
  <div class="flex flex-col lg:flex-row gap-16 items-center">
-    
-    <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{ 
-    path: './artcovers/', 
+   
+    <div class="w-full lg:w-1/2 relative overflow-bleed" x-data="{
+    path: './artcovers/',
     images: [
       { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads | ISRC: QZHN32004027' },
       { file: 'phrases11.jpg', title: 'Phrases | ISRC: QZWFL2416355' },
@@ -858,62 +761,59 @@ html, body {
       { file: 'mysterycard11.jpg', title: 'Mystery Card | ISRC: QZ9JZ1740891' },
       { file: 'spiritless11.jpg', title: 'Spiritless | ISRC: QZANL1736598' },
       { file: 'uninhabitedisland11.jpg', title: 'Uninhabited Island | ISRC: QZTB52410896' }
-    ] 
+    ]
 }">
-      
+     
     <canvas id="particle-canvas" class="absolute inset-0 pointer-events-none"></canvas>
-
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
-      
+     
             <div id="image-grid" class="grid grid-cols-3 gap-4 relative z-10">
                 <template x-for="(img, index) in images" :key="img.file">
-                  <a :href="path + img.file" 
-                     class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-transform duration-500 hover:scale-110 hover:z-20 shadow-xl" 
-                     :data-title="img.title" 
+                  <a :href="path + img.file"
+                     class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-transform duration-500 hover:scale-110 hover:z-20 shadow-xl"
+                     :data-title="img.title"
                      data-gallery="gallery1">
-                    
+                   
                     <img :src="path + img.file" :alt="img.title" class="object-cover w-full h-full rounded" loading="lazy">
                   </a>
                 </template>
             </div>
-        
+       
     <canvas id="particle-canvas-front" class="absolute inset-0 pointer-events-none"></canvas>
-        
+       
     </div>
-    
+   
       <!-- Text part -->
     <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
       <!-- Text part -->
 <h2 data-animate="true" class="
-    animated-heading text-4xl md:text-4xl mb-6 
-    w-fit 
+    animated-heading text-4xl md:text-4xl mb-6
+    w-fit
     ">
-  A  collection
+  A collection
 </h2>
-      
+     
        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify">
       <p>
-        Explore the discography of Harald Revery. While mostly focused on electronic dance music (EDM), beyond his signature electronic productions a few singular tracks emerge to capture a wider soundscape. 
+        Explore the discography of Harald Revery. While mostly focused on electronic dance music (EDM), beyond his signature electronic productions a few singular tracks emerge to capture a wider soundscape.
       </p>
       <p class="mt-4">
         Music for every moment, every place, every occasion in life...
       </p>
-         </div> 
-      
+         </div>
+     
       <div class="pt-6">
         <a href="music.html" class="inline-block border-b-2 border-black dark:border-white pb-1 hover:opacity-50 transition text-lg tracking-widest">
           MUSIC →
         </a>
       </div>
     </div>
-    </div> 
+    </div>
 </div>
-
-
-<!-- Text  to the left + image cards to the right -->
+<!-- Text to the left + image cards to the right -->
     <div class="container mx-auto py-20 px-5 md:px-0">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-    
+   
     <section class="flex flex-col justify-center py-10">
       <div class="max-w-screen-md">
          <!-- 1st col starts here -->
@@ -933,7 +833,6 @@ html, body {
         </div>
       </div>
     </section>
-
     <section class="flex justify-center items-center min-h-[600px] overflow-visible">
       <div id="interactive-stage" class="glass-stage relative w-full max-w-[280px] md:max-w-[320px] aspect-[3/4]">
         <div class="glass-card pos-1" data-pos="1"><img src="./photos/bw_glass0.jpg" class="w-full h-full object-cover pointer-events-none"></div>
@@ -942,41 +841,35 @@ html, body {
         <div class="glass-card pos-4" data-pos="4"><img src="./photos/bw_glass4.jpg" class="w-full h-full object-cover pointer-events-none"></div>
         <div class="glass-card pos-5" data-pos="5"><img src="./photos/bw_glass1.jpg" class="w-full h-full object-cover pointer-events-none"></div>
       </div>
-    </section>   
-
+    </section>
   </div>
 </div>
-
-
-    
-
-  
-  <!-- footer--> 
+   
+ 
+  <!-- footer-->
   <footer>
-        
+       
     <div class="max-w-screen-xl py-16 mx-auto">
       <div class="grid grid-cols-1 gap-8 text-center mx-auto">
         <div>
-          
+         
             <p class="font-signika leading-none">
               <b><small class="text-base uppercase tracking-widest opacity-100">Revery Division</small></b>
             </p>
-            
+           
             <p><span class="hover-wave">½</span></p>
-            
+           
           <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
             Gothenburg, Sweden <br />
           </p>
-
             <div class="mt-2 text-sm uppercase tracking-widest font-signika opacity-70">
               <a href="./contact.html" class="hover:opacity-50 transition-opacity">Contact</a>
               <span class="mx-2"> | </span>
               <a href="./legal.html" class="hover:opacity-50 transition-opacity">Privacy policy</a>
             </div>
-
-            
+           
           <div class="flex mx-auto">
-            <div class="mx-auto space-x-6 flex mt-8 text-gray-600 dark:text-gray-300">        
+            <div class="mx-auto space-x-6 flex mt-8 text-gray-600 dark:text-gray-300">
                 <a class="transition duration-300 hover:opacity-50" href="https://www.facebook.com/HaraldRevery" target="_blank"
                 rel="noreferrer">
                 <span class="sr-only"> Facebook </span>
@@ -984,7 +877,7 @@ html, body {
                   <path
                     d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
                 </svg>
-              </a>                
+              </a>
               <a class="transition duration-300 hover:opacity-50" href="https://www.instagram.com/HaraldRevery" target="_blank"
                 rel="noreferrer">
                 <span class="sr-only"> Instagram </span>
@@ -992,7 +885,7 @@ html, body {
                   <path
                     d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
                 </svg>
-              </a>                
+              </a>
               <a class="transition duration-300 hover:opacity-50" href="https://x.com/HaraldRevery" target="_blank"
                 rel="noreferrer">
                 <span class="sr-only"> Twitter </span>
@@ -1001,20 +894,19 @@ html, body {
                     d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
                 </svg>
               </a>
-                
+               
                 <a class="transition duration-300 hover:opacity-75" href="https://open.spotify.com/artist/your_id" target="_blank" rel="noreferrer">
                           <span class="sr-only">Spotify</span>
                           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path d="M32 0C14.3 0 0 14.337 0 32c0 17.7 14.337 32 32 32 17.7 0 32-14.337 32-32S49.663 0 32 0zm14.68 46.184c-.573.956-1.797 1.223-2.753.65-7.532-4.588-16.975-5.62-28.14-3.097-1.07.23-2.14-.42-2.37-1.49s.42-2.14 1.49-2.37c12.196-2.79 22.67-1.606 31.082 3.556a2 2 0 0 1 .688 2.753zm3.9-8.717c-.726 1.185-2.256 1.53-3.44.84-8.602-5.276-21.716-6.805-31.885-3.747-1.338.382-2.714-.344-3.097-1.644-.382-1.338.344-2.714 1.682-3.097 11.622-3.517 26.074-1.835 35.976 4.244 1.147.688 1.49 2.217.765 3.403zm.344-9.1c-10.323-6.117-27.336-6.69-37.2-3.708-1.568.497-3.25-.42-3.747-1.988s.42-3.25 1.988-3.747c11.317-3.44 30.127-2.753 41.98 4.282 1.415.84 1.873 2.676 1.032 4.09-.765 1.453-2.638 1.912-4.053 1.07z" />
                           </svg>
                         </a>
-
             <a class="transition duration-300 hover:opacity-50" href="https://music.apple.com/se/artist/harald-revery/1275991562" target="_blank" rel="noreferrer">
               <span class="sr-only">Apple Music</span>
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M19.467 1.482a2.38 2.38 0 0 0-1.897-.89c-.198 0-.411.024-.627.078l-7.464 1.831a2.4 2.4 0 0 0-1.84 2.33v11.722a3.86 3.86 0 0 0-1.192-.201c-1.92 0-3.477 1.34-3.477 2.991s1.557 2.991 3.477 2.991c1.88 0 3.409-1.285 3.473-2.883l.004-10.744 8.016-1.936v6.983c-.443-.131-.914-.202-1.404-.202-2.333 0-4.225 1.626-4.225 3.633 0 2.006 1.892 3.632 4.225 3.632 2.333 0 4.226-1.626 4.226-3.632V3.535a2.38 2.38 0 0 0-1.296-2.053z"/></svg>
                 </a>
-                
+               
               <a class="transition duration-300 hover:opacity-50" href="https://www.behance.net/haraldrevery" target="_blank"
                 rel="noreferrer">
                 <span class="sr-only">Behance</span>
@@ -1023,18 +915,18 @@ html, body {
                     d="M4.654 3c.461 0 .887.035 1.278.14.39.07.711.216.996.391.286.176.497.426.641.747.14.32.216.711.216 1.137 0 .496-.106.922-.356 1.242-.215.32-.566.606-.997.817.606.176 1.067.496 1.348.922.281.426.461.957.461 1.563 0 .496-.105.922-.285 1.278a2.317 2.317 0 0 1-.782.887c-.32.215-.711.39-1.137.496a5.329 5.329 0 0 1-1.278.176L0 12.803V3h4.654zm-.285 3.978c.39 0 .71-.105.957-.285.246-.18.355-.497.355-.887 0-.216-.035-.426-.105-.567a.981.981 0 0 0-.32-.355 1.84 1.84 0 0 0-.461-.176c-.176-.035-.356-.035-.567-.035H2.17v2.31c0-.005 2.2-.005 2.2-.005zm.105 4.193c.215 0 .426-.035.606-.07.176-.035.356-.106.496-.216s.25-.215.356-.39c.07-.176.14-.391.14-.641 0-.496-.14-.852-.426-1.102-.285-.215-.676-.32-1.137-.32H2.17v2.734h2.305v.005zm6.858-.035c.286.285.711.426 1.278.426.39 0 .746-.106 1.032-.286.285-.215.46-.426.53-.64h1.74c-.286.851-.712 1.457-1.278 1.848-.566.355-1.243.566-2.06.566a4.135 4.135 0 0 1-1.527-.285 2.827 2.827 0 0 1-1.137-.782 2.851 2.851 0 0 1-.712-1.172c-.175-.461-.25-.957-.25-1.528 0-.531.07-1.032.25-1.493.18-.46.426-.852.747-1.207.32-.32.711-.606 1.137-.782a4.018 4.018 0 0 1 1.493-.285c.606 0 1.137.105 1.598.355.46.25.817.532 1.102.958.285.39.496.851.641 1.348.07.496.105.996.07 1.563h-5.15c0 .58.21 1.11.496 1.396zm2.24-3.732c-.25-.25-.642-.391-1.103-.391-.32 0-.566.07-.781.176-.215.105-.356.25-.496.39a.957.957 0 0 0-.25.497c-.036.175-.07.32-.07.46h3.196c-.07-.526-.25-.882-.497-1.132zm-3.127-3.728h3.978v.957h-3.978v-.957z" />
                 </svg>
               </a>
-                
+               
             </div>
           </div>
         </div>
       </div>
       <p class="mt-8 text-xs text-gray-600 dark:text-gray-300 text-center">
-        ©  <span id="year"></span> Harald Revery. All Rights Reserved (fonts, images and brand logo) <br />
+        © <span id="year"></span> Harald Revery. All Rights Reserved (fonts, images and brand logo) <br />
         <small>Site Template by <a href="https://github.com/JoaoFranco03" target="_blank">Joao Franco</a></small>
       </p>
     </div>
   </footer>
-  
+ 
   <!-- Script for the LightBox -->
 <script>
   // This waits for Alpine.js to finish building the grid
@@ -1047,118 +939,105 @@ html, body {
     });
   });
 </script>
-    
+   
   <script src="dist/fade_in.js"></script>
   <script src="dist/menu.js"></script>
-  
+ 
   <script>
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
-
-
-       <!-- Script 3D mouse rotation  --> 
-
+       <!-- Script 3D mouse rotation -->
 <script>
   let targetRotateX = 0, targetRotateY = 0;
   let currentRotateX = 0, currentRotateY = 0;
   const logoSvg = document.getElementById('main-logo-svg');
-
   document.addEventListener('mousemove', (e) => {
     // Math for the tilt intensity
-    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 30;
-    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -30;
+    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
+    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
   });
 // Reset rotation when the mouse leaves the browser window
 document.addEventListener('mouseleave', () => {
   targetRotateY = 0;
   targetRotateX = 0;
 });
-
   function smoothRotate() {
     if (logoSvg) {
       // Smooth interpolation (lerp)
       currentRotateX += (targetRotateX - currentRotateX) * 0.5;
       currentRotateY += (targetRotateY - currentRotateY) * 0.5;
-      
-      // We apply the transform here. 
+     
+      // We apply the transform here.
       // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
-      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
+      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+
+      // Dynamic shadow for more realism (adjusts based on rotation)
+      const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
+      logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
     }
     requestAnimationFrame(smoothRotate);
   }
   smoothRotate();
 </script>
-
-  
-  <!-- Plexus  -->
+ 
+  <!-- Plexus -->
 <script>
 // 1. GLOBAL SCOPE: Animation ID and Persistent Mouse Coordinates
 let plexusRequestId;
 let mouseX = 0, mouseY = 0;
 let targetX = 0, targetY = 0;
-
 // Update mouse position globally so it persists through restarts
 document.addEventListener('mousemove', (e) => {
   mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
   mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
 });
-
 window.restartPlexus = function() {
   // Clear previous loop
   if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
-
   const canvas = document.getElementById('plexus-canvas');
   const svg = document.getElementById('main-logo-svg');
   if (!canvas || !svg) return;
   const ctx = canvas.getContext('2d');
-  
+ 
   // Use the dimensions from your original code
   const width = 1000, height = 1100;
-  
+ 
   // Dynamic Color
   const isDark = document.documentElement.classList.contains('dark');
-  const rgb = isDark ? "255, 255, 255" : "26, 26, 26"; 
-
+  const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
   // Particle Settings
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 150 : 421;
   const connectionDistance = isMobile ? 120 : 150;
   const connDistSq = connectionDistance * connectionDistance;
-  
+ 
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
   const velX = new Float32Array(targetParticleCount);
   const velY = new Float32Array(targetParticleCount);
-  
+ 
   let currentParticleCount = 0;
   const startTime = Date.now();
-
   function createParticle(i) {
     posX[i] = Math.random() * width;
     posY[i] = Math.random() * height;
     velX[i] = (Math.random() - 0.5) * 0.8;
     velY[i] = (Math.random() - 0.5) * 0.8;
   }
-
   function animate() {
     // --- PART 1: RESTORE 3D ROTATION ---
-
     // Apply the 3D tilt to the SVG
     const rotateX = targetY * -19; // Vertical tilt
-    const rotateY = targetX * 19;  // Horizontal tilt
-      
-
-
+    const rotateY = targetX * 19; // Horizontal tilt
+     
     // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
-
     while (currentParticleCount < targetThisFrame) {
       createParticle(currentParticleCount);
       currentParticleCount++;
     }
-
     // Draw Particles
     ctx.fillStyle = `rgba(${rgb}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
@@ -1166,9 +1045,8 @@ window.restartPlexus = function() {
       posY[i] += velY[i];
       if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
       if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2); 
+      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
     }
-
     // Draw Lines
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
@@ -1176,7 +1054,6 @@ window.restartPlexus = function() {
       for (let j = i + 1; j < currentParticleCount; j++) {
         const dx = x1 - posX[j], dy = y1 - posY[j];
         const distSq = dx * dx + dy * dy;
-
         if (distSq < connDistSq) {
           const alpha = (1 - Math.sqrt(distSq) / connectionDistance) * 0.8;
           ctx.beginPath();
@@ -1191,14 +1068,11 @@ window.restartPlexus = function() {
   }
   animate();
 };
-
 // Start initially
 document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
 });
 </script>
-
-
 <!-- fading words script -->
 <script>
 // Add this function to index.html
@@ -1207,15 +1081,13 @@ function animateWords(el) {
   el.innerHTML = '';
   el.style.opacity = '1';
   el.classList.add('active');
-
   // Split by space to get individual words
   const words = text.split(' ');
   words.forEach((word, wordIndex) => {
     // Create a wrapper for the word to keep it together
     const wordSpan = document.createElement('span');
     wordSpan.style.display = 'inline-block';
-    wordSpan.style.whiteSpace = 'nowrap'; 
-
+    wordSpan.style.whiteSpace = 'nowrap';
     // Put letters inside the word wrapper
     [...word].forEach((char, charIndex) => {
       const letterSpan = document.createElement('span');
@@ -1225,87 +1097,75 @@ function animateWords(el) {
       letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
       wordSpan.appendChild(letterSpan);
     });
-    
+   
     el.appendChild(wordSpan);
-
     // Add a space after the word
     if (wordIndex < words.length - 1) {
       el.appendChild(document.createTextNode(' '));
     }
   });
 }
-
 // Then, update your existing IntersectionObserver callback to call it:
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       // This line triggers the actual letter splitting
-      animateWords(entry.target); 
+      animateWords(entry.target);
       observer.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1 });
-
 // Ensure your headings are being observed
 document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
   observer.observe(h2);
 });
 </script>
-
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
   const gridItems = document.querySelectorAll('.grid-item-reveal');
-  
+ 
   const observerOptions = {
     threshold: 0.10 // Trigger slightly earlier for a smoother transition as you scroll
   };
-
   const observer = new IntersectionObserver((entries) => {
     const visibleEntries = entries.filter(entry => entry.isIntersecting);
-
     if (visibleEntries.length > 0) {
       visibleEntries.forEach((entry, index) => {
         // Increase the stagger delay from 200ms to 300ms for a more graceful sequence
         setTimeout(() => {
           entry.target.classList.add('revealed');
-        }, index * 300); 
-
+        }, index * 300);
         observer.unobserve(entry.target);
       });
     }
   }, observerOptions);
-
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
-
   <!-- Click to scroll thing-->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const trigger = document.getElementById('hero-trigger');
     const target = document.getElementById('discography-section');
-
     if (trigger && target) {
       trigger.addEventListener('click', () => {
-        // This scrolls the page so the top of the 'A collection' section 
+        // This scrolls the page so the top of the 'A collection' section
         // aligns with the top of your screen
-        target.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
       });
     }
   });
 </script>
-
 <!-- navigation bar pop up when scroll-->
 <script>
   const header = document.getElementById('main-header');
-
   window.addEventListener('scroll', function() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+   
     // threshold: 200px (adjust this to decide when it should appear)
     if (scrollTop > 200) {
       // SCROLLED DOWN: Show the navbar
@@ -1316,17 +1176,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 </script>
-
 <!-- Photo glass thing -->
 <script>
 const stage = document.getElementById('interactive-stage');
 const cards = stage.querySelectorAll('.glass-card');
-
 // 1. Handle Fanning (Hover & Touch)
 // Using 'mouseenter' for desktop and a simple toggle/check for better feel
 stage.addEventListener('mouseenter', () => stage.classList.add('fanned'));
 stage.addEventListener('mouseleave', () => stage.classList.remove('fanned'));
-
 // 2. Handle Click to Focus
 cards.forEach(clickedCard => {
   clickedCard.addEventListener('click', (e) => {
@@ -1334,28 +1191,23 @@ cards.forEach(clickedCard => {
     if (!stage.classList.contains('fanned')) {
       stage.classList.add('fanned');
     }
-
     const clickedPos = parseInt(clickedCard.getAttribute('data-pos'));
-    
+   
     // If the user clicks the center card, maybe you want to trigger a link?
     if (clickedPos === 3) {
       console.log("Center card clicked - could open a lightbox here!");
-      return; 
+      return;
     }
-
     const shift = 3 - clickedPos;
-
     cards.forEach(card => {
       let currentPos = parseInt(card.getAttribute('data-pos'));
       let newPos = currentPos + shift;
-
       // Wrap around logic (Modulo-style) to keep 1-5 range
       if (newPos > 5) newPos -= 5;
       if (newPos < 1) newPos += 5;
-
       // Update Data Attribute
       card.setAttribute('data-pos', newPos);
-      
+     
       // Update Classes smoothly
       // We use classList to avoid wiping out other classes like 'glass-card'
       for (let i = 1; i <= 5; i++) {
@@ -1365,70 +1217,64 @@ cards.forEach(clickedCard => {
     });
   });
 });
-</script>    
-    
-    
+</script>
+   
+   
 <!-- Particles behind grid script -->
 <script>
   const backCanvas = document.getElementById('particle-canvas');
   const frontCanvas = document.getElementById('particle-canvas-front');
   const ctxBack = backCanvas.getContext('2d');
   const ctxFront = frontCanvas.getContext('2d');
-  
+ 
   let backParticles = [];
   let frontParticles = [];
   const particleCount = 80;
   const frontRatio = 0.2; // 20% of particles will be in front
-
   class Particle {
-    constructor(isFront) { 
+    constructor(isFront) {
       this.isFront = isFront;
-      this.init(); 
+      this.init();
     }
-    
+   
     init() {
       // Use the parent container to get correct dimensions
       const container = backCanvas.parentElement;
       const rect = container.getBoundingClientRect();
       const w = rect.width || window.innerWidth;
       const h = rect.height || window.innerHeight;
-      
+     
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      
-      const speedMultiplier = Math.random() * 0.5 + 0.2; 
+     
+      const speedMultiplier = Math.random() * 0.5 + 0.2;
       this.vx = (Math.random() - 0.5) * speedMultiplier;
       this.vy = (Math.random() - 0.5) * speedMultiplier;
-      
+     
       // Front particles are slightly larger to enhance the depth effect
       this.size = (Math.random() * 2 + 0.5) * (this.isFront ? 1.5 : 1);
-
-      this.maxAlpha = Math.random() * 0.5 + 0.2; 
-      this.alpha = 0;                            
-      this.fadeSpeed = Math.random() * 0.005 + 0.002; 
-      this.fadingIn = true;                      
+      this.maxAlpha = Math.random() * 0.5 + 0.2;
+      this.alpha = 0;
+      this.fadeSpeed = Math.random() * 0.005 + 0.002;
+      this.fadingIn = true;
     }
-
     update(w, h) {
       this.x += this.vx;
       this.y += this.vy;
-
       if (this.x < 0) this.x = w;
       if (this.x > w) this.x = 0;
       if (this.y < 0) this.y = h;
       if (this.y > h) this.y = 0;
-
       if (this.fadingIn) {
         this.alpha += this.fadeSpeed;
         if (this.alpha >= this.maxAlpha) this.fadingIn = false;
       } else {
         this.alpha -= this.fadeSpeed;
         if (this.alpha <= 0) {
-          this.init(); 
+          this.init();
         }
       }
     }
-
     draw(ctx) {
       ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
       ctx.beginPath();
@@ -1436,22 +1282,19 @@ cards.forEach(clickedCard => {
       ctx.fill();
     }
   }
-
   function resize() {
     const container = backCanvas.parentElement;
     const rect = container.getBoundingClientRect();
-    
+   
     if (rect.width === 0 || rect.height === 0) return;
-
     // Sync both canvases to the same size
     [backCanvas, frontCanvas].forEach(canvas => {
       canvas.width = rect.width;
       canvas.height = rect.height;
     });
-
     backParticles = [];
     frontParticles = [];
-    
+   
     for (let i = 0; i < particleCount; i++) {
       if (Math.random() < frontRatio) {
         frontParticles.push(new Particle(true));
@@ -1460,37 +1303,30 @@ cards.forEach(clickedCard => {
       }
     }
   }
-
   function animate() {
     ctxBack.clearRect(0, 0, backCanvas.width, backCanvas.height);
     ctxFront.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
-
     backParticles.forEach(p => {
       p.update(backCanvas.width, backCanvas.height);
       p.draw(ctxBack);
     });
-    
+   
     frontParticles.forEach(p => {
       p.update(frontCanvas.width, frontCanvas.height);
       p.draw(ctxFront);
     });
-
     requestAnimationFrame(animate);
   }
-
   window.addEventListener('resize', resize);
   resize();
   setTimeout(resize, 100);
   animate();
 </script>
-
-
 <!-- Load the other pages in the background so it doesn't blink as much -->
     <script>
   window.addEventListener('load', () => {
   setTimeout(() => {
     const urls = ["music.html", "about.html", "contact.html"];
-
     // 1. For Chrome/Edge (Speculation Rules)
     const specScript = document.createElement('script');
     specScript.type = 'speculationrules';
@@ -1498,7 +1334,6 @@ cards.forEach(clickedCard => {
       "prerender": [{ "source": "list", "urls": urls }]
     });
     document.head.appendChild(specScript);
-
     // 2. For Firefox (Traditional Prefetch)
     urls.forEach(url => {
       const link = document.createElement('link');
@@ -1509,20 +1344,17 @@ cards.forEach(clickedCard => {
   }, 3000);
 });
 </script>
-
 <!-- Images animating in when scrolling -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const gridItems = document.querySelectorAll('.grid-item-reveal');
-  
+ 
   const observerOptions = {
-    threshold: 0.10 
+    threshold: 0.10
   };
-
   const observer = new IntersectionObserver((entries) => {
     // Filter items entering the viewport
     const visibleEntries = entries.filter(entry => entry.isIntersecting);
-
     if (visibleEntries.length > 0) {
       visibleEntries.forEach((entry, index) => {
         // Stagger the reveal of each image
@@ -1530,18 +1362,15 @@ document.addEventListener('DOMContentLoaded', () => {
           // This adds the class that sets opacity: 1 and transform: translateY(0)
           entry.target.classList.add('revealed');
         }, index * 96); // 150ms delay between each image's start
-
         // Stop observing once revealed
         observer.unobserve(entry.target);
       });
     }
   }, observerOptions);
-
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
-      
-    
+     
+   
 </body>
-
 </html>
