@@ -435,6 +435,12 @@ html, body {
   }
 }
 
+      /* Ensure dark mode flips the colors back to white */
+.dark .animate-logo path {
+  /* REMOVE stroke: #FFFFFF !important; */
+  fill: #FFFFFF !important;
+  fill-opacity: 0.05 !important;
+}
       
 /* Update the mobile override around line 430 */
 @media (max-width: 767px) {
@@ -631,12 +637,7 @@ html, body {
 }
 
 
-/* Ensure dark mode flips the colors back to white */
-.dark .animate-logo path {
-  /* REMOVE stroke: #FFFFFF !important; */
-  fill: #FFFFFF !important;
-  fill-opacity: 0.05 !important;
-}
+
 /* Update the implosion rings/waves for dark mode */
 .dark .wave-echo {
   stroke: rgba(255, 255, 255, 0.4) !important; /* Previously rgba(0, 0, 0, 0.4) */
