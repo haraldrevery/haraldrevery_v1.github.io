@@ -732,7 +732,10 @@ html, body {
      x-init="
        setTimeout(() => showToggle = true, 2800);
        $watch('darkMode', () => {
-         setTimeout(() => window.restartPlexus(), 50);
+         setTimeout(() => {
+           window.restartPlexus();
+           window.restartLogoAnimations();   // ← added
+         }, 50);
        });
      ">
   <button @click="darkMode = !darkMode"
@@ -1143,6 +1146,33 @@ document.addEventListener('DOMContentLoaded', () => {
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
+
+
+  <!-- restart logo when dark/light mode -->
+
+<script>
+ window.restartLogoAnimations = function() {
+  const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
+  const waves = document.querySelectorAll('.wave-echo');
+
+  if (!logoGroup) return;
+
+  // 1. Reset SVG stroke + fill animation
+  logoGroup.style.animation = 'none';
+  // Force reflow so animation restarts
+  void logoGroup.offsetWidth;
+  logoGroup.style.animation = null; // or set back to original if you modified it
+
+  // 2. Restart implosion waves (they have animation-delay so they stagger nicely)
+  waves.forEach(wave => {
+    wave.style.animation = 'none';
+    void wave.offsetWidth;
+    wave.style.animation = null;
+  });
+};   
+</script>
+
+      
   <!-- Click to scroll thing-->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
