@@ -16,7 +16,44 @@
   }
 </script>
   <style>
-  
+/* Base – hide initially to prevent flash */
+h2[data-animate="true"] {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+h2.active,
+h2.start-animation {
+  opacity: 1 !important;
+}
+
+/* Word wrapper – starts slightly below */
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Trigger class starts the animation */
+.start-animation .word {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Individual letters */
+.fade-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: letterFade 0.8s ease-out forwards;
+}
+
+@keyframes letterFade {
+  to { opacity: 1; }
+}
+
+
+      
 /* Custom Background Image Layer */
 .bg-image-fade {
   position: absolute;
@@ -1095,52 +1132,59 @@ document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
 });
 </script>
-<!-- fading words script -->
+<!-- Word-by-word / letter-by-letter animation – FIXED & restored -->
 <script>
-// Add this function to index.html
+// 1. Function that splits text into animated words/letters
 function animateWords(el) {
-  const text = el.innerText;
-  el.innerHTML = '';
+  if (el.dataset.animated) return; // Prevent double-splitting
+  el.dataset.animated = "true";
+
+  const text = el.textContent.trim();
+  el.innerHTML = ''; // Clear original text
   el.style.opacity = '1';
-  el.classList.add('active');
-  // Split by space to get individual words
+
   const words = text.split(' ');
   words.forEach((word, wordIndex) => {
-    // Create a wrapper for the word to keep it together
     const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
     wordSpan.style.display = 'inline-block';
     wordSpan.style.whiteSpace = 'nowrap';
-    // Put letters inside the word wrapper
+
     [...word].forEach((char, charIndex) => {
-      const letterSpan = document.createElement('span');
-      letterSpan.textContent = char;
-      letterSpan.className = 'fade-letter';
-      // Calculate delay based on total progress
-      letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
-      wordSpan.appendChild(letterSpan);
+      const letter = document.createElement('span');
+      letter.textContent = char;
+      letter.className = 'fade-letter';
+      letter.style.animationDelay = `${(wordIndex * 4 + charIndex) * 0.06}s`; // nice stagger
+      wordSpan.appendChild(letter);
     });
+
     el.appendChild(wordSpan);
-    // Add a space after the word
     if (wordIndex < words.length - 1) {
       el.appendChild(document.createTextNode(' '));
     }
   });
 }
-// Then, update your existing IntersectionObserver callback to call it:
-const observer = new IntersectionObserver((entries) => {
+
+// 2. Observer – triggers when heading enters viewport
+const textObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // This line triggers the actual letter splitting
+      entry.target.classList.add('start-animation'); // This is the missing trigger!
       animateWords(entry.target);
-      observer.unobserve(entry.target);
+      textObserver.unobserve(entry.target); // Only animate once
     }
   });
-}, { threshold: 0.1 });
-// Ensure your headings are being observed
+}, {
+  threshold: 0.35,          // Trigger when ~35% visible
+  rootMargin: '0px 0px -10% 0px' // Slight earlier trigger
+});
+
+// 3. Observe all animated headings
 document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
-  observer.observe(h2);
+  textObserver.observe(h2);
 });
 </script>
+      
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
