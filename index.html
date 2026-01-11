@@ -16,7 +16,229 @@
   }
 </script>
   <style>
-    
+/* ──────────────────────────────────────────────────────────────
+   Modern Navigation Bar – Clean & Battery-Friendly
+────────────────────────────────────────────────────────────── */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.site-header.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Two modes: blurred glass (default) vs simple fixed */
+.site-header.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-header.simple {
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: none;
+}
+
+/* Container */
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo {
+  font-family: 'HaraldMono', monospace;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--text);
+  text-decoration: none;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+/* Desktop Menu */
+.main-nav {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .main-nav {
+    display: block;
+  }
+}
+
+.nav-list {
+  display: flex;
+  gap: 3.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a {
+  color: var(--text);
+  text-decoration: none;
+  font-family: 'HaraldMono', monospace;
+  font-size: 1.35rem;
+  letter-spacing: 0.12em;
+  position: relative;
+  transition: color 0.25s ease;
+  pointer-events: auto;
+}
+
+.nav-list a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1.5px;
+  bottom: -4px;
+  left: 0;
+  background: currentColor;
+  transition: width 0.35s ease;
+}
+
+.nav-list a:hover::after,
+.nav-list a.active::after {
+  width: 100%;
+}
+
+/* Mobile Hamburger */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  pointer-events: auto;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 2.5px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+.hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  z-index: 1050;
+  pointer-events: none;
+}
+
+.mobile-menu.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.mobile-menu a {
+  display: block;
+  color: var(--text);
+  font-family: 'HaraldMono', monospace;
+  font-size: 3.2rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  padding: 1.2rem 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-menu a:hover {
+  transform: scale(1.06);
+}
+
+/* Very narrow screens → force hamburger even on "desktop" */
+@media (max-width: 680px) {
+  .nav-container {
+    padding: 1rem 1.5rem;
+  }
+  .main-nav {
+    display: none !important;
+  }
+  .hamburger {
+    display: flex !important;
+  }
+}
+
+/* Spacer to prevent content jump when header appears */
+.header-spacer {
+  height: 80px; /* ≈ header height + padding */
+}
+
+/* Dark mode variables (adjust as needed) */
+:root {
+  --text: #111;
+  --bg: #fff;
+}
+.dark {
+  --text: #eee;
+  --bg: #0a0a0a;
+}
+
+
+
+
+
+
+
+
+
+
+
+      
 /* Custom Background Image Layer */
 .bg-image-fade {
   position: absolute;
@@ -609,53 +831,47 @@ html, body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
-<header id="main-header" style="z-index: 9999;"
-        class="fixed top-0 left-0 flex w-full overflow-hidden pt-3 pb-1 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) -translate-y-full opacity-0 bg-white/60 dark:bg-black/60 backdrop-blur-md pointer-events-none">
-  <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
-    <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap px-5 md:px-0">
-    
-      <div class="mr-4 md:mr-8">
-        <a href="index.html" class="text-2xl font-signika tracking-[0.15em] transition duration-300 hover:opacity-75 tap-highlight-transparent text-black dark:text-white">
-          HARALD REVERY
-        </a>
-      </div>
-      <div class="ml-auto md:hidden flex items-center justify-start">
-        <button @click="open = !open" class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
-          <span class="sr-only">Open main menu</span>
-          <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-            <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': open } "></span>
-            <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
-          </div>
-        </button>
-      </div>
-      <div id="menu" class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden" :class="open ? 'h-auto opacity-100' : 'h-0 opacity-0 md:h-auto md:opacity-100'">
-        <ul id="ulMenu" class="flex flex-col duration-300 ease-out md:space-x-5 sm:transition-none mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0 text-black dark:text-white">
-          <li class="group transition duration-300">
-            <a href="index.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">HOME
-              <span class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
-            </a>
-          </li>
-          <li class="group transition duration-300">
-            <a href="music.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">MUSIC
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-            </a>
-          </li>
-          <li class="group transition duration-300">
-            <a href="about.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">ABOUT
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-            </a>
-          </li>
-          <li class="group transition duration-300">
-            <a href="contact.html" class="font-signika text-2xl tracking-widest tap-highlight-transparent">CONTACT
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<!-- === Modern Navigation Bar (v2 - Clean & Reusable) === -->
+<header id="site-header" class="site-header">
+  <div class="nav-container">
+    <!-- Logo / Brand -->
+    <a href="index.html" class="logo">
+      HARALD REVERY
+    </a>
+
+    <!-- Desktop Menu -->
+    <nav class="main-nav" aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a href="index.html" data-page="home">Home</a></li>
+        <li><a href="music.html" data-page="music">Music</a></li>
+        <li><a href="about.html" data-page="about">About</a></li>
+        <li><a href="contact.html" data-page="contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Mobile Hamburger -->
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu">
+    <nav aria-label="Mobile navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
+
+<!-- Force header visibility on page load (optional – remove if unwanted) -->
+<div class="header-spacer"></div>
   <!-- Content -->
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
@@ -1385,7 +1601,65 @@ document.addEventListener('DOMContentLoaded', () => {
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
+
+<script>
+    // ──────────────────────────────────────────────────────────────
+// Navigation Behavior
+// ──────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  const header = document.getElementById('site-header');
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  let lastScroll = 0;
+  const scrollThreshold = 120; // pixels to show header after scroll
+
+  // Show header after scrolling down
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > scrollThreshold) {
+      header.classList.add('visible');
+    } else {
+      header.classList.remove('visible');
+    }
+
+    lastScroll = currentScroll;
+  });
+
+  // Hamburger toggle
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', !expanded);
+    mobileMenu.classList.toggle('active');
     
-  
+    // Optional: prevent body scroll when menu is open
+    document.body.style.overflow = expanded ? '' : 'hidden';
+  });
+
+  // Close mobile menu when clicking a link
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Optional: Close menu when clicking outside
+  mobileMenu.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Optional: Force show header on page load (comment out if unwanted)
+  setTimeout(() => {
+    header.classList.add('visible');
+  }, 800);
+});
+  </script>
 </body>
 </html>
