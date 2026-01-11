@@ -1077,8 +1077,8 @@ document.addEventListener('mouseleave', () => {
   function smoothRotate() {
     if (logoSvg) {
       // Smooth interpolation (lerp)
-      currentRotateX += (targetRotateX - currentRotateX) * 0.05;
-      currentRotateY += (targetRotateY - currentRotateY) * 0.05;
+      currentRotateX += (targetRotateX - currentRotateX) * 0.5;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.5;
       
       // We apply the transform here. 
       // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
