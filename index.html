@@ -17,7 +17,7 @@
 </script>
   <style>
 /* ──────────────────────────────────────────────────────────────
-   Modern Navigation Bar – Clean & Battery-Friendly
+   Navigation Bar v3 – Scroll Reveal + Smart Hamburger
 ────────────────────────────────────────────────────────────── */
 
 .site-header {
@@ -26,10 +26,10 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  pointer-events: none;
-  transform: translateY(-100%);
+  transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform: translateY(-120%);
   opacity: 0;
+  pointer-events: none;
 }
 
 .site-header.visible {
@@ -38,25 +38,25 @@
   pointer-events: auto;
 }
 
-/* Two modes: blurred glass (default) vs simple fixed */
+/* Glass effect (default) */
 .site-header.glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Simple / no-blur mode (add .simple class to header when wanted) */
 .site-header.simple {
   background: transparent;
   backdrop-filter: none;
   border-bottom: none;
 }
 
-/* Container */
 .nav-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1.1rem 2.5rem;
+  padding: 1.2rem 2.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,17 +65,12 @@
 /* Logo */
 .logo {
   font-family: 'HaraldMono', monospace;
-  font-size: 1.9rem;
-  font-weight: 700;
+  font-size: 2rem;
   letter-spacing: 0.18em;
   color: var(--text);
   text-decoration: none;
   pointer-events: auto;
-  transition: opacity 0.3s ease;
-}
-
-.logo:hover {
-  opacity: 0.8;
+  white-space: nowrap;
 }
 
 /* Desktop Menu */
@@ -91,7 +86,7 @@
 
 .nav-list {
   display: flex;
-  gap: 3.2rem;
+  gap: 3.8rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -101,11 +96,10 @@
   color: var(--text);
   text-decoration: none;
   font-family: 'HaraldMono', monospace;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   letter-spacing: 0.12em;
   position: relative;
-  transition: color 0.25s ease;
-  pointer-events: auto;
+  transition: color 0.3s ease;
 }
 
 .nav-list a::after {
@@ -113,10 +107,10 @@
   position: absolute;
   width: 0;
   height: 1.5px;
-  bottom: -4px;
+  bottom: -5px;
   left: 0;
   background: currentColor;
-  transition: width 0.35s ease;
+  transition: width 0.4s ease;
 }
 
 .nav-list a:hover::after,
@@ -124,13 +118,13 @@
   width: 100%;
 }
 
-/* Mobile Hamburger */
+/* Hamburger – hidden by default on wide screens */
 .hamburger {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 32px;
-  height: 22px;
+  width: 34px;
+  height: 24px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -140,24 +134,23 @@
 
 .hamburger span {
   width: 100%;
-  height: 2.5px;
+  height: 3px;
   background: var(--text);
   border-radius: 2px;
-  transition: all 0.35s cubic-bezier(0.65, 0.05, 0.36, 1);
+  transition: all 0.4s cubic-bezier(0.65, 0.05, 0.36, 1);
 }
 
-.hamburger[aria-expanded="true"] span:nth-child(1) {
-  transform: rotate(45deg) translate(7px, 7px);
-}
-.hamburger[aria-expanded="true"] span:nth-child(2) {
-  opacity: 0;
-  transform: translateX(20px);
-}
-.hamburger[aria-expanded="true"] span:nth-child(3) {
-  transform: rotate(-45deg) translate(8px, -8px);
+/* Show hamburger only when menu would overflow / screen too narrow */
+@media (max-width: 1150px) {  /* ← this is the magic breakpoint */
+  .main-nav {
+    display: none !important;
+  }
+  .hamburger {
+    display: flex !important;
+  }
 }
 
-/* Mobile Menu */
+/* Mobile Menu Overlay */
 .mobile-menu {
   position: fixed;
   inset: 0;
@@ -167,7 +160,7 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.45s ease, visibility 0.45s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   z-index: 1050;
   pointer-events: none;
 }
@@ -188,37 +181,18 @@
 .mobile-menu a {
   display: block;
   color: var(--text);
-  font-family: 'HaraldMono', monospace;
-  font-size: 3.2rem;
+  font-size: 3.6rem;
   letter-spacing: 0.15em;
   text-decoration: none;
-  padding: 1.2rem 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  padding: 1.4rem 0;
 }
 
-.mobile-menu a:hover {
-  transform: scale(1.06);
-}
-
-/* Very narrow screens → force hamburger even on "desktop" */
-@media (max-width: 680px) {
-  .nav-container {
-    padding: 1rem 1.5rem;
-  }
-  .main-nav {
-    display: none !important;
-  }
-  .hamburger {
-    display: flex !important;
-  }
-}
-
-/* Spacer to prevent content jump when header appears */
+/* Spacer prevents content jump */
 .header-spacer {
-  height: 80px; /* ≈ header height + padding */
+  height: 90px; /* ≈ header height + padding */
 }
 
-/* Dark mode variables (adjust as needed) */
+/* Dark mode vars */
 :root {
   --text: #111;
   --bg: #fff;
@@ -227,10 +201,6 @@
   --text: #eee;
   --bg: #0a0a0a;
 }
-
-
-
-
 
 
 
@@ -831,7 +801,7 @@ html, body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   <!-- Navbar -->
-<!-- === Modern Navigation Bar (v2 - Clean & Reusable) === -->
+<!-- === Modern Navigation Bar v3 – Responsive & Scroll-Reveal === -->
 <header id="site-header" class="site-header">
   <div class="nav-container">
     <!-- Logo / Brand -->
@@ -839,17 +809,17 @@ html, body {
       HARALD REVERY
     </a>
 
-    <!-- Desktop Menu -->
+    <!-- Desktop Menu (hidden on narrow screens) -->
     <nav class="main-nav" aria-label="Main navigation">
       <ul class="nav-list">
-        <li><a href="index.html" data-page="home">Home</a></li>
-        <li><a href="music.html" data-page="music">Music</a></li>
-        <li><a href="about.html" data-page="about">About</a></li>
-        <li><a href="contact.html" data-page="contact">Contact</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
 
-    <!-- Mobile Hamburger -->
+    <!-- Hamburger (only shown when menu doesn't fit) -->
     <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span></span>
       <span></span>
@@ -857,7 +827,7 @@ html, body {
     </button>
   </div>
 
-  <!-- Mobile Menu Overlay -->
+  <!-- Mobile/Overlay Menu -->
   <div class="mobile-menu">
     <nav aria-label="Mobile navigation">
       <ul>
@@ -870,7 +840,7 @@ html, body {
   </div>
 </header>
 
-<!-- Force header visibility on page load (optional – remove if unwanted) -->
+<!-- Invisible spacer to prevent content jump -->
 <div class="header-spacer"></div>
   <!-- Content -->
 <!-- background texture image -->
@@ -1601,65 +1571,55 @@ document.addEventListener('DOMContentLoaded', () => {
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
-
-<script>
-    // ──────────────────────────────────────────────────────────────
-// Navigation Behavior
-// ──────────────────────────────────────────────────────────────
-
-document.addEventListener('DOMContentLoaded', () => {
+    
+<script>  
+    document.addEventListener('DOMContentLoaded', () => {
   const header = document.getElementById('site-header');
   const hamburger = document.querySelector('.hamburger');
   const mobileMenu = document.querySelector('.mobile-menu');
-  let lastScroll = 0;
-  const scrollThreshold = 120; // pixels to show header after scroll
+  const scrollThreshold = 100; // pixels scrolled before header appears
 
-  // Show header after scrolling down
+  // Show header only after scrolling down
   window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-
-    if (currentScroll > scrollThreshold) {
+    if (window.scrollY > scrollThreshold) {
       header.classList.add('visible');
     } else {
       header.classList.remove('visible');
     }
-
-    lastScroll = currentScroll;
   });
 
   // Hamburger toggle
-  hamburger.addEventListener('click', () => {
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', !expanded);
-    mobileMenu.classList.toggle('active');
-    
-    // Optional: prevent body scroll when menu is open
-    document.body.style.overflow = expanded ? '' : 'hidden';
-  });
+  if (hamburger) {
+    hamburger.addEventListener('click', () => {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !expanded);
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = expanded ? '' : 'hidden';
+    });
+  }
 
-  // Close mobile menu when clicking a link
-  mobileMenu.querySelectorAll('a').forEach(link => {
+  // Close mobile menu on link click
+  mobileMenu?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger?.setAttribute('aria-expanded', 'false');
       mobileMenu.classList.remove('active');
       document.body.style.overflow = '';
     });
   });
 
-  // Optional: Close menu when clicking outside
-  mobileMenu.addEventListener('click', (e) => {
+  // Optional: Close on outside click
+  mobileMenu?.addEventListener('click', e => {
     if (e.target === mobileMenu) {
-      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger?.setAttribute('aria-expanded', 'false');
       mobileMenu.classList.remove('active');
       document.body.style.overflow = '';
     }
   });
 
-  // Optional: Force show header on page load (comment out if unwanted)
-  setTimeout(() => {
-    header.classList.add('visible');
-  }, 800);
+  // Optional: Force header visible on some pages (just add class="visible" to #site-header)
+  // Or programmatically:
+  // header.classList.add('visible'); // uncomment if you want it always shown on a specific page
 });
-  </script>
+    </script>
 </body>
 </html>
