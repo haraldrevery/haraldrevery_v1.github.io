@@ -423,7 +423,7 @@ html, body {
     fill-opacity: 0;
     stroke: currentColor; /* Ensure stroke starts visible */
   }
-  80% {
+  60% {
     stroke-dashoffset: 0;
     fill-opacity: 0.04; 
     stroke: currentColor; /* Stroke still visible while finishing drawing */
@@ -463,7 +463,7 @@ html, body {
       opacity: 0;
       stroke: currentColor;
     }
-    80% {
+    60% {
       stroke-dashoffset: 0;
       fill-opacity: 0.19; 
       opacity: 1;
@@ -486,7 +486,7 @@ html, body {
   stroke: currentColor; /* Dark stroke for light mode */
   fill: currentColor;   /* Dark fill for light mode */
   fill-opacity: 0.05; 
-  animation: logoDraw 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: logoDraw 5s cubic-bezier(.87,.03,.24,.99) forwards;
   transition: stroke 0.2s ease, fill 0.5s ease; /* Smooth transition */
 
 }
