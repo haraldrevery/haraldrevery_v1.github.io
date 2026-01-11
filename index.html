@@ -1057,45 +1057,35 @@ html, body {
 
 
        <!-- Script 3D mouse rotation  --> 
+
 <script>
   let targetRotateX = 0, targetRotateY = 0;
   let currentRotateX = 0, currentRotateY = 0;
   const logoSvg = document.getElementById('main-logo-svg');
 
-  // We listen to the whole document for mouse movement
   document.addEventListener('mousemove', (e) => {
-    // 1. Get the total width and height of the entire page
-    const pageWidth = document.documentElement.scrollWidth;
-    const pageHeight = document.documentElement.scrollHeight;
-
-    // 2. Calculate position relative to the center of the total page
-    // pageX/Y includes the distance the user has scrolled down/sideways
-    targetRotateY = ((e.pageX / pageWidth) - 0.5) * 30;
-    targetRotateX = ((e.pageY / pageHeight) - 0.5) * -30;
+    // Math for the tilt intensity
+    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 30;
+    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -30;
   });
-
-  // Reset rotation when the mouse leaves the page
-  document.addEventListener('mouseleave', () => {
-    targetRotateY = 0;
-    targetRotateX = 0;
-  });
+// Reset rotation when the mouse leaves the browser window
+document.addEventListener('mouseleave', () => {
+  targetRotateY = 0;
+  targetRotateX = 0;
+});
 
   function smoothRotate() {
     if (logoSvg) {
-      // 3. Smooth interpolation (lerp)
-      // Moving 10% of the distance every frame (0.1) for a "heavy/silky" feel
-      // Increase 0.1 to 0.5 if you want it to be snappier
-      currentRotateX += (targetRotateX - currentRotateX) * 0.1;
-      currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+      // Smooth interpolation (lerp)
+      currentRotateX += (targetRotateX - currentRotateX) * 0.5;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.5;
       
-      // 4. Apply the transform
-      // Perspective is often needed on the parent, but we can also add it here
-      logoSvg.style.transform = `perspective(1000px) translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
+      // We apply the transform here. 
+      // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
+      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
     }
     requestAnimationFrame(smoothRotate);
   }
-
-  // Start the animation loop
   smoothRotate();
 </script>
 
