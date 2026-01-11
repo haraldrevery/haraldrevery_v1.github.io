@@ -558,7 +558,39 @@ html, body {
 .dark .wave-echo {
   stroke: rgba(255, 255, 255, 0.4) !important; /* Previously rgba(0, 0, 0, 0.4) */
 }
-   
+
+
+
+/* Image grid hover effect */
+#image-grid {
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+#image-grid .glightbox {
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* When ANY image is hovered → affect all siblings */
+#image-grid:hover .glightbox {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+/* The hovered image itself returns to full state */
+#image-grid .glightbox:hover {
+  opacity: 1 !important;
+  transform: scale(1.04) !important;    /* optional: slight grow on hover */
+  z-index: 10;                          /* brings it above others */
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+}
+
+/* Optional: make transition smoother when leaving hover */
+#image-grid .glightbox:not(:hover) {
+  transition-delay: 0.05s;
+}
+      
   </style>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
