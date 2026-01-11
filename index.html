@@ -22,13 +22,14 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  transform: translateY(-120%);
+  /* Start completely hidden + slightly higher to feel like it's coming from above */
+  transform: translateY(-100%);
   opacity: 0;
   visibility: hidden;
   transition: 
-    transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1),
-    opacity 0.45s ease,
-    visibility 0.45s ease;
+    transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),  /* smooth overshoot easing */
+    opacity 0.7s ease-out,
+    visibility 0.7s ease-out;
   pointer-events: none;
 }
 
@@ -39,27 +40,26 @@
   pointer-events: auto;
 }
 
-/* Glass + readable background (always present) */
+/* Thinner bar (reduced vertical padding) */
 .site-header.glass {
-  background: rgba(20, 20, 30, 0.45);          /* darker semi-transparent base */
+  background: rgba(20, 20, 30, 0.48);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-/* Container - better alignment with page content */
 .nav-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1.1rem 5% 1.1rem;                    /* 5% = matches typical page padding */
+  padding: 0.9rem 5% 0.9rem;           /* ← thinner: was 1.1rem → now 0.9rem */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 70px;
+  min-height: 58px;                     /* ← noticeably thinner bar */
   box-sizing: border-box;
 }
 
-/* Logo */
+/* Logo stays same size */
 .logo {
   font-family: 'HaraldMono', monospace;
   font-size: 1.95rem;
@@ -74,7 +74,7 @@
   opacity: 0.7;
 }
 
-/* Desktop Menu */
+/* Desktop Menu – tighter spacing */
 .main-nav {
   display: none;
 }
@@ -87,7 +87,7 @@
 
 .nav-list {
   display: flex;
-  gap: 2.4rem;                          /* ← reduced spacing as requested */
+  gap: 2.2rem;                          /* ← even tighter than 2.4rem */
   list-style: none;
   margin: 0;
   padding: 0;
@@ -108,9 +108,9 @@
   position: absolute;
   width: 0;
   height: 1.5px;
-  bottom: -5px;
+  bottom: -4px;
   left: 0;
-  background: currentColor;
+  background: white;
   transition: width 0.4s ease;
 }
 
@@ -137,7 +137,6 @@
   height: 2.8px;
   background: white;
   border-radius: 2px;
-  transition: all 0.4s ease;
 }
 
 @media (max-width: 1150px) {
@@ -153,7 +152,7 @@
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 20, 0.95);
+  background: rgba(10, 10, 20, 0.96);
   backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
@@ -171,20 +170,13 @@
   pointer-events: auto;
 }
 
-.mobile-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-
 .mobile-menu a {
-  display: block;
   color: white;
   font-size: 3.2rem;
   letter-spacing: 0.12em;
   text-decoration: none;
-  padding: 1.3rem 0;
+  padding: 1.2rem 0;
+  display: block;
 }
 /* No spacer needed – content starts at top naturally */
 
@@ -819,7 +811,6 @@ html, body {
     </nav>
   </div>
 </header>
-
 <!-- No spacer needed anymore – we handle it in CSS -->
   <!-- Content -->
 <!-- background texture image -->
@@ -1555,14 +1546,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-      
+      <!-- Navigation bar -->
    <script> 
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.getElementById('site-header');
-  const hamburger = document.querySelector('.hamburger');
-  const mobileMenu = document.querySelector('.mobile-menu');
-  const scrollThreshold = 80; // appears a bit earlier
+  const scrollThreshold = 60; // appears a little earlier for smoother feel
 
+  // Smooth scroll reveal
   window.addEventListener('scroll', () => {
     if (window.scrollY > scrollThreshold) {
       header.classList.add('visible');
@@ -1571,7 +1561,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Hamburger
+  // Hamburger + mobile menu logic (unchanged from last version)
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.querySelector('.mobile-menu');
+
   hamburger?.addEventListener('click', () => {
     const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
     hamburger.setAttribute('aria-expanded', !isOpen);
@@ -1579,7 +1572,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = isOpen ? '' : 'hidden';
   });
 
-  // Close mobile menu on link click
   mobileMenu?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       hamburger?.setAttribute('aria-expanded', 'false');
@@ -1588,7 +1580,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Current page highlight
+  // Active link highlight
   const current = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-list a, .mobile-menu a').forEach(a => {
     if (a.getAttribute('href') === current) {
