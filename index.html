@@ -280,7 +280,35 @@
       .animate-gradient-slow {
         animation: gradientMove 15s ease infinite;
       }
+
+
+
  
+/* animate words in */
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.start-animation .word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: letterFade 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+
+
+
+
+
+      
  
 /* 1. FONT DEFINITIONS */
 @font-face {
@@ -1194,53 +1222,57 @@ document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
 });
 </script>
-<!-- fading words script -->
+<!-- fading words script – FIXED version with start-animation class -->
 <script>
-// Add this function to index.html
+// Split text into animated letters/words
 function animateWords(el) {
-  const text = el.innerText;
-  el.innerHTML = '';
+  const text = el.innerText.trim();
+  el.innerHTML = ''; // Clear original text
   el.style.opacity = '1';
-  el.classList.add('active');
-  // Split by space to get individual words
+
+  // Split into words
   const words = text.split(' ');
   words.forEach((word, wordIndex) => {
-    // Create a wrapper for the word to keep it together
     const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
     wordSpan.style.display = 'inline-block';
     wordSpan.style.whiteSpace = 'nowrap';
-    // Put letters inside the word wrapper
+
+    // Split word into letters
     [...word].forEach((char, charIndex) => {
       const letterSpan = document.createElement('span');
       letterSpan.textContent = char;
       letterSpan.className = 'fade-letter';
-      // Calculate delay based on total progress
-      letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
+      letterSpan.style.animationDelay = `${(wordIndex * 4 + charIndex) * 0.06}s`; // Slightly faster & staggered
       wordSpan.appendChild(letterSpan);
     });
- 
+
     el.appendChild(wordSpan);
-    // Add a space after the word
+
+    // Add space after word (except last)
     if (wordIndex < words.length - 1) {
       el.appendChild(document.createTextNode(' '));
     }
   });
 }
-// Then, update your existing IntersectionObserver callback to call it:
-const observer = new IntersectionObserver((entries) => {
+
+// IntersectionObserver to trigger animation when heading enters view
+const textObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // This line triggers the actual letter splitting
-      animateWords(entry.target);
-      observer.unobserve(entry.target);
+      entry.target.classList.add('start-animation'); // ← This is the missing trigger!
+      animateWords(entry.target);                    // Split & animate
+      textObserver.unobserve(entry.target);          // Only once
     }
   });
-}, { threshold: 0.1 });
-// Ensure your headings are being observed
+}, { threshold: 0.2 }); // Trigger when 20% visible
+
+// Observe all headings that should animate
 document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
-  observer.observe(h2);
+  textObserver.observe(h2);
 });
 </script>
+      
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
