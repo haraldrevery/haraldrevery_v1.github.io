@@ -510,20 +510,20 @@ html, body {
 }
 @keyframes implodingWave {
   0% {
-    transform: scale(8); /* Increased from 5 to 8 to push edges further out */
+    transform: scale(5); /* Start huge beyond screen edges */
     opacity: 0;
     stroke-width: 0.5px;
   }
-  25% { /* Delayed fade-in from 15% to 25% */
-    opacity: 0.6; 
+  15% {
+    opacity: 0.6; /* Quick fade in as they rush from edges */
   }
   85% {
     opacity: 0.2;
   }
   100% {
-    transform: scale(1);
+    transform: scale(1); /* Land exactly on the logo */
     opacity: 0;
-    stroke-width: 3px;
+    stroke-width: 3px; /* Get slightly thicker as they collapse */
   }
 }
 /* Staggered delays for the radio pulse effect – tweaked for better separation */
@@ -553,8 +553,6 @@ html, body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  width: 120vw; /* Allow the container to be wider than the screen */
-  left: -10vw;  /* Re-center the wider container */
   position: relative;
   transform-style: preserve-3d;
   translateZ(15px);
@@ -653,8 +651,8 @@ html, body {
   <!-- Alpine.js -->
   <script defer src="./dist/alpine.min.js"></script>
     <script src="./dist/page-transitions.js"></script>
-
-    <script src="dist/fade_in.js"></script>
+  <!-- Start - Fonts -->
+  <!-- End - Fonts -->
   <!-- Start - glightbox Scripts -->
   <link rel="stylesheet" href="./dist/glightbox.min.css" />
   <script src="./dist/glightbox_min.js"
@@ -1004,7 +1002,8 @@ html, body {
   });
 </script>
 
-    
+      
+  <script src="dist/fade_in.js"></script>
   <script src="dist/menu.js"></script>
   <script>
         document.getElementById("year").textContent = new Date().getFullYear();
