@@ -6,101 +6,99 @@
   :class="{ 'dark': darkMode }">
 <head>
   <!-- Remember darkmode/lightmode-->
-<script>
-  // Immediately apply the dark class based on localStorage to prevent flashing
-  if (localStorage.getItem('darkMode') === 'true' ||
-     (localStorage.getItem('darkMode') === null)) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-</script>
+  <script>
+    // Immediately apply the dark class based on localStorage to prevent flashing
+    if (localStorage.getItem('darkMode') === 'true' ||
+       (localStorage.getItem('darkMode') === null)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Harald Revery - Official website</title>
+  <meta name="description" content="Updates and information related to Harald Revery." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="dist/assets/favicon.ico" />
+
+  <link rel="stylesheet" href="dist/output.css" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Alpine.js -->
+  <script defer src="./dist/alpine.min.js"></script>
+
+  <!-- GLightbox -->
+  <link rel="stylesheet" href="./dist/glightbox.min.css" />
+  <script src="./dist/glightbox_min.js" integrity="sha256-xnxZzfmAeTsCFsnenG6/aIQYg4girx5QsJQ546oon/M=" crossorigin="anonymous"></script>
+
+  <!-- Tailwind -->
+  <script src="./dist/tailwind.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      content: ["./dist/*.{html,js}"],
+      theme: {
+        extend: {
+          fontFamily: {
+            'signika': ['HaraldMono', 'monospace'],
+            'sans': ['HaraldText', 'sans-serif'],
+            'body': ['HaraldText', 'sans-serif'],
+            'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
+          },
+        },
+      },
+      plugins: [],
+    }
+  </script>
+
   <style>
-/* Base – hide initially to prevent flash */
+    /* ============================================= */
+    /* ===== CLEANED WORD-BY-WORD ANIMATION CSS ===== */
+    /* ============================================= */
 
-h2.active,
-h2.start-animation {
-  opacity: 1 !important;
-}
+    h2[data-animate="true"] {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
 
-      /* Word-by-word animation – matches About page */
-.word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(5px);
-}
+    .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(8px);
+    }
 
-.start-animation .word {
-  animation: fadeInWord 0.8s ease-out forwards;
-}
+    .start-animation .word {
+      animation: fadeInWord 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
 
-@keyframes fadeInWord {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    @keyframes fadeInWord {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-/* Ensure headings start hidden */
-h2[data-animate="true"] {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-}
-
-
-      
-/* Trigger class starts the animation */
-.start-animation .word {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-/* Individual letters */
-.fade-letter {
-  display: inline-block;
-  opacity: 0;
-  animation: letterFade 0.8s ease-out forwards;
-}
-
-@keyframes letterFade {
-  to { opacity: 1; }
-}
-
-
-      
-/* Custom Background Image Layer */
-.bg-image-fade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* Use 100vh to match the exact height of the user's screen */
-  height: 100vh;
-  z-index: -11;
-  background-image: url('./dist/assets/bgtexture.jpg');
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
-  /* 'cover' ensures the image fills the screen without stretching or gaps */
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  /* Smooth fade-out tied to the viewport height */
-  mask-image: linear-gradient(
-    to bottom,
-    rgba(0,0,0,1) 0%, /* Solid at the top */
-    rgba(0,0,0,1) 30%, /* Begins fade after 30% of screen height */
-    rgba(0,0,0,0) 100% /* Fully gone by the bottom of the display */
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 30%,
-    rgba(0,0,0,0) 100%
-  );
-  opacity: 0.12;
-  pointer-events: none;
-}
+    /* Rest of your existing styles (unchanged) */
+    .bg-image-fade {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -11;
+      background-image: url('./dist/assets/bgtexture.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+      opacity: 0.12;
+      pointer-events: none;
+    }
 /* Standard letter fade animation */
   @keyframes letterFade {
     from { opacity: 0; }
@@ -1152,47 +1150,48 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- Word-by-word animation – matches About page style (random stagger) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const headings = document.querySelectorAll('h2[data-animate="true"]');
+    const headings = document.querySelectorAll('h2[data-animate="true"]');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        if (el.dataset.animated) return;
-        el.dataset.animated = 'true';
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          if (el.dataset.animated) return;
+          el.dataset.animated = 'true';
 
-        // Immediately hide original text to prevent flash
-        el.style.opacity = '0';
-        el.style.visibility = 'hidden';
+          // 1. Hide original text instantly
+          el.style.opacity = '0';
+          el.style.visibility = 'hidden';
 
-        const text = el.textContent.trim();
-        el.innerHTML = ''; // Clear content
+          // 2. Split into words
+          const text = el.textContent.trim();
+          el.innerHTML = '';
 
-        const words = text.split(' ');
-        words.forEach((word, i) => {
-          const span = document.createElement('span');
-          span.className = 'word';
-          // Random delay between 0.1s and 1.0s – same feel as About page
-          span.style.animationDelay = `${Math.random() * 0.9 + 0.1}s`;
-          span.textContent = word + (i < words.length - 1 ? ' ' : '');
-          el.appendChild(span);
-        });
+          const words = text.split(' ');
+          words.forEach((word, i) => {
+            const span = document.createElement('span');
+            span.className = 'word';
+            // Random delay: 0.05s to 0.85s → organic, like About page
+            span.style.animationDelay = `${0.05 + Math.random() * 0.8}s`;
+            span.textContent = word + (i < words.length - 1 ? ' ' : '');
+            el.appendChild(span);
+          });
 
-        // Now reveal container and trigger animations
-        el.style.visibility = 'visible';
-        el.style.opacity = '1';
-        el.classList.add('start-animation');
+          // 3. Reveal container and trigger animation
+          el.style.visibility = 'visible';
+          el.style.opacity = '1';
+          el.classList.add('start-animation');
 
-        observer.unobserve(el);
-      }
+          observer.unobserve(el);
+        }
+      });
+    }, {
+      threshold: 0.25,
+      rootMargin: '0px 0px -15% 0px'
     });
-  }, {
-    threshold: 0.3,                  // Start when ~30% visible
-    rootMargin: '0px 0px -10% 0px'   // Trigger a bit earlier
-  });
 
-  headings.forEach(h => observer.observe(h));
-});
+    headings.forEach(h => observer.observe(h));
+  });
 </script>
       
 <!-- fading letters script -->
