@@ -812,7 +812,7 @@ html, body {
   A collection
 </h2>
   
-       <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify">
+       <div class="animate-word-by-word text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify">
       <p>
         Explore the discography of Harald Revery. While mostly focused on electronic dance music (EDM), beyond his signature electronic productions a few singular tracks emerge to capture a wider soundscape.
       </p>
@@ -839,7 +839,7 @@ html, body {
         <h2 data-animate="true" class="font-signika animated-heading text-4xl mb-6 w-fit">
           Behind the mixer decks
         </h2>
-        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+        <div class="animate-word-by-word text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Get to know who’s behind the sound.
           </p>
@@ -1420,29 +1420,30 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- word by word, agin... -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const textContainer = document.querySelector('.text-container p');
+  // Target all elements with this class
+  const containers = document.querySelectorAll('.animate-word-by-word');
   
-  if (textContainer) {
-    // 1. Split the text into individual words wrapped in spans
-    const originalText = textContainer.innerText;
+  containers.forEach(container => {
+    // 1. Split text into spans
+    const originalText = container.innerText;
     const words = originalText.split(' ');
-    textContainer.innerHTML = words
+    container.innerHTML = words
       .map((word, index) => `<span class="word" style="animation-delay: ${index * 0.05}s">${word}</span>`)
       .join(' ');
 
-    // 2. Setup the IntersectionObserver to trigger the animation
+    // 2. Setup observer for this specific container
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Adds the class your CSS is looking for: .start-animation
-          entry.target.parentElement.classList.add('start-animation');
+          // Add the trigger class defined in your CSS
+          entry.target.classList.add('start-animation');
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 });
 
-    observer.observe(textContainer);
-  }
+    observer.observe(container);
+  });
 });
 </script>
       
