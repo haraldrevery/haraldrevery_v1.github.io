@@ -17,6 +17,21 @@
 </script>
   <style>
 
+/* Update your existing <style> tag with these classes */
+.menu-letter {
+  font-family: 'HaraldMono', monospace; /* Uses your custom mono font */
+  font-size: 1.8rem;
+  transition: all 0.5s ease-in-out;
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Optional: Slight rotation for the X to make it feel more like a 'close' button */
+.menu-letter.is-x {
+  transform: rotate(0deg); 
+}
+
+      
 .text-container p {
   text-align: justify;
 }
@@ -655,11 +670,14 @@ html, body {
       <div class="ml-auto md:hidden flex items-center justify-start">
         <button @click="open = !open" class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
           <span class="sr-only">Open main menu</span>
-          <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-            <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': open } "></span>
-            <span aria-hidden="true" class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
-          </div>
+<div class="flex items-center justify-center">
+  <span 
+    class="menu-letter select-none" 
+    :class="{ 'is-x': open }"
+    x-text="open ? 'X' : 'E'">
+    E
+  </span>
+</div>
         </button>
       </div>
       <div id="menu" class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden" :class="open ? 'h-auto opacity-100' : 'h-0 opacity-0 md:h-auto md:opacity-100'">
