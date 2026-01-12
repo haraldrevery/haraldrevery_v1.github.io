@@ -118,7 +118,7 @@
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
-  
+ 
       .animate-gradient-slow {
         animation: gradientMove 15s ease infinite;
       }
@@ -249,7 +249,7 @@
   -webkit-backdrop-filter: blur(12px); /* CRITICAL for Safari */
   backdrop-filter: blur(12px);
 }
-  
+ 
  /* center glow "*/
 .center-glow {
     /* Adjust the color here: 255,255,255 is white.
@@ -301,7 +301,7 @@
   position: relative;
   z-index: 0;
 }
-  
+ 
 /* This prevents the "zooming out" or side-to-side wobble */
 html, body {
   width: 100%;
@@ -382,7 +382,7 @@ html, body {
   fill: #FFFFFF !important;
   fill-opacity: 0.05 !important;
 }
-  
+ 
 /* Update the mobile override around line 430 */
 @media (max-width: 767px) {
   .animate-logo path {
@@ -417,7 +417,7 @@ html, body {
     }
   }
 }
-  
+ 
 /* 2. Ensure the base path follows the same rule */
 .animate-logo path {
   stroke-dasharray: 4000;
@@ -494,7 +494,7 @@ html, body {
   height: 100%;
   object-fit: contain;
 }
-  
+ 
 /* Increase perspective to reduce lens distortion */
 #logo-container {
   perspective: 1000px;
@@ -702,7 +702,7 @@ html, body {
     <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
   </g>
 </defs>
-    
+   
       <defs>
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#ffffff" />
@@ -1414,50 +1414,6 @@ document.addEventListener('DOMContentLoaded', () => {
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const animatedElements = document.querySelectorAll('[data-animate="true"]');
-
-  animatedElements.forEach(el => {
-    // 1. Split text into words and wrap them in spans
-    const text = el.innerText;
-    el.innerHTML = ''; // Clear original text
-    
-    const words = text.split(' ');
-    words.forEach((word, index) => {
-      const span = document.createElement('span');
-      span.classList.add('word');
-      span.innerText = word;
-      el.appendChild(span);
-      
-      // Add a space after the word unless it's the last one
-      if (index < words.length - 1) {
-        el.appendChild(document.createTextNode(' '));
-      }
-    });
-
-    // 2. Set up the observer to trigger animation on scroll
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('start-animation');
-          
-          // Apply staggered delays to each word
-          const wordSpans = entry.target.querySelectorAll('.word');
-          wordSpans.forEach((word, i) => {
-            word.style.animationDelay = `${i * 0.1}s`;
-          });
-          
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    observer.observe(el);
-  });
-});
-</script>
-      
+ 
 </body>
 </html>
