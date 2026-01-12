@@ -317,23 +317,21 @@ body {
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 28vh; /* Increased slightly to account for padding */
-  overflow: hidden;
+  height: 28vh; 
+  /* CHANGE: Change overflow to allow vertical scaling while keeping horizontal scroll hidden */
+  overflow: visible; 
   margin: 4rem 0; 
   
-  /* Fade-in Animation */
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
 
-  /* The Lines */
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   
-  /* Vertical Padding creates the symmetry/breathing room */
-  padding: 1.5rem 0;
+  /* CHANGE: Increased vertical padding to prevent scale clipping */
+  padding: 3rem 0; 
 
-/* UPDATED: Increased transparent zones from 15% to 30% for a longer fade */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
 }
@@ -353,20 +351,19 @@ body {
 
 /* 3. The Images: Fit vertically without cropping */
 .scrolling-track img {
-  height: 100%;       /* Fills the container height */
+  /* CHANGE: Use a slightly smaller height to stay within the lines during scale */
+  height: 85%;       
   width: auto;        
   object-fit: contain; 
   padding: 0 0.75rem;   
   
-  /* ADDED: Smooth transition for the scale effect */
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 }
 
-/* ADDED: Scale up the image when hovered */
 .scrolling-track img:hover {
-  transform: scale(1.15); /* Adjust 1.15 to your preferred scale size */
-  z-index: 10;           /* Ensures the scaled image stays on top of others */
+  transform: scale(1.15); 
+  z-index: 10;           
 }
 
 /* 4. The Animation: Moves the track from right to left */
