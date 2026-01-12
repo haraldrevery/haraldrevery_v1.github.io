@@ -1128,6 +1128,48 @@ document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
   observer.observe(h2);
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const animatedElements = document.querySelectorAll('[data-animate="true"]');
+
+  animatedElements.forEach(el => {
+    // 1. Split text into words and wrap them in spans
+    const words = el.innerText.split(' ');
+    el.innerHTML = words.map(word => `<span class="word">${word}</span>`).join(' ');
+    
+    // 2. Set up the observer to trigger animation on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Add the class that triggers the CSS animation
+          entry.target.classList.add('start-animation');
+          
+          // Apply staggered delays to each word
+          const wordSpans = entry.target.querySelectorAll('.word');
+          wordSpans.forEach((word, index) => {
+            word.style.animationDelay = `${index * 0.1}s`;
+          });
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(el);
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+      
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
