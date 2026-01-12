@@ -314,15 +314,14 @@ body {
 
 /* Horizontal Scrolling Gallery */
 /* 1. The Container: Handles the height and the transparent fading edges */
-/* Horizontal Scrolling Gallery */
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 28vh; 
-  /* CHANGE: Allow content to "spill out" over the borders */
-  overflow: visible; 
+  height: 28vh; /* Increased slightly to account for padding */
+  overflow: hidden;
   margin: 4rem 0; 
   
+  /* Fade-in Animation */
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
@@ -331,12 +330,10 @@ body {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   
-  /* CHANGE: Symmetrical padding ensures equal distance from lines */
-  padding: 1rem 0; 
-  
-  /* CHANGE: Set a base z-index for the section */
-  z-index: 5;
+  /* Vertical Padding creates the symmetry/breathing room */
+  padding: 1.5rem 0;
 
+/* UPDATED: Increased transparent zones from 15% to 30% for a longer fade */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
 }
@@ -351,28 +348,25 @@ body {
   display: flex;
   width: max-content;
   height: 100%;
-  /* CHANGE: Ensure track doesn't clip the scaling images */
-  overflow: visible; 
-  animation: scrollGallery 78s linear infinite;
+  animation: scrollGallery 78s linear infinite; /* Adjust speed for faster/slower scroll */
 }
 
 /* 3. The Images: Fit vertically without cropping */
 .scrolling-track img {
-  height: 100%;       
+  height: 100%;       /* Fills the container height */
   width: auto;        
   object-fit: contain; 
   padding: 0 0.75rem;   
   
+  /* ADDED: Smooth transition for the scale effect */
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
-  /* CHANGE: Ensure images have a position to respect z-index */
-  position: relative; 
 }
 
+/* ADDED: Scale up the image when hovered */
 .scrolling-track img:hover {
-  transform: scale(1.25); /* Increased scale to make the "over the lines" effect clear */
-  /* CHANGE: Higher z-index pops the image over the container borders */
-  z-index: 50;           
+  transform: scale(1.15); /* Adjust 1.15 to your preferred scale size */
+  z-index: 10;           /* Ensures the scaled image stays on top of others */
 }
 
 /* 4. The Animation: Moves the track from right to left */
