@@ -314,20 +314,14 @@ body {
 
 /* Horizontal Scrolling Gallery */
 /* 1. The Container: Handles the height and the transparent fading edges */
-/* Horizontal Scrolling Gallery */
 .scrolling-container {
   position: relative;
   width: 100%;
-  
-  /* FIXED CONSTRAINT: Prevents the gallery from getting too large on tall screens */
-  height: 25vh; 
-  max-height: 220px; 
-  min-height: 140px;
-
-  /* FIX: Use visible to prevent the scale(1.15) from being cut off by the container */
-  overflow: visible; 
-  
+  height: 28vh; /* Increased slightly to account for padding */
+  overflow: hidden;
   margin: 4rem 0; 
+  
+  /* Fade-in Animation */
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
@@ -336,33 +330,43 @@ body {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   
-  /* Increased padding to give the hovered images room to expand without hitting the lines */
-  padding: 2rem 0;
+  /* Vertical Padding creates the symmetry/breathing room */
+  padding: 1.5rem 0;
 
+/* UPDATED: Increased transparent zones from 15% to 30% for a longer fade */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
-}
-
-.scrolling-track img {
-  height: 100%;
-  width: auto;        
-  object-fit: contain; 
-  padding: 0 0.75rem;   
-  
-  /* Smooth transition for the scale effect */
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: transform;
-}
-
-.scrolling-track img:hover {
-  /* Scale remains at 1.15, but 'overflow: visible' above prevents the cutoff */
-  transform: scale(1.15); 
-  z-index: 10;
 }
 
 /* Dark Mode lines */
 .dark .scrolling-container {
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 2. The Moving Track: Holds the images in a row */
+.scrolling-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: scrollGallery 78s linear infinite; /* Adjust speed for faster/slower scroll */
+}
+
+/* 3. The Images: Fit vertically without cropping */
+.scrolling-track img {
+  height: 100%;       /* Fills the container height */
+  width: auto;        
+  object-fit: contain; 
+  padding: 0 0.75rem;   
+  
+  /* ADDED: Smooth transition for the scale effect */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* ADDED: Scale up the image when hovered */
+.scrolling-track img:hover {
+  transform: scale(1.15); /* Adjust 1.15 to your preferred scale size */
+  z-index: 10;           /* Ensures the scaled image stays on top of others */
 }
 
 /* 4. The Animation: Moves the track from right to left */
