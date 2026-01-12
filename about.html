@@ -477,52 +477,66 @@ body {
       <div class="border-b border-gray-100 dark:border-neutral-800 pb-3">
         <button 
           @click="selected !== 1 ? selected = 1 : selected = null" 
-          class="flex justify-between items-center w-full text-left focus:outline-none group"
-        >
+          class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            How would you describe your sound?
+            What is the best way to support your music (besides streaming)?
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 1 ? 'rotate-45' : ''">+</span>
-        </button>
-        
+        </button>  
         <div 
           class="relative overflow-hidden transition-all duration-500" 
           x-ref="container1" 
-          :style="selected === 1 ? 'max-height: ' + $refs.container1.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'"
-        >
+          :style="selected === 1 ? 'max-height: ' + $refs.container1.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div 
             class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
-            :class="selected === 1 ? 'translate-y-0' : 'translate-y-4'"
-          >
-            Harald's music is a blend of contemporary electronic production and organic field recordings, designed to evoke the raw atmosphere of Scandinavian landscapes.
+            :class="selected === 1 ? 'translate-y-0' : 'translate-y-4'">
+            Honestly, just telling someone about my music; share it! 
           </div>
         </div>
       </div>
-
+        
       <div class="border-b border-gray-100 dark:border-neutral-800 pb-3">
         <button 
           @click="selected !== 2 ? selected = 2 : selected = null" 
-          class="flex justify-between items-center w-full text-left focus:outline-none group"
-        >
+          class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            What inspired the "Revery" name?
+            Are all the graphics and artworks your own?
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 2 ? 'rotate-45' : ''">+</span>
         </button>
-        
         <div 
           class="relative overflow-hidden transition-all duration-500" 
           x-ref="container2" 
-          :style="selected === 2 ? 'max-height: ' + $refs.container2.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'"
-        >
+          :style="selected === 2 ? 'max-height: ' + $refs.container2.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div 
             class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
-            :class="selected === 2 ? 'translate-y-0' : 'translate-y-4'"
-          >
-            "Revery" translates to "daydreamer" in Swedish, a term often used by teachers during Harald's youth, which eventually became the perfect moniker for his atmospheric electronic music.
+            :class="selected === 2 ? 'translate-y-0' : 'translate-y-4'">
+            Yes! I think that the visual graphics for a track reflects the effort of the song itself. I made the song hence I should do the cover art, it’s truly my art. Even a font to match the logo that I use for everything related to this project. 
           </div>
         </div>
       </div>
+        
+      <div class="border-b border-gray-100 dark:border-neutral-800 pb-3">
+        <button 
+          @click="selected !== 2 ? selected = 2 : selected = null" 
+          class="flex justify-between items-center w-full text-left focus:outline-none group">
+          <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
+            What is the hardware you use?
+          </span>
+          <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 2 ? 'rotate-45' : ''">+</span>
+        </button>
+        <div 
+          class="relative overflow-hidden transition-all duration-500" 
+          x-ref="container2" 
+          :style="selected === 2 ? 'max-height: ' + $refs.container2.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
+          <div 
+            class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
+            :class="selected === 2 ? 'translate-y-0' : 'translate-y-4'">
+            Main setup is Yamaha HS7 with Native Instruments Komplete Audio 6 and a Hitachi AX M76E system for reference listening. I have a Focusrite Scarlett 2i2 for another set of HS7 when not in my studio at home. 
+          </div>
+        </div>
+      </div>
+        
 
     </div>
   </div>
