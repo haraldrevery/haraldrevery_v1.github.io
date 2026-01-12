@@ -563,7 +563,7 @@ html, body {
 #main-logo-svg {
     /* This shifts the logo 10% of its own width to the right
      and 5% of its own height down. Adjust as needed. */
-  transform: translateX(-0.01%);
+  transform: translateX(9.81%);
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
@@ -1031,8 +1031,8 @@ document.addEventListener('mouseleave', () => {
       currentRotateY += (targetRotateY - currentRotateY) * 0.5;
   
       // We apply the transform here.
-      // Note: We keep your translateX(-0.01%) and translateZ(50px) for depth
-      logoSvg.style.transform = `translateX(-0.01%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+      // Note: We keep your translateX(9.81%) and translateZ(50px) for depth
+      logoSvg.style.transform = `translateX(9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
       // Dynamic shadow for more realism (adjusts based on rotation)
       const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
       logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
