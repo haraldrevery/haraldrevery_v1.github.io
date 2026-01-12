@@ -536,20 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 4500);
 });
 </script>
-<script>
-  const header = document.getElementById('main-header');
-  window.addEventListener('scroll', function() {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    // threshold: 200px (adjust this to decide when it should appear)
-    if (scrollTop > 200) {
-      // SCROLLED DOWN: Show the navbar
-      header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-    } else {
-      // AT THE TOP: Hide the navbar
-      header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-    }
-  });
-</script>
+
    
    
 </body>
