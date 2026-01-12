@@ -353,7 +353,7 @@ body {
         get allLoaded() { return this.loadedCount === this.images.length }
      }">
 
-  <div class="grid grid-cols-3 gap-3 md:gap-5">
+ <div class="grid grid-cols-3 gap-3 md:gap-5" style="grid-gap: 0.75rem;">
       <template x-for="(img, index) in images" :key="img">
                     <a :href="path + img" 
                        class="glightbox group relative overflow-hidden rounded-xl bg-neutral-200 dark:bg-neutral-800 transition-all duration-[2000ms] ease-out hover:shadow-2xl"
