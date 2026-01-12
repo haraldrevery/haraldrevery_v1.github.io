@@ -314,11 +314,12 @@ body {
 
 /* Horizontal Scrolling Gallery */
 /* 1. The Container: Handles the height and the transparent fading edges */
+/* Horizontal Scrolling Gallery */
 .scrolling-container {
   position: relative;
   width: 100%;
   height: 28vh; 
-  /* CHANGE: Change overflow to allow vertical scaling while keeping horizontal scroll hidden */
+  /* CHANGE: Allow content to "spill out" over the borders */
   overflow: visible; 
   margin: 4rem 0; 
   
@@ -326,11 +327,15 @@ body {
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
 
+  /* The Lines */
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   
-  /* CHANGE: Increased vertical padding to prevent scale clipping */
-  padding: 3rem 0; 
+  /* CHANGE: Symmetrical padding ensures equal distance from lines */
+  padding: 1rem 0; 
+  
+  /* CHANGE: Set a base z-index for the section */
+  z-index: 5;
 
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
@@ -346,24 +351,28 @@ body {
   display: flex;
   width: max-content;
   height: 100%;
-  animation: scrollGallery 78s linear infinite; /* Adjust speed for faster/slower scroll */
+  /* CHANGE: Ensure track doesn't clip the scaling images */
+  overflow: visible; 
+  animation: scrollGallery 78s linear infinite;
 }
 
 /* 3. The Images: Fit vertically without cropping */
 .scrolling-track img {
-  /* CHANGE: Use a slightly smaller height to stay within the lines during scale */
-  height: 85%;       
+  height: 100%;       
   width: auto;        
   object-fit: contain; 
   padding: 0 0.75rem;   
   
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
+  /* CHANGE: Ensure images have a position to respect z-index */
+  position: relative; 
 }
 
 .scrolling-track img:hover {
-  transform: scale(1.15); 
-  z-index: 10;           
+  transform: scale(1.25); /* Increased scale to make the "over the lines" effect clear */
+  /* CHANGE: Higher z-index pops the image over the container borders */
+  z-index: 50;           
 }
 
 /* 4. The Animation: Moves the track from right to left */
