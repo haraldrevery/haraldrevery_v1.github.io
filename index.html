@@ -1416,6 +1416,36 @@ document.addEventListener('DOMContentLoaded', () => {
   gridItems.forEach(item => observer.observe(item));
 });
 </script>
+
+<!-- word by word, agin... -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const textContainer = document.querySelector('.text-container p');
   
+  if (textContainer) {
+    // 1. Split the text into individual words wrapped in spans
+    const originalText = textContainer.innerText;
+    const words = originalText.split(' ');
+    textContainer.innerHTML = words
+      .map((word, index) => `<span class="word" style="animation-delay: ${index * 0.05}s">${word}</span>`)
+      .join(' ');
+
+    // 2. Setup the IntersectionObserver to trigger the animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Adds the class your CSS is looking for: .start-animation
+          entry.target.parentElement.classList.add('start-animation');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(textContainer);
+  }
+});
+</script>
+      
+      
 </body>
 </html>
