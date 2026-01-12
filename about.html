@@ -464,6 +464,80 @@ body {
       </section>
 </div> 
 
+ <!-- FAQ -->
+
+<section class="container mx-auto py-20 px-5 md:px-0 border-t border-gray-100 dark:border-neutral-800">
+  <div class="max-w-3xl mx-auto">
+    <h2 data-animate="true" class="animated-heading text-4xl font-serif mb-12 text-center md:text-left">
+      Frequently Asked Questions
+    </h2>
+
+    <div class="space-y-8" x-data="{ selected: null }">
+      
+      <div class="border-b border-gray-100 dark:border-neutral-800 pb-6">
+        <button 
+          @click="selected !== 1 ? selected = 1 : selected = null" 
+          class="flex justify-between items-center w-full text-left focus:outline-none group"
+        >
+          <span class="font-signika text-2xl tracking-wide group-hover:opacity-70 transition-opacity">
+            How would you describe your sound?
+          </span>
+          <span class="text-2xl transition-transform duration-300" :class="selected === 1 ? 'rotate-45' : ''">+</span>
+        </button>
+        <div 
+          class="relative overflow-hidden transition-all max-h-0 duration-500" 
+          x-ref="container1" 
+          :style="selected === 1 ? 'max-height: ' + $refs.container1.scrollHeight + 'px' : ''"
+        >
+          <div class="pt-4 text-base md:text-lg text-justify text-gray-600 dark:text-gray-400">
+            Harald's music is a blend of contemporary electronic production and organic field recordings, designed to evoke the raw atmosphere of Scandinavian landscapes.
+          </div>
+        </div>
+      </div>
+
+      <div class="border-b border-gray-100 dark:border-neutral-800 pb-6">
+        <button 
+          @click="selected !== 2 ? selected = 2 : selected = null" 
+          class="flex justify-between items-center w-full text-left focus:outline-none group"
+        >
+          <span class="font-signika text-2xl tracking-wide group-hover:opacity-70 transition-opacity">
+            Are you available for live performances?
+          </span>
+          <span class="text-2xl transition-transform duration-300" :class="selected === 2 ? 'rotate-45' : ''">+</span>
+        </button>
+        <div 
+          class="relative overflow-hidden transition-all max-h-0 duration-500" 
+          x-ref="container2" 
+          :style="selected === 2 ? 'max-height: ' + $refs.container2.scrollHeight + 'px' : ''"
+        >
+          <div class="pt-4 text-base md:text-lg text-justify text-gray-600 dark:text-gray-400">
+            Yes, for booking inquiries regarding festivals or club sets, please reach out via the contact page.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     <!-- dark mode button (after 1000ms )-->
 <div class="fixed bottom-8 right-8 z-[10000]" 
      x-data="{ showToggle: false }" 
