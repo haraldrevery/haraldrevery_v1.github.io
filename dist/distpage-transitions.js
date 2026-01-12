@@ -113,6 +113,17 @@
   // 5. RE-INITIALIZE SCRIPTS
   // ========================================
   function reinitializeScripts() {
+    // CRITICAL FIX: Close mobile menu immediately to prevent text shifting
+    const mobileMenu = document.getElementById('menu');
+    if (mobileMenu) {
+      mobileMenu.classList.remove('h-auto', 'opacity-100');
+      mobileMenu.classList.add('h-0', 'opacity-0');
+      // On desktop, ensure it's visible
+      if (window.innerWidth >= 768) {
+        mobileMenu.classList.add('md:h-auto', 'md:opacity-100');
+      }
+    }
+    
     // Reset all animated elements to initial state
     document.querySelectorAll('.grid-item-reveal').forEach(item => {
       item.classList.remove('revealed');
