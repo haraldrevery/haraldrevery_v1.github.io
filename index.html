@@ -18,13 +18,16 @@
   <style>
 
 /* Update your existing <style> tag with these classes */
-.menu-letter {
-  font-family: 'HaraldMono', monospace; /* Uses your custom mono font */
-  font-size: 1.8rem;
-  transition: all 0.5s ease-in-out;
-  display: inline-block;
+.menu-letter-toggle {
+  font-family: 'HaraldMono', monospace; /* HaraldMono per request */
+  font-size: 1.5rem; /* Matches Tailwind's text-2xl (1.5rem) used for 'HARALD REVERY' */
   line-height: 1;
+  letter-spacing: 0.15em; /* Matches the branding's tracking-[0.15em] */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+      
 
 /* Optional: Slight rotation for the X to make it feel more like a 'close' button */
 .menu-letter.is-x {
@@ -670,13 +673,8 @@ html, body {
       <div class="ml-auto md:hidden flex items-center justify-start">
         <button @click="open = !open" class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
           <span class="sr-only">Open main menu</span>
-<div class="flex items-center justify-center">
-  <span 
-    class="menu-letter select-none" 
-    :class="{ 'is-x': open }"
-    x-text="open ? 'X' : 'E'">
-    E
-  </span>
+<div class="menu-letter-toggle absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 select-none">
+  <span x-text="open ? 'X' : 'E'">E</span>
 </div>
         </button>
       </div>
