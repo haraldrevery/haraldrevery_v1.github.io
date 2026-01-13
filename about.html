@@ -433,7 +433,7 @@ body {
     <!-- text to the right, card to the left -->   
     <div class="grid grid-cols-2 gap-14 md:gap-20">  
       <div class="col-span-2 md:col-span-1">
-        <div
+       <div
               x-data="{
                 rotateX: 0,
                 rotateY: 0,
@@ -469,16 +469,18 @@ body {
               class="bg-white dark:bg-neutral-900 p-5 pb-28 m-6 md:m-12 shadow-2xl border border-gray-100 dark:border-neutral-800 relative group overflow-hidden cursor-pointer"
             >
               <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner">
-                              <template x-for="(src, index) in gallery" :key="index">
-                                <img :src="src" 
-                                     alt="Harald Revery Gallery"
-                                     class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-                                     :class="{
-                                       'opacity-100 z-20': currentIndex === index,
-                                       'opacity-0 z-10': currentIndex !== index
-                                     }" />
-                              </template>
-                            </div>
+                <template x-for="(src, index) in gallery" :key="index">
+                  <img :src="src" 
+                       alt="Harald Revery Gallery"
+                       /* Force the browser to prioritize loading the first two images */
+                       :loading="index < 2 ? 'eager' : 'lazy'"
+                       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+                       :class="{
+                         'opacity-100 z-20': currentIndex === index,
+                         'opacity-0 z-10': currentIndex !== index
+                       }" />
+                </template>
+              </div>
               
               <div class="absolute bottom-0 left-0 right-0 text-center">
                 <p class="text-gray-800 dark:text-slate-200 pb-7 h-full font-signika text-6xl md:text-7xl tracking-wide leading-none group-hover:scale-110 transition-transform duration-300">
