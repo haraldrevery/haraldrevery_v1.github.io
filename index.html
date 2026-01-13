@@ -686,50 +686,51 @@ html, body {
  <!-- If javascript does not work or is diabeled  -->
 <noscript>
   <style>
-    /* Force the body to be visible */
+    /* 1. CRITICAL: Force the body to be visible */
+    /* This overrides the 'opacity-0' class on the body tag */
     body {
       opacity: 1 !important;
+      visibility: visible !important;
     }
-    /* Force the header/navigation to show up */
+
+    /* 2. Force the header/navigation to appear */
     #main-header {
       transform: none !important;
       opacity: 1 !important;
-      position: relative !important; /* Optional: makes it scroll with page if fixed isn't needed */
-    }
-    /* Show the welcome text if it was hidden by animation classes */
-    .welcome-text-delayed {
-      opacity: 1 !important;
-    }
-    /* Ensure any other elements hidden for animation are shown */
-    [data-animate="true"], .grid-item-reveal {
-      opacity: 1 !important;
-      transform: none !important;
-    }
-
-/* 1. Fix the Footer Grid */
-    footer, .footer-container, #footer-grid {
-      display: grid !important;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
-      gap: 20px !important;
-      padding: 40px !important;
-      opacity: 1 !important;
-    }
-
-    /* 2. Contain the massive images */
-    footer img, .footer-container img {
-      width: 100% !important;
-      height: auto !important;
-      max-width: 200px !important; /* Limits the size so they aren't "massive" */
-      display: block !important;
-      margin: 0 auto !important;
-      opacity: 1 !important;
-    }
-
-    /* 3. Ensure the footer itself is visible */
-    footer {
       position: relative !important;
+      pointer-events: auto !important;
+    }
+
+    /* 3. Show all animated text and elements immediately */
+    [data-animate="true"], 
+    .grid-item-reveal, 
+    .welcome-text-delayed,
+    .word,
+    .fade-letter {
+      opacity: 1 !important;
       transform: none !important;
       visibility: visible !important;
+    }
+
+    /* 4. Fix the Footer Grid and Images */
+    footer, .footer-container, #footer-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+      gap: 20px !important;
+      opacity: 1 !important;
+    }
+
+    footer img {
+      max-width: 100% !important;
+      height: auto !important;
+      display: block !important;
+    }
+
+    /* 5. Ensure the Logo is visible if drawn via CSS */
+    .animate-logo path {
+      stroke-dashoffset: 0 !important;
+      fill-opacity: 0.2 !important;
+      opacity: 1 !important;
     }
   </style>
 </noscript>
