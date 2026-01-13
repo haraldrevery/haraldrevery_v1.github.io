@@ -539,7 +539,7 @@ body {
           <div 
             class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
             :class="selected === 2 ? 'translate-y-0' : 'translate-y-4'">
-            Yes! I think that the visual graphics for a track reflects the effort of the song itself. I made the song hence I should do the cover art, it’s truly my art. Even a font to match the logo that I use for everything related to this project. 
+            Yes! I think that the visual graphics for a track reflects the effort of the song itself. I made the song hence I should do the cover art, it’s truly my art. I even made a font (the one you see on this website) to match the logo that I use for everything related to this project. 
           </div>
         </div>
       </div>
@@ -560,7 +560,7 @@ body {
           <div 
             class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
             :class="selected === 3 ? 'translate-y-0' : 'translate-y-4'">
-            Main setup is Yamaha HS7 with Native Instruments Komplete Audio 6 and a Hitachi AX-M76E system for reference listening. I have a Focusrite Scarlett 2i2 for another set of HS7 when not in my studio at home. 
+            Main setup is Yamaha HS7 with Native Instruments Komplete Audio 6 and a Hitachi AX-M76E system for reference listening. I have a Focusrite Scarlett 2i2 for another set of HS7 when not in my studio at home. For field-recordings I use Zoom H8. 
           </div>
         </div>
       </div>
@@ -581,11 +581,32 @@ body {
           <div 
             class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
             :class="selected === 4 ? 'translate-y-0' : 'translate-y-4'">
-            I livestream occasionally, either playing some video games or going through my projects.
+            I livestream occasionally, either playing some video games, DJ’ing or going through my projects.
           </div>
         </div>
       </div>        
 
+      <div class="border-b border-gray-100 dark:border-neutral-800 pb-3">
+        <button 
+          @click="selected !== 5 ? selected = 5 : selected = null" 
+          class="flex justify-between items-center w-full text-left focus:outline-none group">
+          <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
+           Are you currently signed to a label or independent?
+          </span>
+          <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 5 ? 'rotate-45' : ''">+</span>
+        </button>
+        <div 
+          class="relative overflow-hidden transition-all duration-500" 
+          x-ref="container2" 
+          :style="selected === 5 ? 'max-height: ' + $refs.container2.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
+          <div 
+            class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
+            :class="selected === 5 ? 'translate-y-0' : 'translate-y-4'">
+            Not signed to anything, 100% independent.
+          </div>
+        </div>
+      </div> 
+        
     </div>
   </div>
 </section>
