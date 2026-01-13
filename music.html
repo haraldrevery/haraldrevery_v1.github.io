@@ -15,9 +15,8 @@
 
   <!--  Remember darkmode/lightmode-->
 <script>
-  // Immediately apply the dark class based on localStorage to prevent flashing
-  if (localStorage.getItem('darkMode') === 'true' || 
-     (localStorage.getItem('darkMode') === null)) {
+  const isDark = localStorage.getItem('darkMode') === 'true' || localStorage.getItem('darkMode') === null;
+  if (isDark) {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
