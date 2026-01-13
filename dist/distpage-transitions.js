@@ -112,50 +112,42 @@
   // ========================================
   // 5. RE-INITIALIZE SCRIPTS
   // ========================================
-  function reinitializeScripts() {
-    // CRITICAL FIX: Close mobile menu immediately to prevent text shifting
-    const mobileMenu = document.getElementById('menu');
-    if (mobileMenu) {
-      mobileMenu.classList.remove('h-auto', 'opacity-100');
-      mobileMenu.classList.add('h-0', 'opacity-0');
-      // On desktop, ensure it's visible
-      if (window.innerWidth >= 768) {
-        mobileMenu.classList.add('md:h-auto', 'md:opacity-100');
-      }
-    }
-    
-    // Reset all animated elements to initial state
-    document.querySelectorAll('.grid-item-reveal').forEach(item => {
-      item.classList.remove('revealed');
-    });
-    
-    document.querySelectorAll('[data-animate="true"]').forEach(el => {
-      el.classList.remove('active');
-      el.style.opacity = '0';
-    });
-    
-    document.querySelectorAll('.text-container').forEach(container => {
-      container.classList.remove('start-animation');
-    });
-    
-    // Re-run year update
-    const yearElement = document.getElementById('year');
-    if (yearElement) {
-      yearElement.textContent = new Date().getFullYear();
-    }
-    
-    // Re-initialize GLightbox if present
-    if (typeof GLightbox !== 'undefined' && document.querySelector('.glightbox')) {
-      setTimeout(() => {
-        const lightbox = GLightbox({
-          selector: '.glightbox',
-          touchNavigation: true,
-          loop: true,
-          zoomable: true,
-          descPosition: 'bottom'
+// Store observers globally so we can clean them up
+let activeObservers = [];
+
+function reinitializeScripts() {
+  // ✅ Clean up old observers first
+  activeObservers.forEach(obs => obs.disconnect());
+  activeObservers = [];
+  
+  setTimeout(() => {
+    // Text container animations
+    const containers = document.querySelectorAll('.text-container');
+    containers.forEach(container => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('start-animation');
+            observer.unobserve(entry.target);
+          }
         });
-      }, 100);
+      }, { threshold: 0.1 });
+      observer.observe(container);
+      activeObservers.push(observer); // ✅ Track it
+    });
+    
+    // Grid items
+    const gridItems = document.querySelectorAll('.grid-item-reveal');
+    if (gridItems.length > 0) {
+      const gridObserver = new IntersectionObserver((entries) => {
+        // ... code ...
+      }, { threshold: 0.10 });
+      
+      gridItems.forEach(item => gridObserver.observe(item));
+      activeObservers.push(gridObserver); // ✅ Track it
     }
+  }, 100);
+}
     
     // Re-initialize Alpine.js components
     if (window.Alpine) {
@@ -386,3 +378,4 @@
   }
   
 })();
+
