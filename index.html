@@ -705,6 +705,32 @@ html, body {
       opacity: 1 !important;
       transform: none !important;
     }
+
+/* 1. Fix the Footer Grid */
+    footer, .footer-container, #footer-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+      gap: 20px !important;
+      padding: 40px !important;
+      opacity: 1 !important;
+    }
+
+    /* 2. Contain the massive images */
+    footer img, .footer-container img {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 200px !important; /* Limits the size so they aren't "massive" */
+      display: block !important;
+      margin: 0 auto !important;
+      opacity: 1 !important;
+    }
+
+    /* 3. Ensure the footer itself is visible */
+    footer {
+      position: relative !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
   </style>
 </noscript>
 
