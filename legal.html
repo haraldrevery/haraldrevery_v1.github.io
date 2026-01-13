@@ -375,32 +375,7 @@ header#main-header {
 
 
  
-    <!-- dark mode button (after 2800ms )-->
-<div class="fixed bottom-6 right-8 z-[10000]"
-     x-data="{ showToggle: false }"
-     x-init="
-       setTimeout(() => showToggle = true, 2800);
-       $watch('darkMode', () => {
-         setTimeout(() => {
-           if (window.restartPlexus) window.restartPlexus();
-           setTimeout(() => {
-             if (window.restartLogoAnimations) window.restartLogoAnimations();
-           }, 200); 
-         }, 50);
-       });
-     ">
-  <button @click="darkMode = !darkMode"
-    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
-    :class="{ 'mode-toggle-visible': showToggle }"
-    aria-label="Toggle Mode"
-  >
-    <span x-show="!darkMode" class="block">🌙</span>
-    <span x-show="darkMode" class="block">☀</span>
-  </button>
-</div>
 
-  
-  
   <!-- footer--> 
   <footer>
         
@@ -427,6 +402,31 @@ header#main-header {
     </div>
   </footer>
 
+    <!-- dark mode button (after 2800ms )-->
+<div class="fixed bottom-6 right-8 z-[10000]"
+     x-data="{ showToggle: false }"
+     x-init="
+       setTimeout(() => showToggle = true, 500);
+       $watch('darkMode', () => {
+         setTimeout(() => {
+           if (window.restartPlexus) window.restartPlexus();
+           setTimeout(() => {
+             if (window.restartLogoAnimations) window.restartLogoAnimations();
+           }, 200); 
+         }, 50);
+       });
+     ">
+  <button @click="darkMode = !darkMode"
+    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
+    :class="{ 'mode-toggle-visible': showToggle }"
+    aria-label="Toggle Mode"
+  >
+    <span x-show="!darkMode" class="block">🌙</span>
+    <span x-show="darkMode" class="block">☀</span>
+  </button>
+</div>
+
+    
   <script>
     // Automatic Year Update
     document.getElementById('year').textContent = new Date().getFullYear();
