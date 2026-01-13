@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
+<html lang="en" class="scroll-smooth dark" x-data="{
+    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
+  }"
+  x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
+  :class="{ 'dark': darkMode }">
 
 <head>
   <meta charset="UTF-8" />
@@ -8,7 +12,36 @@
   <title>Harald Revery - Privacy Policy</title>
   <script src="./dist/tailwind.js"></script>
 
+<script>
+  // Immediately apply the dark class based on localStorage to prevent flashing
+  const isDark = localStorage.getItem('darkMode') === 'true' || localStorage.getItem('darkMode') === null;
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+</script>
+  
+  
   <style>
+
+.mode-toggle-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.mode-toggle-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+
+
+
+
+    
     /* Safeguard for dark mode background to prevent white flash */
     .dark body {
       background-color: #000 !important;
@@ -340,6 +373,33 @@ header#main-header {
   </div>
 </main>
 
+
+ 
+    <!-- dark mode button (after 2800ms )-->
+<div class="fixed bottom-8 right-8 z-[10000]"
+     x-data="{ showToggle: false }"
+     x-init="
+       setTimeout(() => showToggle = true, 2800);
+       $watch('darkMode', () => {
+         setTimeout(() => {
+           if (window.restartPlexus) window.restartPlexus();
+           setTimeout(() => {
+             if (window.restartLogoAnimations) window.restartLogoAnimations();
+           }, 200); // slight delay for reflow
+         }, 50);
+       });
+     ">
+  <button @click="darkMode = !darkMode"
+    class="font-signika text-2xl transition-all duration-300 hover:opacity-60 active:scale-90 focus:outline-none mode-toggle-hidden"
+    :class="{ 'mode-toggle-visible': showToggle }"
+    aria-label="Toggle Mode"
+  >
+    <span x-show="!darkMode" class="block">🌙</span>
+    <span x-show="darkMode" class="block">☀</span>
+  </button>
+</div>
+
+  
   
   <!-- footer--> 
   <footer>
