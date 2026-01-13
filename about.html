@@ -470,19 +470,19 @@ body {
                 >
                   
                   <div 
-                    class="absolute inset-0 pointer-events-none z-30 opacity-[0.15] mix-blend-multiply dark:mix-blend-soft-light"
-                    style="background-image: url('./dist/assets/haraldrevery11techbw.gif'); background-size: cover; background-repeat: no-repeat;">
+                    class="absolute inset-0 pointer-events-none z-10 opacity-[0.15] mix-blend-multiply dark:mix-blend-soft-light"
+                    style="background-image: url('YOUR_HOSTED_IMAGE_URL_HERE'); background-size: cover; background-repeat: no-repeat;">
                   </div>
                 
-                  <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner">
+                  <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner z-20">
                     <template x-for="(src, index) in gallery" :key="index">
                       <img :src="src" 
                            alt="Harald Revery Gallery"
                            :loading="index < 2 ? 'eager' : 'lazy'"
                            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
                            :class="{
-                             'opacity-100 z-20': currentIndex === index,
-                             'opacity-0 z-10': currentIndex !== index
+                             'opacity-100 z-30': currentIndex === index,
+                             'opacity-0 z-20': currentIndex !== index
                            }" />
                     </template>
                   </div>
