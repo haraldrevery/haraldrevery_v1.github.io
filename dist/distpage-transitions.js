@@ -1,22 +1,20 @@
 // ========================================
 // SEAMLESS PAGE TRANSITION SYSTEM
-// Save this file as: ./dist/page-transitions.js
-// Then add to all HTML pages: <script src="./dist/page-transitions.js"></script>
 // ========================================
 
 (function() {
   'use strict';
   
   // Configuration
-  const TRANSITION_DURATION = 600; // milliseconds
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  const TRANSITION_DURATION = 600;
+  const CACHE_DURATION = 5 * 60 * 1000;
   
-  // Cache for storing fetched pages
   const pageCache = new Map();
-  
-  // Current page info
   let isTransitioning = false;
   let currentPath = window.location.pathname;
+  
+  // Store observers globally for cleanup
+  let activeObservers = [];
   
   // ========================================
   // 1. CREATE TRANSITION OVERLAY
@@ -37,7 +35,6 @@
       transition: opacity ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1);
     `;
     
-    // Set background based on current theme
     if (document.documentElement.classList.contains('dark')) {
       overlay.style.background = 'rgba(0, 0, 0, 0.98)';
     }
@@ -93,69 +90,72 @@
   // 4. UPDATE PAGE CONTENT
   // ========================================
   function updatePage(content) {
-    // Update title
     document.title = content.title;
-    
-    // Update body classes
     document.body.className = content.bodyClasses;
-    
-    // Update body content
     document.body.innerHTML = content.body;
-    
-    // Re-append overlay (it got removed when we replaced body content)
     document.body.appendChild(overlay);
-    
-    // Re-initialize scripts that need to run on new content
     reinitializeScripts();
   }
   
   // ========================================
   // 5. RE-INITIALIZE SCRIPTS
   // ========================================
-// Store observers globally so we can clean them up
-let activeObservers = [];
-
-function reinitializeScripts() {
-  // ✅ Clean up old observers first
-  activeObservers.forEach(obs => obs.disconnect());
-  activeObservers = [];
-  
-  setTimeout(() => {
-    // Text container animations
-    const containers = document.querySelectorAll('.text-container');
-    containers.forEach(container => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('start-animation');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      observer.observe(container);
-      activeObservers.push(observer); // ✅ Track it
+  function reinitializeScripts() {
+    // Clean up old observers first
+    activeObservers.forEach(obs => obs.disconnect());
+    activeObservers = [];
+    
+    // CRITICAL FIX: Close mobile menu immediately
+    const mobileMenu = document.getElementById('menu');
+    if (mobileMenu) {
+      mobileMenu.classList.remove('h-auto', 'opacity-100');
+      mobileMenu.classList.add('h-0', 'opacity-0');
+      if (window.innerWidth >= 768) {
+        mobileMenu.classList.add('md:h-auto', 'md:opacity-100');
+      }
+    }
+    
+    // Reset animated elements
+    document.querySelectorAll('.grid-item-reveal').forEach(item => {
+      item.classList.remove('revealed');
     });
     
-    // Grid items
-    const gridItems = document.querySelectorAll('.grid-item-reveal');
-    if (gridItems.length > 0) {
-      const gridObserver = new IntersectionObserver((entries) => {
-        // ... code ...
-      }, { threshold: 0.10 });
-      
-      gridItems.forEach(item => gridObserver.observe(item));
-      activeObservers.push(gridObserver); // ✅ Track it
-    }
-  }, 100);
-}
+    document.querySelectorAll('[data-animate="true"]').forEach(el => {
+      el.classList.remove('active');
+      el.style.opacity = '0';
+    });
     
-    // Re-initialize Alpine.js components
+    document.querySelectorAll('.text-container').forEach(container => {
+      container.classList.remove('start-animation');
+    });
+    
+    // Update year
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear();
+    }
+    
+    // Re-initialize GLightbox
+    if (typeof GLightbox !== 'undefined' && document.querySelector('.glightbox')) {
+      setTimeout(() => {
+        GLightbox({
+          selector: '.glightbox',
+          touchNavigation: true,
+          loop: true,
+          zoomable: true,
+          descPosition: 'bottom'
+        });
+      }, 100);
+    }
+    
+    // Re-initialize Alpine.js
     if (window.Alpine) {
       window.Alpine.initTree(document.body);
     }
     
-    // Re-run word animations
+    // Re-run animations
     setTimeout(() => {
+      // Word animations
       if (typeof window.animateWords === 'function') {
         document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
           window.animateWords(h2);
@@ -174,9 +174,10 @@ function reinitializeScripts() {
           });
         }, { threshold: 0.1 });
         observer.observe(container);
+        activeObservers.push(observer);
       });
       
-      // Grid item animations (for about.html image grid)
+      // Grid item animations
       const gridItems = document.querySelectorAll('.grid-item-reveal');
       if (gridItems.length > 0) {
         const gridObserver = new IntersectionObserver((entries) => {
@@ -192,10 +193,11 @@ function reinitializeScripts() {
         }, { threshold: 0.10 });
         
         gridItems.forEach(item => gridObserver.observe(item));
+        activeObservers.push(gridObserver);
       }
     }, 100);
     
-    // Re-initialize plexus if on index page
+    // Re-initialize plexus (index page)
     if (typeof window.restartPlexus === 'function') {
       setTimeout(() => {
         window.restartPlexus();
@@ -205,17 +207,12 @@ function reinitializeScripts() {
       }, 150);
     }
     
-    // Audio player on music page
-    if (typeof audioPlayer === 'function' && document.querySelector('[x-data]')) {
-      // Alpine will auto-initialize
-    }
-    
-    // Trigger scroll event to show/hide navbar
+    // Trigger scroll event
     setTimeout(() => {
       window.dispatchEvent(new Event('scroll'));
     }, 100);
     
-    // Glass card stage on about page
+    // Glass card stage (about page)
     const stage = document.getElementById('interactive-stage');
     if (stage) {
       const cards = stage.querySelectorAll('.glass-card');
@@ -245,7 +242,7 @@ function reinitializeScripts() {
         });
       });
     }
-  }
+  } // ✅ FUNCTION ENDS HERE - NOT BEFORE!
   
   // ========================================
   // 6. PERFORM PAGE TRANSITION
@@ -254,18 +251,15 @@ function reinitializeScripts() {
     if (isTransitioning) return;
     isTransitioning = true;
     
-    // Update overlay background based on current theme
     if (document.documentElement.classList.contains('dark')) {
       overlay.style.background = 'rgba(0, 0, 0, 0.98)';
     } else {
       overlay.style.background = 'rgba(255, 255, 255, 0.98)';
     }
     
-    // 1. Fade out current page
     overlay.style.opacity = '1';
     overlay.style.pointerEvents = 'auto';
     
-    // 2. Fetch new page while fading out
     const html = await fetchPage(url);
     if (!html) {
       isTransitioning = false;
@@ -274,21 +268,16 @@ function reinitializeScripts() {
       return;
     }
     
-    // 3. Wait for fade out to complete
     await new Promise(resolve => setTimeout(resolve, TRANSITION_DURATION));
     
-    // 4. Scroll to top instantly (while overlay is visible)
     window.scrollTo(0, 0);
     
-    // 5. Update content
     const content = extractContent(html);
     updatePage(content);
     
-    // 6. Update URL
     history.pushState({ path: url }, '', url);
     currentPath = url;
     
-    // 7. Small delay, then fade in new page
     await new Promise(resolve => setTimeout(resolve, 50));
     overlay.style.opacity = '0';
     overlay.style.pointerEvents = 'none';
@@ -305,7 +294,6 @@ function reinitializeScripts() {
     
     const href = link.getAttribute('href');
     
-    // Only intercept internal links
     if (!href || 
         href.startsWith('#') || 
         href.startsWith('http://') ||
@@ -316,13 +304,11 @@ function reinitializeScripts() {
       return;
     }
     
-    // Check if it's a same-domain HTML page
     const isHtmlPage = href.endsWith('.html') || (!href.includes('.') && !href.startsWith('#'));
     
     if (isHtmlPage) {
       e.preventDefault();
       
-      // Don't transition if already on this page
       const currentPage = window.location.pathname.split('/').pop();
       const targetPage = href.split('/').pop();
       
@@ -346,13 +332,9 @@ function reinitializeScripts() {
   // 9. INITIALIZE
   // ========================================
   function initialize() {
-    // Set initial state
     history.replaceState({ path: currentPath }, '', currentPath);
-    
-    // Add click listener to body (event delegation)
     document.body.addEventListener('click', handleLinkClick);
     
-    // Prefetch linked pages on hover (for better performance)
     let hoverTimeout;
     document.body.addEventListener('mouseover', (e) => {
       const link = e.target.closest('a');
@@ -362,7 +344,7 @@ function reinitializeScripts() {
       if (href && href.endsWith('.html')) {
         clearTimeout(hoverTimeout);
         hoverTimeout = setTimeout(() => {
-          fetchPage(href); // Silently prefetch
+          fetchPage(href);
         }, 100);
       }
     });
@@ -370,7 +352,6 @@ function reinitializeScripts() {
     console.log('✨ Seamless page transitions initialized');
   }
   
-  // Wait for DOM to be ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialize);
   } else {
@@ -378,4 +359,3 @@ function reinitializeScripts() {
   }
   
 })();
-
