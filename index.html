@@ -686,22 +686,36 @@ html, body {
  <!-- If javascript does not work or is diabeled  -->
 <noscript>
   <style>
-    /* 1. CRITICAL: Force the body to be visible */
-    /* This overrides the 'opacity-0' class on the body tag */
+    /* 1. FORCE BODY VISIBILITY */
+    /* We use 'display: block' and 'opacity' to ensure the body renders regardless of Tailwind classes */
     body {
       opacity: 1 !important;
+      display: block !important;
       visibility: visible !important;
     }
 
-    /* 2. Force the header/navigation to appear */
+    /* 2. RESET THE HIDDEN NAVBAR */
+    /* Your header is currently moved off-screen with -translate-y-full */
     #main-header {
       transform: none !important;
       opacity: 1 !important;
-      position: relative !important;
+      position: sticky !important; /* Makes it stay at the top naturally */
+      top: 0 !important;
       pointer-events: auto !important;
+      visibility: visible !important;
     }
 
-    /* 3. Show all animated text and elements immediately */
+    /* 3. RESET THE LOGO/INTRO AREA */
+    /* This area currently blocks clicks with pointer-events: none */
+    #logo-container {
+      pointer-events: auto !important;
+      height: auto !important; /* Prevents it from taking up the whole screen if empty */
+      min-height: 50vh !important;
+      display: flex !important;
+    }
+
+    /* 4. SHOW ALL ANIMATED ELEMENTS */
+    /* This forces all text that is waiting for a JS scroll-reveal to show up */
     [data-animate="true"], 
     .grid-item-reveal, 
     .welcome-text-delayed,
@@ -712,25 +726,15 @@ html, body {
       visibility: visible !important;
     }
 
-    /* 4. Fix the Footer Grid and Images */
-    footer, .footer-container, #footer-grid {
+    /* 5. FOOTER GRID FIX */
+    #footer-grid {
       display: grid !important;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
-      gap: 20px !important;
       opacity: 1 !important;
     }
-
     footer img {
       max-width: 100% !important;
       height: auto !important;
-      display: block !important;
-    }
-
-    /* 5. Ensure the Logo is visible if drawn via CSS */
-    .animate-logo path {
-      stroke-dashoffset: 0 !important;
-      fill-opacity: 0.2 !important;
-      opacity: 1 !important;
     }
   </style>
 </noscript>
