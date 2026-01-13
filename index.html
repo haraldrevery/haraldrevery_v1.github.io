@@ -681,6 +681,36 @@ html, body {
   }
 </script>
 </head>
+
+    
+ <!-- If javascript does not work or is diabeled  -->
+<noscript>
+  <style>
+    /* Force the body to be visible */
+    body {
+      opacity: 1 !important;
+    }
+    /* Force the header/navigation to show up */
+    #main-header {
+      transform: none !important;
+      opacity: 1 !important;
+      position: relative !important; /* Optional: makes it scroll with page if fixed isn't needed */
+    }
+    /* Show the welcome text if it was hidden by animation classes */
+    .welcome-text-delayed {
+      opacity: 1 !important;
+    }
+    /* Ensure any other elements hidden for animation are shown */
+    [data-animate="true"], .grid-item-reveal {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+</noscript>
+
+
+
+    
   <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:200%_200%] animate-gradient-slow
              bg-gradient-to-br from-slate-100 via-white to-slate-200
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
