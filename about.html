@@ -578,7 +578,7 @@ body {
           @click="selected !== 3 ? selected = 3 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            What is the hardware you use?
+            What hardware do you use?
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 3 ? 'rotate-45' : ''">+</span>
         </button>
@@ -590,6 +590,27 @@ body {
             class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
             :class="selected === 3 ? 'translate-y-0' : 'translate-y-4'">
             Main setup is Yamaha HS7 with Native Instruments Komplete Audio 6 and a Hitachi AX-M76E system for reference listening. I have a Focusrite Scarlett 2i2 for another set of HS7 when not in my studio at home. For field-recordings I use Zoom H8. 
+          </div>
+        </div>
+      </div>
+
+      <div class="border-b border-gray-100 dark:border-neutral-800 pb-3">
+        <button 
+          @click="selected !== 7 ? selected = 7 : selected = null" 
+          class="flex justify-between items-center w-full text-left focus:outline-none group">
+          <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
+            What software do you use?
+          </span>
+          <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 7 ? 'rotate-45' : ''">+</span>
+        </button>
+        <div 
+          class="relative overflow-hidden transition-all duration-500" 
+          x-ref="container2" 
+          :style="selected === 7 ? 'max-height: ' + $refs.container2.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
+          <div 
+            class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200 transition-all duration-700 transform"
+            :class="selected === 7 ? 'translate-y-0' : 'translate-y-4'">
+            Unfortunately FL Studio is my main DAW. For synths I use Native Instruments Rounds, Xfer Serum, Surge, Odin 2 and Arminator2 (got a softspot for jankware). For making kicks I use Sonic Academy Kick 2, but I also use Geonkick.
           </div>
         </div>
       </div>
