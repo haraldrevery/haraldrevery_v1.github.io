@@ -1249,25 +1249,21 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   let currentRotateX = 0, currentRotateY = 0;
   const logoSvg = document.getElementById('main-logo-svg');
   document.addEventListener('mousemove', (e) => {
-    // Math for the tilt intensity
     targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
     targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
   });
-// Reset rotation when the mouse leaves the browser window
-document.addEventListener('mouseleave', () => {
-  targetRotateY = 0;
-  targetRotateX = 0;
-});
+  // Reset rotation when the mouse truly leaves the browser window
+  document.addEventListener('mouseout', (e) => {
+    if (!e.relatedTarget && !e.toElement) {
+      targetRotateY = 0;
+      targetRotateX = 0;
+    }
+  });
   function smoothRotate() {
     if (logoSvg) {
-      // Smooth interpolation (lerp)
       currentRotateX += (targetRotateX - currentRotateX) * 0.5;
       currentRotateY += (targetRotateY - currentRotateY) * 0.5;
-  
-      // We apply the transform here.
-      // Note: We keep your translateX(-9.81%) and translateZ(50px) for depth
       logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
-      // Dynamic shadow for more realism (adjusts based on rotation)
       const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
       logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
     }
