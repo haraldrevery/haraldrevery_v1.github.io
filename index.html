@@ -646,52 +646,62 @@ html, body {
 /* Particles */
 .particles-layer {
   position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
+  top: -20%; /* Increased bleed to prevent edges showing during movement */
+  left: -20%;
+  width: 140%;
+  height: 140%;
   pointer-events: none;
   background-repeat: repeat;
-  /* Multi-layered radial gradients create varying particle sizes/positions */
+  /* Doubled the particles in the gradient map */
   background-image: 
-    radial-gradient(1.2px 1.2px at 25% 15%, currentColor 100%, transparent),
-    radial-gradient(1px 1px at 50% 40%, currentColor 100%, transparent),
-    radial-gradient(1.5px 1.5px at 75% 65%, currentColor 100%, transparent),
-    radial-gradient(1.2px 1.2px at 15% 85%, currentColor 100%, transparent),
-    radial-gradient(1px 1px at 85% 25%, currentColor 100%, transparent);
-  background-size: 350px 350px; /* Density of particles */
+    radial-gradient(1.5px 1.5px at 10% 10%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 20% 50%, currentColor 100%, transparent),
+    radial-gradient(2px 2px at 40% 90%, currentColor 100%, transparent),
+    radial-gradient(1.2px 1.2px at 60% 20%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 80% 80%, currentColor 100%, transparent),
+    radial-gradient(1.5px 1.5px at 95% 40%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 30% 10%, currentColor 100%, transparent),
+    radial-gradient(2px 2px at 70% 60%, currentColor 100%, transparent);
+  /* Smaller background-size = more particles per square pixel */
+  background-size: 250px 250px; 
+  will-change: transform;
 }
 
-/* Background Layer: Slow and subtle */
+/* Background: More active but still subtle depth */
 .particles-back {
   z-index: -1;
-  opacity: 0.15;
-  animation: seamlessDrift 80s ease-in-out infinite alternate;
+  opacity: 0.2;
+  /* Faster than before, using a "wiggle" timing */
+  animation: dynamicDrift 40s ease-in-out infinite alternate;
 }
 
-/* Foreground Layer: Slightly faster and more distinct */
+/* Foreground: Very active and larger scale */
 .particles-front {
   z-index: 1;
-  opacity: 0.3;
-  background-size: 500px 500px; /* Different scale for depth */
-  animation: seamlessDrift 50s ease-in-out infinite alternate-reverse;
+  opacity: 0.4;
+  background-size: 400px 400px;
+  /* Moves in opposite direction with different timing */
+  animation: dynamicDrift 25s ease-in-out infinite alternate-reverse;
 }
 
-/* The Secret to the Smooth Loop: 
-   Alternate-reverse means it never "snaps" back to start; it just drifts back. */
-@keyframes seamlessDrift {
+/* More movement: Added a mid-point for a non-linear "swaying" path */
+@keyframes dynamicDrift {
   0% {
     transform: translate(0, 0) rotate(0deg);
   }
+  50% {
+    /* Wiggles to the side halfway through */
+    transform: translate(4%, -6%) rotate(0.5deg);
+  }
   100% {
-    /* Subtle X/Y drift + tiny rotation makes it feel organic */
-    transform: translate(-3%, -5%) rotate(1deg);
+    /* Ends at a different diagonal */
+    transform: translate(-5%, -12%) rotate(-1deg);
   }
 }
 
-/* Theme Handling: Particles inherit text color (white in dark, black in light) */
-.dark .particles-layer { color: rgba(255, 255, 255, 0.8); }
-html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
+/* Theme Colors */
+.dark .particles-layer { color: rgba(255, 255, 255, 0.7); }
+html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.3); }
 
 
 
