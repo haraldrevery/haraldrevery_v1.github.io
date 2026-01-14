@@ -442,68 +442,88 @@ body {
 
 
 /* Album art covers */
-/* Container padding and max-width */
-.art-grid-container {
-  max-width: 1200px;
-  margin: 4rem auto;
-  padding: 0 1rem;
-}
-
-/* The Grid Logic */
-.art-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-auto-rows: 200px;
-  gap: 15px;
-  /* Dim other images when the grid is hovered */
-  transition: all 0.5s ease;
-}
-
-.art-card {
+/* 1. The Main Wrapper with the Frosted Glass Edge */
+.glass-gallery-wrapper {
   position: relative;
+  width: 100%;
+  margin: 4rem 0;
+  padding: 2rem 0;
+  background: rgba(255, 255, 255, 0.03); /* Very subtle tint */
+  backdrop-filter: blur(10px); /* The "Glass" effect */
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  border-radius: 12px;
-  background: #111;
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
-              opacity 0.4s ease,
-              box-shadow 0.4s ease;
 }
 
-/* Feature classes for variety */
-.art-card.wide { grid-column: span 2; }
-.art-card.tall { grid-row: span 2; }
+/* 2. The Horizontal Scroll Container */
+.glass-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 0 10%; /* Center the content on scroll */
+  scroll-snap-type: x mandatory; /* Makes images "snap" into place */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
 
-.art-card img {
+.glass-scroll-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+/* 3. The Individual Image Cards */
+.glass-item {
+  flex: 0 0 auto;
+  width: 300px;
+  height: 300px;
+  scroll-snap-align: center;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.5s ease;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.glass-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  filter: brightness(0.8);
+  transition: transform 0.5s ease, filter 0.5s ease;
 }
 
-/* Hover Effects */
-.art-grid:hover .art-card {
-  opacity: 0.4; /* Fade all out slightly */
-  filter: grayscale(0.5);
+/* 4. Interaction Effects */
+.glass-item:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.art-grid .art-card:hover {
-  opacity: 1; /* Bring hovered one back to full focus */
-  filter: grayscale(0);
-  transform: scale(1.03);
-  z-index: 10;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+.glass-item:hover img {
+  filter: brightness(1.1);
+  transform: scale(1.1);
 }
 
-.art-card:hover img {
-  transform: scale(1.1); /* Subtle zoom inside the card */
+/* 5. Masking for the edges */
+.glass-gallery-wrapper::before,
+.glass-gallery-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
 }
 
-/* Mobile adjustments */
-@media (max-width: 640px) {
-  .art-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .art-card.wide { grid-column: span 1; }
+.glass-gallery-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(15,15,15, 0.8), transparent);
+}
+
+.glass-gallery-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(15,15,15, 0.8), transparent);
 }
       
   </style>
@@ -617,21 +637,21 @@ body {
 
 
 <!-- Scrolling images -->  
-<div class="art-grid-container">
-  <div class="art-grid">
-    <div class="art-card"><img src="./artcovers/cloudsandroads11.jpg" alt="Artcover 1"></div>
-    <div class="art-card"><img src="./artcovers/spiritless11.jpg" alt="Artcover 2"></div>
-    <div class="art-card tall"><img src="./artcovers/phrases11.jpg" alt="Artcover 3"></div>
-    <div class="art-card"><img src="./artcovers/hollow11.jpg" alt="Artcover 4"></div>
-    <div class="art-card wide"><img src="./artcovers/uninhabitedisland11.jpg" alt="Artcover 5"></div>
-    <div class="art-card"><img src="./artcovers/lookingforsnow11.jpg" alt="Artcover 6"></div>
-    <div class="art-card"><img src="./artcovers/isolated11.jpg" alt="Artcover 7"></div>
-    <div class="art-card"><img src="./artcovers/forestrain11.jpg" alt="Artcover 8"></div>
-    <div class="art-card tall"><img src="./artcovers/mysterycard11.jpg" alt="Artcover 9"></div>
-    <div class="art-card"><img src="./artcovers/mirth11.jpg" alt="Artcover 10"></div>
-    <div class="art-card wide"><img src="./artcovers/eventfulsunset11.jpg" alt="Artcover 11"></div>
-    <div class="art-card"><img src="./artcovers/thenorth11.jpg" alt="Artcover 12"></div>
-    <div class="art-card"><img src="./artcovers/krakatau11.jpg" alt="Artcover 13"></div>
+<div class="glass-gallery-wrapper">
+  <div class="glass-scroll-container">
+    <div class="glass-item"><img src="./artcovers/cloudsandroads11.jpg" alt="Artcover 1"></div>
+    <div class="glass-item"><img src="./artcovers/spiritless11.jpg" alt="Artcover 2"></div>
+    <div class="glass-item"><img src="./artcovers/phrases11.jpg" alt="Artcover 3"></div>
+    <div class="glass-item"><img src="./artcovers/hollow11.jpg" alt="Artcover 4"></div>
+    <div class="glass-item"><img src="./artcovers/uninhabitedisland11.jpg" alt="Artcover 5"></div>
+    <div class="glass-item"><img src="./artcovers/lookingforsnow11.jpg" alt="Artcover 6"></div>
+    <div class="glass-item"><img src="./artcovers/isolated11.jpg" alt="Artcover 7"></div>
+    <div class="glass-item"><img src="./artcovers/forestrain11.jpg" alt="Artcover 8"></div>
+    <div class="glass-item"><img src="./artcovers/mysterycard11.jpg" alt="Artcover 9"></div>
+    <div class="glass-item"><img src="./artcovers/mirth11.jpg" alt="Artcover 10"></div>
+    <div class="glass-item"><img src="./artcovers/eventfulsunset11.jpg" alt="Artcover 11"></div>
+    <div class="glass-item"><img src="./artcovers/thenorth11.jpg" alt="Artcover 12"></div>
+    <div class="glass-item"><img src="./artcovers/krakatau11.jpg" alt="Artcover 13"></div>
   </div>
 </div>
      
