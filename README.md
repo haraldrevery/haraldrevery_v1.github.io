@@ -13,7 +13,7 @@
   <h3 align="center"> Website</h3>
 
   <p align="center">
-    A scuffed Website created using Tailwind CSS, HTML, CSS <br /> and JavaScript (Alpine JS) that can be used as an artist portfolio.
+    A scuffed website created using Tailwind CSS, HTML, CSS <br /> and JavaScript (Alpine JS) that can be used as an artist portfolio.
 
   </p>
 </div>
