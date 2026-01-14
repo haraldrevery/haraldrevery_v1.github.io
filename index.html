@@ -670,42 +670,42 @@ html, body {
 /* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
 .p-layer-1 {
   z-index: -2;
-  opacity: 0.1;
-  background-size: 200px 200px;
-  animation: drift-1 100s ease-in-out infinite alternate;
+  opacity: 0.2;
+  background-size: 250px 250px;
+  animation: drift-1 70s ease-in-out infinite alternate;
 }
 
 /* LAYER 2: Mid Background (Moderate speed) */
 .p-layer-2 {
   z-index: -1;
-  opacity: 0.2;
-  background-size: 320px 320px;
-  animation: drift-2 70s ease-in-out infinite alternate-reverse;
+  opacity: 0.25;
+  background-size: 420px 420px;
+  animation: drift-2 55s ease-in-out infinite alternate-reverse;
 }
 
 /* LAYER 3: Close Foreground (Faster, larger) */
 .p-layer-3 {
   z-index: 1;
   opacity: 0.3;
-  background-size: 450px 450px;
-  animation: drift-1 45s ease-in-out infinite alternate-reverse;
+  background-size: 680px 680px;
+  animation: drift-1 42s ease-in-out infinite alternate-reverse;
 }
 
 /* LAYER 4: Very Close (Fastest, largest, boldest) */
 .p-layer-4 {
   z-index: 2;
   opacity: 0.45;
-  background-size: 600px 600px;
-  animation: drift-2 30s ease-in-out infinite alternate;
+  background-size: 700px 700px;
+  animation: drift-2 21s ease-in-out infinite alternate;
 }
 
 /* LAYER 5: Extreme Foreground (16% larger than Layer 4) */
 .p-layer-5 {
   z-index: 20;
   opacity: 0.55;
-  background-size: 696px 696px; /* 600px * 1.16 */
+  background-size: 996px 996px; /* INCREASE this for larger particles */
   /* Using the new 3rd drift variant */
-  animation: drift-3 20s ease-in-out infinite alternate;
+  animation: drift-3 18s ease-in-out infinite alternate;
 }
       
 /* Two distinct paths so layers don't just follow each other */
@@ -717,11 +717,10 @@ html, body {
 
 @keyframes drift-2 {
   0%   { transform: translate(0, 0) rotate(0deg); }
-  50%  { transform: translate(-4%, 2%) rotate(-0.5deg); }
+  50%  { transform: translate(-4%, 2%) rotate(-0.54deg); }
   100% { transform: translate(2%, 6%) rotate(1deg); }
 }
 
-/* NEW: 3rd distinct path for the 5th layer */
 @keyframes drift-3 {
   0%   { transform: translate(0, 0) rotate(0deg); }
   33%  { transform: translate(3%, 2%) rotate(0.3deg); }
