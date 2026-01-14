@@ -344,9 +344,7 @@ body {
   position: relative;
   width: 100%;
   height: 28vh; /* Increased slightly to account for padding */
-  overflow: visible;
-  overflow-x: hidden; /* Keeps horizontal masking/fading */
-  overflow-y: visible; /* Allows vertical overflow for scaled images */
+  overflow: hidden;
   margin: 4rem 0; 
   
   /* Fade-in Animation */
@@ -553,7 +551,6 @@ body {
 
 
 <!-- Scrolling images -->  
-      <div style="overflow: hidden; width: 100%;">
 <div class="scrolling-container">
   <div class="scrolling-track">
     <img src="./artcovers/cloudsandroads11.jpg" alt="Artcover 1">
@@ -584,8 +581,9 @@ body {
     <img src="./artcovers/thenorth11.jpg" alt="Artcover 12">
     <img src="./artcovers/krakatau11.jpg" alt="Artcover 13">
   </div>
-</div>    
 </div>
+     
+
 
 
       
