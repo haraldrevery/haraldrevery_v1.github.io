@@ -746,7 +746,14 @@ html, body {
   animation: drift-4 24s ease-in-out infinite alternate;
 }
       
-
+/* LAYER 6: Ultra Foreground (16% larger than Layer 5) */
+.p-layer-7 {
+  z-index: 29; /* Higher than Layer 5's z-index of 20 */
+  opacity: 0.8;
+  background-size: 1455px 1455px; /* 996px * 1.16 */
+  /* Faster than Layer 5 (18s) to enhance parallax speed */
+  animation: drift-4 24s ease-in-out infinite alternate;
+}
       
 /* Colors based on theme */
 .dark .particles-layer { color: rgba(255, 255, 255, 0.8); }
@@ -1071,7 +1078,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="particles-layer p-layer-5"></div>
 <div class="particles-layer p-layer-3"></div>
 <div class="particles-layer p-layer-4"></div>
-        
+<div class="particles-layer p-layer-7"></div>        
         </div>
      
 
