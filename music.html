@@ -442,71 +442,68 @@ body {
 
 
 /* Album art covers */
-/* Container for the 3D depth */
-.album-stack-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50vh;
-  margin: 5rem 0;
-  perspective: 1200px;
+/* Container padding and max-width */
+.art-grid-container {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 0 1rem;
 }
 
-/* The physical stack positioning */
-.album-stack {
+/* The Grid Logic */
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 200px;
+  gap: 15px;
+  /* Dim other images when the grid is hovered */
+  transition: all 0.5s ease;
+}
+
+.art-card {
   position: relative;
-  width: 280px;
-  height: 280px;
-  transition: transform 0.6s ease;
-}
-
-/* Individual Card Styling */
-.album-item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-  background: #000;
-  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  background: #111;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              opacity 0.4s ease,
+              box-shadow 0.4s ease;
 }
 
-.album-item img {
+/* Feature classes for variety */
+.art-card.wide { grid-column: span 2; }
+.art-card.tall { grid-row: span 2; }
+
+.art-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-/* Initial "Tight Stack" - offset each by a few pixels/degrees */
-.album-item:nth-child(n) { transform: rotate(calc(var(--i) * 2deg)) translate(calc(var(--i) * 2px), calc(var(--i) * -2px)); z-index: calc(20 - var(--i)); }
-
-/* Define variables for all 13 items for the animation math */
-.album-item:nth-child(1)  { --i: 1; }  .album-item:nth-child(2)  { --i: 2; }
-.album-item:nth-child(3)  { --i: 3; }  .album-item:nth-child(4)  { --i: 4; }
-.album-item:nth-child(5)  { --i: 5; }  .album-item:nth-child(6)  { --i: 6; }
-.album-item:nth-child(7)  { --i: 7; }  .album-item:nth-child(8)  { --i: 8; }
-.album-item:nth-child(9)  { --i: 9; }  .album-item:nth-child(10) { --i: 10; }
-.album-item:nth-child(11) { --i: 11; } .album-item:nth-child(12) { --i: 12; }
-.album-item:nth-child(13) { --i: 13; }
-
-/* The Spread Effect on Hover */
-.album-stack:hover .album-item {
-  transform: 
-    translateX(calc((var(--i) - 7) * 60px)) /* Spread horizontally */
-    rotate(calc((var(--i) - 7) * 8deg))      /* Fan out rotation */
-    translateY(calc(abs(var(--i) - 7) * 10px)); /* Slight arc effect */
+/* Hover Effects */
+.art-grid:hover .art-card {
+  opacity: 0.4; /* Fade all out slightly */
+  filter: grayscale(0.5);
 }
 
-/* Individual focus when hovering a specific card */
-.album-item:hover {
-  z-index: 100 !important;
-  transform: scale(1.3) translateY(-50px) rotate(0deg) !important;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+.art-grid .art-card:hover {
+  opacity: 1; /* Bring hovered one back to full focus */
+  filter: grayscale(0);
+  transform: scale(1.03);
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.art-card:hover img {
+  transform: scale(1.1); /* Subtle zoom inside the card */
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .art-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .art-card.wide { grid-column: span 1; }
 }
       
   </style>
@@ -620,21 +617,21 @@ body {
 
 
 <!-- Scrolling images -->  
-<div class="album-stack-container">
-  <div class="album-stack">
-    <div class="album-item"><img src="./artcovers/cloudsandroads11.jpg" alt="Clouds and Roads"></div>
-    <div class="album-item"><img src="./artcovers/spiritless11.jpg" alt="Spiritless"></div>
-    <div class="album-item"><img src="./artcovers/phrases11.jpg" alt="Phrases"></div>
-    <div class="album-item"><img src="./artcovers/hollow11.jpg" alt="Hollow"></div>
-    <div class="album-item"><img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island"></div>
-    <div class="album-item"><img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow"></div>
-    <div class="album-item"><img src="./artcovers/isolated11.jpg" alt="Isolated"></div>
-    <div class="album-item"><img src="./artcovers/forestrain11.jpg" alt="Forest Rain"></div>
-    <div class="album-item"><img src="./artcovers/mysterycard11.jpg" alt="Mystery Card"></div>
-    <div class="album-item"><img src="./artcovers/mirth11.jpg" alt="Mirth"></div>
-    <div class="album-item"><img src="./artcovers/eventfulsunset11.jpg" alt="Eventful Sunset"></div>
-    <div class="album-item"><img src="./artcovers/thenorth11.jpg" alt="The North"></div>
-    <div class="album-item"><img src="./artcovers/krakatau11.jpg" alt="Krakatau"></div>
+<div class="art-grid-container">
+  <div class="art-grid">
+    <div class="art-card"><img src="./artcovers/cloudsandroads11.jpg" alt="Artcover 1"></div>
+    <div class="art-card"><img src="./artcovers/spiritless11.jpg" alt="Artcover 2"></div>
+    <div class="art-card tall"><img src="./artcovers/phrases11.jpg" alt="Artcover 3"></div>
+    <div class="art-card"><img src="./artcovers/hollow11.jpg" alt="Artcover 4"></div>
+    <div class="art-card wide"><img src="./artcovers/uninhabitedisland11.jpg" alt="Artcover 5"></div>
+    <div class="art-card"><img src="./artcovers/lookingforsnow11.jpg" alt="Artcover 6"></div>
+    <div class="art-card"><img src="./artcovers/isolated11.jpg" alt="Artcover 7"></div>
+    <div class="art-card"><img src="./artcovers/forestrain11.jpg" alt="Artcover 8"></div>
+    <div class="art-card tall"><img src="./artcovers/mysterycard11.jpg" alt="Artcover 9"></div>
+    <div class="art-card"><img src="./artcovers/mirth11.jpg" alt="Artcover 10"></div>
+    <div class="art-card wide"><img src="./artcovers/eventfulsunset11.jpg" alt="Artcover 11"></div>
+    <div class="art-card"><img src="./artcovers/thenorth11.jpg" alt="Artcover 12"></div>
+    <div class="art-card"><img src="./artcovers/krakatau11.jpg" alt="Artcover 13"></div>
   </div>
 </div>
      
