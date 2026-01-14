@@ -13,7 +13,7 @@
   <h3 align="center"> Website</h3>
 
   <p align="center">
-    A scuffed Website created using Tailwind CSS (IDK what that even is...), HTML, CSS <br /> and JavaScript that can be used as a Photography Portfolio.
+    A scuffed Website created using Tailwind CSS, HTML, CSS <br /> and JavaScript that can be used as a Photography Portfolio.
 
   </p>
 </div>
