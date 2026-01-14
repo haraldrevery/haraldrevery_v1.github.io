@@ -42,58 +42,6 @@
 
 
 
-  /* Container for both layers */
-.particles-layer {
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  pointer-events: none;
-  background-repeat: repeat;
-  /* Use multiple gradients to create different particle sizes */
-  background-image: 
-    radial-gradient(1px 1px at 20px 30px, white, rgba(255,255,255,0)),
-    radial-gradient(1.5px 1.5px at 40px 70px, rgba(255,255,255,0.8), rgba(255,255,255,0)),
-    radial-gradient(1px 1px at 50px 160px, white, rgba(255,255,255,0)),
-    radial-gradient(2px 2px at 90px 40px, white, rgba(255,255,255,0)),
-    radial-gradient(1px 1px at 130px 80px, white, rgba(255,255,255,0));
-  background-size: 200px 200px; /* Controls particle density */
-}
-
-/* Background layer (behind the grid) */
-.particles-bg {
-  z-index: -1;
-  opacity: 0.3;
-  animation: moveParticles 60s linear infinite;
-}
-
-/* Foreground layer (in front of the grid) */
-.particles-fg {
-  z-index: 1;
-  opacity: 0.5;
-  background-size: 300px 300px; /* Different size for parallax feel */
-  animation: moveParticles 40s linear infinite reverse;
-}
-
-/* Dark/Light mode color adjustment */
-.dark .particles-layer {
-  filter: invert(0);
-}
-html:not(.dark) .particles-layer {
-  filter: invert(1); /* Makes particles dark on light background */
-}
-
-@keyframes moveParticles {
-  from { transform: translateY(0); }
-  to { transform: translateY(-200px); }
-}
-
-/* Ensure the grid container allows the layers to position correctly */
-#image-grid {
-  position: relative;
-  z-index: 0;
-}
       
       
 /* Update your existing <style> tag with these classes */
@@ -691,6 +639,63 @@ html, body {
 #image-grid .glightbox:not(:hover) {
   transition-delay: 0.05s;
 }
+
+
+
+
+/* Particles */
+.particles-layer {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  background-repeat: repeat;
+  /* Multi-layered radial gradients create varying particle sizes/positions */
+  background-image: 
+    radial-gradient(1.2px 1.2px at 25% 15%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 50% 40%, currentColor 100%, transparent),
+    radial-gradient(1.5px 1.5px at 75% 65%, currentColor 100%, transparent),
+    radial-gradient(1.2px 1.2px at 15% 85%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 85% 25%, currentColor 100%, transparent);
+  background-size: 350px 350px; /* Density of particles */
+}
+
+/* Background Layer: Slow and subtle */
+.particles-back {
+  z-index: -1;
+  opacity: 0.15;
+  animation: seamlessDrift 80s ease-in-out infinite alternate;
+}
+
+/* Foreground Layer: Slightly faster and more distinct */
+.particles-front {
+  z-index: 1;
+  opacity: 0.3;
+  background-size: 500px 500px; /* Different scale for depth */
+  animation: seamlessDrift 50s ease-in-out infinite alternate-reverse;
+}
+
+/* The Secret to the Smooth Loop: 
+   Alternate-reverse means it never "snaps" back to start; it just drifts back. */
+@keyframes seamlessDrift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    /* Subtle X/Y drift + tiny rotation makes it feel organic */
+    transform: translate(-3%, -5%) rotate(1deg);
+  }
+}
+
+/* Theme Handling: Particles inherit text color (white in dark, black in light) */
+.dark .particles-layer { color: rgba(255, 255, 255, 0.8); }
+html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
+
+
+
+      
       
   </style>
   <meta charset="UTF-8" />
@@ -984,8 +989,9 @@ html, body {
     ]
 }">
   
-    <div class="particles-layer particles-bg"></div>
-        <div class="particles-layer particles-fg"></div>
+<div class="particles-layer particles-back"></div>
+<div class="particles-layer particles-front"></div>
+        
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
   
             <div id="image-grid" class="grid grid-cols-3 gap-4 relative z-10">
@@ -999,7 +1005,6 @@ html, body {
                   </a>
                 </template>
             </div>
-    
 
     
     </div>
