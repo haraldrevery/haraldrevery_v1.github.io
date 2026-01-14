@@ -45,7 +45,7 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abombination, 99% vibe coded with Gemini and Grok (xAI) to really push those models. I removed the Fancybox stuff since it requires purchased license to be used, instead I opted for GLightbox with the MIT licence.
+I took this repository https://github.com/JoaoFranco03/photography-portfolio and created this abomination, 99% vibe coded with Gemini, Claude and Grok (xAI) to really push those models. I removed the Fancybox stuff since it requires purchased license to be used, instead I opted for GLightbox with the MIT licence. In later versions I have tried to replace some Java scripts to be CSS instead with mixed results. 
 
 ## Built With <a name="built-with"></a>
 
@@ -61,7 +61,7 @@ I took this repository https://github.com/JoaoFranco03/photography-portfolio and
 
 ## License <a name="license"></a>
 
-Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs and brand assets in various folder are Copyright © 2025 Harald Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
+Code distributed under the GPL-3.0 License. See `LICENSE.txt` for more information. However, all font files, typography designs and brand assets in various folder are Copyright © 2025 Harald Mark Thirslund. All Rights Reserved. No permission is granted to use these assets without explicit consent.
 
 
 <!-- CONTACT -->
@@ -80,6 +80,7 @@ Project Link: [https://github.com/JoaoFranco03/photography-portfolio/](https://g
 
 - [GLightbox](https://github.com/biati-digital)
 - [Tailwind Documentation](https://tailwindcss.com/docs/installation)
+- [Alpine JS](https://alpinejs.dev/)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
