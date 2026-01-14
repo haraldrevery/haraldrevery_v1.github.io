@@ -14,6 +14,11 @@
     document.documentElement.classList.remove('dark');
   }
 </script>
+
+<script>
+  document.documentElement.classList.add('js');
+</script>
+
     
   <style>
 @view-transition {
@@ -108,9 +113,16 @@
     animation: letterFade 0.8s ease-out forwards;
   }
   /* Prevent layout jump: hide the H2 initially */
-  h2[data-animate="true"] {
-    opacity: 0;
-  }
+/* Only hide/resize if JS is active */
+.js h2[data-animate="true"] { opacity: 0; }
+.js #logo-container { height: 100vh !important; }
+
+/* If JS is NOT active, the container stays a natural size 
+   and the headings remain visible (opacity: 1) by default. */
+#logo-container {
+  height: auto; 
+  padding: 50px 0;
+}
   h2.active {
     opacity: 1 !important;
   }
