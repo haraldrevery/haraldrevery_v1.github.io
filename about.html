@@ -312,7 +312,7 @@ body {
 <body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 bg-gradient-to-br from-black via-[#0F0F0F] to-[#1F1F1F] bg-[length:250%_250%] animate-gradient-slow bg-fixed">
 -->
   
-<body class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
+<body id="top" class="min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-700 ease-in-out bg-fixed bg-[length:250%_250%] animate-gradient-slow 
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]">
   
@@ -860,11 +860,25 @@ body {
             </div>
         </div>
       </div>
-      <p class="mt-8 text-xs text-gray-600 dark:text-gray-300 text-center">
-        <span id="year"></span> Harald Revery™. All Rights Reserved (fonts, images and brand logo) <br />
-        <small>Site Template by <a href="https://github.com/JoaoFranco03" target="_blank">Joao Franco</a></small>
-      </p>
-    </div>
+        
+<!-- Back to top -->  
+<div class="mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+  
+  <div class="w-full md:w-1/3 text-left">
+    <a href="#top" 
+       class="font-signika tracking-widest text-xs uppercase opacity-50 hover:opacity-100 transition-opacity duration-300">
+      ↑ Back to top
+    </a>
+  </div>
+
+  <p class="w-full md:w-1/3 text-xs text-gray-600 dark:text-gray-300 text-center">
+    <span id="year"></span> Harald Revery™. All Rights Reserved (fonts, images and brand logo) <br />
+    <small>Site Template by <a href="https://github.com/JoaoFranco03" target="_blank" class="hover:opacity-50 transition-opacity">Joao Franco</a></small>
+  </p>
+
+  <div class="hidden md:block md:w-1/3"></div>
+  
+</div>
   </footer>
 
 
