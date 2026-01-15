@@ -463,6 +463,34 @@ audio::-webkit-media-controls-panel {
 .dark audio::-webkit-media-controls-panel {
   background-color: rgba(0, 0, 0, 0.2);
 }
+/* Hide all track text and audio players by default */
+.track-text, .player-node {
+  display: none !important;
+}
+
+/* Logic: If Input # is checked, show Text # and Player # */
+#track1:checked ~ .relative .track-text.t1, #track1:checked ~ .relative .player-node#a1 { display: flex !important; }
+#track2:checked ~ .relative .track-text.t2, #track2:checked ~ .relative .player-node#a2 { display: flex !important; }
+#track3:checked ~ .relative .track-text.t3, #track3:checked ~ .relative .player-node#a3 { display: flex !important; }
+#track4:checked ~ .relative .track-text.t4, #track4:checked ~ .relative .player-node#a4 { display: flex !important; }
+#track5:checked ~ .relative .track-text.t5, #track5:checked ~ .relative .player-node#a5 { display: flex !important; }
+
+/* Marquee Animation */
+@keyframes marquee-nojs {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
+
+.animate-marquee-nojs {
+  display: flex;
+  width: max-content;
+  animation: marquee-nojs 15s linear infinite;
+}
+
+/* Match the layout style of audio controls */
+audio::-webkit-media-controls-panel { background-color: rgba(255, 255, 255, 0.1); }
+.dark audio::-webkit-media-controls-panel { background-color: rgba(0, 0, 0, 0.2); }
+      
       
   </style>
 
@@ -701,45 +729,61 @@ audio::-webkit-media-controls-panel {
 
       
       <!-- Audio player --> 
-    <div class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl">
+<div class="no-js-player group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl">
   
+  <input type="radio" name="track-selector" id="track1" class="hidden" checked>
+  <input type="radio" name="track-selector" id="track2" class="hidden">
+  <input type="radio" name="track-selector" id="track3" class="hidden">
+  <input type="radio" name="track-selector" id="track4" class="hidden">
+  <input type="radio" name="track-selector" id="track5" class="hidden">
+
   <div class="absolute inset-0 bg-cover bg-center animate-crossfade opacity-10" style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: -2s;"></div>
-  <div class="absolute inset-0 bg-cover bg-center animate-crossfade opacity-10" style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 10s;"></div>
   
   <div class="relative z-10 flex flex-col gap-6">
     
     <div class="w-full relative border-y border-black/5 dark:border-white/5 py-3 overflow-hidden">
       <div class="mask-fade">
         <div class="flex animate-marquee-nojs items-center">
-          <span class="text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery — Clouds and Roads — Spiritless — Phrases — Hollow — Uninhabited Island
+          <span class="track-text t1 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
+            Harald Revery - Clouds and Roads — Harald Revery - Clouds and Roads — Harald Revery - Clouds and Roads
           </span>
-          <span class="text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery — Clouds and Roads — Spiritless — Phrases — Hollow — Uninhabited Island
+          <span class="track-text t2 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
+            Harald Revery - Spiritless — Harald Revery - Spiritless — Harald Revery - Spiritless
+          </span>
+          <span class="track-text t3 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
+            Harald Revery - Phrases — Harald Revery - Phrases — Harald Revery - Phrases
+          </span>
+          <span class="track-text t4 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
+            Harald Revery - Hollow — Harald Revery - Hollow — Harald Revery - Hollow
+          </span>
+          <span class="track-text t5 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
+            Harald Revery - Uninhabited Island — Harald Revery - Uninhabited Island — Harald Revery - Uninhabited Island
           </span>
         </div>
       </div>
     </div>
 
     <div class="flex flex-col gap-4">
-      <audio controls class="w-full filter invert dark:invert-0 opacity-80">
-        <source src="./music/clouds_and_roads.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
+      <audio id="a1" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./music/clouds_and_roads.mp3"></audio>
+      <audio id="a2" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./music/spiritless.mp3"></audio>
+      <audio id="a3" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./music/phrases.mp3"></audio>
+      <audio id="a4" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./music/hollow.mp3"></audio>
+      <audio id="a5" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./music/uninhabited_island.mp3"></audio>
       
       <div class="mt-2">
         <h3 class="text-xs font-signika opacity-50 uppercase tracking-widest mb-3">Select Track:</h3>
-        <ul class="text-sm font-signika flex flex-col gap-2 opacity-80">
-          <li><a href="./music/clouds_and_roads.mp3" class="hover:underline">01. Clouds and Roads</a></li>
-          <li><a href="./music/spiritless.mp3" class="hover:underline">02. Spiritless</a></li>
-          <li><a href="./music/phrases.mp3" class="hover:underline">03. Phrases</a></li>
-          <li><a href="./music/hollow.mp3" class="hover:underline">04. Hollow</a></li>
-          <li><a href="./music/uninhabited_island.mp3" class="hover:underline">05. Uninhabited Island</a></li>
-        </ul>
+        <div class="flex flex-col gap-2">
+          <label for="track1" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">01. Harald Revery - Clouds and Roads</label>
+          <label for="track2" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">02. Harald Revery - Spiritless</label>
+          <label for="track3" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">03. Harald Revery - Phrases</label>
+          <label for="track4" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">04. Harald Revery - Hollow</label>
+          <label for="track5" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">05. Harald Revery - Uninhabited Island</label>
+        </div>
       </div>
     </div>
   </div>
 </div>
+        
 
         
 
