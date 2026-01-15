@@ -49,7 +49,25 @@
 }
 
 
+/* =========================================================================
+   Disable animations & transitions when JS is not available (no-js present)
+   ========================================================================= */
+.no-js *,
+.no-js *::before,
+.no-js *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
 
+/* Accessibility: always respect reduced motion preference too */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
       
       
 /* Update your existing <style> tag with these classes */
