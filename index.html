@@ -763,19 +763,41 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 /* 3D layers */
-.logo-layer-front {
-  transform: translateZ(100px) !important;  /* Pops the front layer forward */
-  opacity: 1;  /* Full opacity for the front */
-  pointer-events: none;  /* Optional: prevents interaction if not needed */
+/* Increase perspective slightly but reduce from 1000px for stronger depth effect */
+#logo-container {
+  perspective: 800px; /* Was 1000px; lower value amplifies 3D */
 }
 
-/* Optional: Enhance with a forward shadow for realism during tilt */
+/* Rear layer (pushed back more) */
+.logo-layer-rear {
+  transform: translateZ(-200px) !important; /* Increased depth */
+  opacity: 0.15;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); /* Stronger shadow for depth */
+}
+
+/* Front layer (pops forward more) */
 .logo-layer-front {
-  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));  /* Adjust based on theme */
+  transform: translateZ(200px) scale(1.05) !important; /* Increased Z + slight enlarge for pop */
+  opacity: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); /* Lighter shadow to "lift" it */
+}
+
+/* Dark mode adjustments */
+.dark .logo-layer-rear {
+  filter: drop-shadow(0 10px 20px rgba(255,255,255,0.2));
 }
 
 .dark .logo-layer-front {
-  filter: drop-shadow(0 5px 10px rgba(255,255,255,0.1));  /* For dark mode */
+  filter: drop-shadow(0 5px 10px rgba(255,255,255,0.1));
+}
+
+/* Ensure 3D propagates (already in your code, but confirm no overrides) */
+#tilting-logo,
+#main-logo-svg,
+.position-wrapper {
+  transform-style: preserve-3d !important;
 }
 
 
@@ -998,8 +1020,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
         
 <g id="tilting-logo">
-  <use href="#logo-shape-outline" class="animate-logo logo-layer-rear" />
-  <use href="#logo-shape-outline" class="animate-logo logo-layer-front" />  <!-- Add logo-layer-front here -->
+  <g class="logo-layer-rear">
+    <use href="#logo-shape-outline" class="animate-logo" />
+  </g>
+  <g class="logo-layer-front">
+    <use href="#logo-shape-outline" class="animate-logo" />
+  </g>
 </g>
 
         
