@@ -559,6 +559,7 @@ html, body {
   overflow: visible;
   position: relative;
   transform-style: preserve-3d;
+  translateZ(15px);
 }
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
@@ -568,6 +569,7 @@ html, body {
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
+  transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
   transform-style: preserve-3d;
 }
@@ -759,29 +761,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
-
-      /* 3D layers */
-.logo-parallax-layer {
-  position: absolute;
-  width: 81vw; /* Match main-logo-svg max-width */
-  max-height: 76vh;
-  pointer-events: none;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.logo-phantom {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-  /* Use the same draw animation so they appear with the main logo */
-  animation: logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards; 
-}
-
-/* Match the main logo's horizontal offset */
-.logo-parallax-layer svg {
-  transform: translateX(-9.81%);
-}
       
       
   </style>
@@ -982,16 +961,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
  <!-- Logo intro -->
-<div id="logo-container">
+<div id="logo-container" style="pointer-events: none;">
+ 
   <div class="position-wrapper flex items-center justify-center relative z-10">
-    
-    <div class="logo-parallax-layer layer-back-2" style="transform: translateZ(-60px); opacity: 0.1;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-    <div class="logo-parallax-layer layer-back-1" style="transform: translateZ(-30px); opacity: 0.15;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-      
+ 
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
   <g id="logo-shape-outline">
@@ -1033,17 +1006,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
       </g>
     </svg>
-
-<div class="logo-parallax-layer layer-front-1" style="transform: translateZ(30px); opacity: 0.15;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-    <div class="logo-parallax-layer layer-front-2" style="transform: translateZ(60px); opacity: 0.1;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-
-  </div>
-</div>
-      
   </div>
 </div>
 <section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
@@ -1311,30 +1273,16 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       targetRotateX = 0;
     }
   });
-function smoothRotate() {
-  const wrapper = document.querySelector('.position-wrapper');
-  const logoSvg = document.getElementById('main-logo-svg');
-
-  if (wrapper) {
-    // Standard smoothing logic
-    currentRotateX += (targetRotateX - currentRotateX) * 0.1;
-    currentRotateY += (targetRotateY - currentRotateY) * 0.1;
-
-    // APPLY ROTATION TO THE WRAPPER
-    // This allows children at Z: -60 and Z: +60 to "shift" relative to the center
-    wrapper.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
-    
-    // Apply the shadow ONLY to the main logo for realism
-    const shadowColor = document.documentElement.classList.contains('dark') 
-      ? 'rgba(255,255,255,0.1)' 
-      : 'rgba(0,0,0,0.3)';
-    
+  function smoothRotate() {
     if (logoSvg) {
-       logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
+      currentRotateX += (targetRotateX - currentRotateX) * 0.5;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.5;
+      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+      const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
+      logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
     }
+    requestAnimationFrame(smoothRotate);
   }
-  requestAnimationFrame(smoothRotate);
-}
   smoothRotate();
 </script>
   <!-- Plexus -->
