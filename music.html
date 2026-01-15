@@ -339,25 +339,25 @@ body {
 
 
 /* Horizontal Scrolling Gallery */
-/* 1. The Container: Handles the height and the transparent fading edges */
+/* 1. The Container: Remove overflow:hidden so images can exceed it */
 .scrolling-container {
   position: relative;
   width: 100%;
-  /* Use padding to create space for the hover scale so images aren't cut by 'overflow: hidden' */
-  padding: 3rem 0; 
-  overflow: hidden; /* Keeps the horizontal scroll contained */
-  margin: 2rem 0; 
-  
+  margin: 4rem 0;
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
 
+  /* The Lines: We keep these here */
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   
-  /* The mask provides the fade-out effect on the left and right sides */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+  /* IMPORTANT: overflow must be visible for hover to work outside edges */
+  overflow: visible; 
+
+  /* The Mask: Apply this to a pseudo-element or the track so it doesn't clip the hover */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .dark .scrolling-container {
@@ -368,28 +368,32 @@ body {
 .scrolling-track {
   display: flex;
   width: max-content;
-  height: 25vh; /* Define the height here instead of the container */
+  /* Define the baseline height here */
+  height: 25vh; 
+  padding: 2rem 0; /* Creates space so images don't overlap other page content when scaling */
   animation: scrollGallery 78s linear infinite;
-  /* Crucial: Allow scaled images to break out of the track height */
-  overflow: visible; 
+  overflow: visible;
 }
 
 /* 3. The Images */
 .scrolling-track img {
-  height: 100%;       
-  width: auto;        
-  object-fit: contain; 
-  padding: 0 0.75rem;   
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  padding: 0 0.75rem;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
-  cursor: pointer;
+  /* Keeps the image "flat" until hovered */
+  position: relative;
+  z-index: 1;
 }
 
-/* 4. The Hover Effect */
+/* 4. The Hover State: Exceeding the edges */
 .scrolling-track img:hover {
-  transform: scale(1.25); /* Now has room to grow vertically */
-  z-index: 50;            /* Keeps hovered image above neighbors */
-  position: relative;     /* Ensures z-index works correctly */
+  /* Scale up - this will now go OVER the container lines */
+  transform: scale(1.4); 
+  /* Lift it above the lines and neighboring images */
+  z-index: 100;
 }
 
 @keyframes scrollGallery {
