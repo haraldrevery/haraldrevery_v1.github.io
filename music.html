@@ -340,69 +340,68 @@ body {
 
 
 
+      
 
 /* Horizontal Scrolling Gallery */
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 40vh; /* Increased height to prevent clipping when artcovers grow */
-  overflow: hidden;
-  margin: 4rem 0;
+  /* Increased height to provide room for the 3D enlargement */
+  height: 40vh; 
+  /* Changed to 'visible' so the hover effect doesn't get cut off at the top/bottom */
+  overflow-x: hidden;
+  overflow-y: visible; 
+  margin: 2rem 0; 
   display: flex;
   align-items: center;
-  perspective: 1200px; /* Essential for the 3D lean effect */
+  
+  /* 3D setup */
+  perspective: 1200px;
   
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
 
-  /* Modern edge fading - also helps define the "middle" zone visually */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+  /* Transparent zones for smooth entry/exit */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .scrolling-track {
   display: flex;
   width: max-content;
-  height: 70%;
-  align-items: center;
-  gap: 2rem;
-  padding: 0 10vw;
-  animation: scrollGallery 60s linear infinite;
+  /* Track is slightly smaller than container to leave vertical 'breathing room' */
+  height: 70%; 
+  animation: scrollGallery 45s linear infinite; 
   transform-style: preserve-3d;
+  align-items: center;
 }
 
 .scrolling-track img {
-  height: 100%;
-  width: auto;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  border-radius: 4px;
+  height: 100%;       
+  width: auto;        
+  object-fit: contain; 
+  padding: 0 0.2rem;   
   
-  /* The "Lean" Logic: Starts at -27deg */
-  transform: rotateY(-27deg) scale(0.9);
-  filter: brightness(0.7) saturate(0.8);
+  /* Modern Tilt: Images lean away by default */
+  transform: rotateY(-25deg) scale(0.9);
+  filter: saturate(0.8) brightness(0.8);
   
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  will-change: transform, filter;
+  /* Smooth transition for all properties */
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease;
+  will-change: transform;
 }
 
-/* The Middle Interaction: 
-   When the user hovers (or for a more advanced JS version, when it hits center), 
-   the artcover faces the viewer and pops out.
-*/
+/* THE FIX: Face viewer and grow without clipping */
 .scrolling-track img:hover {
-  transform: rotateY(0deg) scale(1.25) translateZ(100px);
-  filter: brightness(1.1) saturate(1.1);
-  z-index: 100;
-  margin: 0 2.5rem; /* Adds space so it doesn't overlap neighbors too much */
+  /* Rotate to 0 to face the viewer, scale up, and move forward (translateZ) */
+  transform: rotateY(0deg) scale(1.3) translateZ(60px);
+  filter: saturate(1.1) brightness(1.1);
+  z-index: 50;
+  cursor: pointer;
 }
 
-/* To simulate the "+27deg" on the other side without complex JavaScript, 
-   the hover serves as the "Viewer Focus" point. 
-   Images past the hover point can be styled if using a JS Intersection Observer.
-*/
-
+/* Pause scroll on hover */
 .scrolling-container:hover .scrolling-track {
   animation-play-state: paused;
 }
@@ -412,6 +411,8 @@ body {
   100% { transform: translateX(-50%); }
 }
 
+
+      
 
 
       
