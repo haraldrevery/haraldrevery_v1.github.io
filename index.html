@@ -1314,16 +1314,19 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     }
   });
 function smoothRotate() {
+  // CRITICAL: Select the wrapper, not just the logo svg
   const wrapper = document.querySelector('.position-wrapper');
+  const logoSvg = document.getElementById('main-logo-svg');
+  
   if (wrapper) {
-    currentRotateX += (targetRotateX - currentRotateX) * 0.1; // Smoothed
+    currentRotateX += (targetRotateX - currentRotateX) * 0.1;
     currentRotateY += (targetRotateY - currentRotateY) * 0.1;
 
-    // Apply rotation to the WRAPPER instead of just the logoSvg
-    // This allows the Z-indexed children to move at different speeds relative to the mouse
+    // This makes the child layers (Z-30, Z-60, etc.) move at different relative speeds
     wrapper.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
     
-    // Maintain the logo's specific shadow logic
+    // The echo effect inside main-logo-svg remains untouched by this rotation
+    // but the shadow should still track the movement
     const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
     if (logoSvg) {
        logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
