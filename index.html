@@ -1299,8 +1299,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   });
   function smoothRotate() {
     if (logoSvg) {
-      currentRotateX += (targetRotateX - currentRotateX) * 0.5;
-      currentRotateY += (targetRotateY - currentRotateY) * 0.5;
+      currentRotateX += (targetRotateX - currentRotateX) * 0.29;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.29;
       logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
       const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
       logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
