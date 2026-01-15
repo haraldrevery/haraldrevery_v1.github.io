@@ -775,6 +775,37 @@ body {
     </div>
   </div>
 
+<div class="mt-6 border-t border-black/5 dark:border-white/5 pt-4">
+  <h3 class="font-signika text-sm uppercase tracking-widest opacity-50 mb-3">Tracklist</h3>
+  <div class="space-y-1 max-h-48 overflow-y-auto custom-scrollbar">
+    <template x-for="(track, index) in tracks" :key="index">
+      <div 
+        @click="selectTrack(index)"
+        class="flex items-center justify-between p-2 rounded-lg cursor-pointer transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+        :class="{ 'bg-black/5 dark:bg-white/5': currentIndex === index }"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xs opacity-40 font-signika" x-text="index + 1"></span>
+          <div>
+            <p class="text-sm font-medium" :class="currentIndex === index ? 'text-black dark:text-white' : 'opacity-70'" x-text="track.title"></p>
+            <p class="text-[10px] opacity-50 uppercase tracking-tighter" x-text="track.artist"></p>
+          </div>
+        </div>
+        <template x-if="currentIndex === index && isPlaying">
+            <div class="flex gap-1 items-end h-3">
+                <div class="w-1 bg-current animate-pulse h-full"></div>
+                <div class="w-1 bg-current animate-pulse h-2"></div>
+                <div class="w-1 bg-current animate-pulse h-3"></div>
+            </div>
+        </template>
+      </div>
+    </template>
+  </div>
+</div>
+
+
+    
+
 </div>
       </div>
     </div>
@@ -1058,6 +1089,24 @@ function audioPlayer() {
         btnColor: "bg-gradient-to-br from-white to-sky-400"
       },
     ],
+      selectTrack(index) {
+      if (this.currentIndex === index) {
+        this.togglePlay();
+      } else {
+        this.currentIndex = index;
+        this.loadTrack();
+        this.audio.play();
+        this.isPlaying = true;
+      }
+    },
+
+    // Ensure your loadTrack method is present to update the source
+    loadTrack() {
+      this.audio.src = this.tracks[this.currentIndex].url;
+      this.audio.load();
+      // Reset progress
+      this.currentTime = 0;
+    },
     toggleMute() {
       if (this.isMuted) {
         this.volume = this.previousVolume || 0.7;
