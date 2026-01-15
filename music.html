@@ -788,7 +788,7 @@ body {
           <span class="text-xs opacity-40 font-signika" x-text="index + 1"></span>
           <div>
             <p class="text-sm font-medium" :class="currentIndex === index ? 'text-black dark:text-white' : 'opacity-70'" x-text="track.title"></p>
-            <p class="text-xs opacity-50 uppercase tracking-tighter" x-text="track.artist"></p>
+            <p class="text-xs opacity-50 uppercase" x-text="track.artist"></p>
           </div>
         </div>
         <template x-if="currentIndex === index && isPlaying">
