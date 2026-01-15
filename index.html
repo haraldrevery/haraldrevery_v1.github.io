@@ -559,7 +559,6 @@ html, body {
   overflow: visible;
   position: relative;
   transform-style: preserve-3d;
-  translateZ(15px);
 }
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
@@ -569,7 +568,6 @@ html, body {
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
-  transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
   transform-style: preserve-3d;
 }
@@ -1314,20 +1312,23 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     }
   });
 function smoothRotate() {
-  // 1. Target the WRAPPER instead of just the SVG
   const wrapper = document.querySelector('.position-wrapper');
   const logoSvg = document.getElementById('main-logo-svg');
 
   if (wrapper) {
+    // Standard smoothing logic
     currentRotateX += (targetRotateX - currentRotateX) * 0.1;
     currentRotateY += (targetRotateY - currentRotateY) * 0.1;
 
-    // 2. Apply rotation here to move all 3D layers together
+    // APPLY ROTATION TO THE WRAPPER
+    // This allows children at Z: -60 and Z: +60 to "shift" relative to the center
     wrapper.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
     
-    // 3. Keep the shadow logic on the logoSvg for realism
-    const isDark = document.documentElement.classList.contains('dark');
-    const shadowColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
+    // Apply the shadow ONLY to the main logo for realism
+    const shadowColor = document.documentElement.classList.contains('dark') 
+      ? 'rgba(255,255,255,0.1)' 
+      : 'rgba(0,0,0,0.3)';
+    
     if (logoSvg) {
        logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
     }
