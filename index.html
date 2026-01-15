@@ -480,10 +480,9 @@ html, body {
 }
 /* 2. Floating Animation: Starts after the logo is drawn (8s delay) */
 @keyframes logoFloat {
-  0%, 100% { transform: translateZ(0) translateY(0); }
-  50% { transform: translateZ(0) translateY(-20px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
-      
 .logo-float {
   animation: logoFloat 0.1s ease-in-out infinite 8s;
   transform-style: preserve-3d;
@@ -570,6 +569,8 @@ html, body {
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
+  transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
+  will-change: transform;
   transform-style: preserve-3d;
 }
 /* Adjust the positioning wrapper to be centered */
@@ -760,27 +761,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
-
-
-/* Locate this class in your <style> section */
-.logo-layer-offset {
-  opacity: 0.2; 
-  /* MUST use px, not % */
-  transform: translateZ(-2000px); 
-  fill: currentColor;
-  pointer-events: none;
- 
-
-  fill: currentColor;
-  stroke: none;
-  pointer-events: none;
-  transition: transform 0.14s ease-out;
-}
-
-/* Dark mode adjustment for the offset layer */
-.dark .logo-layer-offset {
-  fill: #FFFFFF !important;
-}      
       
       
   </style>
@@ -986,17 +966,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <div class="position-wrapper flex items-center justify-center relative z-10">
 
 
+      
 
       
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-        
-     <g class="logo-layer-offset">
-  <use href="#logo-shape-outline" />
-</g>
-
-<g id="tilting-logo" class="animate-logo logo-float logo-3d-shadow">
-  <use href="#logo-shape-outline" />
-</g>  
         
 <defs>
   <g id="logo-shape-outline">
