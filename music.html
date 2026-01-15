@@ -438,171 +438,137 @@ body {
   opacity: 1;
   pointer-events: auto;
 }
-      
 
+/* ------------------------------------------------------------------
+   JS-FREE AUDIO PLAYER CSS
+   - Hidden radios
+   - Tracklist styles
+   - Now-playing marquee
+   - Show only the audio for the checked track
+   ------------------------------------------------------------------ */
+.track-radio{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 
+.player {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1rem;
+  align-items: start;
+}
 
+.tracklist{
+  background: rgba(255,255,255,0.02);
+  padding:12px;
+  border-radius:8px;
+  min-height:220px;
+  max-height:420px;
+  overflow:auto;
+}
+.track-item{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition: background .15s, transform .12s;
+  user-select:none;
+  color:inherit;
+  text-decoration:none;
+}
+.track-item:hover{ background: rgba(255,255,255,0.03); transform: translateY(-2px); }
+.track-index{
+  width:36px; height:36px; display:inline-grid; place-items:center;
+  background: rgba(255,255,255,0.03); border-radius:8px; font-weight:600;
+}
+.track-meta{ display:flex; flex-direction:column; font-size:.95rem; }
+.track-title{ font-weight:700; color:inherit; }
+.track-sub{ font-size:.82rem; color:rgba(188,208,230,0.9); margin-top:2px; }
 
-    /* two layered full-viewport pseudo-elements crossfading */
-    body::before, body::after{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index: -2;
-      background-repeat: repeat;
-      background-position: center;
-      background-size: var(--bg-size);
-      opacity:0.7;
-      pointer-events:none;
-    }
-    body::before{ background-image: var(--bg1); opacity:.65; animation:fadeA 12s linear infinite; }
-    body::after { background-image: var(--bg2); opacity:.5; animation:fadeB 12s linear infinite; }
-    @keyframes fadeA{
-      0%{opacity:.65}
-      50%{opacity:.15}
-      100%{opacity:.65}
-    }
-    @keyframes fadeB{
-      0%{opacity:.15}
-      50%{opacity:.65}
-      100%{opacity:.15}
-    }
+/* show visual selected state for up to 7 tracks */
+#track-1:checked ~ .player .tracklist label[for="track-1"],
+#track-2:checked ~ .player .tracklist label[for="track-2"],
+#track-3:checked ~ .player .tracklist label[for="track-3"],
+#track-4:checked ~ .player .tracklist label[for="track-4"],
+#track-5:checked ~ .player .tracklist label[for="track-5"],
+#track-6:checked ~ .player .tracklist label[for="track-6"],
+#track-7:checked ~ .player .tracklist label[for="track-7"]{
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  box-shadow: 0 6px 20px rgba(2,6,23,0.5);
+  border-left:4px solid rgba(130,200,255,0.22);
+}
 
-    /* ---------- Layout ---------- */
-    .wrap{
-      max-width:980px;
-      margin:48px auto;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
-      border-radius:12px;
-      padding:24px;
-      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
-      backdrop-filter: blur(6px);
-      position:relative;
-    }
+/* Now playing strip + marquee */
+.now-playing{
+  margin-bottom:14px;
+  padding:10px 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+  border-radius:8px;
+  overflow:hidden;
+  white-space:nowrap;
+  position:relative;
+  height:42px;
+  display:flex;
+  align-items:center;
+}
+.np-text{
+  display:none;
+  min-width:100%;
+  will-change:transform;
+}
+.np-text span{
+  display:inline-block;
+  padding-right:40px;
+  color:#dff1ff;
+  font-weight:700;
+  font-size:1rem;
+}
+/* marquee animation */
+@keyframes marquee-simple {
+  0%{ transform: translateX(100%); }
+  100%{ transform: translateX(-100%); }
+}
+.np-text.animate span{
+  animation: marquee-simple 12s linear infinite;
+}
 
-    h1{ margin:0 0 12px 0; font-size:1.4rem; letter-spacing:.6px; color:#fff; }
+/* show specific now-playing entry depending on checked radio */
+#track-1:checked ~ .player .now-playing .np-1,
+#track-2:checked ~ .player .now-playing .np-2,
+#track-3:checked ~ .player .now-playing .np-3,
+#track-4:checked ~ .player .now-playing .np-4,
+#track-5:checked ~ .player .now-playing .np-5,
+#track-6:checked ~ .player .now-playing .np-6,
+#track-7:checked ~ .player .now-playing .np-7{
+  display:block;
+}
 
-    .player-grid{
-      display:grid;
-      grid-template-columns: 1fr 340px;
-      gap:20px;
-      align-items:start;
-    }
+.controls-area{
+  background: rgba(255,255,255,0.02);
+  padding:14px;
+  border-radius:8px;
+}
 
-    /* ---------- Radio-based track selection (no JS) ---------- */
-    /* hide radios */
-    .track-radio{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+/* hide all audio elements by default; only show the one matching the checked radio */
+.audios audio{ display:none; width:100%; outline:none; background:transparent; }
+#track-1:checked ~ .player .audios #audio-1,
+#track-2:checked ~ .player .audios #audio-2,
+#track-3:checked ~ .player .audios #audio-3,
+#track-4:checked ~ .player .audios #audio-4,
+#track-5:checked ~ .player .audios #audio-5,
+#track-6:checked ~ .player .audios #audio-6,
+#track-7:checked ~ .player .audios #audio-7{
+  display:block;
+}
 
-    .tracklist{
-      background: rgba(255,255,255,0.02);
-      padding:12px;
-      border-radius:8px;
-      min-height:220px;
-      max-height:420px;
-      overflow:auto;
-    }
-    .track-item{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      padding:10px;
-      border-radius:6px;
-      margin-bottom:8px;
-      cursor:pointer;
-      transition: background .15s, transform .12s;
-      user-select:none;
-      color:#e6eef8;
-      text-decoration:none;
-    }
-    .track-item:hover{ background: rgba(255,255,255,0.03); transform: translateY(-2px); }
-    .track-index{
-      width:36px; height:36px; display:inline-grid; place-items:center;
-      background: rgba(255,255,255,0.03); border-radius:8px; font-weight:600;
-    }
-    .track-meta{ display:flex; flex-direction:column; font-size:.95rem; }
-    .track-title{ font-weight:700; color:#fff; }
-    .track-sub{ font-size:.82rem; color:#bcd0e6; margin-top:2px; }
+.meta-small{ color:#b7cee6; font-size:.86rem; margin-top:8px; }
 
-    /* show visual selected state */
-    /* For each radio, when checked, highlight its label */
-    /* Example for 5 tracks; extend selectors if you add tracks */
-    #track-1:checked ~ .player .tracklist label[for="track-1"],
-    #track-2:checked ~ .player .tracklist label[for="track-2"],
-    #track-3:checked ~ .player .tracklist label[for="track-3"],
-    #track-4:checked ~ .player .tracklist label[for="track-4"],
-    #track-5:checked ~ .player .tracklist label[for="track-5"]{
-      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      box-shadow: 0 6px 20px rgba(2,6,23,0.5);
-      border-left:4px solid rgba(130,200,255,0.22);
-    }
-
-    /* ---------- Now playing strip with scrolling text (marquee via CSS) ---------- */
-    .now-playing{
-      margin-bottom:14px;
-      padding:10px 12px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-      border-radius:8px;
-      overflow:hidden;
-      white-space:nowrap;
-      position:relative;
-      height:42px;
-      display:flex;
-      align-items:center;
-    }
-    .np-text{
-      display:none;
-      min-width:100%;
-      will-change:transform;
-    }
-    .np-text span{
-      display:inline-block;
-      padding-right:40px;
-      color:#dff1ff;
-      font-weight:700;
-      font-size:1rem;
-    }
-    /* marquee animation */
-    @keyframes marquee {
-      0%{ transform: translateX(100%); }
-      100%{ transform: translateX(-100%); }
-    }
-    .np-text.animate span{
-      animation: marquee 12s linear infinite;
-    }
-
-    /* show specific now-playing entry depending on checked radio */
-    #track-1:checked ~ .player .now-playing .np-1,
-    #track-2:checked ~ .player .now-playing .np-2,
-    #track-3:checked ~ .player .now-playing .np-3,
-    #track-4:checked ~ .player .now-playing .np-4,
-    #track-5:checked ~ .player .now-playing .np-5{
-      display:block;
-    }
-    .controls-area{
-      background: rgba(255,255,255,0.02);
-      padding:14px;
-      border-radius:8px;
-    }
-    /* hide all audio elements by default; only show the one matching the checked radio */
-    .audios audio{ display:none; width:100%; outline:none; background:transparent; }
-    #track-1:checked ~ .player .audios #audio-1,
-    #track-2:checked ~ .player .audios #audio-2,
-    #track-3:checked ~ .player .audios #audio-3,
-    #track-4:checked ~ .player .audios #audio-4,
-    #track-5:checked ~ .player .audios #audio-5{
-      display:block;
-    }
-
-    /* smaller helper info */
-    .meta-small{ color:#b7cee6; font-size:.86rem; margin-top:8px; }
-
-    /* responsive */
-    @media (max-width:880px){
-      .player-grid{ grid-template-columns: 1fr; }
-      .audios audio{ max-width:100%; }
-    }
-      
-      
+@media (max-width:880px){
+  .player{ grid-template-columns: 1fr; }
+  .audios audio{ max-width:100%; }
+}
   </style>
 
   <script>
@@ -631,16 +597,7 @@ body {
              bg-gradient-to-br from-slate-100 via-white to-slate-200 
              dark:from-black dark:via-[#0F0F0F] dark:to-[#1F1F1F]
              bg-[length:200%_200%] bg-fixed">
-
-  <!-- RADIO INPUTS (hidden) - extend if you add tracks -->
-  <input class="track-radio" type="radio" name="track" id="track-1" checked>
-  <input class="track-radio" type="radio" name="track" id="track-2">
-  <input class="track-radio" type="radio" name="track" id="track-3">
-  <input class="track-radio" type="radio" name="track" id="track-4">
-  <input class="track-radio" type="radio" name="track" id="track-5">
-    
-
-    
+  
 <header id="main-header" style="z-index: 9999;"
         class="fixed top-0 left-0 flex w-full overflow-hidden pt-1 pb-0 bg-white/60 dark:bg-black/60 backdrop-blur-md">
   <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -664,22 +621,22 @@ body {
       <div id="menu" class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden" 
            :class="open ? 'h-auto opacity-100' : 'h-0 opacity-0 md:h-auto md:opacity-100'">
         <ul id="ulMenu" class="flex flex-col md:space-x-5 mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 text-black dark:text-white">
-          <li class="group transition duration-300">
+          <li class="group transition-300">
             <a href="index.html" class="font-signika text-2xl tracking-widest">HOME
               <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-[1px] bg-black dark:bg-white"></span>
             </a>
           </li>
-          <li class="group transition duration-300">
+          <li class="group transition-300">
             <a href="music.html" class="font-signika text-2xl tracking-widest">MUSIC
               <span class="hidden md:block h-[1px] bg-black dark:bg-white"></span>
             </a>
           </li>
-          <li class="group transition duration-300">
+          <li class="group transition-300">
             <a href="about.html" class="font-signika text-2xl tracking-widest">ABOUT
               <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-[1px] bg-black dark:bg-white"></span>
             </a>
           </li>
-          <li class="group transition duration-300">
+          <li class="group transition-300">
             <a href="contact.html" class="font-signika text-2xl tracking-widest">CONTACT
               <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-[1px] bg-black dark:bg-white"></span>
             </a>
@@ -763,7 +720,8 @@ body {
 <!-- Audio player to the right, text to the left -->  
 <div class="container mx-auto py-12 px-4">
   <!-- Align settings -->  
-  <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16" x-data="audioPlayer()">
+  <!-- NOTE: removed x-data="audioPlayer()" here (Alpine controller) to switch to JS-free player -->
+  <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-16">
     
     <div class="w-full lg:w-1/2 text-container start-animation">
 
@@ -838,117 +796,146 @@ body {
 
       
       
-<!--  
-      <h2 data-animate="true" class="
-      animated-heading text-4xl md:text-4xl mb-6 
-      w-fit 
-       ">
-      Audio player
-      </h2> --> 
+<!--
+  REPLACED THE ENTIRE ALPINE/JS PLAYER WITH A JS-FREE PLAYER HERE.
+  Steps taken:
+  - Removed x-data="audioPlayer()" on the parent container.
+  - Inserted hidden radios + CSS-driven tracklist + marquee + individual <audio> elements.
+  - Kept the textured crossfade layers.
+  - Audio source paths are preserved and start with ./audio/
+  -->
 
+  <!-- Hidden radios - selecting one updates the UI via CSS -->
+  <input class="track-radio" type="radio" name="track" id="track-1" checked>
+  <input class="track-radio" type="radio" name="track" id="track-2">
+  <input class="track-radio" type="radio" name="track" id="track-3">
+  <input class="track-radio" type="radio" name="track" id="track-4">
+  <input class="track-radio" type="radio" name="track" id="track-5">
+  <input class="track-radio" type="radio" name="track" id="track-6">
+  <input class="track-radio" type="radio" name="track" id="track-7">
 
-      
-      <!-- Audio player --> 
+  <div class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl player">
+    <!-- keep your existing texture layers -->
+    <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: -2s;"></div>
+    <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 10s;"></div>
+    <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 22s;"></div>
+    <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture3.jpg'); animation-delay: 34s;"></div>
 
-<div class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl">
-  <!-- keep your existing texture layers if you like, or use these -->
-  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: -2s;"></div>
-  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 10s;"></div>
-  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 22s;"></div>
-  <div class="absolute inset-0 bg-cover bg-center animate-crossfade" style="background-image: url('./dist/assets/audioplayer_texture3.jpg'); animation-delay: 34s;"></div>
-
-  <div class="relative z-10 flex flex-col gap-4">
-    <div class="player-grid">
-      <!-- LEFT: track list -->
-      <section class="tracklist" aria-label="Tracklist">
-        <label class="track-item" for="track-1">
-          <div class="track-index">01</div>
-          <div class="track-meta">
-            <div class="track-title">Phrases</div>
-            <div class="track-sub">Harald Revery</div>
-          </div>
-        </label>
-
-        <label class="track-item" for="track-2">
-          <div class="track-index">02</div>
-          <div class="track-meta">
-            <div class="track-title">Forest Rain</div>
-            <div class="track-sub">Harald Revery</div>
-          </div>
-        </label>
-
-        <label class="track-item" for="track-3">
-          <div class="track-index">03</div>
-          <div class="track-meta">
-            <div class="track-title">Looking for Snow</div>
-            <div class="track-sub">Harald Revery</div>
-          </div>
-        </label>
-
-        <label class="track-item" for="track-4">
-          <div class="track-index">04</div>
-          <div class="track-meta">
-            <div class="track-title">Uninhabited Island</div>
-            <div class="track-sub">Harald Revery</div>
-          </div>
-        </label>
-
-        <label class="track-item" for="track-5">
-          <div class="track-index">05</div>
-          <div class="track-meta">
-            <div class="track-title">Isolated</div>
-            <div class="track-sub">Harald Revery</div>
-          </div>
-        </label>
-      </section>
-
-      <!-- RIGHT: player controls + now playing -->
-      <aside>
-        <div class="now-playing" aria-live="polite">
-          <div class="np-text np-1 animate"><span>Now playing — Phrases — Harald Revery</span></div>
-          <div class="np-text np-2 animate"><span>Now playing — Forest Rain — Harald Revery</span></div>
-          <div class="np-text np-3 animate"><span>Now playing — Looking for Snow — Harald Revery</span></div>
-          <div class="np-text np-4 animate"><span>Now playing — Uninhabited Island — Harald Revery</span></div>
-          <div class="np-text np-5 animate"><span>Now playing — Isolated — Harald Revery</span></div>
+    <!-- Left: tracklist -->
+    <section class="tracklist" aria-label="Tracklist">
+      <label class="track-item" for="track-1">
+        <div class="track-index">01</div>
+        <div class="track-meta">
+          <div class="track-title">Phrases</div>
+          <div class="track-sub">Harald Revery</div>
         </div>
+      </label>
 
-        <div class="controls-area">
-          <div class="audios" aria-hidden="false">
-            <audio id="audio-1" controls preload="none">
-              <source src="./audio/Harald_Revery_-_Phrases.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-
-            <audio id="audio-2" controls preload="none">
-              <source src="./audio/Harald_Revery_-_Forest_Rain.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-
-            <audio id="audio-3" controls preload="none">
-              <source src="./audio/Harald_Revery_-_Looking_For_Snow.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-
-            <audio id="audio-4" controls preload="none">
-              <source src="./audio/Harald_Revery_-_Uninhabited_Island.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-
-            <audio id="audio-5" controls preload="none">
-              <source src="./audio/Harald_Revery_Isolated.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-
-          <div class="meta-small">Click a track on the left to select it. Then use the player controls to play/pause.</div>
+      <label class="track-item" for="track-2">
+        <div class="track-index">02</div>
+        <div class="track-meta">
+          <div class="track-title">Forest Rain</div>
+          <div class="track-sub">Harald Revery</div>
         </div>
-      </aside>
-    </div>
-  </div>
-</div>
+      </label>
 
-</div>
+      <label class="track-item" for="track-3">
+        <div class="track-index">03</div>
+        <div class="track-meta">
+          <div class="track-title">Looking for Snow</div>
+          <div class="track-sub">Harald Revery</div>
+        </div>
+      </label>
+
+      <label class="track-item" for="track-4">
+        <div class="track-index">04</div>
+        <div class="track-meta">
+          <div class="track-title">Uninhabited Island</div>
+          <div class="track-sub">Harald Revery</div>
+        </div>
+      </label>
+
+      <label class="track-item" for="track-5">
+        <div class="track-index">05</div>
+        <div class="track-meta">
+          <div class="track-title">Isolated</div>
+          <div class="track-sub">Harald Revery</div>
+        </div>
+      </label>
+
+      <label class="track-item" for="track-6">
+        <div class="track-index">06</div>
+        <div class="track-meta">
+          <div class="track-title">Mystery Card</div>
+          <div class="track-sub">Harald Revery</div>
+        </div>
+      </label>
+
+      <label class="track-item" for="track-7">
+        <div class="track-index">07</div>
+        <div class="track-meta">
+          <div class="track-title">The North</div>
+          <div class="track-sub">Harald Revery & Light Titum</div>
+        </div>
+      </label>
+    </section>
+
+    <!-- Right: now playing + controls -->
+    <aside>
+      <div class="now-playing" aria-live="polite">
+        <div class="np-text np-1 animate"><span>Now playing — Phrases — Harald Revery</span></div>
+        <div class="np-text np-2 animate"><span>Now playing — Forest Rain — Harald Revery</span></div>
+        <div class="np-text np-3 animate"><span>Now playing — Looking for Snow — Harald Revery</span></div>
+        <div class="np-text np-4 animate"><span>Now playing — Uninhabited Island — Harald Revery</span></div>
+        <div class="np-text np-5 animate"><span>Now playing — Isolated — Harald Revery</span></div>
+        <div class="np-text np-6 animate"><span>Now playing — Mystery Card — Harald Revery</span></div>
+        <div class="np-text np-7 animate"><span>Now playing — The North — Harald Revery & Light Titum</span></div>
       </div>
+
+      <div class="controls-area">
+        <div class="audios" aria-hidden="false">
+          <!-- audio sources (start with ./audio/ as requested) -->
+          <audio id="audio-1" controls preload="none">
+            <source src="./audio/Harald_Revery_-_Phrases.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <audio id="audio-2" controls preload="none">
+            <source src="./audio/Harald_Revery_-_Forest_Rain.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <audio id="audio-3" controls preload="none">
+            <source src="./audio/Harald_Revery_-_Looking_For_Snow.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <audio id="audio-4" controls preload="none">
+            <source src="./audio/Harald_Revery_-_Uninhabited_Island.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <audio id="audio-5" controls preload="none">
+            <source src="./audio/Harald_Revery_Isolated.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <audio id="audio-6" controls preload="none">
+            <source src="./audio/Harald_Revery_MysteryCard.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+          <audio id="audio-7" controls preload="none">
+            <source src="./audio/Harald_Revery_and_Light_Titum_-_The_North.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+
+        <div class="meta-small">Click a track on the left to select it. Use the visible player controls to play/pause/seek.</div>
+      </div>
+    </aside>
+  </div>
+
     </div>
   </div>
 </div>
@@ -1062,8 +1049,11 @@ body {
 
   <script src="./dist/fade_in.js"></script>
   <script src="./dist/menu.js"></script>
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // small helper: set #year if present
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
   </script>
     
 <!-- fading words script -->
@@ -1158,135 +1148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
     
-<script>
-function audioPlayer() {
-  return {
-    volume: 0.7,
-    previousVolume: 0.7,
-    isMuted: false,
-    isPlaying: false,
-    isDragging: false,
-    currentTime: 0,
-    duration: 0,
-    volume: 0.7,
-    currentIndex: 0,
-    audio: new Audio(),
-    // color1 = start color, color2 = current time color
-    tracks: [
-      {
-        title: "Phrases",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Phrases.mp3",
-        color1: "#f97316",
-        color2: "#e11d48",
-        btnColor: "bg-gradient-to-br from-orange-500 to-rose-600"
-      },
-      {
-        title: "Forest Rain",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Forest_Rain.mp3",
-        color1: "#8f9c4b",
-        color2: "#f9f9f9",
-        btnColor: "bg-gradient-to-br from-white via-green-100 to-green-500"
-      },
-      {
-        title: "Looking for Snow",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Looking_For_Snow.mp3",
-        color1: "#3f535e",
-        color2: "#f9f9f9",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-      {
-        title: "Uninhabited Island",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_-_Uninhabited_Island.mp3",
-        color1: "#090c10",
-        color2: "#2d965c",
-        btnColor: "bg-gradient-to-br from-[#090c10] to-[#2d965c]"
-      },
-      {
-        title: "Isolated",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_Isolated.mp3",
-        color1: "#f9f9f9",
-        color2: "#3f535e",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-       {
-        title: "Mystery Card",
-        artist: "Harald Revery",
-        url: "./audio/Harald_Revery_MysteryCard.mp3",
-        color1: "#a8aebd",
-        color2: "#e5e9ec",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-       {
-        title: "The North",
-        artist: "Harald Revery & Light Titum",
-        url: "./audio/Harald_Revery_and_Light_Titum_-_The_North.mp3",
-        color1: "#f9f9f9",
-        color2: "#3f535e",
-        btnColor: "bg-gradient-to-br from-white to-sky-400"
-      },
-    ],
-    toggleMute() {
-      if (this.isMuted) {
-        this.volume = this.previousVolume || 0.7;
-        this.audio.volume = this.volume;
-        this.isMuted = false;
-      } else {
-        this.previousVolume = this.volume;
-        this.volume = 0;
-        this.audio.volume = 0;
-        this.isMuted = true;
-      }
-    },
-    init() {
-      this.loadTrack();
-      this.audio.volume = this.volume;
-      this.audio.ontimeupdate = () => { if(!this.isDragging) this.currentTime = this.audio.currentTime };
-      this.audio.onloadedmetadata = () => { this.duration = this.audio.duration };
-      this.audio.onended = () => { this.next() };
-    },
-    loadTrack() {
-      this.audio.src = this.tracks[this.currentIndex].url;
-      this.audio.load();
-    },
-    togglePlay() {
-      if (this.isPlaying) {
-        this.audio.pause();
-      } else {
-        this.audio.play();
-      }
-      this.isPlaying = !this.isPlaying;
-    },
-    next() {
-      this.currentIndex = (this.currentIndex + 1) % this.tracks.length;
-      this.loadTrack();
-      if (this.isPlaying) this.audio.play();
-    },
-    previous() {
-      this.currentIndex = (this.currentIndex - 1 + this.tracks.length) % this.tracks.length;
-      this.loadTrack();
-      if (this.isPlaying) this.audio.play();
-    },
-    formatTime(seconds) {
-      if (isNaN(seconds)) return "0:00";
-      let min = Math.floor(seconds / 60);
-      let sec = Math.floor(seconds % 60);
-      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-    },
-    seek(e) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percent = Math.min(Math.max(x / rect.width, 0), 1);
-      this.currentTime = percent * this.duration;
-      this.audio.currentTime = this.currentTime;
-    }
-  }
-}
-</script>
+<!-- NOTE: audioPlayer() Alpine controller removed to keep the player JS-free. -->
 
 <!-- Load the other pages in the background so it doesn't blink as much -->
     <script>
