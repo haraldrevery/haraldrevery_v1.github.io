@@ -341,86 +341,65 @@ body {
 
 
 /* Modern 3D Cover Flow Gallery */
+/* 1. The Container: Removed borders and added perspective */
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 45vh; /* Increased height for 3D perspective */
+  height: 35vh; /* Increased slightly for 3D depth */
   overflow: hidden;
-  margin: 4rem 0;
+  margin: 2rem 0; 
   display: flex;
   align-items: center;
-  perspective: 1200px; /* Essential for 3D effect */
   
+  /* 3D setup */
+  perspective: 1000px;
+  
+  /* Fade-in Animation */
   opacity: 0;
-  animation: fadeIn 1s ease-out forwards;
-  animation-delay: 0.3s;
+  animation: fadeIn 0.8s ease-in forwards;
+  animation-delay: 0.5s;
 
-  /* Subtle background depth */
-  background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+  /* Transparent zones for smooth entry/exit */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
+/* 2. The Moving Track: preserve-3d ensures the covers don't look flat */
 .scrolling-track {
   display: flex;
   width: max-content;
-  height: 70%;
-  align-items: center;
-  gap: 2rem;
-  padding: 0 10vw;
-  animation: scrollGallery 60s linear infinite;
+  height: 80%;
+  animation: scrollGallery 60s linear infinite; 
   transform-style: preserve-3d;
 }
 
+/* 3. The Images: Default state is angled away */
 .scrolling-track img {
-  height: 100%;
-  width: auto;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  border-radius: 4px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  height: 100%;       
+  width: auto;        
+  object-fit: contain; 
+  padding: 0 1.5rem;   
   
-  /* The Modern "Lean" Effect */
-  transform: rotateY(-25deg) scale(0.9);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  filter: grayscale(20%) brightness(0.8);
+  /* Modern Tilt: Faces away slightly by default */
+  transform: rotateY(-20deg) scale(0.9);
+  filter: saturate(0.8) brightness(0.9);
+  
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
+  will-change: transform;
 }
 
-/* Focused state for images when hovered */
+/* 4. The Center Effect: Faces the viewer on hover */
+/* (In modern browsers, the viewer is 'drawn' to the center image) */
 .scrolling-track img:hover {
-  transform: rotateY(0deg) scale(1.25) translateZ(50px);
-  filter: grayscale(0%) brightness(1.1);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-  z-index: 100;
-  margin: 0 2rem;
+  transform: rotateY(0deg) scale(1.2) translateZ(50px);
+  filter: saturate(1.1) brightness(1.1);
+  z-index: 50;
+  cursor: pointer;
 }
 
-/* Soft Edge Fading */
-.scrolling-container::before,
-.scrolling-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 25%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.scrolling-container::before {
-  left: 0;
-  background: linear-gradient(to right, #f8fafc 0%, transparent 100%);
-}
-
-.scrolling-container::after {
-  right: 0;
-  background: linear-gradient(to left, #f8fafc 0%, transparent 100%);
-}
-
-/* Dark Mode adaptation for edge fading */
-.dark .scrolling-container::before {
-  background: linear-gradient(to right, #000 0%, transparent 100%);
-}
-.dark .scrolling-container::after {
-  background: linear-gradient(to left, #000 0%, transparent 100%);
+/* Pause the scroll when interacting with a cover */
+.scrolling-container:hover .scrolling-track {
+  animation-play-state: paused;
 }
 
 @keyframes scrollGallery {
@@ -428,10 +407,10 @@ body {
   100% { transform: translateX(-50%); }
 }
 
-/* Pause on hover so users can admire a specific cover */
-.scrolling-container:hover .scrolling-track {
-  animation-play-state: paused;
-}
+
+
+
+      
       
 
 
