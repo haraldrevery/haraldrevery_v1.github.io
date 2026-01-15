@@ -75,7 +75,7 @@
   /* Use 100vh to match the exact height of the user's screen */
   height: 100vh;
   z-index: -11;
-  background-image: url('./dist/assets/bgtexture.jpg');
+  background-image: url('./assets/bgtexture.jpg');
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
   /* 'cover' ensures the image fills the screen without stretching or gaps */
   background-size: cover;
@@ -775,21 +775,21 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <link rel="stylesheet" href="dist/output.css" />
   <link rel="stylesheet" href="styles.css" />
   <!-- Alpine.js -->
-  <script defer src="./dist/alpine.min.js"></script>
-    <script src="./dist/page-transitions.js"></script>
+  <script defer src="./css_and_js_code/alpine.min.js"></script>
+    <script src="./css_and_js_code/page-transitions.js"></script>
   <!-- Start - Fonts -->
   <!-- End - Fonts -->
   <!-- Start - glightbox Scripts -->
-  <link rel="stylesheet" href="./dist/glightbox.min.css" />
-  <script src="./dist/glightbox_min.js"
+  <link rel="stylesheet" href="./css_and_js_code/glightbox.min.css" />
+  <script src="./css_and_js_code/glightbox_min.js"
     integrity="sha256-xnxZzfmAeTsCFsnenG6/aIQYg4girx5QsJQ546oon/M=" crossorigin="anonymous"></script>
   <!-- End - glightbox Scripts -->
  <!-- <script src="https://cdn.tailwindcss.com"></script>-->
-  <script src="./dist/tailwind.js"></script>
+  <script src="./css_and_js_code/tailwind.js"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
-    content: ["./dist/*.{html,js}"],
+    content: ["./css_and_js_code/*.{html,js}"],
     theme: {
       extend: {
         fontFamily: {
