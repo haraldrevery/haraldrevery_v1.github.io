@@ -5,6 +5,9 @@
   x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
   :class="{ 'dark': darkMode }">
 <head>
+<link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./fonts/HaraldReveryMonoFont.woff2" as="font" type="font/woff2" crossorigin>
+    
   <!-- Remember darkmode/lightmode-->
 <script>
   const isDark = localStorage.getItem('darkMode') === 'true' || localStorage.getItem('darkMode') === null;
