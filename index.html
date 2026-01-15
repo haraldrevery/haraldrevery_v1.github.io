@@ -763,30 +763,20 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 /* 3D layers */
-#tilting-logo {
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.1s ease-out;
+.logo-layer-front {
+  transform: translateZ(100px) !important;  /* Pops the front layer forward */
+  opacity: 1;  /* Full opacity for the front */
+  pointer-events: none;  /* Optional: prevents interaction if not needed */
 }
 
-.logo-layer-rear {
-  /* Push the shadow layer back. -100px provides significant depth */
-  transform: translateZ(-100px) !important; 
-  opacity: 0.15; 
-  pointer-events: none;
+/* Optional: Enhance with a forward shadow for realism during tilt */
+.logo-layer-front {
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));  /* Adjust based on theme */
 }
 
-#main-logo-svg {
-  /* CRITICAL: SVG must have preserve-3d to allow inner <g> and <use> depth */
-  transform-style: preserve-3d !important;
-  overflow: visible !important;
-  /* Remove the translateZ(15px) from here if it exists in your inline styles */
+.dark .logo-layer-front {
+  filter: drop-shadow(0 5px 10px rgba(255,255,255,0.1));  /* For dark mode */
 }
-
-.position-wrapper {
-  transform-style: preserve-3d;
-}
-
 
 
       
@@ -1006,10 +996,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   </g>
 </defs>
 
-        <g id="tilting-logo">
+        
+<g id="tilting-logo">
   <use href="#logo-shape-outline" class="animate-logo logo-layer-rear" />
-
-  <use href="#logo-shape-outline" class="animate-logo" />
+  <use href="#logo-shape-outline" class="animate-logo logo-layer-front" />  <!-- Add logo-layer-front here -->
 </g>
 
         
