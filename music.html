@@ -438,8 +438,50 @@ body {
   opacity: 1;
   pointer-events: auto;
 }
+
+
+
+
       
-      
+/* Enhanced Glassmorphism & Sleeker Layout */
+#main-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+  background: rgba(255, 255, 255, 0.4); /* Lighter transparency */
+  transition: all 0.4s ease;
+}
+
+.dark #main-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Slimmer Navigation Links */
+#ulMenu a {
+  font-size: 1.1rem; /* Smaller, more modern size */
+  font-weight: 300;
+  letter-spacing: 0.25em; /* Increased letter spacing for a premium feel */
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#ulMenu a:hover {
+  opacity: 1;
+  transform: translateY(-1px); /* Subtle lift on hover */
+}
+
+/* Sophisticated underline animation */
+.nav-link-underline {
+  display: block;
+  height: 1px;
+  width: 0;
+  background: currentColor;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 2px;
+}
+
+li.group:hover .nav-link-underline {
+  width: 100%;
+}      
   </style>
 
   <script>
@@ -458,6 +500,9 @@ body {
       },
       plugins: [],
     }
+
+
+      
   </script>
 
   <script defer src="./dist/alpine.min.js"></script>
@@ -470,47 +515,43 @@ body {
              bg-[length:200%_200%] bg-fixed">
   
 <header id="main-header" style="z-index: 9999;"
-        class="fixed top-0 left-0 flex w-full overflow-hidden pt-1 pb-0 bg-white/60 dark:bg-black/60 backdrop-blur-md">
+        class="fixed top-0 left-0 w-full backdrop-blur-xl transition-all duration-300">
   <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
-    <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap px-5 md:px-0">
+    <div class="container mx-auto flex items-center justify-between py-4 px-6 md:px-12">
   
-      <div class="mr-4 md:mr-8">
-        <a href="index.html" class="text-2xl font-signika tracking-[0.15em] transition duration-300 hover:opacity-75 text-black dark:text-white">
-          HARALD REVERY
+      <div class="flex-shrink-0">
+        <a href="index.html" class="text-xl font-signika tracking-[0.3em] transition duration-500 hover:opacity-60 text-black dark:text-white uppercase">
+          Harald Revery
         </a>
       </div>
 
-      <div class="ml-auto md:hidden flex items-center justify-start">
-        <button @click="open = !open" class="text-black dark:text-white w-5 h-5 relative focus:outline-none">
-          <span class="sr-only">Open main menu</span>
-          <div class="menu-letter-toggle absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 select-none">
-            <span x-text="open ? 'X' : 'E'">E</span>
-          </div>
+      <div class="md:hidden">
+        <button @click="open = !open" class="text-black dark:text-white focus:outline-none p-2">
+          <span class="sr-only">Toggle Menu</span>
+          <div class="text-xl font-signika" x-text="open ? 'CLOSE' : 'MENU'">MENU</div>
         </button>
       </div>
 
-      <div id="menu" class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden" 
-           :class="open ? 'h-auto opacity-100' : 'h-0 opacity-0 md:h-auto md:opacity-100'">
-        <ul id="ulMenu" class="flex flex-col md:space-x-5 mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 text-black dark:text-white">
-          <li class="group transition duration-300">
-            <a href="index.html" class="font-signika text-2xl tracking-widest">HOME
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-[1px] bg-black dark:bg-white"></span>
-            </a>
+      <div id="menu" 
+           class="absolute md:relative top-full left-0 w-full md:w-auto bg-white/90 dark:bg-black/90 md:bg-transparent transition-all duration-300 overflow-hidden md:flex md:items-center"
+           :class="open ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 md:max-h-full md:opacity-100'">
+        
+        <ul id="ulMenu" class="flex flex-col md:flex-row items-center gap-8 p-8 md:p-0 text-black dark:text-white">
+          <li class="group">
+            <a href="index.html" class="font-signika">HOME</a>
+            <span class="nav-link-underline"></span>
           </li>
-          <li class="group transition duration-300">
-            <a href="music.html" class="font-signika text-2xl tracking-widest">MUSIC
-              <span class="hidden md:block h-[1px] bg-black dark:bg-white"></span>
-            </a>
+          <li class="group">
+            <a href="music.html" class="font-signika">MUSIC</a>
+            <span class="block h-[1px] w-full bg-black dark:bg-white mt-[2px]"></span>
           </li>
-          <li class="group transition duration-300">
-            <a href="about.html" class="font-signika text-2xl tracking-widest">ABOUT
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-[1px] bg-black dark:bg-white"></span>
-            </a>
+          <li class="group">
+            <a href="about.html" class="font-signika">ABOUT</a>
+            <span class="nav-link-underline"></span>
           </li>
-          <li class="group transition duration-300">
-            <a href="contact.html" class="font-signika text-2xl tracking-widest">CONTACT
-              <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-[1px] bg-black dark:bg-white"></span>
-            </a>
+          <li class="group">
+            <a href="contact.html" class="font-signika">CONTACT</a>
+            <span class="nav-link-underline"></span>
           </li>
         </ul>
       </div>
