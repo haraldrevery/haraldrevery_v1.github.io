@@ -1667,7 +1667,7 @@ document.addEventListener('alpine:init', () => {
         canvas: null,
         ctx: null,
         particles: [],
-        // Configuration storage
+        startTime: null, // Track when the animation starts for the build-up
         config: {
             particleCount: 0,
             lineDistance: 0,
@@ -1675,82 +1675,77 @@ document.addEventListener('alpine:init', () => {
             baseSpeed: 0.5,
             lineOpacity: 0.2
         },
-        // Track mouse for the speed boost effect
         mouse: { x: -9999, y: -9999 },
 
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
-            
-            // Restore your Desktop vs Mobile config logic
+            this.startTime = Date.now(); // Set the start time
+
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 27 : 96;
+            this.config.particleCount = isMobile ? 28 : 96;
             this.config.lineDistance = isMobile ? 96 : 221;
 
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
-            
-            // Listen for mouse movement to calculate region speed
             window.addEventListener('mousemove', (e) => {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
             });
 
-            this.createParticles();
             this.animate();
         },
 
         handleResize() {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
-            
-            // Update mobile/desktop settings on resize
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 40 : 80;
             this.config.lineDistance = isMobile ? 90 : 150;
         },
 
-        createParticles() {
-            this.particles = [];
-            for (let i = 0; i < this.config.particleCount; i++) {
-                this.particles.push({
-                    x: Math.random() * this.canvas.width,
-                    y: Math.random() * this.canvas.height,
-                    vx: (Math.random() - 0.5) * this.config.baseSpeed,
-                    vy: (Math.random() - 0.5) * this.config.baseSpeed
-                });
-            }
+        createParticle() {
+            return {
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * this.config.baseSpeed,
+                vy: (Math.random() - 0.5) * this.config.baseSpeed
+            };
         },
 
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
+
+            // --- RESTORED BUILD-UP LOGIC ---
+            // Gradually increase target count over 3 seconds
+            const progress = Math.min((Date.now() - this.startTime) / 3000, 1);
+            const currentTarget = Math.floor(progress * this.config.particleCount);
+
+            while (this.particles.length < currentTarget) {
+                this.particles.push(this.createParticle());
+            }
+
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
             this.ctx.fillStyle = `rgba(${color}, 0.4)`;
             this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
 
             this.particles.forEach((p, i) => {
-                // Calculate distance to mouse
+                // Check distance to mouse for 45% speed boost
                 const dxMouse = p.x - this.mouse.x;
                 const dyMouse = p.y - this.mouse.y;
                 const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-                
-                // If mouse is within 250px, move 35% faster (1.35 multiplier)
-                const speedMult = distMouse < 250 ? 1.35 : 1.0;
+                const speedMult = distMouse < 250 ? 1.45 : 1.0;
 
                 p.x += p.vx * speedMult; 
                 p.y += p.vy * speedMult;
 
-                // Screen bounce
                 if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
 
-                // Draw Particle
                 this.ctx.beginPath();
                 this.ctx.arc(p.x, p.y, this.config.particleSize, 0, Math.PI * 2);
                 this.ctx.fill();
 
-                // Draw Lines
                 for (let j = i + 1; j < this.particles.length; j++) {
                     const p2 = this.particles[j];
                     const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
