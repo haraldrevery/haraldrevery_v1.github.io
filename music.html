@@ -75,39 +75,41 @@ header#main-header {
 }
 
       
-
-/* Enhanced Ambient Background Blobs */
-@keyframes meshMove {
-  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  33% { transform: translate(30%, -20%) scale(1.2) rotate(120deg); }
-  66% { transform: translate(-20%, 20%) scale(0.8) rotate(240deg); }
-  100% { transform: translate(0, 0) scale(1) rotate(360deg); }
-}
-
-.ambient-blob {
-  position: absolute;
-  width: 120%; /* Slightly smaller for more movement room */
-  height: 120%;
-  filter: blur(60px); /* Increased blur for smoother blending */
-  opacity: 0.15; /* Increased slightly for visibility */
+/* Moving Bokeh Background */
+.bokeh-container {
   z-index: 0;
-  pointer-events: none;
-  mix-blend-mode: screen; /* Better color blending */
-  transition: background 1.5s ease-in-out;
+  opacity: 0.3; /* Adjust for intensity */
+  filter: blur(40px);
 }
 
-/* Specific animations for each blob to make them move independently */
-.playing .blob-1 {
-  animation: meshMove 15s ease-in-out infinite;
+.bokeh-item {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  opacity: 0.6;
+  mix-blend-mode: screen;
 }
 
-.playing .blob-2 {
-  animation: meshMove 20s ease-in-out infinite reverse;
+/* Position and varying animation durations */
+.bokeh-item:nth-child(1) { top: 10%; left: 10%; animation-duration: 15s; }
+.bokeh-item:nth-child(2) { top: 60%; left: 70%; animation-duration: 18s; }
+.bokeh-item:nth-child(3) { top: 40%; left: 30%; animation-duration: 22s; }
+.bokeh-item:nth-child(4) { top: 80%; left: 20%; animation-duration: 25s; }
+
+/* Animation only plays when music is active */
+.playing .bokeh-item {
+  animation: bokehMove infinite ease-in-out;
 }
 
-.playing .ambient-blob {
-  animation: meshRotate 20s linear infinite;
+@keyframes bokehMove {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(100px, -50px) scale(1.2); }
+  66% { transform: translate(-30px, 100px) scale(0.8); }
 }
+
+      
+
 
 /* Track Title Marquee */
 @keyframes marquee {
@@ -694,11 +696,12 @@ body {
             <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
                  style="background-image: url('./assets/audioplayer_texture3.jpg'); animation-delay: 34s;"></div>
         
-  <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
-       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color1} 0%, transparent 70%)`"></div >
-  
-  <div class="ambient-blob blob-2 absolute -bottom-1/2 -right-1/2 rounded-full" 
-       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color2} 0%, transparent 70%)`"></div >
+<div class="bokeh-container absolute inset-0 overflow-hidden pointer-events-none">
+  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color1}`"></div>
+  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color2}`"></div>
+  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color1}`"></div>
+  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color2}`"></div>
+</div>
 
 <div class="relative z-10 flex flex-col gap-1">
   
