@@ -1667,11 +1667,11 @@ document.addEventListener('alpine:init', () => {
         canvas: null,
         ctx: null,
         particles: [],
-        startTime: null,
+        startTime: null, // Track when the animation starts for the build-up
         config: {
             particleCount: 0,
             lineDistance: 0,
-            particleSize: 1.5,
+            particleSize: 1.59,
             baseSpeed: 0.5,
             lineOpacity: 0.2
         },
@@ -1680,34 +1680,28 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
-            
-            // Define the global hook that your theme-toggle button calls
-            window.restartPlexus = () => {
-                this.startTime = Date.now();
-                this.particles = [];
-                const isMobile = window.innerWidth < 768;
-                this.config.particleCount = isMobile ? 40 : 80;
-                this.config.lineDistance = isMobile ? 90 : 150;
-            };
+            this.startTime = Date.now(); // Set the start time
 
+            const isMobile = window.innerWidth < 768;
+            this.config.particleCount = isMobile ? 28 : 96;
+            this.config.lineDistance = isMobile ? 96 : 221;
+
+            this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
             window.addEventListener('mousemove', (e) => {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
             });
 
-            this.handleResize();
-            window.restartPlexus(); // Initial trigger
             this.animate();
         },
 
         handleResize() {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
-            // Re-check mobile settings on window resize
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 40 : 80;
-            this.config.lineDistance = isMobile ? 90 : 150;
+            this.config.particleCount = isMobile ? 28 : 96;
+            this.config.lineDistance = isMobile ? 96 : 221;
         },
 
         createParticle() {
@@ -1722,7 +1716,8 @@ document.addEventListener('alpine:init', () => {
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            // Handle the 3-second build-up animation
+            // --- RESTORED BUILD-UP LOGIC ---
+            // Gradually increase target count over 3 seconds
             const progress = Math.min((Date.now() - this.startTime) / 3000, 1);
             const currentTarget = Math.floor(progress * this.config.particleCount);
 
@@ -1735,28 +1730,22 @@ document.addEventListener('alpine:init', () => {
             this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
 
             this.particles.forEach((p, i) => {
-                // Calculate distance to mouse for the speed boost
+                // Check distance to mouse for 45% speed boost
                 const dxMouse = p.x - this.mouse.x;
                 const dyMouse = p.y - this.mouse.y;
-                // Using squared distance (62500 = 250px * 250px) for better performance
-                const distSq = dxMouse * dxMouse + dyMouse * dyMouse;
-                
-                // If within radius, move 1.35x faster (35% increase)
-                const speedMult = distSq < 62500 ? 1.35 : 1.0;
+                const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                const speedMult = distMouse < 250 ? 1.45 : 1.0;
 
                 p.x += p.vx * speedMult; 
                 p.y += p.vy * speedMult;
 
-                // Canvas boundaries bounce
                 if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
 
-                // Draw Particle
                 this.ctx.beginPath();
                 this.ctx.arc(p.x, p.y, this.config.particleSize, 0, Math.PI * 2);
                 this.ctx.fill();
 
-                // Draw Lines
                 for (let j = i + 1; j < this.particles.length; j++) {
                     const p2 = this.particles[j];
                     const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
