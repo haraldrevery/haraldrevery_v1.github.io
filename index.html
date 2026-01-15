@@ -559,6 +559,7 @@ html, body {
   overflow: visible;
   position: relative;
   transform-style: preserve-3d;
+  translateZ(15px);
 }
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
@@ -568,6 +569,7 @@ html, body {
   max-height: 76vh; /* Prevents logo from touching edges */
   width: auto;
   max-width: 81vw;
+  transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
   transform-style: preserve-3d;
 }
@@ -759,49 +761,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
-
-
-
-/* 3D layers */
-/* Increase perspective slightly but reduce from 1000px for stronger depth effect */
-#logo-container {
-  perspective: 800px; /* Was 1000px; lower value amplifies 3D */
-}
-
-/* Rear layer (pushed back more) */
-.logo-layer-rear {
-  transform: translateZ(-200px) !important; /* Increased depth */
-  opacity: 0.15;
-  pointer-events: none;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); /* Stronger shadow for depth */
-}
-
-/* Front layer (pops forward more) */
-.logo-layer-front {
-  transform: translateZ(200px) scale(1.05) !important; /* Increased Z + slight enlarge for pop */
-  opacity: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); /* Lighter shadow to "lift" it */
-}
-
-/* Dark mode adjustments */
-.dark .logo-layer-rear {
-  filter: drop-shadow(0 10px 20px rgba(255,255,255,0.2));
-}
-
-.dark .logo-layer-front {
-  filter: drop-shadow(0 5px 10px rgba(255,255,255,0.1));
-}
-
-/* Ensure 3D propagates (already in your code, but confirm no overrides) */
-#tilting-logo,
-#main-logo-svg,
-.position-wrapper {
-  transform-style: preserve-3d !important;
-}
-
-
-      
       
       
   </style>
@@ -940,8 +899,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     .mode-toggle-hidden, #particle-canvas, #particle-canvas-front, #plexus-canvas {
       display: none !important;
     }
-      
-      
   </style>
 </noscript>
 
@@ -1017,18 +974,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
   </g>
 </defs>
-
-        
-<g id="tilting-logo">
-  <g class="logo-layer-rear">
-    <use href="#logo-shape-outline" class="animate-logo" />
-  </g>
-  <g class="logo-layer-front">
-    <use href="#logo-shape-outline" class="animate-logo" />
-  </g>
-</g>
-
-        
+    
       <defs>
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#ffffff" />
@@ -1050,10 +996,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <use href="#logo-shape-outline" class="wave-echo echo-2" />
   <use href="#logo-shape-outline" class="wave-echo echo-3" />
 </g>
-
-
-
-        
       <foreignObject width="1000" height="1100" clip-path="url(#logoClip)">
         <canvas id="plexus-canvas" width="1000" height="1100" style="width: 100%; height: 100%;"></canvas>
       </foreignObject>
