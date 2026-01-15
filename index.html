@@ -1734,7 +1734,7 @@ document.addEventListener('alpine:init', () => {
                 const dxMouse = p.x - this.mouse.x;
                 const dyMouse = p.y - this.mouse.y;
                 const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-                const speedMult = distMouse < 250 ? 1.45 : 1.0;
+                const speedMult = distMouse < 250 ? 1.7 : 1.0;
 
                 p.x += p.vx * speedMult; 
                 p.y += p.vy * speedMult;
