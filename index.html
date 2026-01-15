@@ -960,6 +960,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <!-- Content -->
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
+
+
+
+<!-- background plexus -->
+      <div x-data="plexusBackground" class="absolute inset-0 pointer-events-none" style="z-index: -10; height: 100vh;">
+    <canvas x-ref="canvas" class="w-full h-full"></canvas>
+</div>
+
       
  <!-- Logo intro -->
 <div id="logo-container" style="pointer-events: none;">
@@ -1650,6 +1658,78 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
       
+
+<!-- Plexus background -->
+
+      <script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('plexusBackground', () => ({
+        canvas: null,
+        ctx: null,
+        particles: [],
+        count: 60,
+        maxDist: 150,
+        
+        init() {
+            this.canvas = this.$refs.canvas;
+            this.ctx = this.canvas.getContext('2d');
+            this.resize();
+            this.createParticles();
+            this.animate();
+            window.addEventListener('resize', () => this.resize());
+        },
+
+        resize() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        },
+
+        createParticles() {
+            for (let i = 0; i < this.count; i++) {
+                this.particles.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
+        },
+
+        animate() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            // Set line and dot color based on your dark mode state
+            const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
+            this.ctx.fillStyle = `rgba(${color}, 0.5)`;
+            this.ctx.strokeStyle = `rgba(${color}, 0.1)`;
+
+            this.particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
+
+                this.ctx.beginPath();
+                this.ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                for (let j = i + 1; j < this.particles.length; j++) {
+                    const p2 = this.particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < this.maxDist) {
+                        this.ctx.lineWidth = 1 - dist / this.maxDist;
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(p.x, p.y);
+                        this.ctx.lineTo(p2.x, p2.y);
+                        this.ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(() => this.animate());
+        }
+    }));
+});
+</script>
+
       
 </body>
 </html>
