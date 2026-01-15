@@ -439,216 +439,6 @@ body {
   pointer-events: auto;
 }
       
-
-      
-
-
-/* Custom Marquee for No-JS Audio player environment */
-@keyframes marquee-nojs {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee-nojs {
-  display: flex;
-  width: max-content;
-  animation: marquee-nojs 30s linear infinite;
-}
-
-/* Style the native audio player to fit the dark theme better */
-audio::-webkit-media-controls-panel {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark audio::-webkit-media-controls-panel {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-/* Hide all track text and audio players by default */
-.track-text, .player-node {
-  display: none !important;
-}
-
-/* Marquee Animation */
-@keyframes marquee-nojs {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-33.33%); }
-}
-
-/* Match the layout style of audio controls */
-audio::-webkit-media-controls-panel { background-color: rgba(255, 255, 255, 0.1); }
-.dark audio::-webkit-media-controls-panel { background-color: rgba(0, 0, 0, 0.2); }
-      
-/* Hide all players and track-specific titles by default */
-.target-player, .t1, .t2, .t3, .t4, .t5, .t6, .t7, .t8, .t9, .t10, .t11, .t12, .t13 {
-  display: none;
-}
-
-/* Logic: If ID is in URL (e.g. #play3), show that specific player and title text */
-#play1:target, #play1:target ~ * .t1 { display: block; }
-#play2:target, #play2:target ~ * .t2 { display: block; }
-#play3:target, #play3:target ~ * .t3 { display: block; }
-#play4:target, #play4:target ~ * .t4 { display: block; }
-#play5:target, #play5:target ~ * .t5 { display: block; }
-#play6:target, #play6:target ~ * .t6 { display: block; }
-#play7:target, #play7:target ~ * .t7 { display: block; }
-#play8:target, #play8:target ~ * .t8 { display: block; }
-#play9:target, #play9:target ~ * .t9 { display: block; }
-#play10:target, #play10:target ~ * .t10 { display: block; }
-#play11:target, #play11:target ~ * .t11 { display: block; }
-#play12:target, #play12:target ~ * .t12 { display: block; }
-#play13:target, #play13:target ~ * .t13 { display: block; }
-
-/* Hide the "Select a track" message once a selection is made */
-:target ~ * .default-msg { display: none; }
-
-/* Custom Scrollbar for the playlist */
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
-.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
-
-/* Marquee Logic */
-@keyframes marquee-nojs {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.animate-marquee-nojs {
-  display: flex;
-  width: max-content;
-  animation: marquee-nojs 20s linear infinite;
-}      
-/* Player hiding/showing logic */
-.players > div {
-  display: none;
-}
-#track-default:checked ~ .players .default-msg {
-  display: block;
-}
-#track1:checked ~ .players .t1 {
-  display: block;
-}
-#track2:checked ~ .players .t2 {
-  display: block;
-}
-#track3:checked ~ .players .t3 {
-  display: block;
-}
-#track4:checked ~ .players .t4 {
-  display: block;
-}
-#track5:checked ~ .players .t5 {
-  display: block;
-}
-#track6:checked ~ .players .t6 {
-  display: block;
-}
-#track7:checked ~ .players .t7 {
-  display: block;
-}
-#track8:checked ~ .players .t8 {
-  display: block;
-}
-#track9:checked ~ .players .t9 {
-  display: block;
-}
-#track10:checked ~ .players .t10 {
-  display: block;
-}
-#track11:checked ~ .players .t11 {
-  display: block;
-}
-#track12:checked ~ .players .t12 {
-  display: block;
-}
-#track13:checked ~ .players .t13 {
-  display: block;
-}
-
-/* Hide all players and track titles by default */
-.player-node, 
-.track-display span:not(.default-msg) {
-  display: none;
-}
-
-/* Show only the active track components */
-#track1:checked ~ * .t1,
-#track2:checked ~ * .t2,
-#track3:checked ~ * .t3,
-#track4:checked ~ * .t4,
-#track5:checked ~ * .t5,
-#track6:checked ~ * .t6,
-#track7:checked ~ * .t7,
-#track8:checked ~ * .t8,
-#track9:checked ~ * .t9,
-#track10:checked ~ * .t10,
-#track11:checked ~ * .t11,
-#track12:checked ~ * .t12,
-#track13:checked ~ * .t13 {
-  display: block;
-}
-
-/* Hide default message when any track is selected */
-#track1:checked ~ * .default-msg,
-#track2:checked ~ * .default-msg,
-#track3:checked ~ * .default-msg,
-#track4:checked ~ * .default-msg,
-#track5:checked ~ * .default-msg,
-#track6:checked ~ * .default-msg,
-#track7:checked ~ * .default-msg,
-#track8:checked ~ * .default-msg,
-#track9:checked ~ * .default-msg,
-#track10:checked ~ * .default-msg,
-#track11:checked ~ * .default-msg,
-#track12:checked ~ * .default-msg,
-#track13:checked ~ * .default-msg {
-  display: none;
-}
-
-/* Optional: Highlight the active track in the list */
-#track1:checked ~ * label[for="track1"],
-#track2:checked ~ * label[for="track2"],
-#track3:checked ~ * label[for="track3"],
-#track4:checked ~ * label[for="track4"],
-#track5:checked ~ * label[for="track5"],
-#track6:checked ~ * label[for="track6"],
-#track7:checked ~ * label[for="track7"],
-#track8:checked ~ * label[for="track8"],
-#track9:checked ~ * label[for="track9"],
-#track10:checked ~ * label[for="track10"],
-#track11:checked ~ * label[for="track11"],
-#track12:checked ~ * label[for="track12"],
-#track13:checked ~ * label[for="track13"] {
-  opacity: 1;
-  font-weight: bold;
-  color: #3b82f6; /* Adjust color to your theme */
-}      
-      
-/* Convenience: Highlight selected track */
-label[for="track1"]:has(~ #track1:checked),
-label[for="track2"]:has(~ #track2:checked),
-label[for="track3"]:has(~ #track3:checked),
-label[for="track4"]:has(~ #track4:checked),
-label[for="track5"]:has(~ #track5:checked),
-label[for="track6"]:has(~ #track6:checked),
-label[for="track7"]:has(~ #track7:checked),
-label[for="track8"]:has(~ #track8:checked),
-label[for="track9"]:has(~ #track9:checked),
-label[for="track10"]:has(~ #track10:checked),
-label[for="track11"]:has(~ #track11:checked),
-label[for="track12"]:has(~ #track12:checked),
-label[for="track13"]:has(~ #track13:checked) {
-  font-weight: bold;
-  position: relative;
-}
-
-label[for="track1"]:has(~ #track1:checked)::before,
-label[for="track2"]:has(~ #track2:checked)::before,
-/* ... repeat for each ... */
-label[for="track13"]:has(~ #track13:checked)::before {
-  content: '▶';
-  position: absolute;
-  left: -1.5rem;
-  opacity: 0.8;
-}
       
   </style>
 
@@ -887,86 +677,103 @@ label[for="track13"]:has(~ #track13:checked)::before {
 
       
       <!-- Audio player --> 
-<input type="radio" name="track-select" id="track1" class="hidden">
-<input type="radio" name="track-select" id="track2" class="hidden">
-<input type="radio" name="track-select" id="track3" class="hidden">
-<input type="radio" name="track-select" id="track4" class="hidden">
-<input type="radio" name="track-select" id="track5" class="hidden">
-<input type="radio" name="track-select" id="track6" class="hidden">
-<input type="radio" name="track-select" id="track7" class="hidden">
-<input type="radio" name="track-select" id="track8" class="hidden">
-<input type="radio" name="track-select" id="track9" class="hidden">
-<input type="radio" name="track-select" id="track10" class="hidden">
-<input type="radio" name="track-select" id="track11" class="hidden">
-<input type="radio" name="track-select" id="track12" class="hidden">
-<input type="radio" name="track-select" id="track13" class="hidden">
-
-<div class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl">
-  <div class="absolute inset-0 bg-cover bg-center animate-crossfade opacity-10" style="background-image: url('./dist/assets/audioplayer_texture1.jpg');"></div>
+      <div 
+  class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl"
+  :class="{ 'playing': isPlaying }"
+>
+  <!-- Image texture --> 
+             <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+                 style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: -2s;"></div>
+            
+            <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+                 style="background-image: url('./dist/assets/audioplayer_texture0.jpg'); animation-delay: 10s;"></div>
+            
+            <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+                 style="background-image: url('./dist/assets/audioplayer_texture2.jpg'); animation-delay: 22s;"></div>
+            
+            <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
+                 style="background-image: url('./dist/assets/audioplayer_texture3.jpg'); animation-delay: 34s;"></div>
+        
+  <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
+       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color1} 0%, transparent 70%)`"></div >
   
-  <div class="relative z-10 flex flex-col gap-6">
-    <div class="w-full relative border-y border-black/5 dark:border-white/5 py-3 overflow-hidden">
-      <div class="mask-fade">
-        <div class="flex animate-marquee-nojs items-center">
-          <span class="track-display text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            <span class="default-msg">Select a track to play</span>
-            <span class="t1">Harald Revery - Clouds and Roads</span>
-            <span class="t2">Harald Revery - Spiritless</span>
-            <span class="t3">Harald Revery - Phrases</span>
-            <span class="t4">Harald Revery - Hollow</span>
-            <span class="t5">Harald Revery - Uninhabited Island</span>
-            <span class="t6">Harald Revery - Looking For Snow</span>
-            <span class="t7">Harald Revery - Isolated</span>
-            <span class="t8">Harald Revery - Forest Rain</span>
-            <span class="t9">Harald Revery - Mystery Card</span>
-            <span class="t10">Harald Revery - Mirth</span>
-            <span class="t11">Harald Revery - Eventful Sunset</span>
-            <span class="t12">Harald Revery - The North</span>
-            <span class="t13">Harald Revery - Krakatau</span>
-          </span>
-        </div>
+  <div class="ambient-blob blob-2 absolute -bottom-1/2 -right-1/2 rounded-full" 
+       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color2} 0%, transparent 70%)`"></div >
+
+<div class="relative z-10 flex flex-col gap-1">
+  
+  <!-- progress bar part rise / lower -->  
+  <div class="flex items-center gap-4 w-full -mt-1 mb-2">
+    <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10 text-right" x-text="formatTime(currentTime)">0:00</span>
+    <!-- number text -->  
+    <div class="relative flex-grow h-1 bg-black/10 dark:bg-white/10 rounded-full cursor-pointer group/bar mb-[6px]" 
+         @click="seek($event)"
+         @mousedown="isDragging = true" 
+         @mousemove="isDragging && seek($event)" 
+         @mouseup="isDragging = false">
+      <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-100" 
+            :style="`width: ${(currentTime/duration * 100)}%; background: linear-gradient(to right, ${tracks[currentIndex].color1}, ${tracks[currentIndex].color2})`">
+        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-md scale-0 group-hover/bar:scale-100 transition-transform border-2" :style="`border-color: ${tracks[currentIndex].color2}`"></div>
       </div>
     </div>
+    <span class="font-signika text-sm font-medium opacity-70 text-neutral-800 dark:text-white w-10" x-text="formatTime(duration)">0:00</span>
+  </div>
 
-    <div class="players-container flex flex-col gap-4">
-      <div class="player-node t1"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Clouds_and_Roads.mp3"></audio></div>
-      <div class="player-node t2"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Spiritless.mp3"></audio></div>
-      <div class="player-node t3"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Phrases.mp3"></audio></div>
-      <div class="player-node t4"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Hollow.mp3"></audio></div>
-      <div class="player-node t5"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Uninhabited_Island.mp3"></audio></div>
-      <div class="player-node t6"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Looking_For_Snow.mp3"></audio></div>
-      <div class="player-node t7"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Isolated.mp3"></audio></div>
-      <div class="player-node t8"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Forest_Rain.mp3"></audio></div>
-      <div class="player-node t9"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Mystery_Card.mp3"></audio></div>
-      <div class="player-node t10"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Mirth.mp3"></audio></div>
-      <div class="player-node t11"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Eventful_Sunset.mp3"></audio></div>
-      <div class="player-node t12"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_The_North.mp3"></audio></div>
-      <div class="player-node t13"><audio controls class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Krakatau.mp3"></audio></div>
-
-      <div class="mt-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-        <h3 class="text-xs font-signika opacity-50 uppercase tracking-widest mb-3">Tracklist:</h3>
-        <div class="flex flex-col gap-2 text-sm font-signika">
-          <label for="track1" class="cursor-pointer hover:underline opacity-80">01. Harald Revery - Clouds and Roads</label>
-          <label for="track2" class="cursor-pointer hover:underline opacity-80">02. Harald Revery - Spiritless</label>
-          <label for="track3" class="cursor-pointer hover:underline opacity-80">03. Harald Revery - Phrases</label>
-          <label for="track4" class="cursor-pointer hover:underline opacity-80">04. Harald Revery - Hollow</label>
-          <label for="track5" class="cursor-pointer hover:underline opacity-80">05. Harald Revery - Uninhabited Island</label>
-          <label for="track6" class="cursor-pointer hover:underline opacity-80">06. Harald Revery - Looking For Snow</label>
-          <label for="track7" class="cursor-pointer hover:underline opacity-80">07. Harald Revery - Isolated</label>
-          <label for="track8" class="cursor-pointer hover:underline opacity-80">08. Harald Revery - Forest Rain</label>
-          <label for="track9" class="cursor-pointer hover:underline opacity-80">09. Harald Revery - Mystery Card</label>
-          <label for="track10" class="cursor-pointer hover:underline opacity-80">10. Harald Revery - Mirth</label>
-          <label for="track11" class="cursor-pointer hover:underline opacity-80">11. Harald Revery - Eventful Sunset</label>
-          <label for="track12" class="cursor-pointer hover:underline opacity-80">12. Harald Revery - The North</label>
-          <label for="track13" class="cursor-pointer hover:underline opacity-80">13. Harald Revery - Krakatau</label>
-        </div>
+<div class="w-full relative border-y border-black/5 dark:border-white/5 py-1 overflow-hidden">
+  <div class="mask-fade">
+    <div class="flex animate-marquee items-center">
+      
+      <div class="flex items-center shrink-0">
+        <span class="text-lg opacity-60 text-neutral-800 dark:text-white transition-opacity duration-500" x-text="tracks[currentIndex].artist"></span>
+        <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+        <span class="text-lg text-neutral-800 dark:text-white transition-opacity duration-500" x-text="tracks[currentIndex].title"></span>
+        <div class="w-[20vw] shrink-0"></div> 
       </div>
+      
+      <div class="flex items-center shrink-0" aria-hidden="true">
+        <span class="text-lg opacity-60 text-neutral-800 dark:text-white" x-text="tracks[currentIndex].artist"></span>
+        <span class="mx-3 opacity-40 text-neutral-800 dark:text-white"> - </span>
+        <span class="text-lg text-neutral-800 dark:text-white" x-text="tracks[currentIndex].title"></span>
+        <div class="w-[20vw] shrink-0"></div>
+      </div>
+      
     </div>
   </div>
 </div>
-        
+ <!-- Button part rise / lower -->  
+  <div class="flex flex-wrap items-center justify-center gap-8 flex-shrink-0 pt-4">
+    
+    <div class="flex items-center gap-2">
+      <button @click="previous()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
 
-        
+      <button @click="togglePlay()" 
+        class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-neutral-800 dark:text-white rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 border border-black/5 dark:border-white/10 transition-all active:scale-95 shadow-sm"
+      >
+        <template x-if="!isPlaying"><svg class="w-4 h-4 ml-0.1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></template>
+        <template x-if="isPlaying"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></template>
+      </button>
+
+      <button @click="next()" class="p-2 opacity-50 hover:opacity-100 transition hover:scale-110 active:scale-95 text-neutral-800 dark:text-white">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+
+    <!-- Mute button part  -->  
+    <div class="flex items-center gap-3">
+      <button @click="toggleMute()" class="focus:outline-none">
+        <svg x-show="volume > 0 && !isMuted" class="w-4 h-4 opacity-60 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <svg x-show="volume == 0 || isMuted" class="w-4 h-4 opacity-60 text-neutral-800 dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+      
+      <input type="range" min="0" max="1" step="0.01" 
+             x-model="volume" 
+             @input="audio.volume = volume; isMuted = (volume == 0)" 
+             class="volume-slider w-24 md:w-32 h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer" 
+             :style="`accent-color: ${tracks[currentIndex].color2}`">
+    </div>
+  </div>
 
 </div>
       </div>
