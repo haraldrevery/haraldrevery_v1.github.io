@@ -346,23 +346,14 @@ body {
 .scrolling-container {
   position: relative;
   width: 100%;
-  /* Increased height to provide room for the 3D enlargement */
   height: 40vh; 
-  /* Changed to 'visible' so the hover effect doesn't get cut off at the top/bottom */
-  overflow-x: hidden;
-  overflow-y: visible; 
+  overflow: hidden;
   margin: 2rem 0; 
   display: flex;
   align-items: center;
-  
-  /* 3D setup */
   perspective: 1200px;
   
-  opacity: 0;
-  animation: fadeIn 0.8s ease-in forwards;
-  animation-delay: 0.5s;
-
-  /* Transparent zones for smooth entry/exit */
+  /* Fade edges so images "emerge" from the sides */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
@@ -370,47 +361,47 @@ body {
 .scrolling-track {
   display: flex;
   width: max-content;
-  /* Track is slightly smaller than container to leave vertical 'breathing room' */
-  height: 70%; 
-  animation: scrollGallery 45s linear infinite; 
+  height: 70%;
+  /* Adjust the 40s to change the scroll speed */
+  animation: scrollGallery 40s linear infinite; 
   transform-style: preserve-3d;
   align-items: center;
+  gap: 10px; /* Adjust this value for the space between covers */
 }
 
 .scrolling-track img {
   height: 100%;       
   width: auto;        
   object-fit: contain; 
-  padding: 0 0.2rem;   
   
-  /* Modern Tilt: Images lean away by default */
-  transform: rotateY(-25deg) scale(0.9);
+  /* Constant lean of -27 degrees */
+  transform: rotateY(-27deg) scale(0.9);
   filter: saturate(0.8) brightness(0.8);
   
-  /* Smooth transition for all properties */
   transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease;
   will-change: transform;
 }
 
-/* THE FIX: Face viewer and grow without clipping */
+/* Hover Effect: Straighten and Pop */
 .scrolling-track img:hover {
-  /* Rotate to 0 to face the viewer, scale up, and move forward (translateZ) */
-  transform: rotateY(0deg) scale(1.3) translateZ(60px);
+  transform: rotateY(0deg) scale(1.3) translateZ(80px);
   filter: saturate(1.1) brightness(1.1);
   z-index: 50;
   cursor: pointer;
+  /* Adds space around the enlarged cover so it doesn't overlap neighbors */
+  margin: 0 20px; 
 }
 
-/* Pause scroll on hover */
+/* Pause the animation on hover */
 .scrolling-container:hover .scrolling-track {
   animation-play-state: paused;
 }
 
 @keyframes scrollGallery {
   0% { transform: translateX(0); }
+  /* This must be exactly -50% for a seamless loop with duplicated images */
   100% { transform: translateX(-50%); }
 }
-
 
       
 
@@ -569,6 +560,17 @@ body {
 <!-- Scrolling images -->  
 <div class="scrolling-container">
   <div class="scrolling-track">
+    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+    <img src="./artcovers/phrases11.jpg" alt="Phrases">
+    <img src="./artcovers/hollow11.jpg" alt="Hollow">
+    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+    <img src="./artcovers/isolated11.jpg" alt="Isolated">
+    <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
+    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+
     <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
     <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
     <img src="./artcovers/phrases11.jpg" alt="Phrases">
