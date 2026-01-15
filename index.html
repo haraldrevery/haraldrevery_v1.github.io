@@ -1670,9 +1670,8 @@ document.addEventListener('alpine:init', () => {
         buildUpProgress: 0,
         startTime: null,
         config: {
-            // Logic to handle mobile vs desktop counts
             particleCount: window.innerWidth < 768 ? 21 : 96, 
-            particleSize: 1.4,
+            particleSize: 1.55,
             lineDistance: window.innerWidth < 768 ? 100 : 221,
             lineOpacity: 0.21,
             speed: 0.5
@@ -1683,17 +1682,29 @@ document.addEventListener('alpine:init', () => {
             this.ctx = this.canvas.getContext('2d');
             this.resize();
             
-            this.particles = [];
-            this.startTime = Date.now();
+            // Initial setup
+            this.resetAnimation();
             
-            // Re-check config if window is resized (e.g., rotating a tablet)
             window.addEventListener('resize', () => {
                 this.resize();
                 this.config.particleCount = window.innerWidth < 768 ? 45 : 100;
                 this.config.lineDistance = window.innerWidth < 768 ? 100 : 150;
             });
+
+            // --- ADDED: Watch for dark mode changes to restart animation ---
+            this.$watch('darkMode', () => {
+                this.resetAnimation();
+            });
+            // ---------------------------------------------------------------
             
             this.animate();
+        },
+
+        // Helper to reset the build-up state
+        resetAnimation() {
+            this.particles = [];
+            this.buildUpProgress = 0;
+            this.startTime = Date.now();
         },
 
         createParticle() {
@@ -1713,20 +1724,16 @@ document.addEventListener('alpine:init', () => {
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             
-            // Build-up progress over 3 seconds
             const elapsed = Date.now() - this.startTime;
             this.buildUpProgress = Math.min(elapsed / 3000, 1);
 
-            // Populate particles based on device-specific target
             const currentTarget = Math.floor(this.buildUpProgress * this.config.particleCount);
             while (this.particles.length < currentTarget) {
                 this.particles.push(this.createParticle());
             }
 
-            // Global fade-in
             this.ctx.globalAlpha = this.buildUpProgress;
             
-            // Theme detection
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
             this.ctx.fillStyle = `rgba(${color}, 0.4)`;
             this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
