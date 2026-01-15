@@ -75,66 +75,39 @@ header#main-header {
 }
 
       
-/* Moving Bokeh Background */
-.bokeh-container {
-  z-index: 0;
-  opacity: 0.3; /* Adjust for intensity */
-  filter: blur(40px);
-}
 
-.bokeh-item {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  opacity: 0.6;
-  mix-blend-mode: screen;
-}
-
-/* Position and varying animation durations */
-.bokeh-item:nth-child(1) { top: 10%; left: 10%; animation-duration: 15s; }
-.bokeh-item:nth-child(2) { top: 60%; left: 70%; animation-duration: 18s; }
-.bokeh-item:nth-child(3) { top: 40%; left: 30%; animation-duration: 22s; }
-.bokeh-item:nth-child(4) { top: 80%; left: 20%; animation-duration: 25s; }
-
-/* Animation only plays when music is active */
-.playing .bokeh-item {
-  animation: bokehMove infinite ease-in-out;
-}
-
-/* Enhanced Moving Bokeh Background */
-@keyframes bokehMove {
+/* Enhanced Ambient Background Blobs */
+@keyframes meshMove {
   0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  33% { transform: translate(15%, -10%) scale(1.3) rotate(120deg); }
-  66% { transform: translate(-10%, 15%) scale(0.9) rotate(240deg); }
+  33% { transform: translate(30%, -20%) scale(1.2) rotate(120deg); }
+  66% { transform: translate(-20%, 20%) scale(0.8) rotate(240deg); }
   100% { transform: translate(0, 0) scale(1) rotate(360deg); }
 }
 
 .ambient-blob {
   position: absolute;
-  width: 140%; /* Larger for smoother movement */
-  height: 140%;
-  filter: blur(120px); /* Doubled blur for heavy bokeh effect */
-  opacity: 0.25; /* Increased visibility */
+  width: 120%; /* Slightly smaller for more movement room */
+  height: 120%;
+  filter: blur(60px); /* Increased blur for smoother blending */
+  opacity: 0.15; /* Increased slightly for visibility */
   z-index: 0;
   pointer-events: none;
-  mix-blend-mode: screen;
-  transition: background 2s ease-in-out;
-  will-change: transform;
+  mix-blend-mode: screen; /* Better color blending */
+  transition: background 1.5s ease-in-out;
 }
 
-/* Fixed: Reference the correct animation name and ensure they play when container has .playing */
+/* Specific animations for each blob to make them move independently */
 .playing .blob-1 {
-  animation: bokehMove 21s ease-in-out infinite;
+  animation: meshMove 15s ease-in-out infinite;
 }
 
 .playing .blob-2 {
-  animation: bokehMove 30s ease-in-out infinite reverse;
-}
+  animation: meshMove 20s ease-in-out infinite reverse;
 }
 
-      
-
+.playing .ambient-blob {
+  animation: meshRotate 20s linear infinite;
+}
 
 /* Track Title Marquee */
 @keyframes marquee {
@@ -721,12 +694,11 @@ body {
             <div class="absolute inset-0 bg-cover bg-center animate-crossfade" 
                  style="background-image: url('./assets/audioplayer_texture3.jpg'); animation-delay: 34s;"></div>
         
-<div class="bokeh-container absolute inset-0 overflow-hidden pointer-events-none">
-  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color1}`"></div>
-  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color2}`"></div>
-  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color1}`"></div>
-  <div class="bokeh-item" :style="`background: ${tracks[currentIndex].color2}`"></div>
-</div>
+  <div class="ambient-blob blob-1 absolute -top-1/2 -left-1/2 rounded-full" 
+       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color1} 0%, transparent 70%)`"></div >
+  
+  <div class="ambient-blob blob-2 absolute -bottom-1/2 -right-1/2 rounded-full" 
+       :style="`background: radial-gradient(circle, ${tracks[currentIndex].color2} 0%, transparent 70%)`"></div >
 
 <div class="relative z-10 flex flex-col gap-1">
   
