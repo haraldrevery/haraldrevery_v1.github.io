@@ -340,21 +340,23 @@ body {
 
 
 
-/* Modern 3D Cover Flow Gallery */
-/* 1. The Container: Removed borders and added perspective */
+
+/* Horizontal Scrolling Gallery */
 .scrolling-container {
   position: relative;
   width: 100%;
-  height: 35vh; /* Increased slightly for 3D depth */
-  overflow: hidden;
+  /* Increased height to provide room for the 3D enlargement */
+  height: 40vh; 
+  /* Changed to 'visible' so the hover effect doesn't get cut off at the top/bottom */
+  overflow-x: hidden;
+  overflow-y: visible; 
   margin: 2rem 0; 
   display: flex;
   align-items: center;
   
   /* 3D setup */
-  perspective: 1000px;
+  perspective: 1200px;
   
-  /* Fade-in Animation */
   opacity: 0;
   animation: fadeIn 0.8s ease-in forwards;
   animation-delay: 0.5s;
@@ -364,40 +366,41 @@ body {
   mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-/* 2. The Moving Track: preserve-3d ensures the covers don't look flat */
 .scrolling-track {
   display: flex;
   width: max-content;
-  height: 80%;
+  /* Track is slightly smaller than container to leave vertical 'breathing room' */
+  height: 70%; 
   animation: scrollGallery 60s linear infinite; 
   transform-style: preserve-3d;
+  align-items: center;
 }
 
-/* 3. The Images: Default state is angled away */
 .scrolling-track img {
   height: 100%;       
   width: auto;        
   object-fit: contain; 
-  padding: 0 1.5rem;   
+  padding: 0 1rem;   
   
-  /* Modern Tilt: Faces away slightly by default */
-  transform: rotateY(-20deg) scale(0.9);
-  filter: saturate(0.8) brightness(0.9);
+  /* Modern Tilt: Images lean away by default */
+  transform: rotateY(-25deg) scale(0.9);
+  filter: saturate(0.8) brightness(0.8);
   
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
+  /* Smooth transition for all properties */
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease;
   will-change: transform;
 }
 
-/* 4. The Center Effect: Faces the viewer on hover */
-/* (In modern browsers, the viewer is 'drawn' to the center image) */
+/* THE FIX: Face viewer and grow without clipping */
 .scrolling-track img:hover {
-  transform: rotateY(0deg) scale(1.2) translateZ(50px);
+  /* Rotate to 0 to face the viewer, scale up, and move forward (translateZ) */
+  transform: rotateY(0deg) scale(1.3) translateZ(60px);
   filter: saturate(1.1) brightness(1.1);
   z-index: 50;
   cursor: pointer;
 }
 
-/* Pause the scroll when interacting with a cover */
+/* Pause scroll on hover */
 .scrolling-container:hover .scrolling-track {
   animation-play-state: paused;
 }
