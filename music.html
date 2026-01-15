@@ -468,29 +468,54 @@ audio::-webkit-media-controls-panel {
   display: none !important;
 }
 
-/* Logic: If Input # is checked, show Text # and Player # */
-#track1:checked ~ .relative .track-text.t1, #track1:checked ~ .relative .player-node#a1 { display: flex !important; }
-#track2:checked ~ .relative .track-text.t2, #track2:checked ~ .relative .player-node#a2 { display: flex !important; }
-#track3:checked ~ .relative .track-text.t3, #track3:checked ~ .relative .player-node#a3 { display: flex !important; }
-#track4:checked ~ .relative .track-text.t4, #track4:checked ~ .relative .player-node#a4 { display: flex !important; }
-#track5:checked ~ .relative .track-text.t5, #track5:checked ~ .relative .player-node#a5 { display: flex !important; }
-
 /* Marquee Animation */
 @keyframes marquee-nojs {
   0% { transform: translateX(0); }
   100% { transform: translateX(-33.33%); }
 }
 
-.animate-marquee-nojs {
-  display: flex;
-  width: max-content;
-  animation: marquee-nojs 15s linear infinite;
-}
-
 /* Match the layout style of audio controls */
 audio::-webkit-media-controls-panel { background-color: rgba(255, 255, 255, 0.1); }
 .dark audio::-webkit-media-controls-panel { background-color: rgba(0, 0, 0, 0.2); }
       
+/* Hide all players and track-specific titles by default */
+.target-player, .t1, .t2, .t3, .t4, .t5, .t6, .t7, .t8, .t9, .t10, .t11, .t12, .t13 {
+  display: none;
+}
+
+/* Logic: If ID is in URL (e.g. #play3), show that specific player and title text */
+#play1:target, #play1:target ~ * .t1 { display: block; }
+#play2:target, #play2:target ~ * .t2 { display: block; }
+#play3:target, #play3:target ~ * .t3 { display: block; }
+#play4:target, #play4:target ~ * .t4 { display: block; }
+#play5:target, #play5:target ~ * .t5 { display: block; }
+#play6:target, #play6:target ~ * .t6 { display: block; }
+#play7:target, #play7:target ~ * .t7 { display: block; }
+#play8:target, #play8:target ~ * .t8 { display: block; }
+#play9:target, #play9:target ~ * .t9 { display: block; }
+#play10:target, #play10:target ~ * .t10 { display: block; }
+#play11:target, #play11:target ~ * .t11 { display: block; }
+#play12:target, #play12:target ~ * .t12 { display: block; }
+#play13:target, #play13:target ~ * .t13 { display: block; }
+
+/* Hide the "Select a track" message once a selection is made */
+:target ~ * .default-msg { display: none; }
+
+/* Custom Scrollbar for the playlist */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+/* Marquee Logic */
+@keyframes marquee-nojs {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-nojs {
+  display: flex;
+  width: max-content;
+  animation: marquee-nojs 20s linear infinite;
+}      
       
   </style>
 
@@ -729,14 +754,8 @@ audio::-webkit-media-controls-panel { background-color: rgba(255, 255, 255, 0.1)
 
       
       <!-- Audio player --> 
-<div class="no-js-player group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl">
+<div class="group relative overflow-hidden bg-white/40 dark:bg-neutral-900/40 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 transition-all duration-700 hover:shadow-2xl">
   
-  <input type="radio" name="track-selector" id="track1" class="hidden" checked>
-  <input type="radio" name="track-selector" id="track2" class="hidden">
-  <input type="radio" name="track-selector" id="track3" class="hidden">
-  <input type="radio" name="track-selector" id="track4" class="hidden">
-  <input type="radio" name="track-selector" id="track5" class="hidden">
-
   <div class="absolute inset-0 bg-cover bg-center animate-crossfade opacity-10" style="background-image: url('./dist/assets/audioplayer_texture1.jpg'); animation-delay: -2s;"></div>
   
   <div class="relative z-10 flex flex-col gap-6">
@@ -744,40 +763,57 @@ audio::-webkit-media-controls-panel { background-color: rgba(255, 255, 255, 0.1)
     <div class="w-full relative border-y border-black/5 dark:border-white/5 py-3 overflow-hidden">
       <div class="mask-fade">
         <div class="flex animate-marquee-nojs items-center">
-          <span class="track-text t1 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery - Phrases — Harald Revery - Phrases — Harald Revery - Phrases
-          </span>
-          <span class="track-text t2 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery - Forest Rain — Harald Revery - Forest Rain — Harald Revery - Forest Rain
-          </span>
-          <span class="track-text t3 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery & Light Titum - The North — Harald Revery & Light Titum - The North — Harald Revery & Light Titum - The North
-          </span>
-          <span class="track-text t4 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery - Looking for Snow — Harald Revery - Looking for Snow — Harald Revery - Looking for Snow
-          </span>
-          <span class="track-text t5 text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
-            Harald Revery - Looking for Snow — Harald Revery - Looking for Snow — Harald Revery - Looking for Snow
+          <span class="track-display text-lg font-signika opacity-80 text-neutral-800 dark:text-white uppercase tracking-widest px-4">
+            <span class="default-msg">Select a track to play</span>
+            <span class="t1">Harald Revery - Clouds and Roads — Harald Revery - Clouds and Roads</span>
+            <span class="t2">Harald Revery - Spiritless — Harald Revery - Spiritless</span>
+            <span class="t3">Harald Revery - Phrases — Harald Revery - Phrases</span>
+            <span class="t4">Harald Revery - Hollow — Harald Revery - Hollow</span>
+            <span class="t5">Harald Revery - Uninhabited Island — Harald Revery - Uninhabited Island</span>
+            <span class="t6">Harald Revery - Looking For Snow — Harald Revery - Looking For Snow</span>
+            <span class="t7">Harald Revery - Isolated — Harald Revery - Isolated</span>
+            <span class="t8">Harald Revery - Forest Rain — Harald Revery - Forest Rain</span>
+            <span class="t9">Harald Revery - Mystery Card — Harald Revery - Mystery Card</span>
+            <span class="t10">Harald Revery - Mirth — Harald Revery - Mirth</span>
+            <span class="t11">Harald Revery - Eventful Sunset — Harald Revery - Eventful Sunset</span>
+            <span class="t12">Harald Revery - The North — Harald Revery - The North</span>
+            <span class="t13">Harald Revery - Krakatau — Harald Revery - Krakatau</span>
           </span>
         </div>
       </div>
     </div>
 
     <div class="flex flex-col gap-4">
-      <audio id="a1" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./audio/Harald_Revery_-_Phrases.mp3"></audio>
-      <audio id="a2" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./audio/Harald_Revery_-_Forest_Rain.mp3"></audio>
-      <audio id="a3" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./audio/Harald_Revery_and_Light_Titum_-_The_North.mp3"></audio>
-      <audio id="a4" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./audio/Harald_Revery_-_Looking_For_Snow.mp3"></audio>
-      <audio id="a5" controls class="player-node w-full filter invert dark:invert-0 opacity-80"><source src="./audio/Harald_Revery_-_Uninhabited_Island.mp3"></audio>
+      <div id="play1" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Clouds_and_Roads.mp3"></audio></div>
+      <div id="play2" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Spiritless.mp3"></audio></div>
+      <div id="play3" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Phrases.mp3"></audio></div>
+      <div id="play4" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Hollow.mp3"></audio></div>
+      <div id="play5" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Uninhabited_Island.mp3"></audio></div>
+      <div id="play6" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Looking_For_Snow.mp3"></audio></div>
+      <div id="play7" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Isolated.mp3"></audio></div>
+      <div id="play8" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Forest_Rain.mp3"></audio></div>
+      <div id="play9" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Mystery_Card.mp3"></audio></div>
+      <div id="play10" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Mirth.mp3"></audio></div>
+      <div id="play11" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Eventful_Sunset.mp3"></audio></div>
+      <div id="play12" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_The_North.mp3"></audio></div>
+      <div id="play13" class="target-player"><audio controls autoplay class="w-full filter invert dark:invert-0"><source src="./audio/Harald_Revery_-_Krakatau.mp3"></audio></div>
       
-      <div class="mt-2">
-        <h3 class="text-xs font-signika opacity-50 uppercase tracking-widest mb-3">Select Track:</h3>
-        <div class="flex flex-col gap-2">
-          <label for="track1" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">01. Harald Revery - Phrases</label>
-          <label for="track2" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">02. Harald Revery - Forest Rain</label>
-          <label for="track3" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">03. Harald Revery & Light Titum - The North</label>
-          <label for="track4" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">04. Harald Revery - Looking for Snow</label>
-          <label for="track5" class="cursor-pointer text-sm font-signika opacity-80 hover:underline">05. Harald Revery - Uninhabited Island</label>
+      <div class="mt-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+        <h3 class="text-xs font-signika opacity-50 uppercase tracking-widest mb-3">Tracklist:</h3>
+        <div class="flex flex-col gap-2 text-sm font-signika">
+          <a href="#play1" class="hover:underline opacity-80">01. Harald Revery - Clouds and Roads</a>
+          <a href="#play2" class="hover:underline opacity-80">02. Harald Revery - Spiritless</a>
+          <a href="#play3" class="hover:underline opacity-80">03. Harald Revery - Phrases</a>
+          <a href="#play4" class="hover:underline opacity-80">04. Harald Revery - Hollow</a>
+          <a href="#play5" class="hover:underline opacity-80">05. Harald Revery - Uninhabited Island</a>
+          <a href="#play6" class="hover:underline opacity-80">06. Harald Revery - Looking For Snow</a>
+          <a href="#play7" class="hover:underline opacity-80">07. Harald Revery - Isolated</a>
+          <a href="#play8" class="hover:underline opacity-80">08. Harald Revery - Forest Rain</a>
+          <a href="#play9" class="hover:underline opacity-80">09. Harald Revery - Mystery Card</a>
+          <a href="#play10" class="hover:underline opacity-80">10. Harald Revery - Mirth</a>
+          <a href="#play11" class="hover:underline opacity-80">11. Harald Revery - Eventful Sunset</a>
+          <a href="#play12" class="hover:underline opacity-80">12. Harald Revery - The North</a>
+          <a href="#play13" class="hover:underline opacity-80">13. Harald Revery - Krakatau</a>
         </div>
       </div>
     </div>
