@@ -559,7 +559,6 @@ html, body {
   overflow: visible;
   position: relative;
   transform-style: preserve-3d;
-  translateZ(15px);
 }
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
@@ -761,6 +760,35 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
+
+
+
+/* 3D layers */
+
+#tilting-logo {
+  transform-style: preserve-3d; /* Crucial: allows children to have depth */
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  /* Remove backface-visibility here as it can cause flattening in some browsers */
+}
+
+.logo-layer-rear {
+  /* Use -100px to push it back. 
+     Ensure 'preserve-3d' is on all parents up to the perspective container */
+  transform: translateZ(-100px); 
+  opacity: 0.2; 
+  pointer-events: none;
+}
+
+#main-logo-svg {
+  /* Ensure the SVG itself doesn't flatten the 3D contents */
+  transform-style: preserve-3d;
+  overflow: visible !important;
+}
+
+
+
+      
       
       
   </style>
@@ -899,26 +927,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     .mode-toggle-hidden, #particle-canvas, #particle-canvas-front, #plexus-canvas {
       display: none !important;
     }
-
-
-
-
-
-      /* more 3D layers*/
-.logo-layer-rear {
-  /* Shift the layer 100px back in 3D space */
-  transform: translateZ(-100px);
-  /* Set to a low opacity as requested */
-  opacity: 0.2; 
-  /* Ensures it doesn't interfere with interactions */
-  pointer-events: none; 
-}
-
-/* Ensure the tilting group allows 3D children to render depth */
-#tilting-logo {
-  transform-style: preserve-3d;
-  will-change: transform;
-}
       
       
   </style>
