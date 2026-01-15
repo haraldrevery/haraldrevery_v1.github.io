@@ -545,7 +545,22 @@ html, body {
   object-fit: contain;
 }
   
-
+/* Increase perspective to reduce lens distortion */
+#logo-container {
+  perspective: 1000px;
+  height: 100vh !important; /* Force full viewport height */
+  width: 100vw;
+  max-width: 100% !important;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  position: relative;
+  transform-style: preserve-3d;
+  translateZ(15px);
+}
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
     /* This shifts the logo 10% of its own width to the right
@@ -558,7 +573,13 @@ html, body {
   will-change: transform;
   transform-style: preserve-3d;
 }
-
+/* Adjust the positioning wrapper to be centered */
+.position-wrapper {
+  transform: none !important; /* Remove the horizontal offset for better centering */
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
 /* Optional: Adds a subtle shadow that moves opposite to the tilt for realism */
 .logo-3d-shadow {
   filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.5));
@@ -740,42 +761,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
-
       
-/* 3D layers */
-#logo-container {
-  perspective: 1200px; /* Provides the 3D depth anchor */
-  height: 100dvh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-  position: relative;
-}
-
-.position-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-style: preserve-3d; /* Crucial: allows children to have Z-depth */
-  will-change: transform;
-}
-
-.logo-parallax-layer {
-  position: absolute;
-  pointer-events: none;
-  transform-style: preserve-3d;
-  width: 81vw; /* Match main logo size */
-}
-
-.logo-phantom {
-  width: 100%;
-  fill: currentColor;
-  /* Use your existing draw animation */
-  animation: logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards;
-}      
       
   </style>
   <meta charset="UTF-8" />
@@ -978,17 +964,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div id="logo-container" style="pointer-events: none;">
  
   <div class="position-wrapper flex items-center justify-center relative z-10">
-
-      
-<div class="logo-parallax-layer" style="transform: translateZ(-60px); opacity: 0.1;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-    <div class="logo-parallax-layer" style="transform: translateZ(-30px); opacity: 0.15;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-
-
-      
+ 
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 <defs>
   <g id="logo-shape-outline">
@@ -1030,19 +1006,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
       </g>
     </svg>
-
-
-
-<div class="logo-parallax-layer" style="transform: translateZ(30px); opacity: 0.15;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-    <div class="logo-parallax-layer" style="transform: translateZ(60px); opacity: 0.1;">
-        <svg viewBox="0 0 1000 1100" class="logo-phantom"><use href="#logo-shape-outline"/></svg>
-    </div>
-      
-      
-
-      
   </div>
 </div>
 <section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
