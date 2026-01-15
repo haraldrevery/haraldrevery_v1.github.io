@@ -480,9 +480,10 @@ html, body {
 }
 /* 2. Floating Animation: Starts after the logo is drawn (8s delay) */
 @keyframes logoFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%, 100% { transform: translateZ(0) translateY(0); }
+  50% { transform: translateZ(0) translateY(-20px); }
 }
+      
 .logo-float {
   animation: logoFloat 0.1s ease-in-out infinite 8s;
   transform-style: preserve-3d;
@@ -768,8 +769,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   transform: translateZ(-200px); 
   fill: currentColor;
   pointer-events: none;
-}
-  
+ 
   /* FIXED: Changed 20% to 200px. translateZ requires absolute units. */
   transform: translateZ(-200px); 
   
