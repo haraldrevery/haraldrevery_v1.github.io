@@ -763,20 +763,15 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
+/* Locate this class in your <style> section */
 .logo-layer-offset {
-  /* Set low opacity as requested */
   opacity: 0.15; 
   
-  /* Apply the 200px z-axis shift */
-  /* Note: Ensure the parent container has enough perspective (currently 1000px) */
-  transform: translateZ(20%); 
+  /* FIXED: Changed 20% to 200px. translateZ requires absolute units. */
+  transform: translateZ(-200px); 
   
-  /* Inherit the same stroke/fill logic as the main logo */
   fill: currentColor;
   stroke: none;
-  
-  /* Optional: If you want it to move with the tilt, ensure it's inside the same 
-     coordinate space or apply similar transitions */
   pointer-events: none;
   transition: transform 0.14s ease-out;
 }
@@ -990,16 +985,17 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <div class="position-wrapper flex items-center justify-center relative z-10">
 
 
- <g class="logo-layer-offset">
+
+      
+    <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        
+     <g class="logo-layer-offset">
   <use href="#logo-shape-outline" />
 </g>
 
 <g id="tilting-logo" class="animate-logo logo-float logo-3d-shadow">
   <use href="#logo-shape-outline" />
-</g>     
-
-      
-    <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+</g>  
         
 <defs>
   <g id="logo-shape-outline">
