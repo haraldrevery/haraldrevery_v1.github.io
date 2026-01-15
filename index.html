@@ -1660,15 +1660,20 @@ document.addEventListener('DOMContentLoaded', () => {
       
 
 <!-- Plexus background -->
-
-      <script>
+<script>
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
-        canvas: null,
-        ctx: null,
-        particles: [],
-        count: 60,
-        maxDist: 150,
+        // --- 1) TWEAKABLE SETTINGS ---
+        config: {
+            desktopCount: 121,    // Amount of particles on desktop
+            mobileCount: 40,     // Amount of particles on mobile
+            lineOpacity: 0.15,   // Line opacity (0 to 1)
+            lineDistance: 240,   // Max distance to draw a line between points
+            particleSize: 1.5,   // Size of the dots
+            speed: 0.5           // Movement speed multiplier
+        },
+
+        canvas: null, ctx: null, particles: [],
         
         init() {
             this.canvas = this.$refs.canvas;
@@ -1676,7 +1681,12 @@ document.addEventListener('alpine:init', () => {
             this.resize();
             this.createParticles();
             this.animate();
-            window.addEventListener('resize', () => this.resize());
+            window.addEventListener('resize', () => {
+                this.resize();
+                // Re-calculate particle count on window resize
+                this.particles = [];
+                this.createParticles();
+            });
         },
 
         resize() {
@@ -1685,12 +1695,15 @@ document.addEventListener('alpine:init', () => {
         },
 
         createParticles() {
-            for (let i = 0; i < this.count; i++) {
+            // Determine count based on screen width (768px is the mobile breakpoint)
+            const count = window.innerWidth < 768 ? this.config.mobileCount : this.config.desktopCount;
+            
+            for (let i = 0; i < count; i++) {
                 this.particles.push({
                     x: Math.random() * this.canvas.width,
                     y: Math.random() * this.canvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5
+                    vx: (Math.random() - 0.5) * this.config.speed,
+                    vy: (Math.random() - 0.5) * this.config.speed
                 });
             }
         },
@@ -1698,25 +1711,30 @@ document.addEventListener('alpine:init', () => {
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             
-            // Set line and dot color based on your dark mode state
+            // Auto-detect color based on your existing darkMode state
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
-            this.ctx.fillStyle = `rgba(${color}, 0.5)`;
-            this.ctx.strokeStyle = `rgba(${color}, 0.1)`;
+            this.ctx.fillStyle = `rgba(${color}, 0.4)`;
+            this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
 
             this.particles.forEach((p, i) => {
                 p.x += p.vx; p.y += p.vy;
+
+                // Bounce off edges
                 if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
 
+                // Draw Particle
                 this.ctx.beginPath();
-                this.ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+                this.ctx.arc(p.x, p.y, this.config.particleSize, 0, Math.PI * 2);
                 this.ctx.fill();
 
+                // Draw Lines (Plexus)
                 for (let j = i + 1; j < this.particles.length; j++) {
                     const p2 = this.particles[j];
                     const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (dist < this.maxDist) {
-                        this.ctx.lineWidth = 1 - dist / this.maxDist;
+                    if (dist < this.config.lineDistance) {
+                        // Lines get thinner as they get further away
+                        this.ctx.lineWidth = (1 - dist / this.config.lineDistance) * 1.5;
                         this.ctx.beginPath();
                         this.ctx.moveTo(p.x, p.y);
                         this.ctx.lineTo(p2.x, p2.y);
