@@ -1664,30 +1664,45 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
-        // --- 1) TWEAKABLE SETTINGS ---
+        canvas: null,
+        ctx: null,
+        particles: [],
+        buildUpProgress: 0,
+        startTime: null,
         config: {
-            desktopCount: 96,    // Amount of particles on desktop
-            mobileCount: 21,     // Amount of particles on mobile
-            lineOpacity: 0.21,   // Line opacity (0 to 1)
-            lineDistance: 221,   // Max distance to draw a line between points
-            particleSize: 1.4,   // Size of the dots
-            speed: 0.5           // Movement speed multiplier
+            // Logic to handle mobile vs desktop counts
+            particleCount: window.innerWidth < 768 ? 21 : 96, 
+            particleSize: 1.4,
+            lineDistance: window.innerWidth < 768 ? 100 : 221,
+            lineOpacity: 0.21,
+            speed: 0.5
         },
 
-        canvas: null, ctx: null, particles: [],
-        
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
             this.resize();
-            this.createParticles();
-            this.animate();
+            
+            this.particles = [];
+            this.startTime = Date.now();
+            
+            // Re-check config if window is resized (e.g., rotating a tablet)
             window.addEventListener('resize', () => {
                 this.resize();
-                // Re-calculate particle count on window resize
-                this.particles = [];
-                this.createParticles();
+                this.config.particleCount = window.innerWidth < 768 ? 45 : 100;
+                this.config.lineDistance = window.innerWidth < 768 ? 100 : 150;
             });
+            
+            this.animate();
+        },
+
+        createParticle() {
+            return {
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * this.config.speed,
+                vy: (Math.random() - 0.5) * this.config.speed
+            };
         },
 
         resize() {
@@ -1695,46 +1710,42 @@ document.addEventListener('alpine:init', () => {
             this.canvas.height = window.innerHeight;
         },
 
-        createParticles() {
-            // Determine count based on screen width (768px is the mobile breakpoint)
-            const count = window.innerWidth < 768 ? this.config.mobileCount : this.config.desktopCount;
-            
-            for (let i = 0; i < count; i++) {
-                this.particles.push({
-                    x: Math.random() * this.canvas.width,
-                    y: Math.random() * this.canvas.height,
-                    vx: (Math.random() - 0.5) * this.config.speed,
-                    vy: (Math.random() - 0.5) * this.config.speed
-                });
-            }
-        },
-
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             
-            // Auto-detect color based on your existing darkMode state
+            // Build-up progress over 3 seconds
+            const elapsed = Date.now() - this.startTime;
+            this.buildUpProgress = Math.min(elapsed / 3000, 1);
+
+            // Populate particles based on device-specific target
+            const currentTarget = Math.floor(this.buildUpProgress * this.config.particleCount);
+            while (this.particles.length < currentTarget) {
+                this.particles.push(this.createParticle());
+            }
+
+            // Global fade-in
+            this.ctx.globalAlpha = this.buildUpProgress;
+            
+            // Theme detection
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
             this.ctx.fillStyle = `rgba(${color}, 0.4)`;
             this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
 
             this.particles.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy;
+                p.x += p.vx; 
+                p.y += p.vy;
 
-                // Bounce off edges
                 if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
 
-                // Draw Particle
                 this.ctx.beginPath();
                 this.ctx.arc(p.x, p.y, this.config.particleSize, 0, Math.PI * 2);
                 this.ctx.fill();
 
-                // Draw Lines (Plexus)
                 for (let j = i + 1; j < this.particles.length; j++) {
                     const p2 = this.particles[j];
                     const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
                     if (dist < this.config.lineDistance) {
-                        // Lines get thinner as they get further away
                         this.ctx.lineWidth = (1 - dist / this.config.lineDistance) * 1.5;
                         this.ctx.beginPath();
                         this.ctx.moveTo(p.x, p.y);
@@ -1743,6 +1754,7 @@ document.addEventListener('alpine:init', () => {
                     }
                 }
             });
+
             requestAnimationFrame(() => this.animate());
         }
     }));
