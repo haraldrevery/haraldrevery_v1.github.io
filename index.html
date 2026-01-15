@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark" x-data="{
-    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
-  }"
+<html lang="en" class="no-js scroll-smooth dark" x-data="{ 
+    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true' 
+  }" 
   x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
   :class="{ 'dark': darkMode }">
 <head>
@@ -14,6 +14,14 @@
     document.documentElement.classList.remove('dark');
   }
 </script>
+
+  <script>
+    // early flip: if JS runs this will replace the 'no-js' class with 'js'
+    (function (d) {
+      d.className = d.className.replace(/\bno-js\b/, 'js');
+    })(document.documentElement);
+  </script>
+
     
   <style>
 @view-transition {
