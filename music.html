@@ -452,7 +452,7 @@ body {
   z-index: -2;
   opacity: 0.2;
   background-size: 250px 250px;
-  animation: drift-1 70s ease-in-out infinite alternate;
+  animation: drift-1 60s ease-in-out infinite alternate;
 }
 
 /* LAYER 2: Mid Background (Moderate speed) */
@@ -460,7 +460,7 @@ body {
   z-index: -1;
   opacity: 0.25;
   background-size: 420px 420px;
-  animation: drift-2 55s ease-in-out infinite alternate-reverse;
+  animation: drift-2 45s ease-in-out infinite alternate-reverse;
 }
 
 /* LAYER 3: Close Foreground (Faster, larger) */
@@ -468,7 +468,7 @@ body {
   z-index: 1;
   opacity: 0.3;
   background-size: 680px 680px;
-  animation: drift-1 42s ease-in-out infinite alternate-reverse;
+  animation: drift-1 40s ease-in-out infinite alternate-reverse;
 }
 
 /* LAYER 4: Very Close (Fastest, largest, boldest) */
@@ -491,13 +491,13 @@ body {
 /* Two distinct paths so layers don't just follow each other */
 @keyframes drift-1 {
   0%   { transform: translate(0, 0) rotate(0deg); }
-  50%  { transform: translate(2%, -4%) rotate(0.5deg); }
+  50%  { transform: translate(2%, -5%) rotate(0.5deg); }
   100% { transform: translate(-3%, -8%) rotate(-1deg); }
 }
 
 @keyframes drift-2 {
   0%   { transform: translate(0, 0) rotate(0deg); }
-  50%  { transform: translate(-4%, 2%) rotate(-0.54deg); }
+  50%  { transform: translate(-4%, 4%) rotate(-0.54deg); }
   100% { transform: translate(2%, 6%) rotate(1deg); }
 }
 
