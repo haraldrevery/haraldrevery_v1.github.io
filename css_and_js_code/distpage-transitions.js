@@ -81,6 +81,23 @@
     document.body.className = content.bodyClasses;
     document.body.innerHTML = content.body;
     document.body.appendChild(overlay);
+    // Manually execute scripts found in the new body
+    const scripts = document.body.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      // Create a new script element
+      const newScript = document.createElement('script');
+      
+      // Copy attributes (src, type, etc.)
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      
+      // Copy content
+      newScript.textContent = oldScript.textContent;
+      
+      // Replace old script with new one to force execution
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
     reinitializeScripts();
   }
 
@@ -352,3 +369,4 @@
   }
   
 })();
+
