@@ -362,14 +362,8 @@ html, body {
   position: relative; /* Added for stability */
     overflow-x: hidden;
 }
-/* Ensure these absolute elements don't create "phantom" width */
-#particle-canvas,
-.center-glow,
-.bg-image-fade,
-#logo-container {
-  max-width: 100vw;
-  overflow: hidden;
-}
+
+      
 /* --- GLightbox Caption Styling --- */
 /* Remove the solid white background from the text container */
 .gslide-description {
@@ -490,10 +484,7 @@ html, body {
   animation: logoFloat 0.1s ease-in-out infinite 8s;
   transform-style: preserve-3d;
 }
-#logo-container, .bg-image-fade {
-  height: 100vh; /* Fallback */
-  height: 100dvh;
-}
+
 /* 3. Tilt & Shadow: Base styles for the interactive tilting logo */
 #tilting-logo {
   transition: transform 0.14s ease-out; /* Smooths mouse movement */
@@ -548,22 +539,7 @@ html, body {
   object-fit: contain;
 }
   
-/* Increase perspective to reduce lens distortion */
-#logo-container {
-  perspective: 1000px;
-  height: 100vh !important; /* Force full viewport height */
-  width: 100vw;
-  max-width: 100% !important;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-  position: relative;
-  transform-style: preserve-3d;
-  translateZ(15px);
-}
+
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
     /* This shifts the logo 10% of its own width to the right
