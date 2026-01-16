@@ -366,7 +366,10 @@ html, body {
 #particle-canvas,
 .center-glow,
 .bg-image-fade,
-
+#logo-container {
+  max-width: 100vw;
+  overflow: hidden;
+}
 /* --- GLightbox Caption Styling --- */
 /* Remove the solid white background from the text container */
 .gslide-description {
@@ -545,6 +548,22 @@ html, body {
   object-fit: contain;
 }
   
+/* Increase perspective to reduce lens distortion */
+#logo-container {
+  perspective: 1000px;
+  height: 100vh !important; /* Force full viewport height */
+  width: 100vw;
+  max-width: 100% !important;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  position: relative;
+  transform-style: preserve-3d;
+  translateZ(15px);
+}
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
     /* This shifts the logo 10% of its own width to the right
@@ -557,7 +576,13 @@ html, body {
   will-change: transform;
   transform-style: preserve-3d;
 }
-
+/* Adjust the positioning wrapper to be centered */
+.position-wrapper {
+  transform: none !important; /* Remove the horizontal offset for better centering */
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
 /* Optional: Adds a subtle shadow that moves opposite to the tilt for realism */
 .logo-3d-shadow {
   filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.5));
@@ -876,83 +901,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     .mode-toggle-hidden, #particle-canvas, #particle-canvas-front, #plexus-canvas {
       display: none !important;
     }
-
-
-
-
-
-  /* Centering the container */
-  .position-wrapper {
-    min-height: 80vh; /* Adjust based on where you want it on the page */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 1000px;
-  }
-
-  #logo-container {
-    position: relative;
-    /* Controls the overall size of the logo area */
-    width: 600px; 
-    height: 600px;
-    max-width: 90vw;
-    max-height: 50vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #tilting-logo {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .logo-layer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-
-  /* Layers Z-depth for 3D effect */
-  .layer-back   { z-index: 10; transform: translate(-50%, -50%) translateZ(-20px); }
-  .layer-middle { z-index: 20; transform: translate(-50%, -50%) translateZ(20px); }
-  .layer-front  { z-index: 30; transform: translate(-50%, -50%) translateZ(60px); }
-
-  /* Sizing the SVG and Canvas */
-  #tilting-logo svg, 
-  #plexus-canvas {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    display: block;
-  }
-
-  /* Ensure the canvas covers the clip path area correctly */
-  #plexus-canvas {
-    width: 1000px;
-    height: 1100px;
-    object-fit: contain;
-  }
-
-
-
-
-
-
-      
   </style>
 </noscript>
 
@@ -1022,60 +970,67 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     <canvas x-ref="canvas" class="w-full h-full"></canvas>
 </div>
 
-
       
  <!-- Logo intro -->
-<div class="position-wrapper relative z-10">
-  <svg style="width:0; height:0; position:absolute;" aria-hidden="true">
-    <defs>
-      <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ffffff" />
-        <stop offset="100%" stop-color="#F0F0F0" />
-      </linearGradient>
-      <clipPath id="logoClip">
-        <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-        <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-        <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-        <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-      </clipPath>
-      <g id="logo-shape-outline">
+<div id="logo-container" style="pointer-events: none;">
+  <div class="position-wrapper flex items-center justify-center relative z-10">
+
+
+      
+
+      
+    <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        
+<defs>
+  <g id="logo-shape-outline">
+    <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+    <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+    <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+    <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+  </g>
+</defs>
+    
+      <defs>
+        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#F0F0F0" />
+        </linearGradient>
+        <linearGradient id="logoGradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1a1a1a" />
+          <stop offset="100%" stop-color="#000000" />
+        </linearGradient>
+        <clipPath id="logoClip">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </clipPath>
+      </defs>
+        
+                <g class="implosion-waves">
+                  <use href="#logo-shape-outline" class="wave-echo echo-1" />
+                  <use href="#logo-shape-outline" class="wave-echo echo-2" />
+                  <use href="#logo-shape-outline" class="wave-echo echo-3" />
+                </g>
+        
+      <foreignObject width="1000" height="1100" clip-path="url(#logoClip)">
+        <canvas id="plexus-canvas" width="1000" height="1100" style="width: 100%; height: 100%;"></canvas>
+      </foreignObject>
+        
+      <g id="logo-shape-definition" class="animate-logo" stroke="url(#logoGradient)" stroke-width="1" fill="url(#logoGradient)">
         <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
         <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
         <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
         <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
       </g>
-    </defs>
-  </svg>
+        
+    </svg>
 
-  <div id="logo-container">
-    <div id="tilting-logo">
-      <div class="logo-layer layer-back">
-        <svg viewBox="0 0 1000 1100" xmlns="http://www.w3.org/2000/svg">
-          <g class="implosion-waves">
-            <use href="#logo-shape-outline" class="wave-echo echo-1" />
-            <use href="#logo-shape-outline" class="wave-echo echo-2" />
-            <use href="#logo-shape-outline" class="wave-echo echo-3" />
-          </g>
-        </svg>
-      </div>
 
-      <div class="logo-layer layer-middle">
-        <canvas id="plexus-canvas" width="1000" height="1100" style="clip-path: url(#logoClip);"></canvas>
-      </div>
 
-      <div class="logo-layer layer-front">
-        <svg viewBox="0 0 1000 1100" xmlns="http://www.w3.org/2000/svg">
-          <g id="logo-shape-definition" class="animate-logo" stroke="url(#logoGradient)" stroke-width="1" fill="url(#logoGradient)">
-            <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-            <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-            <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-            <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-          </g>
-        </svg>
-      </div>
-    </div>
+  <!-- Logo intro end  -->     
   </div>
-</div>      
+</div>
 
 <!-- Scroll down button  -->        
 <section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
@@ -1329,39 +1284,29 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         document.getElementById("year").textContent = new Date().getFullYear();
       </script>
       
-       <!-- Script 3D mouse rotation -->
+<!-- Script 3D mouse rotation -->
 <script>
   let targetRotateX = 0, targetRotateY = 0;
   let currentRotateX = 0, currentRotateY = 0;
-  
-  // 1. Change target to the new wrapper ID
-  const tiltingLogo = document.getElementById('tilting-logo');
-  
+  const logoSvg = document.getElementById('main-logo-svg');
   document.addEventListener('mousemove', (e) => {
     targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
     targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
   });
-
+  // Reset rotation when the mouse truly leaves the browser window
   document.addEventListener('mouseout', (e) => {
     if (!e.relatedTarget && !e.toElement) {
       targetRotateY = 0;
       targetRotateX = 0;
     }
   });
-
   function smoothRotate() {
-    if (tiltingLogo) {
+    if (logoSvg) {
       currentRotateX += (targetRotateX - currentRotateX) * 0.29;
       currentRotateY += (targetRotateY - currentRotateY) * 0.29;
-      
-      // 2. We apply the tilt to the wrapper. 
-      // We keep your -9.81% horizontal offset here.
-      tiltingLogo.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
-
-      // 3. Dynamic Shadow (Updated to target the wrapper)
-      const isDark = document.documentElement.classList.contains('dark');
-      const shadowColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.25)';
-      tiltingLogo.style.filter = `drop-shadow(${currentRotateY * 0.6}px ${currentRotateX * 0.6}px 25px ${shadowColor})`;
+      logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+      const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
+      logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
     }
     requestAnimationFrame(smoothRotate);
   }
@@ -1393,8 +1338,8 @@ window.restartPlexus = function() {
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
   // Particle Settings
   const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 150 : 421;
-  const connectionDistance = isMobile ? 120 : 150;
+  const targetParticleCount = isMobile ? 21 : 421;
+  const connectionDistance = isMobile ? 140 : 150;
   const connDistSq = connectionDistance * connectionDistance;
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
@@ -1457,6 +1402,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
 });
 </script>
+      
 <!-- fading words script -->
 <script>
 // Add this function to index.html
@@ -1503,6 +1449,7 @@ document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
   observer.observe(h2);
 });
 </script>
+      
 <!-- fading letters script -->
  <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1582,7 +1529,6 @@ setTimeout(() => window.restartLogoAnimations(), 1); // logo a bit later
     }
   });
 </script>
-      
 <!-- navigation bar pop up when scroll-->
 <script>
   const header = document.getElementById('main-header');
@@ -1599,7 +1545,6 @@ setTimeout(() => window.restartLogoAnimations(), 1); // logo a bit later
     }
   });
 </script>
-      
 <!-- Photo glass thing -->
 <script>
 const stage = document.getElementById('interactive-stage');
@@ -1665,7 +1610,6 @@ cards.forEach(clickedCard => {
   }, 3000);
 });
 </script>
-      
 <!-- Images animating in when scrolling -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
