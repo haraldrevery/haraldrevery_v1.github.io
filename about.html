@@ -96,7 +96,18 @@ header#main-header {
 
 
 
-
+.seo-only-h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  display: block; /* Ensures it's still a block element for crawlers */
+}
 
 
 
@@ -383,7 +394,7 @@ body {
   <div class="container mx-auto">
     
 <!-- <h1 class="text-4xl pt-10 pb-8"><b>ABOUT</b></h1> -->   
-
+<h1 class="seo-only-h1">About Harald Revery - Biography & FAQ</h1>
 
 <!-- images to the right, text to the left -->      
 <div class="container mx-auto py-20 px-5 md:px-0">
