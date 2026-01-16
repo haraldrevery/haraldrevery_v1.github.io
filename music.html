@@ -364,9 +364,9 @@ body {
 .marquee-content {
   display: flex;
   flex-shrink: 0;
-  gap: 20px;
-  min-width: 100%;
-  justify-content: space-around;
+  gap: 20px; /* This is your consistent spacing */
+  min-width: max-content; /* Ensure it doesn't shrink or expand to fit container */
+  justify-content: flex-start; /* Changed from space-around to prevent variable gaps */
   align-items: center;
 }
 
@@ -402,10 +402,10 @@ body {
   z-index: 10;
   cursor: pointer;
 }
-
+      
 @keyframes scroll-left {
   from { transform: translateX(0); }
-  to { transform: translateX(calc(-100% - 20px)); }
+  to { transform: translateX(calc(-100% - 20px)); } /* Matches the gap precisely */
 }
 
 @keyframes scroll-right {
