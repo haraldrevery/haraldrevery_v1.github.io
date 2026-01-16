@@ -343,66 +343,81 @@ body {
       
 
 /* Horizontal Scrolling Gallery */
-.scrolling-container {
+.scrolling-grid-wrapper {
   position: relative;
   width: 100%;
-  height: 40vh; 
   overflow: hidden;
-  margin: 2rem 0; 
-  display: flex;
-  align-items: center;
-  perspective: 1200px;
-  
-  /* Fade edges so images "emerge" from the sides */
+  margin: 4rem 0;
+  padding: 2rem 0;
+  /* Soft fade on edges */
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-.scrolling-track {
+.marquee-row {
   display: flex;
-  width: max-content;
-  height: 70%;
-  /* Adjust the 40s to change the scroll speed */
-  animation: scrollGallery 40s linear infinite; 
-  transform-style: preserve-3d;
+  user-select: none;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.marquee-content {
+  display: flex;
+  flex-shrink: 0;
+  gap: 20px;
+  min-width: 100%;
+  justify-content: space-around;
   align-items: center;
-  gap: 10px; /* Adjust this value for the space between covers */
 }
 
-.scrolling-track img {
-  height: 100%;       
-  width: auto;        
-  object-fit: contain; 
-  
-  /* Constant lean of -27 degrees */
-  transform: rotateY(-27deg) scale(0.9);
-  filter: saturate(0.8) brightness(0.8);
-  
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease;
-  will-change: transform;
+/* Row Animation Directions */
+.scroll-left .marquee-content {
+  animation: scroll-left 40s linear infinite;
 }
 
-/* Hover Effect: Straighten and Pop */
-.scrolling-track img:hover {
-  transform: rotateY(0deg) scale(1.3) translateZ(80px);
-  filter: saturate(1.1) brightness(1.1);
-  z-index: 50;
-  cursor: pointer;
-  /* Adds space around the enlarged cover so it doesn't overlap neighbors */
-  margin: 0 20px; 
+.scroll-right .marquee-content {
+  animation: scroll-right 40s linear infinite;
 }
 
-/* Pause the animation on hover */
-.scrolling-container:hover .scrolling-track {
+/* Pause on hover */
+.scrolling-grid-wrapper:hover .marquee-content {
   animation-play-state: paused;
 }
 
-@keyframes scrollGallery {
-  0% { transform: translateX(0); }
-  /* This must be exactly -50% for a seamless loop with duplicated images */
-  100% { transform: translateX(-50%); }
+/* Image Styles */
+.marquee-content img {
+  height: 250px; /* Adjust height as needed */
+  width: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: saturate(0.8) brightness(0.9);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
+.marquee-content img:hover {
+  filter: saturate(1.1) brightness(1.1);
+  transform: scale(1.15) rotate(2deg);
+  z-index: 10;
+  cursor: pointer;
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - 20px)); }
+}
+
+@keyframes scroll-right {
+  from { transform: translateX(calc(-100% - 20px)); }
+  to { transform: translateX(0); }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .marquee-content img { height: 180px; }
+}
+      
       
 
 
@@ -558,30 +573,54 @@ body {
 
 
 <!-- Scrolling images -->  
-<div class="scrolling-container">
-  <div class="scrolling-track">
-    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-    <img src="./artcovers/phrases11.jpg" alt="Phrases">
-    <img src="./artcovers/hollow11.jpg" alt="Hollow">
-    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-    <img src="./artcovers/isolated11.jpg" alt="Isolated">
-    <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-
-    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-    <img src="./artcovers/phrases11.jpg" alt="Phrases">
-    <img src="./artcovers/hollow11.jpg" alt="Hollow">
-    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-    <img src="./artcovers/isolated11.jpg" alt="Isolated">
-    <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+<div class="scrolling-grid-wrapper">
+  
+  <div class="marquee-row scroll-right">
+    <div class="marquee-content">
+      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+      <img src="./artcovers/phrases11.jpg" alt="Phrases">
+      <img src="./artcovers/hollow11.jpg" alt="Hollow">
+      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+      <img src="./artcovers/isolated11.jpg" alt="Isolated">
+      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
     </div>
+    <div class="marquee-content" aria-hidden="true">
+      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+      <img src="./artcovers/phrases11.jpg" alt="Phrases">
+      <img src="./artcovers/hollow11.jpg" alt="Hollow">
+      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+      <img src="./artcovers/isolated11.jpg" alt="Isolated">
+      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
+    </div>
+  </div>
+
+  <div class="marquee-row scroll-left">
+    <div class="marquee-content">
+      <img src="./artcovers/isolated11.jpg" alt="Isolated">
+      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
+      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+      <img src="./artcovers/phrases11.jpg" alt="Phrases">
+      <img src="./artcovers/hollow11.jpg" alt="Hollow">
+      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+    </div>
+    <div class="marquee-content" aria-hidden="true">
+      <img src="./artcovers/isolated11.jpg" alt="Isolated">
+      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
+      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+      <img src="./artcovers/phrases11.jpg" alt="Phrases">
+      <img src="./artcovers/hollow11.jpg" alt="Hollow">
+      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+    </div>
+  </div>
+
 </div>
      
 
