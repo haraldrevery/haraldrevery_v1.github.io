@@ -371,51 +371,62 @@ body {
 }
 
 /* Row Animation Directions */
-.scroll-left .marquee-content {
-  animation: scroll-left 40s linear infinite;
+.scrolling-container {
+  position: relative;
+  width: 100%;
+  height: 40vh; 
+  overflow: hidden;
+  margin: 2rem 0; 
+  display: flex;
+  align-items: center;
+  /* Perspective can cause flickering on some browsers, moved slightly back */
+  perspective: 2000px;
+  
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-.scroll-right .marquee-content {
-  animation: scroll-right 40s linear infinite;
+.scrolling-track {
+  display: flex;
+  width: max-content;
+  height: 70%;
+  /* Using 3D transform and will-change to prevent blinks */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  animation: scrollGallery 60s linear infinite; 
+  transform-style: preserve-3d;
+  align-items: center;
+  gap: 15px; 
+}
+
+.scrolling-track img {
+  height: 100%;       
+  width: auto;        
+  object-fit: contain; 
+  transform: rotateY(-27deg) scale(0.9);
+  filter: saturate(0.8) brightness(0.8);
+  /* Prevents flickering during 3D rotation */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.5s ease;
+}
+
+.scrolling-track img:hover {
+  transform: rotateY(0deg) scale(1.3) translateZ(100px);
+  filter: saturate(1.1) brightness(1.1);
+  z-index: 50;
+  margin: 0 30px; 
 }
 
 /* Pause on hover */
-.scrolling-grid-wrapper:hover .marquee-content {
+.scrolling-container:hover .scrolling-track {
   animation-play-state: paused;
 }
 
-/* Image Styles */
-.marquee-content img {
-  height: 250px; /* Adjust height as needed */
-  width: auto;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  border-radius: 8px;
-  filter: saturate(0.8) brightness(0.9);
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.marquee-content img:hover {
-  filter: saturate(1.1) brightness(1.1);
-  transform: scale(1.15) rotate(2deg);
-  z-index: 10;
-  cursor: pointer;
-}
-
-@keyframes scroll-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-100% - 20px)); }
-}
-
-@keyframes scroll-right {
-  from { transform: translateX(calc(-100% - 20px)); }
-  to { transform: translateX(0); }
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .marquee-content img { height: 180px; }
+@keyframes scrollGallery {
+  0% { transform: translate3d(0, 0, 0); }
+  /* Ensure this is exactly half of the total track width */
+  100% { transform: translate3d(-50%, 0, 0); }
 }
       
       
@@ -573,54 +584,26 @@ body {
 
 
 <!-- Scrolling images -->  
-<div class="scrolling-grid-wrapper">
-  
-  <div class="marquee-row scroll-right">
-    <div class="marquee-content">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-      <img src="./artcovers/isolated11.jpg" alt="Isolated">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-    </div>
-    <div class="marquee-content" aria-hidden="true">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-      <img src="./artcovers/isolated11.jpg" alt="Isolated">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-    </div>
-  </div>
+<div class="scrolling-container">
+  <div class="scrolling-track">
+    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+    <img src="./artcovers/phrases11.jpg" alt="Phrases">
+    <img src="./artcovers/hollow11.jpg" alt="Hollow">
+    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+    <img src="./artcovers/isolated11.jpg" alt="Isolated">
+    <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
 
-  <div class="marquee-row scroll-left">
-    <div class="marquee-content">
-      <img src="./artcovers/isolated11.jpg" alt="Isolated">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-    </div>
-    <div class="marquee-content" aria-hidden="true">
-      <img src="./artcovers/isolated11.jpg" alt="Isolated">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-    </div>
+    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
+    <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
+    <img src="./artcovers/phrases11.jpg" alt="Phrases">
+    <img src="./artcovers/hollow11.jpg" alt="Hollow">
+    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
+    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
+    <img src="./artcovers/isolated11.jpg" alt="Isolated">
+    <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
   </div>
-
 </div>
      
 
