@@ -1292,7 +1292,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <script>
   let targetRotateX = 0, targetRotateY = 0;
   let currentRotateX = 0, currentRotateY = 0;
-  const logoSvg = document.getElementById('main-logo-svg');
+  const logoSvg = document.getElementById('logo-container');
   document.addEventListener('mousemove', (e) => {
     targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
     targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
