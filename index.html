@@ -973,15 +973,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       
  <!-- Logo intro -->
 <div id="logo-container" style="pointer-events: none;">
-
-
-                <div class="particles-layer p-layer-1"></div>
-                <div class="particles-layer p-layer-2"></div>
-                <div class="particles-layer p-layer-6"></div>
-
-
-    
   <div class="position-wrapper flex items-center justify-center relative z-10">
+
+
+      
+
+      
     <svg id="main-logo-svg" style="pointer-events: auto;" viewBox="0 0 1000 1100" class="transition-transform duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
         
 <defs>
@@ -1033,7 +1030,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
   <!-- Logo intro end  -->     
   </div>
-    
 </div>
 
 <!-- Scroll down button  -->        
@@ -1292,7 +1288,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <script>
   let targetRotateX = 0, targetRotateY = 0;
   let currentRotateX = 0, currentRotateY = 0;
-  const logoSvg = document.getElementById('logo-container');
+  const logoSvg = document.getElementById('main-logo-svg');
   document.addEventListener('mousemove', (e) => {
     targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
     targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
