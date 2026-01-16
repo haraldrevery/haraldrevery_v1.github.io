@@ -550,7 +550,7 @@ body {
           @click="selected !== 1 ? selected = 1 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            What is the best way to support your music (besides streaming)?
+            <p>What is the best way to support your music (besides streaming)?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 1 ? 'rotate-45' : ''">+</span>
         </button>  
@@ -558,7 +558,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 1 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            Honestly, just telling someone about my music; share it! 
+            <p>Honestly, just telling someone about my music; share it!</p>
           </div>
         </div>
       </div>
@@ -568,7 +568,7 @@ body {
           @click="selected !== 2 ? selected = 2 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            Are all the graphics and artworks your own?
+            <p>Are all the graphics and artworks your own?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 2 ? 'rotate-45' : ''">+</span>
         </button>
@@ -576,7 +576,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 2 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            Yes! I think that the visual graphics for a track reflects the effort of the song itself. I made the song hence I should do the cover art, it’s truly my art. I even made a font (the one you see on this website) to match the logo that I use for everything related to this project. 
+            <p>Yes! I think that the visual graphics for a track reflects the effort of the song itself. I made the song hence I should do the cover art, it’s truly my art. I even made a font (the one you see on this website) to match the logo that I use for everything related to this project.</p>
           </div>
         </div>
       </div>
@@ -586,7 +586,7 @@ body {
           @click="selected !== 11 ? selected = 11 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            Are you available for live performances/DJ?
+            <p>Are you available for live performances/DJ?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 11 ? 'rotate-45' : ''">+</span>
         </button>
@@ -594,7 +594,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 11 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            If I have time and can travel to said location, then yes! 
+            <p>If I have time and can travel to said location, then yes!</p>
           </div>
         </div>
       </div>
@@ -604,7 +604,7 @@ body {
           @click="selected !== 12 ? selected = 12 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            Who should I contact for interview requests, features and booking?
+            <p>Who should I contact for interview requests, features and booking?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 12 ? 'rotate-45' : ''">+</span>
         </button>
@@ -612,7 +612,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 12 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            The contact page has the information about that. 
+            <p>The contact page has the information about that.</p>
           </div>
         </div>
       </div>
@@ -622,7 +622,7 @@ body {
           @click="selected !== 3 ? selected = 3 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            What hardware do you use?
+            <p>What hardware do you use?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 3 ? 'rotate-45' : ''">+</span>
         </button>
@@ -630,7 +630,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 3 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            Main setup is Yamaha HS7 with Native Instruments Komplete Audio 6 and a Hitachi AX-M76E system for reference listening. I have a Focusrite Scarlett 2i2 for another set of HS7 when not in my studio at home. For field-recordings I use Zoom H8. 
+            <p>Main setup is Yamaha HS7 with Native Instruments Komplete Audio 6 and a Hitachi AX-M76E system for reference listening. I have a Focusrite Scarlett 2i2 for another set of HS7 when not in my studio at home. For field-recordings I use Zoom H8.</p>
           </div>
         </div>
       </div>
@@ -640,7 +640,7 @@ body {
           @click="selected !== 7 ? selected = 7 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            What software do you use?
+            <p>What software do you use?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 7 ? 'rotate-45' : ''">+</span>
         </button>
@@ -648,7 +648,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 7 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            FL Studio is my main DAW (unfortunately). For synths I use Harmor (built into FL Studio), Native Instruments Rounds, Xfer Serum, Surge, Odin 2 and Arminator2 (got a softspot for jankware). For making kicks I use Sonic Academy Kick 2, but I also use Geonkick. My go to equalizer is ReaPlugs ReaEQ, since I just want good performance and no delays with routing automation, it just works. For LFO volume stuff I use Gross Beat or TiagoLr GATE-12. For reverb I use ValhallaSupermassive if I want to save CPU or Native Instruments Raum if I want to be fancy. For delay effects I just use the Fruity Delay 3.
+            <p>FL Studio is my main DAW (unfortunately). For synths I use Harmor (built into FL Studio), Native Instruments Rounds, Xfer Serum, Surge, Odin 2 and Arminator2 (got a softspot for jankware). For making kicks I use Sonic Academy Kick 2, but I also use Geonkick. My go to equalizer is ReaPlugs ReaEQ, since I just want good performance and no delays with routing automation, it just works. For LFO volume stuff I use Gross Beat or TiagoLr GATE-12. For reverb I use ValhallaSupermassive if I want to save CPU or Native Instruments Raum if I want to be fancy. For delay effects I just use the Fruity Delay 3.</p>
           </div>
         </div>
       </div>
@@ -658,7 +658,7 @@ body {
           @click="selected !== 4 ? selected = 4 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-           Do you live stream?
+           <p>Do you live stream?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 4 ? 'rotate-45' : ''">+</span>
         </button>
@@ -666,7 +666,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 4 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-            I livestream occasionally, either playing some video games, DJ’ing or going through my projects.
+            <p>I livestream occasionally, either playing some video games, DJ’ing or going through my projects.</p>
           </div>
         </div>
       </div>        
@@ -712,7 +712,7 @@ body {
           @click="selected !== 8 ? selected = 8 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-           Are you open to collaborations with other artists/producers?
+           <p>Are you open to collaborations with other artists/producers?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 8 ? 'rotate-45' : ''">+</span>
         </button>
@@ -720,7 +720,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 8 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-          If someone has a project that I feel I can fill the gaps and we are getting along, if the opportunity occurs, sure!
+          </p>If someone has a project that I feel I can fill the gaps and we are getting along, if the opportunity occurs, sure!</p>
           </div>
         </div>
       </div> 
@@ -730,7 +730,7 @@ body {
           @click="selected !== 9 ? selected = 9 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-            Do you have a Discord or a mailing list I can join?
+            <p>Do you have a Discord or a mailing list I can join?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 9 ? 'rotate-45' : ''">+</span>
         </button>
@@ -738,7 +738,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 9 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-           No, I don’t like Discord and setting up a mailing list isn’t a priority for me. Bad "broadcasting range” with email so to speak, most of the audience of this genre use social media more.
+           <p>No, I don’t like Discord and setting up a mailing list isn’t a priority for me. Bad "broadcasting range” with email so to speak, most of the audience of this genre use social media more.</p>
           </div>
         </div>
       </div> 
@@ -748,7 +748,7 @@ body {
           @click="selected !== 10 ? selected = 10 : selected = null" 
           class="flex justify-between items-center w-full text-left focus:outline-none group">
           <span class="font-signika text-2xl tracking-wide text-black dark:text-white group-hover:opacity-75 transition-opacity">
-           Are your songs available for sync licensing (film, live stream, internet content, TV, ads)?
+           <p>Are your songs available for sync licensing (film, live stream, internet content, TV, ads)?</p>
           </span>
           <span class="text-2xl transition-transform duration-300 text-black dark:text-white" :class="selected === 10 ? 'rotate-45' : ''">+</span>
         </button>
@@ -756,7 +756,7 @@ body {
           class="relative overflow-hidden transition-all duration-500" 
           :style="selected === 10 ? 'max-height: ' + $el.scrollHeight + 'px; opacity: 1;' : 'max-height: 0; opacity: 0;'">
           <div class="pt-1 pb-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify text-gray-800 dark:text-gray-200">
-           For live streaming my music; a quick mention of the track is appreciated. For internet content (such as content in TikTok, Youtube, Facebook formats) I’m fine with just you providing a link in the description/post (of said content) to my social media profiles (instagram and/or soundloud) if you use one of my songs. If it’s for film or TV; contact me about it.
+           <p>For live streaming my music; a quick mention of the track is appreciated. For internet content (such as content in TikTok, Youtube, Facebook formats) I’m fine with just you providing a link in the description/post (of said content) to my social media profiles (instagram and/or soundloud) if you use one of my songs. If it’s for film or TV; contact me about it.</p>
           </div>
         </div>
       </div>         
