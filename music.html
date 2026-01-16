@@ -421,6 +421,140 @@ body {
       
 
 
+
+
+
+/* Particles */
+/* Base setup for all 4 layers */
+.particles-layer {
+  position: absolute;
+  top: -25%; 
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  pointer-events: none;
+  background-repeat: repeat;
+  /* High-density particle map */
+  background-image: 
+    radial-gradient(1.2px 1.2px at 15% 15%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 35% 45%, currentColor 100%, transparent),
+    radial-gradient(1.8px 1.8px at 55% 85%, currentColor 100%, transparent),
+    radial-gradient(1.2px 1.2px at 85% 25%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 25% 75%, currentColor 100%, transparent),
+    radial-gradient(1.5px 1.5px at 70% 50%, currentColor 100%, transparent);
+  will-change: transform;
+    /* Add this to prevent any individual particle layer from creating scrollbars */
+  overflow: hidden;
+}
+
+/* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
+.p-layer-1 {
+  z-index: -2;
+  opacity: 0.2;
+  background-size: 250px 250px;
+  animation: drift-1 70s ease-in-out infinite alternate;
+}
+
+/* LAYER 2: Mid Background (Moderate speed) */
+.p-layer-2 {
+  z-index: -1;
+  opacity: 0.25;
+  background-size: 420px 420px;
+  animation: drift-2 55s ease-in-out infinite alternate-reverse;
+}
+
+/* LAYER 3: Close Foreground (Faster, larger) */
+.p-layer-3 {
+  z-index: 1;
+  opacity: 0.3;
+  background-size: 680px 680px;
+  animation: drift-1 42s ease-in-out infinite alternate-reverse;
+}
+
+/* LAYER 4: Very Close (Fastest, largest, boldest) */
+.p-layer-4 {
+  z-index: 2;
+  opacity: 0.45;
+  background-size: 700px 700px;
+  animation: drift-2 21s ease-in-out infinite alternate;
+}
+
+/* LAYER 5: Extreme Foreground (16% larger than Layer 4) */
+.p-layer-5 {
+  z-index: 20;
+  opacity: 0.55;
+  background-size: 996px 996px; /* INCREASE this for larger particles */
+  /* Using the new 3rd drift variant */
+  animation: drift-3 18s ease-in-out infinite alternate;
+}
+      
+/* Two distinct paths so layers don't just follow each other */
+@keyframes drift-1 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(2%, -4%) rotate(0.5deg); }
+  100% { transform: translate(-3%, -8%) rotate(-1deg); }
+}
+
+@keyframes drift-2 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(-4%, 2%) rotate(-0.54deg); }
+  100% { transform: translate(2%, 6%) rotate(1deg); }
+}
+
+@keyframes drift-3 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  33%  { transform: translate(3%, 2%) rotate(0.3deg); }
+  66%  { transform: translate(-2%, 4%) rotate(-0.6deg); }
+  100% { transform: translate(1%, -5%) rotate(0.2deg); }
+}
+
+/* NEW: 4th distinct path for the 6th layer */
+@keyframes drift-4 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(-3%, -2%) rotate(0.4deg); }
+  50%  { transform: translate(4%, 3%) rotate(-0.2deg); }
+  75%  { transform: translate(-2%, -5%) rotate(0.6deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* LAYER 6: Ultra Foreground (16% larger than Layer 5) */
+.p-layer-6 {
+  z-index: 25; /* Higher than Layer 5's z-index of 20 */
+  opacity: 0.65;
+  background-size: 1255px 1255px; /* 996px * 1.16 */
+  /* Faster than Layer 5 (18s) to enhance parallax speed */
+  animation: drift-4 24s ease-in-out infinite alternate;
+}
+      
+/* LAYER 6: Ultra Foreground (16% larger than Layer 5) */
+.p-layer-7 {
+  z-index: 29; /* Higher than Layer 5's z-index of 20 */
+  opacity: 0.8;
+  background-size: 1455px 1455px; /* 996px * 1.16 */
+  /* Faster than Layer 5 (18s) to enhance parallax speed */
+  animation: drift-1 22s ease-in-out infinite alternate;
+}
+      
+/* Colors based on theme */
+.dark .particles-layer { color: rgba(255, 255, 255, 0.8); }
+html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
       
       
 
@@ -575,6 +709,10 @@ body {
 <!-- Scrolling images -->  
 <div class="scrolling-grid-wrapper">
   
+                <div class="particles-layer p-layer-1"></div>
+                <div class="particles-layer p-layer-2"></div>
+                <div class="particles-layer p-layer-6"></div>
+    
   <div class="marquee-row scroll-right">
     <div class="marquee-content">
       <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
