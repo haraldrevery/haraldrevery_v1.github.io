@@ -764,6 +764,20 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
+.seo-only-h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  display: block; /* Ensures it's still a block element for crawlers */
+}
+      
+
       
       
   </style>
@@ -982,7 +996,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
 
-
+<h1 class="seo-only-h1">Harald Revery - Official Website</h1>
 
 <!-- background plexus -->
       <div x-data="plexusBackground" class="absolute inset-0 pointer-events-none" style="z-index: -10; height: 100vh;">
