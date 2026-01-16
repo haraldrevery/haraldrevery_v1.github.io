@@ -707,33 +707,48 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 <!-- Scrolling images -->  
-<div class="scrolling-grid-wrapper">
+<div class="scrolling-grid-wrapper" x-data="{ 
+    showSlider: false, 
+    currentImg: '', 
+    images: [],
+    init() {
+        // Collect all unique image sources from the marquee for the slider
+        this.images = [...new Set([...$el.querySelectorAll('.marquee-content img')].map(img => img.src))];
+    },
+    openSlider(src) {
+        this.currentImg = src;
+        this.showSlider = true;
+    },
+    next() {
+        let idx = this.images.indexOf(this.currentImg);
+        this.currentImg = this.images[(idx + 1) % this.images.length];
+    },
+    prev() {
+        let idx = this.images.indexOf(this.currentImg);
+        this.currentImg = this.images[(idx - 1 + this.images.length) % this.images.length];
+    }
+}">
   
+  <div class="particles-layer p-layer-1"></div>
+    
                 <div class="particles-layer p-layer-1"></div>
                 <div class="particles-layer p-layer-2"></div>
                 <div class="particles-layer p-layer-6"></div>
     
   <div class="marquee-row scroll-right">
     <div class="marquee-content">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-      <img src="./artcovers/krakatau11.jpg" alt="Krakatau">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
+      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads" @click="openSlider($el.src)">
+      <img src="./artcovers/spiritless11.jpg" alt="Spiritless" @click="openSlider($el.src)">
+      <img src="./artcovers/phrases11.jpg" alt="Phrases" @click="openSlider($el.src)">
+      <img src="./artcovers/hollow11.jpg" alt="Hollow" @click="openSlider($el.src)">
+      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island" @click="openSlider($el.src)">
+      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow" @click="openSlider($el.src)">
+      <img src="./artcovers/krakatau11.jpg" alt="Krakatau" @click="openSlider($el.src)">
+      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain" @click="openSlider($el.src)">
     </div>
     <div class="marquee-content" aria-hidden="true">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-      <img src="./artcovers/krakatau11.jpg" alt="Krakatau">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-    </div>
+      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads" @click="openSlider($el.src)">
+      </div>
   </div>
 
 <div class="particles-layer p-layer-5"></div>
@@ -741,9 +756,41 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="particles-layer p-layer-4"></div>
 <div class="particles-layer p-layer-7"></div>  
     
-</div>
-     
+  <template x-teleport="body">
+    <div x-show="showSlider" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+         @keydown.escape.window="showSlider = false"
+         @keydown.right.window="next()"
+         @keydown.left.window="prev()">
+      
+      <button @click="showSlider = false" class="absolute top-10 right-10 text-white hover:text-gray-300 text-4xl font-signika">&times;</button>
+      
+      <button @click="prev()" class="absolute left-5 md:left-10 text-white text-5xl p-4 hover:scale-110 transition-transform">‹</button>
+      <button @click="next()" class="absolute right-5 md:right-10 text-white text-5xl p-4 hover:scale-110 transition-transform">›</button>
 
+      <div class="max-w-4xl max-h-[80vh] px-4" @click.away="showSlider = false">
+        <img :src="currentImg" class="w-full h-full object-contain rounded-lg shadow-2xl border border-white/10">
+      </div>
+    </div>
+  </template>
+</div>
+
+
+
+
+
+
+
+
+
+
+      
 
 
       
