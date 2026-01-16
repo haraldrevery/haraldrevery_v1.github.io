@@ -1112,7 +1112,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <div class="mt-2 pt-4 text-center">
   <p class="text-sm opacity-50">
-    &copy; 2026 Harald Revery™. All Rights Reserved (fonts, audio, images and brand logo) 
+    &copy; <span id="year"></span> Harald Revery™. All Rights Reserved (fonts, audio, images and brand logo) 
   </p>
   <p class="text-xs mt-2 opacity-30">
     Site Template by <a href="https://github.com/JoaoFranco03" class="hover:underline">Joao Franco</a>
@@ -1399,6 +1399,12 @@ function audioPlayer() {
   }, 3000);
 });
 </script>
-    
+      
+  <script>
+    // Automatic Year Update
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+      
 </body>
 </html>
