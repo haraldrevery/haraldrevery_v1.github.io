@@ -513,8 +513,6 @@ body {
   will-change: transform;
     /* Add this to prevent any individual particle layer from creating scrollbars */
   overflow: hidden;
-      max-width: 100vw; /* Add this */
-  clip-path: inset(0); /* Add this - contains the particles */
 }
 
 /* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
@@ -643,9 +641,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
-.container {
-  overflow-x: hidden;
-}
+
 
 
 
@@ -813,8 +809,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 <!-- Scrolling images -->  
-<div class="container mx-auto py-16 px-5 md:px-0" style="overflow: hidden;">
-  <div class="relative overflow-x-hidden" x-data="{
+<div class="container mx-auto py-16 px-5 md:px-0">
+  <div class="relative overflow-visible" x-data="{
     path: './artcovers/',
     images: [
       { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads | ISRC: QZHN32004027' },
