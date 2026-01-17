@@ -413,81 +413,79 @@ body {
       
 
 /* Horizontal Scrolling Gallery */
-.scrolling-grid-wrapper {
+#music-image-grid {
   position: relative;
-  width: 100%;
-  overflow: hidden;
-  margin: 4rem 0;
-  padding: 2rem 0;
-  /* Soft fade on edges */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  transition: all 0.4s ease;
 }
 
-.marquee-row {
-  display: flex;
-  user-select: none;
-  gap: 20px;
-  margin-bottom: 20px;
+#music-image-grid .glightbox {
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
 }
 
-.marquee-content {
-  display: flex;
-  flex-shrink: 0;
-  gap: 20px;
-  min-width: 100%;
-  justify-content: space-around;
-  align-items: center;
+/* When ANY image is hovered → affect all siblings */
+#music-image-grid:hover .glightbox {
+  opacity: 0.5;
+  transform: scale(0.95);
 }
 
-/* Row Animation Directions */
-.scroll-left .marquee-content {
-  animation: scroll-left 110s linear infinite;
-}
-
-.scroll-right .marquee-content {
-  animation: scroll-right 110s linear infinite;
-}
-
-/* Pause on hover */
-.scrolling-grid-wrapper:hover .marquee-content {
-  animation-play-state: paused;
-}
-
-/* Image Styles */
-.marquee-content img {
-  height: 250px; /* Adjust height as needed */
-  width: auto;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  border-radius: 4px;
-  filter: saturate(0.8) brightness(0.9);
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.marquee-content img:hover {
-  filter: saturate(1.1) brightness(1.1);
-  transform: scale(1.15);
+/* The hovered image itself returns to full state */
+#music-image-grid .glightbox:hover {
+  opacity: 1 !important;
+  transform: scale(1.04) !important;
   z-index: 10;
-  cursor: pointer;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
 }
 
-@keyframes scroll-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-100% - 20px)); }
+/* Optional: make transition smoother when leaving hover */
+#music-image-grid .glightbox:not(:hover) {
+  transition-delay: 0.05s;
 }
 
-@keyframes scroll-right {
-  from { transform: translateX(calc(-100% - 20px)); }
-  to { transform: translateX(0); }
+/* Center glow effect */
+.center-glow {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.29) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(40px);
 }
 
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .marquee-content img { height: 180px; }
+@media (min-width: 768px) {
+  .center-glow {
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
 }
-      
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Grid item reveal animation - same as index.html */
+.grid-item-reveal {
+  opacity: 0;
+  transform: translate3d(0, 5rem, 0);
+  transition:
+    opacity 1400ms cubic-bezier(0, 0.39, 0.4, 0.95),
+    transform 1400ms cubic-bezier(0, 0.39, 0.4, 0.95);
+  will-change: opacity, transform;
+  -webkit-font-smoothing: antialiased;
+}
+
+.grid-item-reveal.revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
       
 
 
@@ -788,40 +786,51 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 <!-- Scrolling images -->  
-<div class="scrolling-grid-wrapper">
-  
-                <div class="particles-layer p-layer-1"></div>
-                <div class="particles-layer p-layer-2"></div>
-                <div class="particles-layer p-layer-6"></div>
+<div class="container mx-auto py-16 px-5 md:px-0">
+  <div class="relative overflow-visible" x-data="{
+    path: './artcovers/',
+    images: [
+      { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads' },
+      { file: 'spiritless11.jpg', title: 'Spiritless' },
+      { file: 'phrases11.jpg', title: 'Phrases' },
+      { file: 'hollow11.jpg', title: 'Hollow' },
+      { file: 'uninhabitedisland11.jpg', title: 'Uninhabited Island' },
+      { file: 'lookingforsnow11.jpg', title: 'Looking for Snow' },
+      { file: 'krakatau11.jpg', title: 'Krakatau' },
+      { file: 'forestrain11.jpg', title: 'Forest Rain' }
+    ]
+  }">
     
-  <div class="marquee-row scroll-right">
-    <div class="marquee-content">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-      <img src="./artcovers/krakatau11.jpg" alt="Krakatau">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
+    <!-- Particle Layers -->
+    <div class="particles-layer p-layer-1"></div>
+    <div class="particles-layer p-layer-2"></div>
+    <div class="particles-layer p-layer-6"></div>
+    
+    <!-- Center Glow Effect -->
+    <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
+    
+    <!-- Image Grid -->
+    <div id="music-image-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 relative z-10">
+      <template x-for="(img, index) in images" :key="img.file">
+        <a :href="path + img.file"
+           class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-all duration-500 hover:scale-105 hover:z-20 shadow-lg overflow-hidden"
+           :data-title="img.title"
+           data-gallery="music-gallery">
+          <img :src="path + img.file" 
+               :alt="img.title" 
+               class="object-cover w-full h-full rounded filter saturate-[0.8] group-hover:saturate-100 transition duration-1000 ease-out group-hover:scale-110" 
+               loading="lazy">
+        </a>
+      </template>
     </div>
-    <div class="marquee-content" aria-hidden="true">
-      <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads">
-      <img src="./artcovers/spiritless11.jpg" alt="Spiritless">
-      <img src="./artcovers/phrases11.jpg" alt="Phrases">
-      <img src="./artcovers/hollow11.jpg" alt="Hollow">
-      <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island">
-      <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow">
-      <img src="./artcovers/krakatau11.jpg" alt="Krakatau">
-      <img src="./artcovers/forestrain11.jpg" alt="Forest Rain">
-    </div>
+    
+    <!-- More Particle Layers -->
+    <div class="particles-layer p-layer-5"></div>
+    <div class="particles-layer p-layer-3"></div>
+    <div class="particles-layer p-layer-4"></div>
+    <div class="particles-layer p-layer-7"></div>
+    
   </div>
-
-<div class="particles-layer p-layer-5"></div>
-<div class="particles-layer p-layer-3"></div>
-<div class="particles-layer p-layer-4"></div>
-<div class="particles-layer p-layer-7"></div>  
-    
 </div>
      
 
