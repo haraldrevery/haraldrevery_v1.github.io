@@ -387,15 +387,16 @@ body {
   animation: gradientMove 15s ease infinite;
 }
 
-/* Apply a smooth transition to the entire page and all its children */
-* {
+/* Replace the existing * selector with: */
+*:not(body) {
     transition: background-color 0.96s ease-in-out, color 0.6s ease-in-out, border-color 0.6s ease-in-out;
 }
 
-/* Specific smoothing for the background gradient */
+/* And add this separately: */
 body {
-    transition: background 0.8s ease-in-out;
-}  
+    transition: color 0.6s ease-in-out !important;
+    /* Remove background transition on body */
+} 
 
 /* avoid text-justify odd gaps */
 .text-justify {
