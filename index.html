@@ -1513,35 +1513,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- word by word, agin... -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Target all elements with this class
-  const containers = document.querySelectorAll('.animate-word-by-word');
-  
-  containers.forEach(container => {
-    // 1. Split text into spans
-    const originalText = container.innerText;
-    const words = originalText.split(' ');
-    container.innerHTML = words
-      .map((word, index) => `<span class="word" style="animation-delay: ${index * 0.05}s">${word}</span>`)
-      .join(' ');
 
-    // 2. Setup observer for this specific container
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Add the trigger class defined in your CSS
-          entry.target.classList.add('start-animation');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    observer.observe(container);
-  });
-});
-</script>
       
 
 
