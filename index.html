@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark" x-data="{
+<html lang="en" class="scroll-smooth" x-data="{
     darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
   }"
   x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
