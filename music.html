@@ -638,24 +638,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 .gslide-title, .gslide-desc {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
-/* Animation for the grid items */
-.grid-item-reveal {
-  opacity: 0;
-  transform: translate3d(0, 5rem, 0);
-  /* The '1' as the second-to-last number ensures it
-     hits the finish line with almost zero velocity.
-  */
-  transition:
-    opacity 1400ms cubic-bezier(0, 0.39, 0.4, 0.95),
-    transform 1400ms cubic-bezier(0, 0.39, 0.4, 0.95);
-  will-change: opacity, transform;
-  -webkit-font-smoothing: antialiased;
-}
-.grid-item-reveal.revealed {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}    
-
 
 
 
