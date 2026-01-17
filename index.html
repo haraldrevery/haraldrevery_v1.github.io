@@ -339,18 +339,23 @@ body {
   
  /* center glow "*/
 .center-glow {
-    /* Adjust the color here: 255,255,255 is white.
-       Change to a brand color if desired. */
-    background: radial-gradient(
-      circle at center,
-      rgba(255, 255, 255, 0.29) 0%,
-      rgba(255, 255, 255, 0.05) 40%,
-      transparent 70%
-    );
-    border-radius: 50%;
-    filter: blur(40px);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.29) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(40px);
+  /* Remove the infinite animation from here */
+}
+
+/* Only animate on larger screens */
+@media (min-width: 768px) {
+  .center-glow {
     animation: pulse-glow 6s ease-in-out infinite;
   }
+}
   @keyframes pulse-glow {
     0%, 100% {
       transform: scale(0.8);
