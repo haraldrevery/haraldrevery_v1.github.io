@@ -198,7 +198,7 @@ document.addEventListener('alpine:init', () => {
             this.canvas.height = window.innerHeight;
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 40 : 96;
-            this.config.lineDistance = isMobile ? 421 : 221;
+            this.config.lineDistance = isMobile ? 200 : 221;
         },
 
         createParticle() {
