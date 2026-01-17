@@ -418,17 +418,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 700px; /* Space for the images and expansion */
-  margin: 4rem 0;
+  min-height: 800px; /* Increased height for the taller stack */
+  margin: 5rem 0;
   perspective: 1000px;
 }
 
 .stack-3d-container {
   position: relative;
-  width: 320px;
-  height: 320px;
-  transform: rotate(-30deg) skew(25deg) scale(0.8);
-  transition: 0.5s;
+  width: 300px;
+  height: 300px;
+  /* Rotated 90 degrees from previous version: 60deg instead of -30deg */
+  transform: rotate(60deg) skew(-20deg) scale(0.8);
+  transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 .stack-3d-container img {
@@ -436,40 +437,45 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.5);
-  transition: 0.5s;
-  /* Add the reveal class base state if using your script */
-  opacity: 0; 
+  border-radius: 10px;
+  background: #000;
+  /* Subtle border to separate dark album covers */
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: -15px 15px 40px rgba(0, 0, 0, 0.5);
+  transition: 0.5s ease-in-out;
+  opacity: 0; /* Starts hidden for the reveal script */
 }
 
-/* Ensure images show up after the reveal script triggers */
 .stack-3d-container img.revealed {
   opacity: 1;
 }
 
-/* Hover expansion logic */
-.stack-3d-container:hover img:nth-child(4) {
-  transform: translate(160px, -160px);
-  opacity: 1;
-}
-.stack-3d-container:hover img:nth-child(3) {
-  transform: translate(120px, -120px);
-  opacity: 0.8;
-}
-.stack-3d-container:hover img:nth-child(2) {
-  transform: translate(80px, -80px);
-  opacity: 0.6;
-}
-.stack-3d-container:hover img:nth-child(1) {
-  transform: translate(40px, -40px);
-  opacity: 0.4;
+/* Hover expansion: Translating along the new 90-degree axis */
+/* We use increments of 40px to create the spread */
+
+.stack-3d-container:hover img:nth-child(7) { transform: translate(240px, -240px); opacity: 1; }
+.stack-3d-container:hover img:nth-child(6) { transform: translate(200px, -200px); opacity: 0.9; }
+.stack-3d-container:hover img:nth-child(5) { transform: translate(160px, -160px); opacity: 0.8; }
+.stack-3d-container:hover img:nth-child(4) { transform: translate(120px, -120px); opacity: 0.7; }
+.stack-3d-container:hover img:nth-child(3) { transform: translate(80px, -80px);   opacity: 0.6; }
+.stack-3d-container:hover img:nth-child(2) { transform: translate(40px, -40px);   opacity: 0.5; }
+.stack-3d-container:hover img:nth-child(1) { transform: translate(0, 0);          opacity: 0.4; }
+
+/* Individual Hover: Pop the specific image out further when touched */
+.stack-3d-container img:hover {
+  filter: brightness(1.2);
+  transform: translate(260px, -260px) !important; /* Move even further out */
+  z-index: 100;
+  opacity: 1 !important;
 }
 
-/* Mobile adjustments */
+/* Mobile: Scale it down so it fits the screen width */
 @media (max-width: 768px) {
-  .stack-3d-wrapper { min-height: 500px; }
-  .stack-3d-container { width: 220px; height: 220px; }
+  .stack-3d-container {
+    width: 200px;
+    height: 200px;
+    transform: rotate(60deg) skew(-20deg) scale(0.6);
+  }
 }
       
 
@@ -779,13 +785,15 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     
 <div class="stack-3d-wrapper">
   <div class="particles-layer p-layer-1"></div>
-  <div class="particles-layer p-layer-6"></div>
-
+  
   <div class="stack-3d-container">
-    <img src="./artcovers/hollow11.jpg" alt="Hollow" class="grid-item-reveal">
-    <img src="./artcovers/phrases11.jpg" alt="Phrases" class="grid-item-reveal">
-    <img src="./artcovers/spiritless11.jpg" alt="Spiritless" class="grid-item-reveal">
+    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow" class="grid-item-reveal">
+    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island" class="grid-item-reveal">
     <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads" class="grid-item-reveal">
+    <img src="./artcovers/spiritless11.jpg" alt="Spiritless" class="grid-item-reveal">
+    <img src="./artcovers/phrases11.jpg" alt="Phrases" class="grid-item-reveal">
+    <img src="./artcovers/isolated11.jpg" alt="Isolated" class="grid-item-reveal">
+    <img src="./artcovers/hollow11.jpg" alt="Hollow" class="grid-item-reveal"> 
   </div>
 </div>
 
