@@ -3,20 +3,34 @@ let targetRotateX = 0, targetRotateY = 0;
 let currentRotateX = 0, currentRotateY = 0;
 const logoSvg = document.getElementById('main-logo-svg');
 
-// Only add mouse events on non-touch devices
-if (!('ontouchstart' in window)) {
-  document.addEventListener('mousemove', (e) => {
-    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
-    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
-  });
-  
-  document.addEventListener('mouseout', (e) => {
-    if (!e.relatedTarget && !e.toElement) {
-      targetRotateY = 0;
-      targetRotateX = 0;
-    }
-  });
-}
+// 1. Mouse Movement (Desktop)
+document.addEventListener('mousemove', (e) => {
+  targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
+  targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
+});
+
+// 2. Touch Movement (Mobile) - Added so rotation works
+document.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 0) {
+    // Using the same 40 intensity as desktop
+    targetRotateY = ((e.touches[0].clientX / window.innerWidth) - 0.5) * 40;
+    targetRotateX = ((e.touches[0].clientY / window.innerHeight) - 0.5) * -40;
+  }
+}, { passive: true });
+
+// Reset on mouse out
+document.addEventListener('mouseout', (e) => {
+  if (!e.relatedTarget && !e.toElement) {
+    targetRotateY = 0;
+    targetRotateX = 0;
+  }
+});
+
+// Reset on touch end
+document.addEventListener('touchend', () => {
+    targetRotateY = 0;
+    targetRotateX = 0;
+});
 
 function smoothRotate() {
   if (logoSvg) {
@@ -34,25 +48,30 @@ smoothRotate();
 // 1. GLOBAL SCOPE: Animation ID and Persistent Mouse Coordinates
 let plexusRequestId;
 let mouseX = 0, mouseY = 0;
-let targetX = 0, targetY = 0;
 
-// Update mouse position globally (only on non-touch devices)
-if (!('ontouchstart' in window)) {
-  document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-    mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-  });
-}
+// Update mouse position globally
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+  mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+});
+
+// Update touch position globally (Added)
+document.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 0) {
+      mouseX = (e.touches[0].clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      mouseY = (e.touches[0].clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+  }
+}, { passive: true });
+
 
 window.restartPlexus = function() {
   // Clear previous loop
   if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
   
   const canvas = document.getElementById('plexus-canvas');
-  const svg = document.getElementById('main-logo-svg');
   
-  if (!canvas || !svg) {
-    console.warn('Plexus: Canvas or SVG not found');
+  if (!canvas) {
+    console.warn('Plexus: Canvas not found');
     return;
   }
   
@@ -62,7 +81,6 @@ window.restartPlexus = function() {
     return;
   }
   
-  // Use the dimensions from your original code
   const width = 1000, height = 1100;
   
   // Dynamic Color
@@ -71,8 +89,10 @@ window.restartPlexus = function() {
   
   // Particle Settings
   const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 21 : 421;
-  const connectionDistance = isMobile ? 180 : 150;
+  
+  // ORIGINAL SETTINGS KEPT
+  const targetParticleCount = isMobile ? 21 : 421; 
+  const connectionDistance = isMobile ? 96 : 150;
   const connDistSq = connectionDistance * connectionDistance;
   
   const posX = new Float32Array(targetParticleCount);
@@ -91,13 +111,6 @@ window.restartPlexus = function() {
   }
   
   function animate() {
-    // --- PART 1: RESTORE 3D ROTATION (only on desktop) ---
-    if (!('ontouchstart' in window)) {
-      const rotateX = targetY * -19;
-      const rotateY = targetX * 19;
-    }
-  
-    // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
@@ -160,28 +173,21 @@ window.restartLogoAnimations = function() {
     return;
   }
   
-  // Target the paths for logo drawing animation
   const logoPaths = logoGroup.querySelectorAll('path');
   logoPaths.forEach(path => {
-    // Reset to initial state
     path.style.animation = 'none';
     path.style.strokeDashoffset = '4000';
     path.style.fillOpacity = '0';
-    // Force reflow
     void path.offsetWidth;
-    // Re-apply animation
     path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
   });
   
-  // Reset waves with extra reflow force
   waves.forEach((wave, index) => {
     wave.style.animation = 'none';
     wave.style.transform = 'scale(5)';
     wave.style.opacity = '0';
     wave.style.strokeWidth = '0.5px';
-    // Force reflow per wave
     void wave.offsetWidth;
-    // Re-apply with staggered delay
     setTimeout(() => {
       wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
     }, index * 100);
@@ -224,35 +230,39 @@ document.addEventListener('alpine:init', () => {
     init() {
       try {
         this.canvas = this.$refs.canvas;
-        
-        if (!this.canvas) {
-          console.warn('Alpine plexus: Canvas ref not found');
-          return;
-        }
-        
+        if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
-        
-        if (!this.ctx) {
-          console.warn('Alpine plexus: Could not get 2d context');
-          return;
-        }
+        if (!this.ctx) return;
         
         this.startTime = Date.now();
-        this.isMobile = 'ontouchstart' in window || window.innerWidth < 768;
+        this.isMobile = window.innerWidth < 768; 
         
+        // ORIGINAL SETTINGS KEPT
         this.config.particleCount = this.isMobile ? 28 : 96;
         this.config.lineDistance = this.isMobile ? 96 : 221;
 
         this.handleResize();
         window.addEventListener('resize', () => this.handleResize());
         
-        // Only add mouse tracking on desktop
-        if (!this.isMobile) {
-          window.addEventListener('mousemove', (e) => {
+        // Mouse tracking
+        window.addEventListener('mousemove', (e) => {
             this.mouse.x = e.clientX;
             this.mouse.y = e.clientY;
-          });
-        }
+        });
+
+        // Touch tracking (Added)
+        window.addEventListener('touchmove', (e) => {
+             if(e.touches.length > 0) {
+                 this.mouse.x = e.touches[0].clientX;
+                 this.mouse.y = e.touches[0].clientY;
+             }
+        }, { passive: true });
+
+        // Reset off-screen when touch ends
+        window.addEventListener('touchend', () => {
+             this.mouse.x = -9999;
+             this.mouse.y = -9999;
+        });
 
         this.animate();
       } catch (error) {
@@ -263,7 +273,8 @@ document.addEventListener('alpine:init', () => {
     handleResize() {
       this.canvas.width = window.innerWidth;
       this.canvas.height = window.innerHeight;
-      this.isMobile = 'ontouchstart' in window || window.innerWidth < 768;
+      this.isMobile = window.innerWidth < 768;
+      // ORIGINAL SETTINGS KEPT
       this.config.particleCount = this.isMobile ? 28 : 96;
       this.config.lineDistance = this.isMobile ? 96 : 221;
     },
@@ -283,7 +294,6 @@ document.addEventListener('alpine:init', () => {
       try {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Gradually increase target count over 3 seconds
         const progress = Math.min((Date.now() - this.startTime) / 3000, 1);
         const currentTarget = Math.floor(progress * this.config.particleCount);
 
@@ -296,14 +306,13 @@ document.addEventListener('alpine:init', () => {
         this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
 
         this.particles.forEach((p, i) => {
-          // Only apply mouse speed boost on desktop
-          let speedMult = 1.0;
-          if (!this.isMobile) {
-            const dxMouse = p.x - this.mouse.x;
-            const dyMouse = p.y - this.mouse.y;
-            const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-            speedMult = distMouse < 250 ? 1.96 : 1.0;
-          }
+          // Calculate distance to mouse/touch
+          const dxMouse = p.x - this.mouse.x;
+          const dyMouse = p.y - this.mouse.y;
+          const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+          
+          // Apply speed boost if close
+          const speedMult = distMouse < 250 ? 1.96 : 1.0;
 
           p.x += p.vx * speedMult; 
           p.y += p.vy * speedMult;
