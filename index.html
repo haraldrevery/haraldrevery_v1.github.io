@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" x-data="{
+<html lang="en" class="scroll-smooth dark" x-data="{
     darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
   }"
-  x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
+  x-init="$watch('darkMode', val => { 
+    localStorage.setItem('darkMode', val);
+    if (window.restartPlexus) { window.restartPlexus(); } 
+  })"
   :class="{ 'dark': darkMode }">
 <head>
 <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>
@@ -52,17 +55,6 @@
 }
 
 
-
-
-
-/* Prevent white flash on page load */
-html:not(.dark) body {
-  background: linear-gradient(to br, rgb(241 245 249), rgb(255 255 255), rgb(226 232 240));
-}
-html.dark body {
-  background: linear-gradient(to br, rgb(0 0 0), rgb(15 15 15), rgb(31 31 31));
-}
-      
 
       
       
@@ -1225,11 +1217,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   </div>
 </div>
 
-<!-- Test button - add near your dark mode toggle -->
-<button onclick="document.documentElement.classList.toggle('dark')" 
-        style="position: fixed; top: 100px; right: 10px; z-index: 99999; background: red; color: white; padding: 10px;">
-  TEST TOGGLE
-</button>
+
 
       
 
