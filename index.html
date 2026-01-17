@@ -339,23 +339,18 @@ body {
   
  /* center glow "*/
 .center-glow {
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.29) 0%,
-    rgba(255, 255, 255, 0.05) 40%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  filter: blur(40px);
-  /* Remove the infinite animation from here */
-}
-
-/* Only animate on larger screens */
-@media (min-width: 768px) {
-  .center-glow {
+    /* Adjust the color here: 255,255,255 is white.
+       Change to a brand color if desired. */
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.29) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(40px);
     animation: pulse-glow 6s ease-in-out infinite;
   }
-}
   @keyframes pulse-glow {
     0%, 100% {
       transform: scale(0.8);
@@ -428,7 +423,7 @@ html, body {
 .gslide-desc {
   color: #FFFFFF !important;
   font-family: 'HaraldText', sans-serif !important;
-    font-size: 0.21rem; /* Add or change this line */
+    font-size: 0.25rem; /* Add or change this line */
 }
 .gslide-title, .gslide-desc {
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
@@ -1146,22 +1141,13 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       { file: 'uninhabitedisland11.jpg', title: 'Uninhabited Island | ISRC: QZTB52410896' }
     ]
 }">
-          
-                <div class="particles-layer p-layer-5"></div>
-                <div class="particles-layer p-layer-3"></div>
-                <div class="particles-layer p-layer-4"></div>
-                <div class="particles-layer p-layer-7"></div> 
-                <div class="particles-layer p-layer-1"></div>
-                <div class="particles-layer p-layer-2"></div>
-                <div class="particles-layer p-layer-6"></div>
-        
+  
+
         
       <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
             <div id="image-grid" class="grid grid-cols-3 gap-4 relative z-10">
 
-                <div class="particles-layer p-layer-1"></div>
-                <div class="particles-layer p-layer-2"></div>
-                <div class="particles-layer p-layer-6"></div>
+
                 
                 <template x-for="(img, index) in images" :key="img.file">
                   <a :href="path + img.file"
@@ -1173,7 +1159,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
                   </a>
                 </template>
             </div>
-       
+        
+<div class="particles-layer p-layer-5"></div>
+<div class="particles-layer p-layer-3"></div>
+<div class="particles-layer p-layer-4"></div>
+<div class="particles-layer p-layer-7"></div> 
+                <div class="particles-layer p-layer-1"></div>
+                <div class="particles-layer p-layer-2"></div>
+                <div class="particles-layer p-layer-6"></div>
         </div>
      
 
@@ -1346,8 +1339,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
       
 <script src="./css_and_js_code/menu.js" integrity="sha384-wjuza0aCwaQjHoNaD0q+0bT2zaC+B0sUqoMQ0YnAo1pKSin2I60R0O+1a+plBGjd" crossorigin="anonymous"></script>
-      
-<script src="./css_and_js_code/plexus.js" integrity="sha384-w8FBO/LBYToyqeFs2LKxaBMl8aOIi4NnrtRpbDCZsnFnZKQOvdOQEi4c0LvmM630" crossorigin="anonymous"></script>
+<script src="./css_and_js_code/plexus.js" integrity="sha384-ZDoJs98SHDG9TEnvx8Hd6EUfz2IiMvILVFuI7sJHfqReK0PMq1tA/PkWoGCuHdaZ" crossorigin="anonymous"></script>
       
 <!-- fading words script -->
 <script>
