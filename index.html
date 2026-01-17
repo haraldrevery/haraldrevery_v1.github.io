@@ -1157,7 +1157,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   A collection
 </h2>
   
-       <div class="animate-word-by-word text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify">
+       <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-justify">
       <p>
         Explore the discography of Harald Revery. While mostly focused on electronic dance music (EDM), beyond his signature electronic productions a few singular tracks emerge to capture a wider soundscape.
       </p>
@@ -1184,7 +1184,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         <h2 data-animate="true" class="font-signika animated-heading text-4xl mb-6 w-fit">
           Behind the mixer decks
         </h2>
-        <div class="animate-word-by-word text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
+        <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed">
           <p>
             Get to know who’s behind the sound.
           </p>
@@ -1323,48 +1323,41 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       
 <!-- fading words script -->
 <script>
-// Add this function to index.html
-function animateWords(el) {
-  const text = el.innerText;
-  el.innerHTML = '';
-  el.style.opacity = '1';
-  el.classList.add('active');
-  // Split by space to get individual words
-  const words = text.split(' ');
-  words.forEach((word, wordIndex) => {
-    // Create a wrapper for the word to keep it together
-    const wordSpan = document.createElement('span');
-    wordSpan.style.display = 'inline-block';
-    wordSpan.style.whiteSpace = 'nowrap';
-    // Put letters inside the word wrapper
-    [...word].forEach((char, charIndex) => {
-      const letterSpan = document.createElement('span');
-      letterSpan.textContent = char;
-      letterSpan.className = 'fade-letter';
-      // Calculate delay based on total progress
-      letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
-      wordSpan.appendChild(letterSpan);
+document.addEventListener('DOMContentLoaded', () => {
+  const containers = document.querySelectorAll('.text-container');
+
+  containers.forEach(container => {
+    const paragraphs = container.querySelectorAll('p');
+    
+    paragraphs.forEach(p => {
+      // Use textContent instead of innerText to ensure we get the text 
+      // even if the element is currently invisible/opacity 0
+      const text = p.textContent.trim();
+      const words = text.split(/\s+/);
+      
+      p.innerHTML = words.map((word) => {
+        // Random delay between 0.1s and 1.0s
+        const randomDelay = (Math.random() * 0.9 + 0.1).toFixed(2);
+        return `<span class="word" style="animation-delay: ${randomDelay}s">${word}</span>`;
+      }).join(' ');
     });
-    el.appendChild(wordSpan);
-    // Add a space after the word
-    if (wordIndex < words.length - 1) {
-      el.appendChild(document.createTextNode(' '));
-    }
+
+    // Observer to trigger when scrolled into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Add the class to the container to start the child animations
+          entry.target.classList.add('start-animation');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { 
+      // Trigger when 10% of the block is visible
+      threshold: 0.1 
+    });
+
+    observer.observe(container);
   });
-}
-// Then, update your existing IntersectionObserver callback to call it:
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      // This line triggers the actual letter splitting
-      animateWords(entry.target);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
-// Ensure your headings are being observed
-document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
-  observer.observe(h2);
 });
 </script>
       
