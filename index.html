@@ -404,13 +404,16 @@ html, body {
 }
 
 
+
 #particle-canvas,
-#particle-canvas-front {
+#particle-canvas-front,
+#logo-container,
+.bg-image-fade {
   max-width: 100vw;
   overflow: hidden;
-  /* Add this line to tell the browser not to 
-     calculate these for the document size */
-  contain: paint; 
+  contain: paint;
+  /* Add this line - it is the 'magic fix' from music.html */
+  clip-path: inset(0); 
 }
       
       
