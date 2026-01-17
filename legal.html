@@ -72,14 +72,34 @@
   font-display: swap;
 }
 
-    /* Base Styles */
-    html { font-size: 1.427rem; }
-    body {
-      font-family: 'HaraldText', sans-serif;
-      font-size: 2.28rem;
-      line-height: 1.58;
-      letter-spacing: 0.018em;
-    }
+/* CUSTOM DESKTOP FONT SIZING */
+html { 
+  /* Desktop Scale */
+  font-size: 1.28rem; 
+}
+
+body {
+  font-family: 'HaraldText', sans-serif;
+  font-size: 1.9rem;     /* ≈28px on 16px root */
+  line-height: 1.58;
+  letter-spacing: 0.018em;
+}
+
+/* CUSTOM MOBILE FONT SIZING */
+@media (max-width: 768px) {
+          html {
+            /* Reduces the base scale by ~20% for smaller screens */
+            /* This makes your 1.9rem body text roughly 22px on mobile */
+            font-size: 1.427rem; 
+          }
+        body {
+          font-family: 'HaraldText', sans-serif;
+          font-size: 2.28rem;     /* ≈28px on 16px root */
+          line-height: 1.58;
+          letter-spacing: 0.018em;
+        }
+}
+      
 
     /* Gradient Background Animation */
     @keyframes gradientMove {
