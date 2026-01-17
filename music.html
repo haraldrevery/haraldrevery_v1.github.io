@@ -92,6 +92,7 @@
 #main-header {
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
+  max-width: 100vw;
 }
 
 .menu-letter-toggle {
@@ -314,6 +315,7 @@ header#main-header {
 html { 
   /* Desktop Scale */
   font-size: 1.27rem; 
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -321,6 +323,7 @@ body {
   font-size: 1.9rem;     /* ≈28px on 16px root */
   line-height: 1.58;
   letter-spacing: 0.018em;
+  overflow-x: hidden;
 }
 
 /* CUSTOM MOBILE FONT SIZING */
