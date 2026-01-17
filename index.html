@@ -56,6 +56,21 @@
 
 
 
+
+      /* Create a "Stage" for the particles and background */
+.bg-wrapper-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* This is the "kill switch" for the side-scrolling */
+  z-index: -20;
+  pointer-events: none;
+}
+      
+
+
       
       
 /* Update your existing <style> tag with these classes */
@@ -1007,7 +1022,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <h1 class="seo-only-h1">Harald Revery - Official Website</h1>
       
-      
+<div class="bg-wrapper-fixed">      
   <!-- Content -->
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
@@ -1076,11 +1091,15 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </svg>
 
 
-
   <!-- Logo intro end  -->     
   </div>
 </div>
 
+ <!--  end of bg-wrapper-fixed -->     
+</div>
+
+
+      
 <!-- Scroll down button  -->        
 <section id="hero-trigger" class="welcome-text-delayed hero -mt-[7vh] font-normal text-center text-base mx-3 col-span-2 cursor-pointer flex justify-center">
   <div class="text-container space-y-4 text-base md:text-lg lg:text-xl leading-relaxed hover:opacity-70 transition-opacity">
