@@ -419,17 +419,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 650px;
+  min-height: 700px;
   width: 100%;
-  perspective: 2000px;
+  perspective: 2500px;
   overflow: visible;
 }
 
 .stack-3d-container {
   position: relative;
-  width: 280px;
-  height: 280px;
-  /* Fixed 3D Perspective */
+  width: 300px;
+  height: 300px;
   transform: rotateX(50deg) rotateZ(-30deg);
   transform-style: preserve-3d;
 }
@@ -437,66 +436,50 @@ body {
 .stack-item {
   position: absolute;
   inset: 0;
-  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+  display: block;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy, smooth feel */
   transform-style: preserve-3d;
-  pointer-events: auto;
+  text-decoration: none;
 }
 
 .stack-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: -10px 10px 20px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  box-shadow: -15px 15px 30px rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.5s ease;
-  opacity: 0; /* Managed by your JS reveal script */
-  display: block;
+  transition: all 0.4s ease;
+  opacity: 0; /* JS reveal script sets this to 1 */
 }
 
 .stack-item img.revealed { opacity: 1; }
 
-/* Default Spread: Positioning them in the 3D stack */
-.card-1 { transform: translate3d(-120px, 120px, 0); }
-.card-2 { transform: translate3d(-80px, 80px, 20px); }
-.card-3 { transform: translate3d(-40px, 40px, 40px); }
-.card-4 { transform: translate3d(0px, 0px, 60px); }
-.card-5 { transform: translate3d(40px, -40px, 80px); }
-.card-6 { transform: translate3d(80px, -80px, 100px); }
+/* The Spread - Default Stack Positions */
+.card-1 { transform: translate3d(-150px, 150px, 0); }
+.card-2 { transform: translate3d(-90px, 90px, 30px); }
+.card-3 { transform: translate3d(-30px, 30px, 60px); }
+.card-4 { transform: translate3d(30px, -30px, 90px); }
+.card-5 { transform: translate3d(90px, -90px, 120px); }
+.card-6 { transform: translate3d(150px, -150px, 150px); }
 
-/* --- THE HOVER --- */
+/* --- THE HOVER POP-OUT --- */
 .stack-item:hover {
-  z-index: 1000; /* Ensure it stays on top of everything */
+  z-index: 2000;
+  /* rotate: cancels the parent container's 50deg/30deg tilt 
+     translate: moves right and brings it forward
+  */
+  transform: rotateZ(30deg) rotateX(-50deg) translate3d(400px, -50px, 400px) scale(1.6);
 }
 
 .stack-item:hover img {
-  /* 1. translate3d(120%, -50%, 300px): 
-        Moves it 120% of its width to the right (aligned to stack edge).
-        Moves it up slightly (-50%) to center it.
-        Brings it 300px closer to the user.
-     2. rotate: Cancels out the container's 50deg and -30deg tilt.
-  */
-  transform: rotateZ(30deg) rotateX(-50deg) translate3d(120%, -20%, 300px) scale(1.4);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-  cursor: pointer;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+  filter: brightness(1.1);
 }
 
-/* Dim the background stack (No blur as requested) */
-.stack-3d-container:hover .stack-item:not(:hover) img {
+/* Dim background images */
+.stack-3d-container:hover .stack-item:not(:hover) {
   opacity: 0.2;
-}
-
-/* Responsive fix */
-@media (max-width: 1024px) {
-  .stack-3d-container { transform: rotateX(50deg) rotateZ(-30deg) scale(0.8) translateX(-50px); }
-  .stack-item:hover img { transform: rotateZ(30deg) rotateX(-50deg) translate3d(100%, -20%, 200px) scale(1.2); }
-}
-
-@media (max-width: 768px) {
-  .stack-3d-section { min-height: 800px; }
-  .stack-3d-container { transform: none; width: 220px; height: 220px; }
-  .stack-item { position: relative; transform: none !important; margin-bottom: -150px; }
-  .stack-item:hover img { transform: scale(1.1) translateY(-20px); }
 }
       
 
@@ -806,24 +789,24 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     
 <div class="stack-3d-section">
   <div class="stack-3d-container">
-    <div class="stack-item card-1">
-      <img src="./artcovers/lookingforsnow11.jpg" class="grid-item-reveal glightbox">
-    </div>
-    <div class="stack-item card-2">
-      <img src="./artcovers/uninhabitedisland11.jpg" class="grid-item-reveal glightbox">
-    </div>
-    <div class="stack-item card-3">
-      <img src="./artcovers/cloudsandroads11.jpg" class="grid-item-reveal glightbox">
-    </div>
-    <div class="stack-item card-4">
-      <img src="./artcovers/spiritless11.jpg" class="grid-item-reveal glightbox">
-    </div>
-    <div class="stack-item card-5">
-      <img src="./artcovers/phrases11.jpg" class="grid-item-reveal glightbox">
-    </div>
-    <div class="stack-item card-6">
-      <img src="./artcovers/hollow11.jpg" class="grid-item-reveal glightbox">
-    </div>
+    <a href="./artcovers/lookingforsnow11.jpg" class="stack-item card-1 glightbox">
+      <img src="./artcovers/lookingforsnow11.jpg" class="grid-item-reveal" alt="Looking for Snow">
+    </a>
+    <a href="./artcovers/uninhabitedisland11.jpg" class="stack-item card-2 glightbox">
+      <img src="./artcovers/uninhabitedisland11.jpg" class="grid-item-reveal" alt="Uninhabited Island">
+    </a>
+    <a href="./artcovers/cloudsandroads11.jpg" class="stack-item card-3 glightbox">
+      <img src="./artcovers/cloudsandroads11.jpg" class="grid-item-reveal" alt="Cloud and Roads">
+    </a>
+    <a href="./artcovers/spiritless11.jpg" class="stack-item card-4 glightbox">
+      <img src="./artcovers/spiritless11.jpg" class="grid-item-reveal" alt="Spiritless">
+    </a>
+    <a href="./artcovers/phrases11.jpg" class="stack-item card-5 glightbox">
+      <img src="./artcovers/phrases11.jpg" class="grid-item-reveal" alt="Phrases">
+    </a>
+    <a href="./artcovers/hollow11.jpg" class="stack-item card-6 glightbox">
+      <img src="./artcovers/hollow11.jpg" class="grid-item-reveal" alt="Hollow">
+    </a>
   </div>
 </div>
 
