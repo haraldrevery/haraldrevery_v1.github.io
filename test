@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" x-data="{
+    darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
+  }"
+  x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
+  :class="{ 'dark': darkMode }">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Mode Debug</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <style>
+    body {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-8 bg-white dark:bg-gray-900 text-black dark:text-white transition-colors">
+  
+  <div class="max-w-2xl mx-auto space-y-8">
+    <h1 class="text-4xl font-bold">Dark Mode Diagnostic</h1>
+    
+    <!-- Diagnostic Info -->
+    <div class="p-6 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-800">
+      <h2 class="text-2xl font-bold mb-4">Current Status</h2>
+      
+      <div class="space-y-2 font-mono text-sm">
+        <div>
+          <strong>darkMode variable:</strong> 
+          <span x-text="darkMode"></span>
+        </div>
+        
+        <div>
+          <strong>HTML has 'dark' class:</strong> 
+          <span x-text="document.documentElement.classList.contains('dark') ? 'YES ✓' : 'NO ✗'"></span>
+        </div>
+        
+        <div>
+          <strong>localStorage value:</strong> 
+          <span x-text="localStorage.getItem('darkMode')"></span>
+        </div>
+        
+        <div>
+          <strong>All HTML classes:</strong> 
+          <span x-text="document.documentElement.className"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Card -->
+    <div class="p-6 bg-blue-100 dark:bg-blue-900 border-2 border-blue-500 rounded-lg">
+      <h3 class="text-xl font-bold mb-2">Test Card</h3>
+      <p>This card should change from light blue to dark blue.</p>
+    </div>
+
+    <!-- Control Buttons -->
+    <div class="space-y-4">
+      <h2 class="text-2xl font-bold">Controls</h2>
+      
+      <!-- Alpine Toggle -->
+      <button 
+        @click="darkMode = !darkMode"
+        class="px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors w-full">
+        <span x-show="!darkMode">🌙 Switch to Dark (Alpine)</span>
+        <span x-show="darkMode">☀️ Switch to Light (Alpine)</span>
+      </button>
+
+      <!-- Manual Toggle -->
+      <button 
+        onclick="document.documentElement.classList.toggle('dark')"
+        class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors w-full">
+        🔧 Manual Toggle (Direct DOM)
+      </button>
+
+      <!-- Reset -->
+      <button 
+        onclick="localStorage.clear(); location.reload()"
+        class="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors w-full">
+        🗑️ Clear localStorage & Reload
+      </button>
+    </div>
+
+    <!-- Instructions -->
+    <div class="p-6 border-2 border-yellow-500 rounded-lg bg-yellow-50 dark:bg-yellow-900">
+      <h3 class="text-xl font-bold mb-2">Test Instructions</h3>
+      <ol class="list-decimal list-inside space-y-2">
+        <li>Click the Purple button (Alpine) - does it work?</li>
+        <li>Watch the "Current Status" box - does darkMode change?</li>
+        <li>Does "HTML has 'dark' class" change?</li>
+        <li>Click the Green button (Manual) - does THAT work?</li>
+      </ol>
+      <p class="mt-4 font-bold">
+        If Manual works but Alpine doesn't → Alpine.js issue<br>
+        If neither works → Tailwind dark mode config issue<br>
+        If both work → Your site has CSS conflicts
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>
