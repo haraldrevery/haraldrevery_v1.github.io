@@ -2,10 +2,7 @@
 <html lang="en" class="scroll-smooth dark" x-data="{
     darkMode: localStorage.getItem('darkMode') === null ? true : localStorage.getItem('darkMode') === 'true'
   }"
-  x-init="$watch('darkMode', val => { 
-    localStorage.setItem('darkMode', val);
-    if (window.restartPlexus) { window.restartPlexus(); } 
-  })"
+  x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
   :class="{ 'dark': darkMode }">
 <head>
 <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>
@@ -25,7 +22,7 @@
 <meta property="og:type" content="website" />
     
   <!-- Remember darkmode/lightmode-->
-
+<script src="./css_and_js_code/drkigtmdmem.js" integrity="sha384-4nrh8A646UwM7vd3zKN7APgjZE2gEHA+U4+rHDI6X4jvkt9LgWVsTLwJwzYx7zJY" crossorigin="anonymous"></script>
 
 <script src="./css_and_js_code/tailwind.js" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
     
