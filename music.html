@@ -64,13 +64,6 @@
  @view-transition {
   navigation: auto; /* Enables seamless transitions between documents */
 }
-
-@supports not (view-transition-name: none) {
-  /* Firefox fallback - disable view transitions */
-  @view-transition {
-    navigation: none;
-  }
-}
       
 /* Force navbar to stay fixed during transitions */
 #main-header, #nav, #ulMenu {
