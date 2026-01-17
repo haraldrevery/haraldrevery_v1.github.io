@@ -52,8 +52,8 @@ window.restartPlexus = function() {
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
   // Particle Settings
   const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 21 : 421;
-  const connectionDistance = isMobile ? 140 : 150;
+  const targetParticleCount = isMobile ? 0 : 421;
+  const connectionDistance = isMobile ? 0 : 150;
   const connDistSq = connectionDistance * connectionDistance;
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
@@ -181,7 +181,7 @@ document.addEventListener('alpine:init', () => {
 
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 28 : 96;
-            this.config.lineDistance = isMobile ? 96 : 221;
+            this.config.lineDistance = isMobile ? 299 : 221;
 
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
@@ -197,8 +197,8 @@ document.addEventListener('alpine:init', () => {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 28 : 96;
-            this.config.lineDistance = isMobile ? 96 : 221;
+            this.config.particleCount = isMobile ? 40 : 96;
+            this.config.lineDistance = isMobile ? 421 : 221;
         },
 
         createParticle() {
