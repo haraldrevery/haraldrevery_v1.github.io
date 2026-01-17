@@ -641,7 +641,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
-
+.container {
+  overflow-x: hidden;
+}
 
 
 
@@ -810,7 +812,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <!-- Scrolling images -->  
 <div class="container mx-auto py-16 px-5 md:px-0">
-  <div class="relative overflow-visible" x-data="{
+  <div class="relative overflow-x-hidden" x-data="{
     path: './artcovers/',
     images: [
       { file: 'cloudsandroads11.jpg', title: 'Clouds and Roads | ISRC: QZHN32004027' },
