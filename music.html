@@ -513,6 +513,8 @@ body {
   will-change: transform;
     /* Add this to prevent any individual particle layer from creating scrollbars */
   overflow: hidden;
+  max-width: 100vw; /* Add this */  
+  clip-path: inset(0);
 }
 
 /* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
