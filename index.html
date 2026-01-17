@@ -1320,8 +1320,53 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <script src="./css_and_js_code/menu.js" integrity="sha384-wjuza0aCwaQjHoNaD0q+0bT2zaC+B0sUqoMQ0YnAo1pKSin2I60R0O+1a+plBGjd" crossorigin="anonymous"></script>
 <script src="./css_and_js_code/menu.js" integrity="sha384-wjuza0aCwaQjHoNaD0q+0bT2zaC+B0sUqoMQ0YnAo1pKSin2I60R0O+1a+plBGjd" crossorigin="anonymous"></script>     
 <script src="./css_and_js_code/plexus.js" integrity="sha384-w8FBO/LBYToyqeFs2LKxaBMl8aOIi4NnrtRpbDCZsnFnZKQOvdOQEi4c0LvmM630" crossorigin="anonymous"></script>
-
       
+<!-- fading words script -->
+<script>
+// Add this function to index.html
+function animateWords(el) {
+  const text = el.innerText;
+  el.innerHTML = '';
+  el.style.opacity = '1';
+  el.classList.add('active');
+  // Split by space to get individual words
+  const words = text.split(' ');
+  words.forEach((word, wordIndex) => {
+    // Create a wrapper for the word to keep it together
+    const wordSpan = document.createElement('span');
+    wordSpan.style.display = 'inline-block';
+    wordSpan.style.whiteSpace = 'nowrap';
+    // Put letters inside the word wrapper
+    [...word].forEach((char, charIndex) => {
+      const letterSpan = document.createElement('span');
+      letterSpan.textContent = char;
+      letterSpan.className = 'fade-letter';
+      // Calculate delay based on total progress
+      letterSpan.style.animationDelay = `${(wordIndex * 5 + charIndex) * 0.05}s`;
+      wordSpan.appendChild(letterSpan);
+    });
+    el.appendChild(wordSpan);
+    // Add a space after the word
+    if (wordIndex < words.length - 1) {
+      el.appendChild(document.createTextNode(' '));
+    }
+  });
+}
+// Then, update your existing IntersectionObserver callback to call it:
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // This line triggers the actual letter splitting
+      animateWords(entry.target);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+// Ensure your headings are being observed
+document.querySelectorAll('h2[data-animate="true"]').forEach(h2 => {
+  observer.observe(h2);
+});
+</script>
       
 <!-- fading letters script -->
  <script>
