@@ -1144,9 +1144,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   
 
         
-
+      <div class="absolute inset-0 z-[-2] pointer-events-none center-glow"></div>
             <div id="image-grid" class="grid grid-cols-3 gap-4 relative z-10">
 
+                <div class="particles-layer p-layer-1"></div>
+                <div class="particles-layer p-layer-2"></div>
+                <div class="particles-layer p-layer-6"></div>
                 
                 <template x-for="(img, index) in images" :key="img.file">
                   <a :href="path + img.file"
@@ -1159,7 +1162,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
                 </template>
             </div>
         
-   
+<div class="particles-layer p-layer-5"></div>
+<div class="particles-layer p-layer-3"></div>
+<div class="particles-layer p-layer-4"></div>
+<div class="particles-layer p-layer-7"></div>        
         </div>
      
 
