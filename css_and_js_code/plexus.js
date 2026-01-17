@@ -53,7 +53,7 @@ window.restartPlexus = function() {
   // Particle Settings
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 21 : 421;
-  const connectionDistance = isMobile ? 140 : 150;
+  const connectionDistance = isMobile ? 180 : 150;
   const connDistSq = connectionDistance * connectionDistance;
   const posX = new Float32Array(targetParticleCount);
   const posY = new Float32Array(targetParticleCount);
