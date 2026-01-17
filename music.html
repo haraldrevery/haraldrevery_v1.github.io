@@ -797,7 +797,11 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       { file: 'uninhabitedisland11.jpg', title: 'Uninhabited Island' },
       { file: 'lookingforsnow11.jpg', title: 'Looking for Snow' },
       { file: 'krakatau11.jpg', title: 'Krakatau' },
-      { file: 'forestrain11.jpg', title: 'Forest Rain' }
+      { file: 'forestrain11.jpg', title: 'Forest Rain' },
+      { file: 'isolated11.jpg', title: 'Isolated' },
+      { file: 'mysterycard11.jpg', title: 'Mystery Card' },
+      { file: 'thenorth11.jpg', title: 'The North' },
+      { file: 'anothertrack11.jpg', title: 'Another Track' }
     ]
   }">
     
@@ -813,12 +817,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     <div id="music-image-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 relative z-10">
       <template x-for="(img, index) in images" :key="img.file">
         <a :href="path + img.file"
-           class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-all duration-500 hover:scale-105 hover:z-20 shadow-lg overflow-hidden"
+           class="glightbox group rounded aspect-square bg-neutral-100 dark:bg-neutral-800 grid-item-reveal transition-all duration-500 hover:scale-105 hover:z-20 shadow-lg overflow-hidden cursor-pointer"
            :data-title="img.title"
            data-gallery="music-gallery">
           <img :src="path + img.file" 
                :alt="img.title" 
-               class="object-cover w-full h-full rounded filter saturate-[0.8] group-hover:saturate-100 transition duration-1000 ease-out group-hover:scale-110" 
+               class="object-cover w-full h-full rounded filter saturate-[0.8] group-hover:saturate-100 transition duration-1000 ease-out" 
                loading="lazy">
         </a>
       </template>
@@ -832,7 +836,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     
   </div>
 </div>
-     
 
 
 
