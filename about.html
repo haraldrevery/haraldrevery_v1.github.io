@@ -24,8 +24,7 @@
 
     
   <!--  Remember darkmode/lightmode-->
-<script src="./css_and_js_code/drkigtmdmem.js" integrity="sha384-4nrh8A646UwM7vd3zKN7APgjZE2gEHA+U4+rHDI6X4jvkt9LgWVsTLwJwzYx7zJY" crossorigin="anonymous"></script>
-  
+
 
   
   <title>Harald Revery - About</title>
@@ -67,7 +66,13 @@
 
 
 
-
+/* Prevent white flash on page load */
+html:not(.dark) body {
+  background: linear-gradient(to br, rgb(241 245 249), rgb(255 255 255), rgb(226 232 240)) !important;
+}
+html.dark body {
+  background: linear-gradient(to br, rgb(0 0 0), rgb(15 15 15), rgb(31 31 31)) !important;
+}
 
 
 
