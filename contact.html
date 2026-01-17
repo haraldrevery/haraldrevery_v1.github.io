@@ -144,8 +144,21 @@ header#main-header {
         .start-animation .word {
           animation: fadeInWord 0.6s ease-out forwards;
         }
+      
+/* Hide the container entirely until JS is ready */
+.text-container {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+/* Show it only when the IntersectionObserver or JS adds this class */
+.text-container.start-animation {
+  opacity: 1;
+}
 
 
+
+      
     
     /* 1. FONT DEFINITIONS */
 @font-face {
@@ -569,32 +582,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const paragraphs = container.querySelectorAll('p');
     
     paragraphs.forEach(p => {
-      // Check if the paragraph contains a link (like your email)
-      const hasLink = p.querySelector('a');
+      const text = p.textContent.trim();
+      const words = text.split(/\s+/);
       
-      if (hasLink) {
-        // Just animate the whole link/paragraph at once to keep it clickable
-        p.classList.add('word');
-        p.style.animationDelay = '0.5s';
-      } else {
-        // Standard word-by-word animation for plain text
-        const text = p.textContent.trim();
-        const words = text.split(/\s+/);
-        p.innerHTML = words.map((word) => {
-          const randomDelay = (Math.random() * 0.9 + 0.1).toFixed(2);
-          return `<span class="word" style="animation-delay: ${randomDelay}s">${word}</span>`;
-        }).join(' ');
-      }
+      p.innerHTML = words.map((word) => {
+        const randomDelay = (Math.random() * 0.9 + 0.1).toFixed(2);
+        return `<span class="word" style="animation-delay: ${randomDelay}s">${word}</span>`;
+      }).join(' ');
     });
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          // This now reveals the container AND starts the word animations simultaneously
           entry.target.classList.add('start-animation');
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { 
+      threshold: 0.1 
+    });
 
     observer.observe(container);
   });
