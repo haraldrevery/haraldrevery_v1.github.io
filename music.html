@@ -421,8 +421,8 @@ body {
   align-items: center;
   min-height: 700px;
   width: 100%;
-  perspective: 2500px;
-  overflow: visible;
+  perspective: 2000px;
+  margin: 4rem 0;
 }
 
 .stack-3d-container {
@@ -433,13 +433,14 @@ body {
   transform-style: preserve-3d;
 }
 
+/* The clickable anchor */
 .stack-item {
   position: absolute;
   inset: 0;
   display: block;
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy, smooth feel */
+  transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
   transform-style: preserve-3d;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .stack-item img {
@@ -447,37 +448,36 @@ body {
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: -15px 15px 30px rgba(0,0,0,0.4);
+  box-shadow: -15px 15px 35px rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.4s ease;
-  opacity: 0; /* JS reveal script sets this to 1 */
+  transition: all 0.5s ease;
+  opacity: 0; /* Managed by your grid-item-reveal script */
+  pointer-events: none; /* Let the <a> tag handle the hover/click */
 }
 
 .stack-item img.revealed { opacity: 1; }
 
-/* The Spread - Default Stack Positions */
+/* Spread positions */
 .card-1 { transform: translate3d(-150px, 150px, 0); }
-.card-2 { transform: translate3d(-90px, 90px, 30px); }
-.card-3 { transform: translate3d(-30px, 30px, 60px); }
-.card-4 { transform: translate3d(30px, -30px, 90px); }
-.card-5 { transform: translate3d(90px, -90px, 120px); }
-.card-6 { transform: translate3d(150px, -150px, 150px); }
+.card-2 { transform: translate3d(-90px, 90px, 25px); }
+.card-3 { transform: translate3d(-30px, 30px, 50px); }
+.card-4 { transform: translate3d(30px, -30px, 75px); }
+.card-5 { transform: translate3d(90px, -90px, 100px); }
+.card-6 { transform: translate3d(150px, -150px, 125px); }
 
-/* --- THE HOVER POP-OUT --- */
+/* --- STABLE HOVER --- */
 .stack-item:hover {
-  z-index: 2000;
-  /* rotate: cancels the parent container's 50deg/30deg tilt 
-     translate: moves right and brings it forward
-  */
-  transform: rotateZ(30deg) rotateX(-50deg) translate3d(400px, -50px, 400px) scale(1.6);
+  z-index: 1000;
+  /* Moves the image right (110%) and flattens it (rotateZ/X) */
+  transform: rotateZ(30deg) rotateX(-50deg) translate3d(110%, -10%, 350px) scale(1.5);
 }
 
 .stack-item:hover img {
-  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
   filter: brightness(1.1);
 }
 
-/* Dim background images */
+/* Hide others (No blur, just lower opacity) */
 .stack-3d-container:hover .stack-item:not(:hover) {
   opacity: 0.2;
 }
@@ -796,7 +796,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       <img src="./artcovers/uninhabitedisland11.jpg" class="grid-item-reveal" alt="Uninhabited Island">
     </a>
     <a href="./artcovers/cloudsandroads11.jpg" class="stack-item card-3 glightbox">
-      <img src="./artcovers/cloudsandroads11.jpg" class="grid-item-reveal" alt="Cloud and Roads">
+      <img src="./artcovers/cloudsandroads11.jpg" class="grid-item-reveal" alt="Clouds and Roads">
     </a>
     <a href="./artcovers/spiritless11.jpg" class="stack-item card-4 glightbox">
       <img src="./artcovers/spiritless11.jpg" class="grid-item-reveal" alt="Spiritless">
