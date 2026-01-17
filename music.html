@@ -419,74 +419,80 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 600px;
-  margin: 6rem 0;
-  perspective: 2000px; /* Increased perspective for a dramatic pop-out */
+  min-height: 700px;
+  margin: 4rem 0;
+  /* Perspective on the wrapper gives the whole scene depth */
+  perspective: 2000px; 
 }
 
 .horizontal-stack-container {
   position: relative;
   width: 300px;
   height: 300px;
-  transform: rotateX(55deg) rotateZ(-35deg);
+  /* The base tilt */
+  transform: rotateX(50deg) rotateZ(-30deg);
   transform-style: preserve-3d;
-  /* Shift the whole container left slightly so the pop-out has room on the right */
-  margin-right: 150px; 
+  will-change: transform;
 }
 
-.horizontal-stack-container img {
+.stack-leaf {
   position: absolute;
+  inset: 0;
+  transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+
+.stack-leaf img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.4);
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  cursor: pointer;
+  box-shadow: -10px 10px 25px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.5s ease;
+  opacity: 0; /* JS reveal script sets this to 1 */
 }
 
-.horizontal-stack-container img.revealed {
-  opacity: 1;
+.stack-leaf img.revealed { opacity: 1; }
+
+/* --- STATIC SPREAD (Normal State) --- */
+.card-1 { transform: translate3d(-160px, 160px, 0); }
+.card-2 { transform: translate3d(-100px, 100px, 20px); }
+.card-3 { transform: translate3d(-40px, 40px, 40px); }
+.card-4 { transform: translate3d(20px, -20px, 60px); }
+.card-5 { transform: translate3d(80px, -80px, 80px); }
+.card-6 { transform: translate3d(140px, -140px, 100px); }
+
+/* --- THE STABLE HOVER --- */
+/* We hover the LEAF, but animate the IMAGE inside it */
+.stack-leaf:hover {
+  z-index: 999;
 }
 
-/* --- THE SPREAD --- */
-.card-1 { transform: translate3d(-150px, 150px, 0); }
-.card-2 { transform: translate3d(-90px, 90px, 20px); }
-.card-3 { transform: translate3d(-30px, 30px, 40px); }
-.card-4 { transform: translate3d(30px, -30px, 60px); }
-.card-5 { transform: translate3d(90px, -90px, 80px); }
-.card-6 { transform: translate3d(150px, -150px, 100px); }
-
-/* --- THE HOVER "POP OUT TO RIGHT" EFFECT --- */
-.horizontal-stack-container img:hover {
-  z-index: 500;
-  /* 1. rotateX(-55deg) and rotateZ(35deg) perfectly cancels the parent container rotation.
-     2. translateX(350px) pushes it far to the right of the stack.
-     3. translateZ(300px) brings it "closer" to the screen.
-  */
-  transform: rotateX(-55deg) rotateZ(35deg) translate3d(350px, 0, 300px) scale(1.4) !important;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+.stack-leaf:hover img {
+  /* Counter-rotate to face viewer + push right + pull closer */
+  /* This math is more stable as it's applied to the child */
+  transform: rotateZ(30deg) rotateX(-50deg) translate3d(380px, 0, 400px) scale(1.5);
+  box-shadow: 0 50px 100px rgba(0,0,0,0.7);
   filter: brightness(1.1);
-  opacity: 1 !important;
 }
 
-/* Dim the stack when one is selected */
-.horizontal-stack-container:hover img:not(:hover) {
-  opacity: 0.2;
-  filter: blur(2px) grayscale(0.8);
+/* Blur the background stack slightly when hovering */
+.horizontal-stack-container:hover .stack-leaf:not(:hover) img {
+  opacity: 0.3;
+  filter: blur(3px);
 }
 
-/* Mobile Adjustments */
+/* Mobile: Stack them vertically and just pop up */
 @media (max-width: 768px) {
-  .horizontal-stack-container { margin-right: 0; transform: scale(0.7) rotateX(55deg) rotateZ(-35deg); }
-  .horizontal-stack-container img:hover {
-    /* Less translation on mobile to stay on screen */
-    transform: rotateX(-55deg) rotateZ(35deg) translate3d(0, -250px, 300px) scale(1.2) !important;
+  .horizontal-stack-container { 
+    transform: rotateX(0) rotateZ(0); 
+    width: 200px; 
+    height: 200px;
   }
+  .stack-leaf { transform: none !important; margin-bottom: 10px; position: relative; }
+  .stack-leaf:hover img { transform: scale(1.1) translate3d(0, -20px, 50px); }
 }
-      
       
 
 
@@ -794,15 +800,13 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
                 <div class="particles-layer p-layer-6"></div>
     
 <div class="horizontal-stack-wrapper">
-  <div class="particles-layer p-layer-1"></div>
-
   <div class="horizontal-stack-container">
-    <img src="./artcovers/lookingforsnow11.jpg" alt="Looking for Snow" class="grid-item-reveal card-1">
-    <img src="./artcovers/uninhabitedisland11.jpg" alt="Uninhabited Island" class="grid-item-reveal card-2">
-    <img src="./artcovers/cloudsandroads11.jpg" alt="Cloud and Roads" class="grid-item-reveal card-3">
-    <img src="./artcovers/spiritless11.jpg" alt="Spiritless" class="grid-item-reveal card-4">
-    <img src="./artcovers/phrases11.jpg" alt="Phrases" class="grid-item-reveal card-5">
-    <img src="./artcovers/hollow11.jpg" alt="Hollow" class="grid-item-reveal card-6">
+    <div class="stack-leaf card-1"><img src="./artcovers/lookingforsnow11.jpg" class="grid-item-reveal glightbox"></div>
+    <div class="stack-leaf card-2"><img src="./artcovers/uninhabitedisland11.jpg" class="grid-item-reveal glightbox"></div>
+    <div class="stack-leaf card-3"><img src="./artcovers/cloudsandroads11.jpg" class="grid-item-reveal glightbox"></div>
+    <div class="stack-leaf card-4"><img src="./artcovers/spiritless11.jpg" class="grid-item-reveal glightbox"></div>
+    <div class="stack-leaf card-5"><img src="./artcovers/phrases11.jpg" class="grid-item-reveal glightbox"></div>
+    <div class="stack-leaf card-6"><img src="./artcovers/hollow11.jpg" class="grid-item-reveal glightbox"></div>
   </div>
 </div>
 
