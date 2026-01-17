@@ -819,6 +819,19 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 }
       
 
+
+/* Update this in your <style> tag */
+.bg-wrapper-fixed {
+  position: absolute; /* Changed from fixed to absolute */
+  top: 0;
+  left: 0;
+  width: 100%;        /* Use 100% of the body width */
+  height: 100%;       /* Match the full height of the page */
+  overflow: hidden;   /* Keep this! It prevents the side-scrolling */
+  z-index: -20;
+  pointer-events: none;
+}
+      
       
       
   </style>
@@ -1007,7 +1020,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <h1 class="seo-only-h1">Harald Revery - Official Website</h1>
       
-      
+ <!-- Firefox wobble fix -->     
+ <div class="bg-wrapper-fixed">     
+     
   <!-- Content -->
 <!-- background texture image -->
   <div class="bg-image-fade"></div>
@@ -1158,7 +1173,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
        
         </div>
      
-
+ <!-- Firefox wobble fix: end -->      
+</div>
      
       <!-- Text part -->
     <div class="w-full lg:w-1/2 space-y-6 text-base md:text-lg lg:text-xl leading-relaxed">
