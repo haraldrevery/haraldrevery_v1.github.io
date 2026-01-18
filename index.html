@@ -30,32 +30,6 @@
 <script src="./css_and_js_code/tailwind.js" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
     
   <style>
-/* --- FIREFOX SCROLL ARTIFACT FIX --- */
-@-moz-document url-prefix() {
-  html, body {
-    /* 'clip' is the only thing that reliably stops 3D artifacts in Firefox */
-    overflow-x: clip !important; 
-    scrollbar-width: none; /* Optional: hides the phantom bar entirely */
-  }
-
-  #logo-container, 
-  .particles-layer,
-  #particle-canvas,
-  #particle-canvas-front {
-    /* Prevent 3D children from 'poking' through the body container */
-    contain: paint;
-    overflow: clip !important;
-  }
-}
-
-
-
-
-
-
-
-
-      
 @view-transition {
   navigation: auto; /* Enables seamless transitions between documents */
 }
@@ -424,9 +398,9 @@ html, body {
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
   position: relative; /* Added for stability */
-  overflow-x: hidden;
-    overflow-y: auto;
+    
 }
 /* Ensure these absolute elements don't create "phantom" width */
 #particle-canvas,
@@ -642,8 +616,6 @@ html, body {
   transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
   transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 /* Adjust the positioning wrapper to be centered */
 .position-wrapper {
@@ -716,13 +688,29 @@ html, body {
 
 
 
+
+/* 1. Force Firefox to ignore overflowing background elements */
+@-moz-document url-prefix() {
+  #logo-container,
+  .particles-layer,
+  .bg-image-fade,
+  #particle-canvas {
+    overflow: clip !important; /* 'clip' is safer than 'hidden' for scroll artifacts */
+  }
+}
+      
+      
+
+      
+
+
+
 /* Particles */
 /* Base setup for all 4 layers */
 .particles-layer {
   position: absolute;
   top: -25%; 
-  left: -25%;
-  width: 150%;
+  width: 100%;
   height: 150%;
   pointer-events: none;
   background-repeat: repeat;
@@ -738,6 +726,7 @@ html, body {
     /* Add this to prevent any individual particle layer from creating scrollbars */
   overflow: hidden;
     max-width: 100vw; /* Force a cap */
+    transform: translateZ(0);
 }
 
 /* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
