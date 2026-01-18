@@ -214,8 +214,10 @@ html {
   /* Desktop Scale */
   font-size: 1.2rem; 
   scrollbar-gutter: stable; 
+  
+  /* Primary scroll controls on the root */
   overflow-x: hidden; 
-  overflow-x: hidden; /* Primary scroll stopper */
+  overflow-y: auto; 
 }
 
 body {
@@ -223,8 +225,18 @@ body {
   font-size: 1.9rem;     /* ≈28px on 16px root */
   line-height: 1.58;
   letter-spacing: 0.018em;
-  overscroll-behavior-y: contain;
+
+  /* This is the secret for Edge: */
+  /* 'contain' allows the mouse wheel to 'grab' the page better than 'none' */
+  overscroll-behavior-y: contain; 
+  
+  /* Ensure the body doesn't try to create its own horizontal scroll */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
+
+      
 
 /* CUSTOM MOBILE FONT SIZING */
 @media (max-width: 768px) {
