@@ -1213,7 +1213,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </defs>
 
     <g mask="url(#logo-silhouette)" filter="url(#realistic-bristles)">
-      <path class="brush-stroke final-stroke" d="M-100,540 L1180,540" />
+      <path class="brush-stroke final-stroke" d="M1180,-100 L-100,1180" />
 
       <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
       <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
@@ -1248,24 +1248,24 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* LARGE STROKE CONFIGURATION */
+  /* LARGE STROKE WITH CUSTOM BEZIER */
   .final-stroke {
-    stroke-width: 1200;
-    opacity: 1; /* Keeps the solid fill at 100% opacity */
-    animation: finalStrokePhase 20s infinite cubic-bezier(.1,.7,.28,.6);
+    stroke-width: 1600;
+    opacity: 1;
+    /* Applied the custom cubic-bezier here */
+    animation: finalStrokePhase 20s infinite cubic-bezier(0,.17,.16,.75);
     animation-delay: 2.8s;
   }
 
   @keyframes finalStrokePhase {
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
-    /* Reversing logic: starts moving back to -2200 earlier than the small strokes */
     70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: -2200; }
-    100% { stroke-dashoffset: -2200; }
+    85% { stroke-dashoffset: 2200; } /* Retracts to top-right first */
+    100% { stroke-dashoffset: 2200; }
   }
 
-  /* SMALL STROKES CONFIGURATION */
+  /* SMALL STROKES */
   .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
   .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
   .curve-C { animation: paintLoop 20s infinite cubic-bezier(.1,.7,.28,.6); }
@@ -1283,7 +1283,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; opacity: 0; }
     2% { opacity: 0.75; }
     15% { stroke-dashoffset: 0; opacity: 0.75; }
-    /* These wait until the large stroke has already started leaving */
     85% { stroke-dashoffset: 0; opacity: 0.75; }
     98% { stroke-dashoffset: -2200; opacity: 0.75; }
     100% { stroke-dashoffset: -2200; opacity: 0; }
