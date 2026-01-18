@@ -1263,9 +1263,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .vertical-float-wrap {
     width: 100%;
     height: 100%;
-      display: flex; /* Ensures child elements align correctly */
-  align-items: center;
-  justify-content: center;
+    display: block; /* Ensures it acts as a container for the SVG */
     animation: hoverFloat 5s ease-in-out infinite;
   }
 
