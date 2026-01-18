@@ -214,6 +214,7 @@ html {
   /* Desktop Scale */
   font-size: 1.2rem; 
   scrollbar-gutter: stable; 
+  overflow-x: hidden; /* Primary scroll stopper */
 }
 
 body {
@@ -221,6 +222,9 @@ body {
   font-size: 1.9rem;     /* ≈28px on 16px root */
   line-height: 1.58;
   letter-spacing: 0.018em;
+  overflow-x: clip; /* 'clip' is stronger than 'hidden'—it strictly forbids scroll generation */
+  overflow-y: auto;
+  overscroll-behavior: none; /* Prevents rubber-banding */
 }
 
 /* CUSTOM MOBILE FONT SIZING */
@@ -329,6 +333,7 @@ body {
 .overflow-bleed {
   position: relative;
   overflow: visible !important;
+  contain: layout;
 }
 /* Ensure the canvas actually covers the extra bleed area */
 #particle-canvas,
