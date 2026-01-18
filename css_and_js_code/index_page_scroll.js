@@ -15,7 +15,6 @@
   });
  
 // navigation bar pop up when scroll
-<script>
   const header = document.getElementById('main-header');
   window.addEventListener('scroll', function() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
