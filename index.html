@@ -1211,112 +1211,98 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     <section class="flex justify-center items-center min-h-[600px] overflow-visible">
 
         
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="0 0 1080 1080" xml:space="preserve">
-<style>
-    :root { --logo-color: #1a1a1a; }
-    @media (prefers-color-scheme: dark) { :root { --logo-color: #ffffff; } }
 
-    /* 1. Reset cycle */
-    @keyframes masterLoop {
-        0%, 85% { opacity: 1; }
-        92%, 98% { opacity: 0; }
-        100% { opacity: 1; }
-    }
-
-    /* 2. Stroke logic */
-    @keyframes drawStroke {
-        0% { stroke-dashoffset: 2500; stroke-opacity: 1; }
-        35% { stroke-opacity: 1; }
-        45%, 100% { stroke-dashoffset: 0; stroke-opacity: 0.2; }
-    }
-
-    /* 3. Turbulent Spread Animation */
-    @keyframes dropSpread {
-        0% { transform: scale(0); opacity: 0; }
-        20% { opacity: 1; }
-        100% { transform: scale(15); opacity: 1; }
-    }
-
-    /* 4. Turbulence/Wobble for the drops */
-    @keyframes wobble {
-        0%, 100% { border-radius: 50%; transform: scale(1) rotate(0deg); }
-        33% { transform: scale(1.1, 0.9) rotate(5deg); }
-        66% { transform: scale(0.9, 1.2) rotate(-5deg); }
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
-    }
-
-    #main-wrapper { animation: masterLoop 8s infinite; transform-origin: center; }
-    #float-layer { animation: float 4s ease-in-out infinite; transform-origin: center; }
-
-    .logo-path-outline {
-        fill: none;
-        stroke: var(--logo-color);
-        stroke-width: 3px;
-        stroke-dasharray: 2500;
-        animation: drawStroke 8s ease-in-out infinite;
-    }
-
-    .fill-group { mask: url(#turbulent-mask); }
-
-    .drop {
-        fill: white;
-        filter: blur(20px); /* Blurring the mask shapes makes them merge like liquid */
-        transform-origin: center;
-        opacity: 0;
-        animation: dropSpread 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    /* Stagger the 3 drops to start at different times and locations */
-    .d1 { animation-delay: 1.0s; }
-    .d2 { animation-delay: 1.8s; }
-    .d3 { animation-delay: 2.5s; }
-
-    /* Apply continuous wobble to the drops inside the mask */
-    .wobble-wrap { animation: wobble 3s ease-in-out infinite; transform-origin: center; }
-</style>
-
-<defs>
-    <mask id="turbulent-mask">
-        <g transform="translate(300, 700)">
-            <circle class="drop d1" cx="0" cy="0" r="40" />
-        </g>
-        <g transform="translate(800, 500)">
-            <circle class="drop d2" cx="0" cy="0" r="45" />
-        </g>
-        <g transform="translate(540, 200)">
-            <circle class="drop d3" cx="0" cy="0" r="35" />
-        </g>
-    </mask>
-</defs>
-
-<g id="main-wrapper">
-    <g id="float-layer">
-        <g class="fill-group">
-            <path fill="var(--logo-color)" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
-                C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
-                c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-            <path fill="var(--logo-color)" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
-                C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-            <path fill="var(--logo-color)" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-            <path fill="var(--logo-color)" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-        </g>
-
-        <path class="logo-path-outline" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
-            C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
-            c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-        <path class="logo-path-outline" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
-            C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-        <path class="logo-path-outline" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-        <path class="logo-path-outline" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+  <svg version="1.1" id="animated-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" class="droplet-svg">
+    <defs>
+      <filter id="liquid-disturbance">
+        <feTurbulence type="turbulence" baseFrequency="0.01 0.01" numOctaves="2" seed="5" result="turbulence">
+          <animate attributeName="baseFrequency"
+                   values="0.01; 0.05; 0.01"
+                   dur="20s"
+                   repeatCount="indefinite" />
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="50">
+           <animate attributeName="scale"
+                   values="0; 100; 0"
+                   dur="20s"
+                   repeatCount="indefinite" />
+        </feDisplacementMap>
+      </filter>
+    </defs>
+    
+    <g class="logo-paths" filter="url(#liquid-disturbance)">
+      <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
+               C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
+               c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+      <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
+               C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+      <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+      <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
     </g>
-</g>
-</svg>
+  </svg>
+
+
+<style>
+  /* Container for the logo */
+  .logo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 300px;
+  }
+
+  /* Default Color (Light Mode) */
+  .droplet-svg {
+    fill: #000000;
+    transition: fill 0.5s ease;
+  }
+
+  /* Dark Mode Support (based on your class-based dark mode) */
+  .dark .droplet-svg {
+    fill: #ffffff;
+  }
+
+  /* Droplet/Splash Animation Logic */
+  .logo-paths path {
+    transform-origin: center;
+    opacity: 0;
+    /* 20s total cycle: 10s in, 10s out */
+    animation: dropletSplash 20s infinite ease-in-out;
+  }
+
+  /* Staggering the 3 "droplets" (paths) */
+  .logo-paths path:nth-child(1) { animation-delay: 0s; }
+  .logo-paths path:nth-child(2) { animation-delay: 0.2s; }
+  .logo-paths path:nth-child(3) { animation-delay: 0.4s; }
+  .logo-paths path:nth-child(4) { animation-delay: 0.6s; }
+
+  @keyframes dropletSplash {
+    0% {
+      transform: scale(0.2) translateY(-100px);
+      opacity: 0;
+    }
+    /* Hit the surface (3s) */
+    15% {
+      transform: scale(1.1) translateY(0);
+      opacity: 1;
+    }
+    /* Spread out and settle (remains solid until 10s) */
+    50% {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    /* The Inverse: Fade and shrink back (10s - 20s) */
+    85% {
+      transform: scale(0.2) translateY(-100px);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(0.2) translateY(-100px);
+      opacity: 0;
+    }
+  }
+</style>
         
         
     </section>
