@@ -77,33 +77,45 @@
 
   // 4. UPDATE PAGE CONTENT
   function updatePage(content) {
-  document.title = content.title;
-  document.body.className = content.bodyClasses;
-  document.body.innerHTML = content.body;
-  document.body.appendChild(overlay);
+    document.title = content.title;
+    document.body.className = content.bodyClasses;
+    document.body.innerHTML = content.body;
+    document.body.appendChild(overlay);
 
-  const scripts = document.body.querySelectorAll('script');
-  scripts.forEach(oldScript => {
-    const src = oldScript.getAttribute('src') || '';
+    // Manually execute scripts found in the new body
+    const scripts = document.body.querySelectorAll('script');
+    scripts.forEach(oldScript => {
+      const src = oldScript.getAttribute('src') || '';
 
-    // FIX: Only re-run scripts that are part of your project
-    // Ignore external extension scripts or weird filenames
-    if (src && !src.startsWith('./') && !src.includes('haraldrevery.com')) {
-       // Optional: Log what we are skipping
-       // console.log('Skipping external/extension script:', src);
-       return;
-    }
+      // FILTER: Only re-run your own scripts and local scripts
+      // This prevents re-running injected extension scripts like 'drkigtmdmem.js'
+      const isLocal = src.startsWith('./') || src.startsWith('/');
+      const isOwnDomain = src.includes('haraldrevery.com') || 
+                          src.includes('haraldrevery.xyz') || 
+                          src.includes('haraldrevery.net');
+      
+      // If it's an external script that isn't yours, skip it
+      if (src && !isLocal && !isOwnDomain) {
+        return; 
+      }
 
-    const newScript = document.createElement('script');
-    Array.from(oldScript.attributes).forEach(attr => {
-      newScript.setAttribute(attr.name, attr.value);
+      // Create a new script element
+      const newScript = document.createElement('script');
+      
+      // Copy attributes (src, type, etc.)
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      
+      // Copy content (for inline scripts)
+      newScript.textContent = oldScript.textContent;
+      
+      // Replace old script with new one to force execution
+      oldScript.parentNode.replaceChild(newScript, oldScript);
     });
-    newScript.textContent = oldScript.textContent;
-    oldScript.parentNode.replaceChild(newScript, oldScript);
-  });
-
-  reinitializeScripts();
-}
+    
+    reinitializeScripts();
+  }
 
   // 5. RE-INITIALIZE SCRIPTS
   function reinitializeScripts() {
@@ -373,5 +385,6 @@
   }
   
 })();
+
 
 
