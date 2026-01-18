@@ -1193,7 +1193,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
         
-<div class="logo-container">
+<div class="logo-container2">
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="neon-logo">
       <g class="solid-layer">
@@ -1214,9 +1214,23 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 </div>
 
 <style>
-  .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
+  .logo-container2 { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
   .neon-logo { width: 100%; height: 100%; position: relative; left: -9.7%; }
+    
+.logo-container2 { 
+    width: 400px; 
+    height: 400px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    /* Added: Smooth transition for the scale effect */
+    transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  }
 
+  /* Added: Scale up by 5% on hover */
+  .logo-container2:hover {
+    transform: scale(1.05);
+  }
   /* Base Colors */
   .animated-wires { stroke: #000; }
   .solid-layer { fill: #000; opacity: 0; }
