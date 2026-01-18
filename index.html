@@ -1220,7 +1220,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </defs>
 
     <g mask="url(#logo-silhouette)">
-      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M100,-100 Q250,540 100,1180" />
+      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
       
       <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
 
@@ -1275,7 +1275,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
     70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; }
+    85% { stroke-dashoffset: 2200; } /* Retracts back toward the middle-left */
     100% { stroke-dashoffset: 2200; }
   }
 
