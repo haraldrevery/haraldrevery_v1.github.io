@@ -1204,9 +1204,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
       <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
         <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
-        <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="60" xChannelSelector="R" yChannelSelector="G" result="shredded" />
+        <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="45" xChannelSelector="R" yChannelSelector="G" result="shredded" />
         <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
-        <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
+        <feDisplacementMap in="shredded" in2="fine-grain" scale="25" result="final-texture" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1264,12 +1264,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     animation-delay: 0.2s;
   }
 
-  /* Final Stroke with updated Bezier */
+  /* Final Stroke: Thinned to 384px */
   .final-stroke {
-    stroke-width: 640; 
+    stroke-width: 384; 
     opacity: 1;
     animation: finalStrokePhase 20s infinite cubic-bezier(.54, .04, .38, .97);
-    animation-delay: 2.8s;
+    animation-delay: 1.6s;
   }
 
   @keyframes finalStrokePhase {
