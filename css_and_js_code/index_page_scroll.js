@@ -1,5 +1,4 @@
 // Click to scroll thing
-<script>
   document.addEventListener('DOMContentLoaded', () => {
     const trigger = document.getElementById('hero-trigger');
     const target = document.getElementById('discography-section');
@@ -15,7 +14,7 @@
     }
   });
  
-// navigation bar pop up when scroll-->
+// navigation bar pop up when scroll
 <script>
   const header = document.getElementById('main-header');
   window.addEventListener('scroll', function() {
