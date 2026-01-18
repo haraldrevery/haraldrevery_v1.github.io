@@ -1217,21 +1217,17 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="logo-container">
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
-      <filter id="hyper-realistic-brush" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.95 0.01" numOctaves="5" seed="123" result="bristle-noise" />
+      <filter id="hyper-real-brush" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="1.2 0.005" numOctaves="5" seed="42" result="grain" />
         
-        <feColorMatrix in="bristle-noise" type="matrix" 
-          values="0 0 0 0 0
-                  0 0 0 0 0
-                  0 0 0 0 0
-                  0 0 0 1.5 -0.5" result="internal-grain" />
+        <feMorphology operator="dilate" radius="2" in="SourceGraphic" result="thickened" />
 
-        <feDisplacementMap in="SourceGraphic" in2="bristle-noise" scale="45" result="distorted" />
+        <feDisplacementMap in="thickened" in2="grain" scale="60" result="shredded" />
 
-        <feComposite in="distorted" in2="internal-grain" operator="out" result="dry-stroke" />
+        <feComposite in="shredded" in2="grain" operator="arithmetic" k1="0" k2="1" k3="0.4" k4="0" result="layered-paint" />
 
-        <feTurbulence type="turbulence" baseFrequency="0.06" numOctaves="3" seed="5" result="edge-noise" />
-        <feDisplacementMap in="dry-stroke" in2="edge-noise" scale="15" />
+        <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="2" seed="7" result="edge-noise" />
+        <feDisplacementMap in="layered-paint" in2="edge-noise" scale="20" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1244,46 +1240,54 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </mask>
     </defs>
 
-    <g mask="url(#logo-silhouette)" filter="url(#hyper-realistic-brush)">
-      <path class="brush-stroke s-1" d="M-100,300 C200,100 800,500 1200,400" />
-      <path class="brush-stroke s-2" d="M1200,700 C900,1000 300,500 -200,800" />
-      <path class="brush-stroke s-3" d="M300,1200 C500,800 500,200 700,-200" />
+    <g mask="url(#logo-silhouette)" filter="url(#hyper-real-brush)">
+      <path class="brush-stroke s-1" d="M-100,250 Q300,50 1200,350" />
+      <path class="brush-stroke s-2" d="M1200,650 Q800,950 -200,750" />
+      <path class="brush-stroke s-3" d="M350,1200 Q550,600 750,-200" />
     </g>
   </svg>
 </div>
 
 <style>
-  .logo-container { width: 400px; height: 400px; }
+  .logo-container { width: 400px; height: 400px; cursor: pointer; }
 
   .brush-stroke {
     fill: none;
-    stroke: #000;
-    stroke-width: 550;
+    stroke: #000; /* Light Mode default */
+    stroke-width: 600; /* Broad enough to cover gaps while remaining textured */
     stroke-linecap: butt;
-    stroke-dasharray: 2500;
-    stroke-dashoffset: 2500;
-    transition: stroke 0.5s ease;
+    stroke-dasharray: 2600;
+    stroke-dashoffset: 2600;
   }
 
+  /* Integrates with your site's dark mode logic */
   .dark .brush-stroke { stroke: #fff; }
 
-  /* Animation Logic with your specific curve */
-  .s-1 { animation: paintStroke 15s infinite cubic-bezier(.04,.68,.27,.88) 0s; }
-  .s-2 { animation: paintStroke 15s infinite cubic-bezier(.04,.68,.27,.88) 0.9s; }
-  .s-3 { animation: paintStroke 15s infinite cubic-bezier(.04,.68,.27,.88) 1.8s; }
+  /* Animation using your custom Bezier .04,.68,.27,.88 */
+  .s-1 { animation: paintIn 15s infinite cubic-bezier(.04,.68,.27,.88) 0s; }
+  .s-2 { animation: paintIn 15s infinite cubic-bezier(.04,.68,.27,.88) 0.8s; }
+  .s-3 { animation: paintIn 15s infinite cubic-bezier(.04,.68,.27,.88) 1.6s; }
 
-  @keyframes paintStroke {
-    0% { stroke-dashoffset: 2500; opacity: 0; }
-    2% { opacity: 1; }
-    /* Dragging phase */
-    40% { stroke-dashoffset: 0; opacity: 1; }
+  @keyframes paintIn {
+    0% { stroke-dashoffset: 2600; opacity: 0; }
+    1% { opacity: 1; }
+    /* Swift paint stroke */
+    35% { stroke-dashoffset: 0; opacity: 1; }
+    /* Sustained hold for logo visibility */
     65% { stroke-dashoffset: 0; opacity: 1; }
-    /* Flick away */
-    85% { stroke-dashoffset: -2500; opacity: 0; }
-    100% { stroke-dashoffset: -2500; opacity: 0; }
+    /* Swift flick away to clean the canvas */
+    85% { stroke-dashoffset: -2600; opacity: 0; }
+    100% { stroke-dashoffset: -2600; opacity: 0; }
   }
 
-  .paint-logo { width: 100%; height: 100%; overflow: visible; }
+  .paint-logo {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    transition: transform 0.4s ease;
+  }
+
+  .logo-container:hover .paint-logo { transform: scale(1.03); }
 </style>
 
 
