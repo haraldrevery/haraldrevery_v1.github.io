@@ -1291,29 +1291,37 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .paint-logo { width: 100%; height: 100%; overflow: visible; }
 
 /* 1. Enhanced floating with a slight tilt and scale */
+/* 1. Pure Harmonic Float: Vertical movement only */
 @keyframes hoverFloat {
-  0% { 
-    transform: translateY(0px) rotate(0deg) scale(1); 
+  0%, 100% { 
+    transform: translateY(0px); 
   }
-  33% { 
-    transform: translateY(-20px) rotate(2deg) scale(1.02); 
-  }
-  66% { 
-    transform: translateY(-10px) rotate(-1deg) scale(1.01); 
-  }
-  100% { 
-    transform: translateY(0px) rotate(0deg) scale(1); 
+  50% { 
+    transform: translateY(-25px); 
   }
 }
 
-/* 2. Apply to the SVG with a transform-origin fix */
+/* 2. Soft Sway: A separate, slower rotation for secondary motion */
+@keyframes softSway {
+  0%, 100% { 
+    transform: rotate(-1.5deg); 
+  }
+  50% { 
+    transform: rotate(1.5deg); 
+  }
+}
+
 .paint-logo {
   width: 100%;
   height: 100%;
   overflow: visible;
-  /* transform-origin ensures it rotates and scales from the center */
   transform-origin: center center;
-  animation: hoverFloat 6s ease-in-out infinite;
+  
+  /* We combine two different durations to create a "drifting" feel 
+     that doesn't repeat perfectly every cycle, making it look more natural. */
+  animation: 
+    hoverFloat 5s ease-in-out infinite,
+    softSway 7s ease-in-out infinite;
 }
 
 /* 3. Optional: Add a smooth transition if you change themes */
