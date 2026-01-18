@@ -1238,76 +1238,47 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
       <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
       <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
-      <path class="brush-stroke curve-A s-3" d="M150,1100 Q450,550 750,-100" />
-      <path class="brush-stroke curve-B s-4" d="M850,1100 Q550,550 250,-100" />
-      <path class="brush-stroke curve-A s-5" d="M-100,750 Q500,850 1100,650" />
+      <path class="brush-stroke curve-C s-3" d="M150,1100 Q450,550 750,-100" />
+      <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
+      <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
       <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
       <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
-      <path class="brush-stroke curve-B s-8" d="M580,1050 Q580,550 580,-50" />
+      <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
     </g>
   </svg>
 </div>
 
 <style>
-  .logo-container { 
-    width: 400px; 
-    height: 400px; 
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .logo-container { width: 400px; height: 400px; padding: 20px; display: flex; align-items: center; justify-content: center; }
 
-  /* --- HARMONIC FLOAT --- */
-  @keyframes hoverFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-25px); }
-  }
-
-  @keyframes softSway {
-    0%, 100% { transform: rotate(-1.5deg); }
-    50% { transform: rotate(1.5deg); }
-  }
+  @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
+  @keyframes softSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
 
   .paint-logo {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    transform-origin: center center;
-    animation: 
-      hoverFloat 5s ease-in-out infinite,
-      softSway 7s ease-in-out infinite;
+    width: 100%; height: 100%; overflow: visible; transform-origin: center center;
+    animation: hoverFloat 5s ease-in-out infinite, softSway 7s ease-in-out infinite;
   }
 
-  /* --- LOGO FILL --- */
-  .logo-fill {
-    fill: #000;
-    opacity: 0;
-    animation: logoFillPhase 20s infinite;
-  }
+  .logo-fill { fill: #000; opacity: 0; animation: logoFillPhase 20s infinite; }
   .dark .logo-fill { fill: #fff; }
 
   @keyframes logoFillPhase {
     0%, 15% { opacity: 0; }
-    25% { opacity: 1; }      /* Fills in */
-    80% { opacity: 1; }      /* Stays longer */
-    90% { opacity: 0; }      /* Drains out */
+    25% { opacity: 1; }
+    80% { opacity: 1; }
+    90% { opacity: 0; }
     100% { opacity: 0; }
   }
 
-  /* --- BRUSH STROKES --- */
-  .brush-stroke {
-    fill: none;
-    stroke: #000;
-    stroke-width: 220;
-    stroke-linecap: butt;
-    stroke-dasharray: 2200;
-    stroke-dashoffset: 2200;
-  }
+  .brush-stroke { fill: none; stroke: #000; stroke-width: 220; stroke-linecap: butt; stroke-dasharray: 2200; stroke-dashoffset: 2200; }
   .dark .brush-stroke { stroke: #fff; }
 
+  /* Curve A: The Fast Flick */
   .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
+  /* Curve B: The Heavy Drag */
   .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
+  /* Curve C: The Smooth Glide - Added this new timing profile */
+  .curve-C { animation: paintLoop 20s infinite cubic-bezier(.45, .05, .55, .95); }
 
   .s-1 { animation-delay: 0s; }
   .s-2 { animation-delay: 0.4s; }
@@ -1322,11 +1293,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; opacity: 0; }
     1% { opacity: 1; }
     15% { stroke-dashoffset: 0; opacity: 1; }
-    /* HOLD until 80% (16 seconds in) */
     80% { stroke-dashoffset: 0; opacity: 1; }
-    /* QUICK SWEEP OUT (between 80% and 95%) */
     95% { stroke-dashoffset: -2200; opacity: 1; }
-    /* Very short "Invisible" window (95% to 100%) */
     100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 </style>
