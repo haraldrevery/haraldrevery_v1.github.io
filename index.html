@@ -1258,7 +1258,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     justify-content: center;
   }
 
-  /* --- HARMONIC FLOAT ANIMATIONS --- */
+  /* --- HARMONIC FLOAT --- */
   @keyframes hoverFloat {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-25px); }
@@ -1274,13 +1274,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     height: 100%;
     overflow: visible;
     transform-origin: center center;
-    /* Independent float and sway durations for a natural drift */
     animation: 
       hoverFloat 5s ease-in-out infinite,
       softSway 7s ease-in-out infinite;
   }
 
-  /* --- LOGO FILL (PAINT BUCKET) --- */
+  /* --- LOGO FILL --- */
   .logo-fill {
     fill: #000;
     opacity: 0;
@@ -1289,14 +1288,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .dark .logo-fill { fill: #fff; }
 
   @keyframes logoFillPhase {
-    0%, 15% { opacity: 0; }  /* Wait for brushes */
-    25% { opacity: 1; }      /* "Paint bucket" fills it in */
-    65% { opacity: 1; }      /* Static hold for 5+ seconds */
-    75% { opacity: 0; }      /* Drain fill before brushes leave */
+    0%, 15% { opacity: 0; }
+    25% { opacity: 1; }      /* Fills in */
+    80% { opacity: 1; }      /* Stays longer */
+    90% { opacity: 0; }      /* Drains out */
     100% { opacity: 0; }
   }
 
-  /* --- BRUSH STROKE LOGIC --- */
+  /* --- BRUSH STROKES --- */
   .brush-stroke {
     fill: none;
     stroke: #000;
@@ -1304,15 +1303,12 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-linecap: butt;
     stroke-dasharray: 2200;
     stroke-dashoffset: 2200;
-    transition: stroke 0.5s ease;
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* 20 second synchronized loop */
   .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
   .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
 
-  /* Individual Staggering */
   .s-1 { animation-delay: 0s; }
   .s-2 { animation-delay: 0.4s; }
   .s-3 { animation-delay: 0.8s; }
@@ -1325,13 +1321,13 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   @keyframes paintLoop {
     0% { stroke-dashoffset: 2200; opacity: 0; }
     1% { opacity: 1; }
-    /* Fully painted by 15% mark (~3 seconds) */
     15% { stroke-dashoffset: 0; opacity: 1; }
-    /* Long 5-10 second static hold */
-    65% { stroke-dashoffset: 0; opacity: 1; }
-    /* Sweep out forward */
-    85% { stroke-dashoffset: -2200; opacity: 1; }
-    95%, 100% { stroke-dashoffset: -2200; opacity: 0; }
+    /* HOLD until 80% (16 seconds in) */
+    80% { stroke-dashoffset: 0; opacity: 1; }
+    /* QUICK SWEEP OUT (between 80% and 95%) */
+    95% { stroke-dashoffset: -2200; opacity: 1; }
+    /* Very short "Invisible" window (95% to 100%) */
+    100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 </style>
 
