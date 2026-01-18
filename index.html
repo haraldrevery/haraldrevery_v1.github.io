@@ -1213,7 +1213,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </defs>
 
     <g mask="url(#logo-silhouette)" filter="url(#realistic-bristles)">
-      <rect class="brush-stroke final-fill" x="0" y="0" width="1080" height="1080" />
+      <path class="brush-stroke final-stroke" d="M-100,540 L1180,540" />
 
       <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
       <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
@@ -1238,24 +1238,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     animation: hoverFloat 5s ease-in-out infinite, softSway 7s ease-in-out infinite;
   }
 
-  /* The final-fill replaces the old logo-fill phase */
-  .final-fill {
-    fill: #000;
-    stroke: none;
-    opacity: 0;
-    animation: logoFillPhase 20s infinite;
-  }
-  .dark .final-fill { fill: #fff; }
-
-  @keyframes logoFillPhase {
-    0%, 15% { opacity: 0; }
-    25% { opacity: 1; }
-    80% { opacity: 1; }
-    90% { opacity: 0; }
-    100% { opacity: 0; }
-  }
-
-  /* Original brush strokes at 75% opacity */
   .brush-stroke { 
     fill: none; 
     stroke: #000; 
@@ -1263,15 +1245,29 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-linecap: butt; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-    opacity: 0.75; /* Modified to 75% opacity */
+    opacity: 0.75; /* Set original brush strokes to 75% opacity */
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* Curve A: The Fast Flick */
+  /* New Large Final Stroke configuration */
+  .final-stroke {
+    stroke-width: 1200; /* Extra large to cover the whole silhouette area */
+    animation: finalStrokePhase 20s infinite cubic-bezier(.1,.7,.28,.6);
+    animation-delay: 2.8s; /* Appears after the initial strokes */
+  }
+
+  @keyframes finalStrokePhase {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
+    1% { opacity: 1; }
+    15% { stroke-dashoffset: 0; opacity: 1; }
+    80% { stroke-dashoffset: 0; opacity: 1; }
+    95% { stroke-dashoffset: -2200; opacity: 1; }
+    100% { stroke-dashoffset: -2200; opacity: 0; }
+  }
+
+  /* Curves timing profiles */
   .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
-  /* Curve B: The Heavy Drag */
   .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
-  /* Curve C: The Smooth Glide */
   .curve-C { animation: paintLoop 20s infinite cubic-bezier(.1,.7,.28,.6); }
 
   .s-1 { animation-delay: 0s; }
