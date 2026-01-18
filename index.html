@@ -1234,6 +1234,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
           <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
           <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
           <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
+          <path class="brush-stroke curve-B s-extra-diagonal" d="M1100,1000 Q500,500 -100,0" />
         </g>
       </g>
     </svg>
@@ -1275,6 +1276,19 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
   .dark .brush-stroke { stroke: #fff; }
 
+    .s-extra-diagonal {
+  /* Starts slightly after the first burst of strokes */
+  animation: quickPaint 8s infinite cubic-bezier(.7, 0, .3, 1);
+  animation-delay: 0.25s;
+  opacity: 0.7;
+  stroke-width: 240; /* Slightly wider for a bold diagonal look */
+}
+
+/* Ensure the path randomization also applies to this new stroke */
+.s-extra-diagonal {
+  transform-origin: center;
+  transform: rotate(-2deg) translateY(5px);
+}
   /* NEW BEZIER STRATEGY: 
      Using "Extreme" curves to simulate physical friction.
      - Group 1: High friction (slow start, fast snap)
