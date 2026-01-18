@@ -57,7 +57,7 @@
   /* Use 100vh to match the exact height of the user's screen */
   height: 100dvh;
   z-index: -11;
-  background-image: url('./assets/bgtexture.jpg');
+  background-image: url('../assets/bgtexture.jpg');
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
   /* 'cover' ensures the image fills the screen without stretching or gaps */
   background-size: cover;
@@ -158,18 +158,18 @@
 /* 1. FONT DEFINITIONS */
 @font-face {
   font-family: 'HaraldText';
-  src: url('./fonts/HaraldReveryTextFont.woff2') format('woff2'),
-       url('./fonts/HaraldReveryTextFont.woff') format('woff'),
-       url('./fonts/HaraldReveryTextFont.ttf') format('truetype');
+  src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2'),
+       url('../fonts/HaraldReveryTextFont.woff') format('woff'),
+       url('../fonts/HaraldReveryTextFont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'HaraldMono';
-  src: url('./fonts/HaraldReveryMonoFont.woff2') format('woff2'),
-       url('./fonts/HaraldReveryMonoFont.woff') format('woff'),
-       url('./fonts/HaraldReveryMonoFont.ttf') format('truetype');
+  src: url('../fonts/HaraldReveryMonoFont.woff2') format('woff2'),
+       url('../fonts/HaraldReveryMonoFont.woff') format('woff'),
+       url('../fonts/HaraldReveryMonoFont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
