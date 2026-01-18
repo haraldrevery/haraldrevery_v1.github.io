@@ -30,6 +30,32 @@
 <script src="./css_and_js_code/tailwind.js" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
     
   <style>
+/* --- FIREFOX SCROLL ARTIFACT FIX --- */
+@-moz-document url-prefix() {
+  html, body {
+    /* 'clip' is the only thing that reliably stops 3D artifacts in Firefox */
+    overflow-x: clip !important; 
+    scrollbar-width: none; /* Optional: hides the phantom bar entirely */
+  }
+
+  #logo-container, 
+  .particles-layer,
+  #particle-canvas,
+  #particle-canvas-front {
+    /* Prevent 3D children from 'poking' through the body container */
+    contain: paint;
+    overflow: clip !important;
+  }
+}
+
+
+
+
+
+
+
+
+      
 @view-transition {
   navigation: auto; /* Enables seamless transitions between documents */
 }
@@ -616,6 +642,8 @@ html, body {
   transform: translateZ(15px); /* Force hardware acceleration and 3D depth */
   will-change: transform;
   transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 /* Adjust the positioning wrapper to be centered */
 .position-wrapper {
