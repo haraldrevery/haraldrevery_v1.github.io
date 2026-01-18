@@ -1266,8 +1266,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     height: 100%; 
     overflow: visible; 
     position: relative;
-    /* Removed the left: -9.7% here as it is usually better handled 
-       within the SVG viewBox or a container to prevent clipping */
+    /* Static base opacity for the container so it doesn't flicker */
+    opacity: 1; 
   }
 
   .brush-stroke { 
@@ -1276,59 +1276,60 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-width: 220; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
+    /* This ensures strokes don't look like solid blocks before they start */
+    opacity: 0; 
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* Organic Timing & Opacity Logic */
-  
-  /* The "Under-painting" - slow and heavy */
+  /* 1. The "Under-painting" (Early Vertical) */
   .s-early-vertical {
-    opacity: 0.4; /* Start fainter */
-    animation: organicPaint 18s infinite ease-in-out;
+    animation: paintProgress 18s infinite ease-in-out;
     animation-delay: 0.1s;
   }
 
-  /* The "Hero" stroke - slightly faster but follows a different path */
+  /* 2. The "Hero" (Final Stroke) - Heavy and solid */
   .final-stroke {
     stroke-width: 461; 
-    opacity: 0.9;
-    animation: organicFinal 18s infinite cubic-bezier(.45, .05, .55, .95);
+    animation: finalStrokeProgress 18s infinite cubic-bezier(.45, .05, .55, .95);
     animation-delay: 1.2s;
   }
 
-  /* Primary Brush Strokes - staggered in organic "bursts" */
+  /* 3. Primary Strokes - Staggered */
   .curve-A, .curve-B, .curve-C { 
     animation-duration: 18s; 
     animation-iteration-count: infinite;
-    animation-name: organicPaint;
+    animation-name: paintProgress;
   }
 
-  /* Grouped delays to feel like rhythmic hand movements */
+  /* Rhythmic Delays */
   .s-1 { animation-delay: 0.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
-  .s-2 { animation-delay: 0.2s;  animation-timing-function: cubic-bezier(.2, .8, .4, 1); } /* Fast start */
-  .s-3 { animation-delay: 1.5s;  animation-timing-function: cubic-bezier(.5, 0, .5, 1); } /* Long pause */
-  .s-4 { animation-delay: 1.7s;  animation-timing-function: cubic-bezier(.1, .7, .1, 1); }
-  .s-5 { animation-delay: 3.2s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
-  .s-6 { animation-delay: 3.5s;  animation-timing-function: cubic-bezier(.2, .9, .3, 1); }
-  .s-7 { animation-delay: 4.8s;  animation-timing-function: cubic-bezier(.7, 0, .3, 1); } /* Slow drag */
-  .s-8 { animation-delay: 5.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  .s-2 { animation-delay: 0.3s;  animation-timing-function: cubic-bezier(.2, .8, .4, 1); }
+  .s-3 { animation-delay: 1.4s;  animation-timing-function: cubic-bezier(.5, 0, .5, 1); }
+  .s-4 { animation-delay: 1.8s;  animation-timing-function: cubic-bezier(.1, .7, .1, 1); }
+  .s-5 { animation-delay: 3.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  .s-6 { animation-delay: 3.4s;  animation-timing-function: cubic-bezier(.2, .9, .3, 1); }
+  .s-7 { animation-delay: 4.6s;  animation-timing-function: cubic-bezier(.7, 0, .3, 1); }
+  .s-8 { animation-delay: 4.9s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
 
-  /* Keyframes with variable opacity (simulating pressure) */
-  @keyframes organicPaint {
+  /* REFINED KEYFRAMES: 
+     The opacity now only changes during the "Start" and "End" of the stroke.
+     During the middle, it stays solid so the whole logo doesn't flicker. */
+  @keyframes paintProgress {
     0%   { stroke-dashoffset: 2200; opacity: 0; }
-    5%   { opacity: 0.3; } /* Initial light touch */
-    15%  { stroke-dashoffset: 0; opacity: 0.75; } /* Full pressure */
-    40%  { opacity: 0.6; } /* Slight fade during hold */
-    80%  { stroke-dashoffset: 0; opacity: 0.75; }
-    90%  { opacity: 0.3; } /* Lifting the brush */
+    2%   { opacity: 0.7; } /* Quick fade in as brush touches */
+    15%  { stroke-dashoffset: 0; opacity: 0.7; } /* Stay solid while visible */
+    80%  { stroke-dashoffset: 0; opacity: 0.7; }
+    90%  { opacity: 0; } /* Fade out as brush lifts */
     100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 
-  @keyframes organicFinal {
+  @keyframes finalStrokeProgress {
     0%   { stroke-dashoffset: 2200; opacity: 0; }
     10%  { stroke-dashoffset: 2200; opacity: 0; }
+    15%  { opacity: 1; }
     25%  { stroke-dashoffset: 0; opacity: 1; }
     75%  { stroke-dashoffset: 0; opacity: 1; }
+    85%  { opacity: 0; }
     90%  { stroke-dashoffset: 2200; opacity: 0; }
     100% { stroke-dashoffset: 2200; opacity: 0; }
   }
