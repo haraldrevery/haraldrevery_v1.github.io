@@ -1218,32 +1218,37 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     :root { --logo-color: #1a1a1a; }
     @media (prefers-color-scheme: dark) { :root { --logo-color: #ffffff; } }
 
+    /* 1. Reset cycle */
     @keyframes masterLoop {
         0%, 85% { opacity: 1; }
         92%, 98% { opacity: 0; }
         100% { opacity: 1; }
     }
 
+    /* 2. Stroke logic */
     @keyframes drawStroke {
         0% { stroke-dashoffset: 2500; stroke-opacity: 1; }
         35% { stroke-opacity: 1; }
         45%, 100% { stroke-dashoffset: 0; stroke-opacity: 0.2; }
     }
 
-    @keyframes waveRise {
-        0%, 15% { transform: translateY(1100px); }
-        65%, 100% { transform: translateY(0px); }
+    /* 3. Turbulent Spread Animation */
+    @keyframes dropSpread {
+        0% { transform: scale(0); opacity: 0; }
+        20% { opacity: 1; }
+        100% { transform: scale(15); opacity: 1; }
     }
 
-    /* Increased horizontal range to ensure no edges show */
-    @keyframes waveHorizontal {
-        0% { transform: translateX(-400px); }
-        100% { transform: translateX(0px); }
+    /* 4. Turbulence/Wobble for the drops */
+    @keyframes wobble {
+        0%, 100% { border-radius: 50%; transform: scale(1) rotate(0deg); }
+        33% { transform: scale(1.1, 0.9) rotate(5deg); }
+        66% { transform: scale(0.9, 1.2) rotate(-5deg); }
     }
 
     @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-15px) rotate(1deg); }
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
     }
 
     #main-wrapper { animation: masterLoop 8s infinite; transform-origin: center; }
@@ -1257,23 +1262,35 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         animation: drawStroke 8s ease-in-out infinite;
     }
 
-    .fill-group { mask: url(#wave-mask); }
+    .fill-group { mask: url(#turbulent-mask); }
 
-    #wave-surface { animation: waveHorizontal 3s ease-in-out infinite alternate; }
+    .drop {
+        fill: white;
+        filter: blur(20px); /* Blurring the mask shapes makes them merge like liquid */
+        transform-origin: center;
+        opacity: 0;
+        animation: dropSpread 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
 
-    #wave-container { animation: waveRise 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+    /* Stagger the 3 drops to start at different times and locations */
+    .d1 { animation-delay: 1.0s; }
+    .d2 { animation-delay: 1.8s; }
+    .d3 { animation-delay: 2.5s; }
+
+    /* Apply continuous wobble to the drops inside the mask */
+    .wobble-wrap { animation: wobble 3s ease-in-out infinite; transform-origin: center; }
 </style>
 
 <defs>
-    <mask id="wave-mask">
-        <g id="wave-container">
-            <path id="wave-surface" fill="white" d="M-600,0 
-                c150,0,150,-40,300,-40 s150,40,300,40 
-                s150,-40,300,-40 s150,40,300,40 
-                s150,-40,300,-40 s150,40,300,40 
-                s150,-40,300,-40 s150,40,300,40 
-                s150,-40,300,-40 s150,40,300,40 
-                v1200 h-2500 z" />
+    <mask id="turbulent-mask">
+        <g transform="translate(300, 700)">
+            <circle class="drop d1" cx="0" cy="0" r="40" />
+        </g>
+        <g transform="translate(800, 500)">
+            <circle class="drop d2" cx="0" cy="0" r="45" />
+        </g>
+        <g transform="translate(540, 200)">
+            <circle class="drop d3" cx="0" cy="0" r="35" />
         </g>
     </mask>
 </defs>
