@@ -211,18 +211,34 @@
 
 /* CUSTOM DESKTOP FONT SIZING */
 html { 
-  /* Desktop Scale */
   font-size: 1.2rem; 
-/* Reserves space for the scrollbar to prevent layout shift and overlapping */
-  scrollbar-gutter: stable;
+  scrollbar-gutter: stable; 
+  
+  /* Manage all scrolling here */
+  overflow-y: auto; 
+  overflow-x: hidden;
+  
+  /* Stops the 'rubber band' bounce in Edge/Chrome safely */
+  overscroll-behavior-y: none; 
 }
 
+/* 2. The Body (The Content) */
 body {
   font-family: 'HaraldText', sans-serif;
-  font-size: 1.9rem;     /* ≈28px on 16px root */
+  font-size: 1.9rem;
   line-height: 1.58;
   letter-spacing: 0.018em;
+
+  /* Let the content flow into the HTML scroll container */
+  overflow-y: visible; 
   overflow-x: hidden;
+  
+  /* Ensure it takes up the full width without wobble */
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  
+  /* Remove overscroll-behavior from here; it's already on html */
 }
 
       
