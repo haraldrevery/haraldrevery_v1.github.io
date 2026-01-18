@@ -1,5 +1,5 @@
 // ========================================
-// SEAMLESS PAGE TRANSITION SYSTEM
+// SEAMLESS PAGE TRANSITION SYSTEM (FIXED)
 // ========================================
 
 (function() {
@@ -11,6 +11,7 @@
   let activeObservers = [];
   let isTransitioning = false;
   let currentPath = window.location.pathname;
+  let overlay; // Declare but don't create yet
 
   // 1. CREATE OVERLAY
   function createTransitionOverlay() {
@@ -36,8 +37,6 @@
     document.body.appendChild(overlay);
     return overlay;
   }
-  
-  const overlay = createTransitionOverlay();
 
   // 2. FETCH AND CACHE PAGES
   async function fetchPage(url) {
@@ -81,23 +80,20 @@
     document.body.className = content.bodyClasses;
     document.body.innerHTML = content.body;
     document.body.appendChild(overlay);
+    
     // Manually execute scripts found in the new body
     const scripts = document.body.querySelectorAll('script');
     scripts.forEach(oldScript => {
-      // Create a new script element
       const newScript = document.createElement('script');
       
-      // Copy attributes (src, type, etc.)
       Array.from(oldScript.attributes).forEach(attr => {
         newScript.setAttribute(attr.name, attr.value);
       });
       
-      // Copy content
       newScript.textContent = oldScript.textContent;
-      
-      // Replace old script with new one to force execution
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
+    
     reinitializeScripts();
   }
 
@@ -107,7 +103,7 @@
     activeObservers.forEach(obs => obs.disconnect());
     activeObservers = [];
     
-    // CRITICAL FIX: Close mobile menu immediately
+    // Close mobile menu immediately
     const mobileMenu = document.getElementById('menu');
     if (mobileMenu) {
       mobileMenu.classList.remove('h-auto', 'opacity-100');
@@ -179,7 +175,7 @@
         activeObservers.push(observer);
       });
       
-      // Grid item animations (for about.html image grid)
+      // Grid item animations
       const gridItems = document.querySelectorAll('.grid-item-reveal');
       if (gridItems.length > 0) {
         const gridObserver = new IntersectionObserver((entries) => {
@@ -337,6 +333,9 @@
 
   // 9. INITIALIZE
   function initialize() {
+    // NOW create the overlay after DOM is ready
+    overlay = createTransitionOverlay();
+    
     // Set initial state
     history.replaceState({ path: currentPath }, '', currentPath);
     
