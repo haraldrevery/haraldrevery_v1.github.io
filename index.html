@@ -1228,7 +1228,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 </div>
 
 <style>
-  .logo-container { width: 400px; height: 400px; padding: 20px; display: flex; align-items: center; justify-content: center; }
+  .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
 
   @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
   @keyframes softSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
@@ -1242,30 +1242,30 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     fill: none; 
     stroke: #000; 
     stroke-width: 220; 
-    stroke-linecap: butt; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-    opacity: 0.75; /* Set original brush strokes to 75% opacity */
+    opacity: 0.75;
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* New Large Final Stroke configuration */
+  /* LARGE STROKE CONFIGURATION */
   .final-stroke {
-    stroke-width: 1200; /* Extra large to cover the whole silhouette area */
+    stroke-width: 1200;
+    opacity: 1; /* Keeps the solid fill at 100% opacity */
     animation: finalStrokePhase 20s infinite cubic-bezier(.1,.7,.28,.6);
-    animation-delay: 2.8s; /* Appears after the initial strokes */
+    animation-delay: 2.8s;
   }
 
   @keyframes finalStrokePhase {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    1% { opacity: 1; }
-    15% { stroke-dashoffset: 0; opacity: 1; }
-    80% { stroke-dashoffset: 0; opacity: 1; }
-    95% { stroke-dashoffset: -2200; opacity: 1; }
-    100% { stroke-dashoffset: -2200; opacity: 0; }
+    0% { stroke-dashoffset: 2200; }
+    15% { stroke-dashoffset: 0; }
+    /* Reversing logic: starts moving back to -2200 earlier than the small strokes */
+    70% { stroke-dashoffset: 0; } 
+    85% { stroke-dashoffset: -2200; }
+    100% { stroke-dashoffset: -2200; }
   }
 
-  /* Curves timing profiles */
+  /* SMALL STROKES CONFIGURATION */
   .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
   .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
   .curve-C { animation: paintLoop 20s infinite cubic-bezier(.1,.7,.28,.6); }
@@ -1281,10 +1281,11 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
   @keyframes paintLoop {
     0% { stroke-dashoffset: 2200; opacity: 0; }
-    1% { opacity: 0.75; }
+    2% { opacity: 0.75; }
     15% { stroke-dashoffset: 0; opacity: 0.75; }
-    80% { stroke-dashoffset: 0; opacity: 0.75; }
-    95% { stroke-dashoffset: -2200; opacity: 0.75; }
+    /* These wait until the large stroke has already started leaving */
+    85% { stroke-dashoffset: 0; opacity: 0.75; }
+    98% { stroke-dashoffset: -2200; opacity: 0.75; }
     100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 </style>
