@@ -1216,75 +1216,87 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
      viewBox="0 0 1080 1080" xml:space="preserve">
 <style>
     :root {
-        /* Default colors (Light Mode) */
         --logo-color: #1a1a1a;
-        --glow-color: rgba(0, 0, 0, 0.2);
+        --wave-color: #333333;
     }
 
-    /* Dark Mode Support */
     @media (prefers-color-scheme: dark) {
         :root {
             --logo-color: #ffffff;
-            --glow-color: rgba(255, 255, 255, 0.4);
+            --wave-color: #f0f0f0;
         }
     }
 
-    /* Continuous floating loop */
-    @keyframes floatLoop {
+    /* 1. Stroke Drawing Animation */
+    @keyframes drawStroke {
+        0% { stroke-dashoffset: 2500; stroke-opacity: 1; }
+        90% { stroke-opacity: 1; }
+        100% { stroke-dashoffset: 0; stroke-opacity: 0.3; }
+    }
+
+    /* 2. Wave Fill Animation (Rising) */
+    @keyframes waveRise {
+        0% { transform: translateY(1080px); }
+        100% { transform: translateY(0px); }
+    }
+
+    /* 3. Subtle Floating Loop */
+    @keyframes float {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
+        50% { transform: translateY(-15px); }
     }
 
-    /* The "Drawing" intro animation */
-    @keyframes drawIntro {
-        0% { stroke-dashoffset: 2500; fill-opacity: 0; }
-        80% { fill-opacity: 0.1; }
-        100% { stroke-dashoffset: 0; fill-opacity: 1; }
-    }
-
-    /* Infinite pulse loop */
-    @keyframes pulseLoop {
-        0%, 100% { 
-            filter: drop-shadow(0 0 2px var(--glow-color));
-            fill-opacity: 0.9;
-        }
-        50% { 
-            filter: drop-shadow(0 0 12px var(--glow-color));
-            fill-opacity: 1;
-        }
-    }
-
-    .logo-path {
-        fill: var(--logo-color);
+    .logo-path-outline {
+        fill: none;
         stroke: var(--logo-color);
-        stroke-width: 2px;
+        stroke-width: 4px;
         stroke-dasharray: 2500;
-        /* First 3s: Draw the logo | After 3s: Pulse forever */
-        animation: 
-            drawIntro 3s ease-out forwards, 
-            pulseLoop 4s ease-in-out infinite 3s;
+        stroke-dashoffset: 2500;
+        animation: drawStroke 3s ease-in-out forwards;
     }
 
-    #logo-group {
-        animation: floatLoop 6s ease-in-out infinite;
+    .fill-group {
+        /* This group is clipped by the mask below */
+        mask: url(#wave-mask);
+    }
+
+    #wave-rect {
+        animation: waveRise 4s ease-out forwards;
+        animation-delay: 1.5s; /* Starts halfway through the drawing */
+    }
+
+    #main-wrapper {
+        animation: float 6s ease-in-out infinite;
         transform-origin: center;
     }
-
-    /* Staggered entry for the paths */
-    .p1 { animation-delay: 0.0s, 3.0s; }
-    .p2 { animation-delay: 0.2s, 3.2s; }
-    .p3 { animation-delay: 0.4s, 3.4s; }
-    .p4 { animation-delay: 0.6s, 3.6s; }
 </style>
 
-<g id="logo-group">
-    <path class="logo-path p1" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
+<defs>
+    <mask id="wave-mask">
+        <g id="wave-rect">
+            <rect x="0" y="0" width="1080" height="1080" fill="white" />
+            </g>
+    </mask>
+</defs>
+
+<g id="main-wrapper">
+    <g class="fill-group">
+        <path fill="var(--logo-color)" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
+            C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
+            c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+        <path fill="var(--logo-color)" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
+            C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+        <path fill="var(--logo-color)" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+        <path fill="var(--logo-color)" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+    </g>
+
+    <path class="logo-path-outline" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
         C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
         c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-    <path class="logo-path p2" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
+    <path class="logo-path-outline" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
         C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-    <path class="logo-path p3" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-    <path class="logo-path p4" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+    <path class="logo-path-outline" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+    <path class="logo-path-outline" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
 </g>
 </svg>
 
