@@ -1205,7 +1205,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
         <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
         <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="60" xChannelSelector="R" yChannelSelector="G" result="shredded" />
-        
         <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
         <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
       </filter>
@@ -1221,8 +1220,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </defs>
 
     <g mask="url(#logo-silhouette)">
-      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M100,-100 L100,1180" />
+      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M100,-100 Q250,540 100,1180" />
       
+      <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
+
       <g filter="url(#realistic-bristles)">
         <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
         <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
@@ -1254,12 +1255,16 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-width: 220; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-    opacity: 0.75;
   }
   .dark .brush-stroke { stroke: #fff; }
 
+  .s-early-vertical {
+    opacity: 0.70;
+    animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88);
+    animation-delay: 0.2s;
+  }
+
   .final-stroke {
-    /* Thinned by 60% (1600 * 0.4 = 640) */
     stroke-width: 640; 
     opacity: 1;
     animation: finalStrokePhase 20s infinite cubic-bezier(0,.17,.16,.75);
@@ -1270,13 +1275,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
     70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; } /* Retracts back up to the top left */
+    85% { stroke-dashoffset: 2200; }
     100% { stroke-dashoffset: 2200; }
   }
 
-  .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
-  .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
-  .curve-C { animation: paintLoop 20s infinite cubic-bezier(.1,.7,.28,.6); }
+  .curve-A, .curve-B, .curve-C { opacity: 0.75; animation-duration: 20s; animation-iteration-count: infinite; }
+  .curve-A { animation-name: paintLoop; animation-timing-function: cubic-bezier(.04,.68,.27,.88); }
+  .curve-B { animation-name: paintLoop; animation-timing-function: cubic-bezier(.06,.39,.02,.96); }
+  .curve-C { animation-name: paintLoop; animation-timing-function: cubic-bezier(.1,.7,.28,.6); }
 
   .s-1 { animation-delay: 0s; }
   .s-2 { animation-delay: 0.4s; }
@@ -1289,10 +1295,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
   @keyframes paintLoop {
     0% { stroke-dashoffset: 2200; opacity: 0; }
-    2% { opacity: 0.75; }
-    15% { stroke-dashoffset: 0; opacity: 0.75; }
-    85% { stroke-dashoffset: 0; opacity: 0.75; }
-    98% { stroke-dashoffset: -2200; opacity: 0.75; }
+    2% { opacity: inherit; }
+    15% { stroke-dashoffset: 0; opacity: inherit; }
+    85% { stroke-dashoffset: 0; opacity: inherit; }
+    98% { stroke-dashoffset: -2200; opacity: inherit; }
     100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 </style>
