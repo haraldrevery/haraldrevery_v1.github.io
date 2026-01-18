@@ -1391,44 +1391,11 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       
 
     
-  <!-- Click to scroll thing-->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const trigger = document.getElementById('hero-trigger');
-    const target = document.getElementById('discography-section');
-    if (trigger && target) {
-      trigger.addEventListener('click', () => {
-        // This scrolls the page so the top of the 'A collection' section
-        // aligns with the top of your screen
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      });
-    }
-  });
-</script>
-      
-<!-- navigation bar pop up when scroll-->
-<script>
-  const header = document.getElementById('main-header');
-  window.addEventListener('scroll', function() {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
- 
-    // threshold: 200px (adjust this to decide when it should appear)
-    if (scrollTop > 200) {
-      // SCROLLED DOWN: Show the navbar
-      header.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-    } else {
-      // AT THE TOP: Hide the navbar
-      header.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-    }
-  });
-</script>
+<!-- Click to scroll thing + navigation bar pop up when scroll-->
+<script src="./css_and_js_code/index_page_scroll.js" integrity="sha384-goH4N8n3SOHqji+pOEIhXuzHCAWGhC3NnJV1BfqWA1SG8QKKVjVmw+MaDUTEIL3t" crossorigin="anonymous"></script>
  
  
 <!-- Load the other pages in the background so it doesn't blink as much -->
-
 <script src="./css_and_js_code/pgeload.js" integrity="sha384-ijWk4OFhvJ3ufth8hp0r+cAo6tamP1NMzC4P0jA/w4RkJMl8PIoIAeN8Ky3xKze2" crossorigin="anonymous"></script>    
 
 
