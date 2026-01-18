@@ -1213,6 +1213,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         
 
 
+<div class="logo-container">
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
       <filter id="paint-blur">
@@ -1238,7 +1239,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       <circle class="paint-drop drop-3" cx="540" cy="540" r="0" filter="url(#paint-blur)" />
     </g>
   </svg>
-
+</div>
 
 <style>
   .logo-container {
@@ -1246,26 +1247,26 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     height: 400px;
   }
 
-  /* Color control for Light/Dark mode */
   .paint-drop {
-    fill: #000; /* Light Mode */
+    fill: #000;
     transition: fill 0.5s ease;
   }
 
   .dark .paint-drop {
-    fill: #fff; /* Dark Mode */
+    fill: #fff;
   }
 
-  /* Animation Logic */
   .paint-drop {
-    /* Total 20s cycle: 10s animation, 10s wait/inverse */
-    animation: impactFill 20s infinite cubic-bezier(0.16, 1, 0.3, 1);
+    /* 20 second total cycle */
+    animation: impactFill 20s infinite cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center;
+    opacity: 0;
   }
 
+  /* Staggered starts for the 3 drops */
   .drop-1 { animation-delay: 0s; }
-  .drop-2 { animation-delay: 0.2s; }
-  .drop-3 { animation-delay: 0.4s; }
+  .drop-2 { animation-delay: 0.4s; }
+  .drop-3 { animation-delay: 0.8s; }
 
   @keyframes impactFill {
     0% {
@@ -1273,27 +1274,29 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       opacity: 0;
       transform: scale(0.5);
     }
-    /* Impact/Paint Ball Strike (Fast expansion) */
-    5% {
+    /* Quick "Splat" appearance */
+    2% {
       opacity: 1;
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
-    /* Spread to cover the logo (By 10 seconds) */
-    50% {
-      r: 1200px; /* Large enough to fill the 1080 viewBox */
+    /* Slower, more organic spread to full size (at 8 seconds) */
+    40% {
+      r: 1200px; 
       opacity: 1;
       transform: scale(1);
     }
-    /* Hold for the user to see the logo */
-    60% {
-      opacity: 1;
+    /* Hold fully visible until 10 seconds */
+    50% {
       r: 1200px;
+      opacity: 1;
     }
-    /* Inverse: Shrink back down fast */
-    70% {
+    /* Inverse: The paint "sucks back" into the impact points (10s to 15s) */
+    75% {
       r: 0;
       opacity: 0;
+      transform: scale(0.8);
     }
+    /* Brief pause at empty before restarting (15s to 20s) */
     100% {
       r: 0;
       opacity: 0;
