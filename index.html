@@ -1260,11 +1260,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
   .dark .brush-stroke { stroke: #fff; }
 
-  /* Curve A: The Fast Flick (.04,.68,.27,.88) */
-  .curve-A { animation: paintLoop 12s infinite cubic-bezier(.04,.68,.27,.88); }
-
-  /* Curve B: The Heavy Drag (.21,.31,.27,.7) */
-  .curve-B { animation: paintLoop 9s infinite cubic-bezier(.06,.39,.02,.96); }
+/* 1. Extended paintLoop to 20 seconds */
+.curve-A { animation: paintLoop 20s infinite cubic-bezier(.05,.41,0,1.02); }
+.curve-B { animation: paintLoop 20s infinite cubic-bezier(.03,.29,.01,.66); }
 
   /* Individual Staggering */
   .s-1 { animation-delay: 0s; }
@@ -1276,17 +1274,23 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .s-7 { animation-delay: 2.4s; }
   .s-8 { animation-delay: 2.5s; }
 
-  @keyframes paintLoop {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    2% { opacity: 1; }
-    /* Paint In */
-    35% { stroke-dashoffset: 0; opacity: 1; }
-    /* Hold */
-    65% { stroke-dashoffset: 0; opacity: 1; }
-    /* Clean Sweep (Move forward to empty) */
-    85% { stroke-dashoffset: -2200; opacity: 0; }
-    100% { stroke-dashoffset: -2200; opacity: 0; }
-  }
+@keyframes paintLoop {
+  0% { stroke-dashoffset: 2200; opacity: 0; }
+  1% { opacity: 1; }
+  
+  /* Paint In (Ends at 3s) */
+  15% { stroke-dashoffset: 0; opacity: 1; }
+  
+  /* LONG HOLD (Stays static from 15% to 65% — approx 10 seconds total) */
+  /* This gives you the 5+ second extra "static" time you requested */
+  65% { stroke-dashoffset: 0; opacity: 1; }
+  
+  /* Clean Sweep Out (Starts at 13s, ends at 17s) */
+  85% { stroke-dashoffset: -2200; opacity: 1; }
+  
+  /* Fade out and Reset (Ends at 20s) */
+  95%, 100% { stroke-dashoffset: -2200; opacity: 0; }
+}
 
   .paint-logo { width: 100%; height: 100%; overflow: visible; }
 
