@@ -1261,15 +1261,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
   /* 3. Apply ONLY the rotation to the SVG itself */
-  .paint-logo {
+.paint-logo {
     width: 100%; 
     height: 100%; 
     overflow: visible; 
     position: relative;
-    left: -9.7%;
+    /* Removed the left: -9.7% here as it is usually better handled 
+       within the SVG viewBox or a container to prevent clipping */
   }
-
-
 
   .brush-stroke { 
     fill: none; 
@@ -1277,53 +1276,61 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-width: 220; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-    position: relative;
-    left: -9.7%;
   }
   .dark .brush-stroke { stroke: #fff; }
 
+  /* Organic Timing & Opacity Logic */
+  
+  /* The "Under-painting" - slow and heavy */
   .s-early-vertical {
-    opacity: 0.70;
-    animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88);
-    animation-delay: 0.2s;
+    opacity: 0.4; /* Start fainter */
+    animation: organicPaint 18s infinite ease-in-out;
+    animation-delay: 0.1s;
   }
 
+  /* The "Hero" stroke - slightly faster but follows a different path */
   .final-stroke {
     stroke-width: 461; 
-    opacity: 1;
-    animation: finalStrokePhase 20s infinite cubic-bezier(.54, .04, .38, .97);
-    animation-delay: 1.6s;
+    opacity: 0.9;
+    animation: organicFinal 18s infinite cubic-bezier(.45, .05, .55, .95);
+    animation-delay: 1.2s;
   }
 
-  @keyframes finalStrokePhase {
-    0% { stroke-dashoffset: 2200; }
-    15% { stroke-dashoffset: 0; }
-    70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; } 
-    100% { stroke-dashoffset: 2200; }
+  /* Primary Brush Strokes - staggered in organic "bursts" */
+  .curve-A, .curve-B, .curve-C { 
+    animation-duration: 18s; 
+    animation-iteration-count: infinite;
+    animation-name: organicPaint;
   }
 
-  .curve-A, .curve-B, .curve-C { opacity: 0.75; animation-duration: 20s; animation-iteration-count: infinite; }
-  .curve-A { animation-name: paintLoop; animation-timing-function: cubic-bezier(.04,.68,.27,.88); }
-  .curve-B { animation-name: paintLoop; animation-timing-function: cubic-bezier(.06,.39,.02,.96); }
-  .curve-C { animation-name: paintLoop; animation-timing-function: cubic-bezier(.1,.7,.28,.6); }
+  /* Grouped delays to feel like rhythmic hand movements */
+  .s-1 { animation-delay: 0.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  .s-2 { animation-delay: 0.2s;  animation-timing-function: cubic-bezier(.2, .8, .4, 1); } /* Fast start */
+  .s-3 { animation-delay: 1.5s;  animation-timing-function: cubic-bezier(.5, 0, .5, 1); } /* Long pause */
+  .s-4 { animation-delay: 1.7s;  animation-timing-function: cubic-bezier(.1, .7, .1, 1); }
+  .s-5 { animation-delay: 3.2s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  .s-6 { animation-delay: 3.5s;  animation-timing-function: cubic-bezier(.2, .9, .3, 1); }
+  .s-7 { animation-delay: 4.8s;  animation-timing-function: cubic-bezier(.7, 0, .3, 1); } /* Slow drag */
+  .s-8 { animation-delay: 5.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
 
-  .s-1 { animation-delay: 0s; }
-  .s-2 { animation-delay: 0.4s; }
-  .s-3 { animation-delay: 0.8s; }
-  .s-4 { animation-delay: 1.0s; }
-  .s-5 { animation-delay: 1.6s; }
-  .s-6 { animation-delay: 2.0s; }
-  .s-7 { animation-delay: 2.4s; }
-  .s-8 { animation-delay: 2.5s; }
-
-  @keyframes paintLoop {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    2% { opacity: inherit; }
-    15% { stroke-dashoffset: 0; opacity: inherit; }
-    85% { stroke-dashoffset: 0; opacity: inherit; }
-    98% { stroke-dashoffset: -2200; opacity: inherit; }
+  /* Keyframes with variable opacity (simulating pressure) */
+  @keyframes organicPaint {
+    0%   { stroke-dashoffset: 2200; opacity: 0; }
+    5%   { opacity: 0.3; } /* Initial light touch */
+    15%  { stroke-dashoffset: 0; opacity: 0.75; } /* Full pressure */
+    40%  { opacity: 0.6; } /* Slight fade during hold */
+    80%  { stroke-dashoffset: 0; opacity: 0.75; }
+    90%  { opacity: 0.3; } /* Lifting the brush */
     100% { stroke-dashoffset: -2200; opacity: 0; }
+  }
+
+  @keyframes organicFinal {
+    0%   { stroke-dashoffset: 2200; opacity: 0; }
+    10%  { stroke-dashoffset: 2200; opacity: 0; }
+    25%  { stroke-dashoffset: 0; opacity: 1; }
+    75%  { stroke-dashoffset: 0; opacity: 1; }
+    90%  { stroke-dashoffset: 2200; opacity: 0; }
+    100% { stroke-dashoffset: 2200; opacity: 0; }
   }
 </style>
         
