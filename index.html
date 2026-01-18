@@ -1218,10 +1218,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
       <filter id="organic-paint-blur" x="-50%" y="-50%" width="200%" height="200%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" seed="15">
-          <animate attributeName="baseFrequency" values="0.06; 0.03; 0.06" dur="4s" repeatCount="indefinite" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="20">
+          <animate attributeName="baseFrequency" values="0.05; 0.02; 0.05" dur="4s" repeatCount="indefinite" />
         </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" scale="80" />
+        <feDisplacementMap in="SourceGraphic" scale="90" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1246,30 +1246,31 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .logo-container {
     width: 400px;
     height: 400px;
-    cursor: pointer;
   }
 
   .paint-logo {
     width: 100%;
     height: 100%;
     overflow: visible;
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: float 6s ease-in-out infinite;
+    animation: float 8s ease-in-out infinite;
   }
 
+  /* Subtly faster simmer effect on hover */
   .logo-container:hover .paint-logo {
-    transform: scale(1.08) rotate(2deg);
+    transform: scale(1.05);
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(0.5deg); }
   }
 
   .paint-drop {
+    /* Color syncs with your .dark class logic from index.html */
     fill: #000;
     transition: fill 0.5s ease;
-    animation: organicImpact 20s infinite ease-in-out;
+    /* CUSTOM BEZIER CURVE for fluid movement */
+    animation: organicImpact 20s infinite cubic-bezier(0.3, 0, 0.2, 1);
     transform-origin: center;
     opacity: 0;
   }
@@ -1278,30 +1279,24 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     fill: #fff;
   }
 
-  /* De-synchronized delays and durations for an organic feel */
-  .drop-1 { 
-    animation-delay: 0s; 
-    animation-duration: 20s;
-  }
-  .drop-2 { 
-    animation-delay: 0.7s; /* Bigger gap */
-    animation-duration: 19.5s; /* Slightly faster cycle */
-  }
-  .drop-3 { 
-    animation-delay: 1.4s; /* Even bigger gap */
-    animation-duration: 20.5s; /* Slightly slower cycle */
-  }
+  /* Randomized timing for organic "De-sync" */
+  .drop-1 { animation-delay: 0s; }
+  .drop-2 { animation-delay: 1.1s; }
+  .drop-3 { animation-delay: 2.2s; }
 
   @keyframes organicImpact {
-    0% { r: 0; opacity: 0; transform: scale(0.4); }
-    /* The Splat */
-    3% { opacity: 1; transform: scale(1.3); }
-    /* The Flowing Spread (Slowed down) */
-    45% { r: 1300px; opacity: 1; transform: scale(1); }
-    /* The Hold */
-    55% { r: 1300px; opacity: 1; }
-    /* The Organic Inverse (Different exit speeds via ease-in-out) */
-    80% { r: 0; opacity: 0; transform: scale(0.7); }
+    /* 0-10s: The Filling Phase */
+    0% { r: 0; opacity: 0; transform: scale(0.3); }
+    4% { opacity: 1; transform: scale(1.2); }
+    40% { r: 1300px; opacity: 1; transform: scale(1); }
+    
+    /* 10-12s: The Hold Phase */
+    50%, 60% { r: 1300px; opacity: 1; }
+
+    /* 12-16s: The Inverse (Sucking back into the point of impact) */
+    80% { r: 0; opacity: 0; transform: scale(0.8); }
+
+    /* 16-20s: The Reset/Dead Air */
     100% { r: 0; opacity: 0; }
   }
 </style>
