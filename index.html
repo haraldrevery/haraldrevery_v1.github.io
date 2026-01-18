@@ -1217,9 +1217,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="logo-container">
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
-      <filter id="fine-brush-texture" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="1.5 0.01" numOctaves="5" seed="88" result="grain" />
-        <feDisplacementMap in="SourceGraphic" in2="grain" scale="35" result="distorted" />
+      <filter id="realistic-bristles" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="1.8 0.01" numOctaves="5" seed="42" result="grain" />
+        <feDisplacementMap in="SourceGraphic" in2="grain" scale="40" result="distorted" />
         <feComposite in="distorted" in2="SourceGraphic" operator="in" />
       </filter>
 
@@ -1233,62 +1233,62 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </mask>
     </defs>
 
-    <g mask="url(#logo-silhouette)" filter="url(#fine-brush-texture)">
-      <path class="brush-stroke b-1" d="M0,200 Q400,0 1000,300" />
-      <path class="brush-stroke b-2" d="M1000,400 Q600,600 0,500" />
-      <path class="brush-stroke b-3" d="M200,1000 Q500,500 800,0" />
-      <path class="brush-stroke b-4" d="M800,1000 Q400,500 200,0" />
-      <path class="brush-stroke b-5" d="M0,700 Q500,800 1000,600" />
-      <path class="brush-stroke b-6" d="M1000,800 Q500,900 0,1000" />
-      <path class="brush-stroke b-7" d="M400,0 Q600,500 400,1000" />
-      <path class="brush-stroke b-8" d="M540,1000 Q540,500 540,0" />
+    <g mask="url(#logo-silhouette)" filter="url(#realistic-bristles)">
+      <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
+      <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
+      <path class="brush-stroke curve-A s-3" d="M150,1100 Q450,550 750,-100" />
+      <path class="brush-stroke curve-B s-4" d="M850,1100 Q550,550 250,-100" />
+      <path class="brush-stroke curve-A s-5" d="M-100,750 Q500,850 1100,650" />
+      <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
+      <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
+      <path class="brush-stroke curve-B s-8" d="M580,1050 Q580,550 580,-50" />
     </g>
   </svg>
 </div>
 
 <style>
   .logo-container { width: 400px; height: 400px; }
-
+  
   .brush-stroke {
     fill: none;
     stroke: #000;
-    stroke-width: 180; /* Smaller brush */
-    stroke-linecap: round;
-    stroke-dasharray: 2000;
-    stroke-dashoffset: 2000;
-    /* Using your custom cubic-bezier */
-    animation: paintIn 12s infinite cubic-bezier(.04,.68,.27,.88);
+    stroke-width: 220;
+    stroke-linecap: butt;
+    stroke-dasharray: 2200;
+    stroke-dashoffset: 2200;
   }
 
   .dark .brush-stroke { stroke: #fff; }
 
-  /* Staggered timing for 8 strokes */
-  .b-1 { animation-delay: 0s; }
-  .b-2 { animation-delay: 0.3s; }
-  .b-3 { animation-delay: 0.6s; }
-  .b-4 { animation-delay: 0.9s; }
-  .b-5 { animation-delay: 1.2s; }
-  .b-6 { animation-delay: 1.5s; }
-  .b-7 { animation-delay: 1.8s; }
-  .b-8 { animation-delay: 2.1s; }
+  /* Curve A: The Fast Flick (.04,.68,.27,.88) */
+  .curve-A { animation: paintLoop 14s infinite cubic-bezier(.04,.68,.27,.88); }
 
-  @keyframes paintIn {
-    0% { stroke-dashoffset: 2000; opacity: 0; }
+  /* Curve B: The Heavy Drag (.21,.31,.27,.7) */
+  .curve-B { animation: paintLoop 14s infinite cubic-bezier(.21,.31,.27,.7); }
+
+  /* Individual Staggering */
+  .s-1 { animation-delay: 0s; }
+  .s-2 { animation-delay: 0.4s; }
+  .s-3 { animation-delay: 0.8s; }
+  .s-4 { animation-delay: 1.2s; }
+  .s-5 { animation-delay: 1.6s; }
+  .s-6 { animation-delay: 2.0s; }
+  .s-7 { animation-delay: 2.4s; }
+  .s-8 { animation-delay: 2.8s; }
+
+  @keyframes paintLoop {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
     2% { opacity: 1; }
-    /* Swift stroke across */
+    /* Paint In */
     35% { stroke-dashoffset: 0; opacity: 1; }
-    /* Hold state */
+    /* Hold */
     65% { stroke-dashoffset: 0; opacity: 1; }
-    /* Flick away */
-    85% { stroke-dashoffset: -2000; opacity: 0; }
-    100% { stroke-dashoffset: -2000; opacity: 0; }
+    /* Clean Sweep (Move forward to empty) */
+    85% { stroke-dashoffset: -2200; opacity: 0; }
+    100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 
-  .paint-logo {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
+  .paint-logo { width: 100%; height: 100%; overflow: visible; }
 </style>
 
 
