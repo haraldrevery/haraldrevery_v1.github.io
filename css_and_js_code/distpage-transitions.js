@@ -77,29 +77,33 @@
 
   // 4. UPDATE PAGE CONTENT
   function updatePage(content) {
-    document.title = content.title;
-    document.body.className = content.bodyClasses;
-    document.body.innerHTML = content.body;
-    document.body.appendChild(overlay);
-    // Manually execute scripts found in the new body
-    const scripts = document.body.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-      // Create a new script element
-      const newScript = document.createElement('script');
-      
-      // Copy attributes (src, type, etc.)
-      Array.from(oldScript.attributes).forEach(attr => {
-        newScript.setAttribute(attr.name, attr.value);
-      });
-      
-      // Copy content
-      newScript.textContent = oldScript.textContent;
-      
-      // Replace old script with new one to force execution
-      oldScript.parentNode.replaceChild(newScript, oldScript);
+  document.title = content.title;
+  document.body.className = content.bodyClasses;
+  document.body.innerHTML = content.body;
+  document.body.appendChild(overlay);
+
+  const scripts = document.body.querySelectorAll('script');
+  scripts.forEach(oldScript => {
+    const src = oldScript.getAttribute('src') || '';
+
+    // FIX: Only re-run scripts that are part of your project
+    // Ignore external extension scripts or weird filenames
+    if (src && !src.startsWith('./') && !src.includes('haraldrevery.com')) {
+       // Optional: Log what we are skipping
+       // console.log('Skipping external/extension script:', src);
+       return;
+    }
+
+    const newScript = document.createElement('script');
+    Array.from(oldScript.attributes).forEach(attr => {
+      newScript.setAttribute(attr.name, attr.value);
     });
-    reinitializeScripts();
-  }
+    newScript.textContent = oldScript.textContent;
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
+
+  reinitializeScripts();
+}
 
   // 5. RE-INITIALIZE SCRIPTS
   function reinitializeScripts() {
@@ -369,4 +373,5 @@
   }
   
 })();
+
 
