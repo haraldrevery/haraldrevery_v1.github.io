@@ -1212,95 +1212,90 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
         
 
-  <svg version="1.1" id="animated-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" class="droplet-svg">
+
+  <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="droplet-svg">
     <defs>
-      <filter id="liquid-disturbance">
-        <feTurbulence type="turbulence" baseFrequency="0.01 0.01" numOctaves="2" seed="5" result="turbulence">
-          <animate attributeName="baseFrequency"
-                   values="0.01; 0.05; 0.01"
-                   dur="20s"
-                   repeatCount="indefinite" />
+      <mask id="logo-mask">
+        <g fill="white">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        </g>
+      </mask>
+
+      <filter id="inner-disturbance" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="1">
+          <animate attributeName="baseFrequency" values="0.02;0.05;0.02" dur="10s" repeatCount="indefinite" />
         </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="50">
-           <animate attributeName="scale"
-                   values="0; 100; 0"
-                   dur="20s"
-                   repeatCount="indefinite" />
-        </feDisplacementMap>
+        <feDisplacementMap in="SourceGraphic" scale="30" />
       </filter>
     </defs>
-    
-    <g class="logo-paths" filter="url(#liquid-disturbance)">
-      <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
-               C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
-               c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-      <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
-               C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-      <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-      <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-    </g>
+
+    <rect x="0" y="0" width="1080" height="1080" 
+          mask="url(#logo-mask)" 
+          filter="url(#inner-disturbance)"
+          class="logo-fill-rect" />
   </svg>
 
 
 <style>
-  /* Container for the logo */
-  .logo-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
+  .logo-container {
     width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  /* Default Color (Light Mode) */
-  .droplet-svg {
-    fill: #000000;
-    transition: fill 0.5s ease;
+  /* Color handling - uses your project's dark mode logic */
+  .logo-fill-rect {
+    fill: #000; /* Light mode color */
+    transition: fill 0.4s ease;
+    animation: dropletCycle 20s infinite ease-in-out;
   }
 
-  /* Dark Mode Support (based on your class-based dark mode) */
-  .dark .droplet-svg {
-    fill: #ffffff;
+  .dark .logo-fill-rect {
+    fill: #fff; /* Dark mode color */
   }
 
-  /* Droplet/Splash Animation Logic */
-  .logo-paths path {
-    transform-origin: center;
-    opacity: 0;
-    /* 20s total cycle: 10s in, 10s out */
-    animation: dropletSplash 20s infinite ease-in-out;
-  }
-
-  /* Staggering the 3 "droplets" (paths) */
-  .logo-paths path:nth-child(1) { animation-delay: 0s; }
-  .logo-paths path:nth-child(2) { animation-delay: 0.2s; }
-  .logo-paths path:nth-child(3) { animation-delay: 0.4s; }
-  .logo-paths path:nth-child(4) { animation-delay: 0.6s; }
-
-  @keyframes dropletSplash {
+  /* Droplet Animation: Drop -> Spread -> Stay -> Inverse -> Reset */
+  @keyframes dropletCycle {
     0% {
-      transform: scale(0.2) translateY(-100px);
+      clip-path: circle(0% at 50% 50%);
+      transform: scale(0.5);
       opacity: 0;
     }
-    /* Hit the surface (3s) */
-    15% {
-      transform: scale(1.1) translateY(0);
+    /* 3 Droplets "Hitting": We simulate this with a quick expansion */
+    10% {
+      clip-path: circle(20% at 50% 50%);
       opacity: 1;
     }
-    /* Spread out and settle (remains solid until 10s) */
+    /* Spread to fill the whole logo by 5 seconds (25% of 20s) */
+    25% {
+      clip-path: circle(100% at 50% 50%);
+      transform: scale(1);
+    }
+    /* Stay solid until 10 seconds (50%) */
     50% {
-      transform: scale(1) translateY(0);
+      clip-path: circle(100% at 50% 50%);
       opacity: 1;
     }
-    /* The Inverse: Fade and shrink back (10s - 20s) */
-    85% {
-      transform: scale(0.2) translateY(-100px);
+    /* Inverse: Shrink back to center */
+    75% {
+      clip-path: circle(0% at 50% 50%);
       opacity: 0;
     }
     100% {
-      transform: scale(0.2) translateY(-100px);
+      clip-path: circle(0% at 50% 50%);
       opacity: 0;
     }
+  }
+
+  .droplet-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
   }
 </style>
         
