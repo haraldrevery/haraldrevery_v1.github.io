@@ -1194,60 +1194,76 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         
 
 <div class="logo-container">
-  <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
-    <defs>
-      <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
-        <feTurbulence type="fractalNoise" baseFrequency="1.8 0.01" numOctaves="5" seed="42" result="grain" />
-        <feDisplacementMap in="SourceGraphic" in2="grain" scale="40" result="distorted" />
-        <feComposite in="distorted" in2="SourceGraphic" operator="in" />
-      </filter>
+  <a href="./about.html" class="logo-link">
+    <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
+      <defs>
+        <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
+          <feTurbulence type="fractalNoise" baseFrequency="1.8 0.01" numOctaves="5" seed="42" result="grain" />
+          <feDisplacementMap in="SourceGraphic" in2="grain" scale="40" result="distorted" />
+          <feComposite in="distorted" in2="SourceGraphic" operator="in" />
+        </filter>
 
-      <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
-        <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
-        <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="55" xChannelSelector="R" yChannelSelector="G" result="shredded" />
-        <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
-        <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
-      </filter>
+        <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
+          <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="55" xChannelSelector="R" yChannelSelector="G" result="shredded" />
+          <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
+          <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
+        </filter>
 
-      <mask id="logo-silhouette">
-        <g fill="white">
-          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        <mask id="logo-silhouette">
+          <g fill="white">
+            <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+            <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+            <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+            <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+          </g>
+        </mask>
+      </defs>
+
+      <g mask="url(#logo-silhouette)">
+        <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
+        
+        <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
+
+        <g filter="url(#realistic-bristles)">
+          <path class="brush-stroke curve-A s-1" d="M-100,300 Q400,50 1100,250" />
+          <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
+          <path class="brush-stroke curve-C s-3" d="M150,600 Q650,450 750,-100" />
+          <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
+          <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
+          <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
+          <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
+          <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
         </g>
-      </mask>
-    </defs>
-
-    <g mask="url(#logo-silhouette)">
-      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
-      
-      <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
-
-      <g filter="url(#realistic-bristles)">
-        <path class="brush-stroke curve-A s-1" d="M-100,300 Q400,50 1100,250" />
-        <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
-        
-        <path class="brush-stroke curve-C s-3" d="M150,600 Q650,450 750,-100" />
-        
-        <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
-        <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
-        <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
-        <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
-        <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
       </g>
-    </g>
-  </svg>
+    </svg>
+  </a>
 </div>
 
 <style>
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
+  
+  /* Link wrapper styles */
+  .logo-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease; /* Smooth scaling */
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  /* Scale up on hover */
+  .logo-link:hover {
+    transform: scale(1.1);
+  }
 
   @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
   @keyframes softSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
 
   .paint-logo {
     width: 100%; height: 100%; overflow: visible; transform-origin: center center;
+    /* Keeps your existing animations */
     animation: hoverFloat 5s ease-in-out infinite, softSway 7s ease-in-out infinite;
   }
 
@@ -1257,7 +1273,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-width: 220; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-      /* Shifts the container 4% to the left relative to its normal position */
     position: relative;
     left: -4%;
   }
