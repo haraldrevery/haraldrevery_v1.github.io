@@ -17,3 +17,16 @@ function menuResize() {
     menu.classList.remove("h-32");
   }
 }
+/**
+ * missing initLightbox function to prevent ReferenceErrors 
+ * and initialize GLightbox once images are loaded.
+ */
+function initLightbox() {
+  if (typeof GLightbox !== 'undefined') {
+    GLightbox({
+      selector: '.glightbox',
+      touchNavigation: true,
+      loop: true
+    });
+  }
+}
