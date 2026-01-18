@@ -1195,7 +1195,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <div class="logo-container">
   <a href="./about.html" class="logo-link">
-      <div class="vertical-float-wrap">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
         <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
@@ -1240,7 +1239,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </svg>
   </a>
 </div>
-</div>
+
         
 <style>
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
@@ -1259,34 +1258,18 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
   .logo-link:hover { transform: scale(1.05); }
 
-  /* 2. Apply the vertical movement to the wrapper */
-  .vertical-float-wrap {
-    width: 100%;
-    height: 100%;
-    display: block; /* Ensures it acts as a container for the SVG */
-    animation: hoverFloat 5s ease-in-out infinite;
-  }
+
 
   /* 3. Apply ONLY the rotation to the SVG itself */
   .paint-logo {
     width: 100%; 
     height: 100%; 
     overflow: visible; 
-    transform-origin: center center;
-    animation: softSway 7s ease-in-out infinite;
+    position: relative;
+    left: -9.7%;
   }
 
-  /* Tiny up and down movement (reduced to -8px for a 'tiny bit') */
-  @keyframes hoverFloat { 
-    0%, 100% { transform: translateY(0px); } 
-    50% { transform: translateY(-15px); } 
-  }
 
-  /* Significantly less rotation (reduced to 0.5deg) */
-  @keyframes softSway { 
-    0%, 100% { transform: rotate(-1deg); } 
-    50% { transform: rotate(1deg); } 
-  }
 
   .brush-stroke { 
     fill: none; 
