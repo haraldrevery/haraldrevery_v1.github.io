@@ -1217,52 +1217,61 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <style>
     :root {
         --logo-color: #1a1a1a;
-        --wave-color: #333333;
     }
-
     @media (prefers-color-scheme: dark) {
         :root {
             --logo-color: #ffffff;
-            --wave-color: #f0f0f0;
         }
     }
 
-    /* 1. Stroke Drawing Animation */
+    /* 1. Stroke Drawing */
     @keyframes drawStroke {
         0% { stroke-dashoffset: 2500; stroke-opacity: 1; }
         90% { stroke-opacity: 1; }
-        100% { stroke-dashoffset: 0; stroke-opacity: 0.3; }
+        100% { stroke-dashoffset: 0; stroke-opacity: 0.2; }
     }
 
-    /* 2. Wave Fill Animation (Rising) */
+    /* 2. Vertical Rise of the Wave */
     @keyframes waveRise {
-        0% { transform: translateY(1080px); }
+        0% { transform: translateY(1100px); }
         100% { transform: translateY(0px); }
     }
 
-    /* 3. Subtle Floating Loop */
+    /* 3. Horizontal Wave Oscillation (The "Wiggle") */
+    @keyframes waveHorizontal {
+        0% { transform: translateX(-150px); }
+        100% { transform: translateX(0px); }
+    }
+
+    /* 4. Subtle Floating Loop */
     @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-10px) rotate(1deg); }
+        75% { transform: translateY(-5px) rotate(-1deg); }
     }
 
     .logo-path-outline {
         fill: none;
         stroke: var(--logo-color);
-        stroke-width: 4px;
+        stroke-width: 3px;
         stroke-dasharray: 2500;
         stroke-dashoffset: 2500;
-        animation: drawStroke 3s ease-in-out forwards;
+        animation: drawStroke 3.5s ease-in-out forwards;
     }
 
     .fill-group {
-        /* This group is clipped by the mask below */
         mask: url(#wave-mask);
     }
 
-    #wave-rect {
-        animation: waveRise 4s ease-out forwards;
-        animation-delay: 1.5s; /* Starts halfway through the drawing */
+    #wave-surface {
+        /* This moves the wave side-to-side */
+        animation: waveHorizontal 2s ease-in-out infinite alternate;
+    }
+
+    #wave-container {
+        /* This moves the wave bottom-to-top */
+        animation: waveRise 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
+        animation-delay: 1s;
     }
 
     #main-wrapper {
@@ -1273,9 +1282,13 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <defs>
     <mask id="wave-mask">
-        <g id="wave-rect">
-            <rect x="0" y="0" width="1080" height="1080" fill="white" />
-            </g>
+        <g id="wave-container">
+            <path id="wave-surface" fill="white" d="M-200,0 
+                c100,0,100,-40,200,-40 s100,40,200,40 
+                s100,-40,200,-40 s100,40,200,40 
+                s100,-40,200,-40 s100,40,200,40 
+                v1200 h-1400 z" />
+        </g>
     </mask>
 </defs>
 
