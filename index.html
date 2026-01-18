@@ -1266,8 +1266,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     height: 100%; 
     overflow: visible; 
     position: relative;
-    /* Static base opacity for the container so it doesn't flicker */
-    opacity: 1; 
+    left: -9.7%;
   }
 
   .brush-stroke { 
@@ -1276,61 +1275,68 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-width: 220; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-    /* This ensures strokes don't look like solid blocks before they start */
-    opacity: 0; 
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* 1. The "Under-painting" (Early Vertical) */
+  /* ORGANIC TIMING PRINCIPLES:
+     1. Staggered Delays: Strokes are grouped in pairs to mimic hand "bursts".
+     2. Custom Bezier Curves: 
+        - 'Flick': starts very fast, ends slow.
+        - 'Drag': starts slow, ends fast.
+        - 'Smooth': consistent human-like arc.
+  */
+
   .s-early-vertical {
-    animation: paintProgress 18s infinite ease-in-out;
+    animation: paintLoop 18s infinite cubic-bezier(.3, 0, .1, 1);
     animation-delay: 0.1s;
+    opacity: 0.6;
   }
 
-  /* 2. The "Hero" (Final Stroke) - Heavy and solid */
   .final-stroke {
     stroke-width: 461; 
-    animation: finalStrokeProgress 18s infinite cubic-bezier(.45, .05, .55, .95);
-    animation-delay: 1.2s;
+    opacity: 1;
+    animation: finalStrokePhase 18s infinite cubic-bezier(.6, 0, .4, 1);
+    animation-delay: 1.5s;
   }
 
-  /* 3. Primary Strokes - Staggered */
   .curve-A, .curve-B, .curve-C { 
+    opacity: 0.75; 
     animation-duration: 18s; 
-    animation-iteration-count: infinite;
-    animation-name: paintProgress;
+    animation-iteration-count: infinite; 
+    animation-name: paintLoop;
   }
 
-  /* Rhythmic Delays */
-  .s-1 { animation-delay: 0.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
-  .s-2 { animation-delay: 0.3s;  animation-timing-function: cubic-bezier(.2, .8, .4, 1); }
-  .s-3 { animation-delay: 1.4s;  animation-timing-function: cubic-bezier(.5, 0, .5, 1); }
-  .s-4 { animation-delay: 1.8s;  animation-timing-function: cubic-bezier(.1, .7, .1, 1); }
-  .s-5 { animation-delay: 3.0s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
-  .s-6 { animation-delay: 3.4s;  animation-timing-function: cubic-bezier(.2, .9, .3, 1); }
-  .s-7 { animation-delay: 4.6s;  animation-timing-function: cubic-bezier(.7, 0, .3, 1); }
-  .s-8 { animation-delay: 4.9s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  /* Group 1: The Initial Contact */
+  .s-1 { animation-delay: 0.0s; animation-timing-function: cubic-bezier(.1, .9, .2, 1); } /* Flick */
+  .s-2 { animation-delay: 0.2s; animation-timing-function: cubic-bezier(.4, 0, .2, 1); } /* Smooth */
 
-  /* REFINED KEYFRAMES: 
-     The opacity now only changes during the "Start" and "End" of the stroke.
-     During the middle, it stays solid so the whole logo doesn't flicker. */
-  @keyframes paintProgress {
-    0%   { stroke-dashoffset: 2200; opacity: 0; }
-    2%   { opacity: 0.7; } /* Quick fade in as brush touches */
-    15%  { stroke-dashoffset: 0; opacity: 0.7; } /* Stay solid while visible */
-    80%  { stroke-dashoffset: 0; opacity: 0.7; }
-    90%  { opacity: 0; } /* Fade out as brush lifts */
+  /* Group 2: The Core Shape */
+  .s-3 { animation-delay: 1.2s; animation-timing-function: cubic-bezier(.7, 0, .3, 1); } /* Drag */
+  .s-4 { animation-delay: 1.3s; animation-timing-function: cubic-bezier(.2, .8, .4, 1); } /* Flick */
+
+  /* Group 3: Filling in */
+  .s-5 { animation-delay: 2.8s; animation-timing-function: cubic-bezier(.5, 0, .5, 1); } /* Steady */
+  .s-6 { animation-delay: 3.0s; animation-timing-function: cubic-bezier(.1, .7, .1, 1); } /* Sharp */
+
+  /* Group 4: Final Details */
+  .s-7 { animation-delay: 4.5s; animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 
+  .s-8 { animation-delay: 4.6s; animation-timing-function: cubic-bezier(.8, 0, .2, 1); } /* Heavy Drag */
+
+  @keyframes paintLoop {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
+    2% { opacity: 0.75; }
+    /* The "Hold" period where the logo stays visible */
+    15%, 85% { stroke-dashoffset: 0; opacity: 0.75; }
+    98% { stroke-dashoffset: -2200; opacity: 0.75; }
     100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 
-  @keyframes finalStrokeProgress {
-    0%   { stroke-dashoffset: 2200; opacity: 0; }
-    10%  { stroke-dashoffset: 2200; opacity: 0; }
-    15%  { opacity: 1; }
-    25%  { stroke-dashoffset: 0; opacity: 1; }
-    75%  { stroke-dashoffset: 0; opacity: 1; }
-    85%  { opacity: 0; }
-    90%  { stroke-dashoffset: 2200; opacity: 0; }
+  @keyframes finalStrokePhase {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
+    12% { stroke-dashoffset: 2200; opacity: 0; }
+    15% { opacity: 1; }
+    25%, 75% { stroke-dashoffset: 0; opacity: 1; }
+    88% { stroke-dashoffset: 2200; opacity: 0; }
     100% { stroke-dashoffset: 2200; opacity: 0; }
   }
 </style>
