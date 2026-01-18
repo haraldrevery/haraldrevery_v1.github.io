@@ -1214,23 +1214,21 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 </div>
 
 <style>
-  .logo-container2 { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
-  .neon-logo { width: 100%; height: 100%; position: relative; left: -9.7%; }
-    
-.logo-container2 { 
+  .logo-container2 { 
     width: 400px; 
     height: 400px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    /* Added: Smooth transition for the scale effect */
     transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
   }
 
-  /* Added: Scale up by 5% on hover */
   .logo-container2:hover {
     transform: scale(1.05);
   }
+
+  .neon-logo { width: 100%; height: 100%; position: relative; left: -9.7%; }
+
   /* Base Colors */
   .animated-wires { stroke: #000; }
   .solid-layer { fill: #000; opacity: 0; }
@@ -1239,7 +1237,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .dark .animated-wires { stroke: #fff; }
   .dark .solid-layer { fill: #fff; }
 
-  /* Logic: One 12s loop for a more frequent rhythm */
   .wire-path {
     stroke-dasharray: 4000;
     stroke-dashoffset: 4000;
@@ -1251,25 +1248,21 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
 
   @keyframes wirePulse {
-    /* 0-5%: Empty canvas (Dead Zone) */
-    0%, 5% { stroke-dashoffset: 4000; }
-    
-    /* 40-60%: Fully drawn wireframe */
-    40%, 60% { stroke-dashoffset: 0; }
-    
-    /* 95-100%: Drains away entirely */
-    95%, 100% { stroke-dashoffset: -4000; }
+    0%, 5% { stroke-dashoffset: 4000; } /* Start */
+    40%, 60% { stroke-dashoffset: 0; }  /* Fully drawn */
+    95%, 100% { stroke-dashoffset: -4000; } /* Drain */
   }
 
   @keyframes fillFade {
-    /* Stays invisible while wires are drawing */
-    0%, 38% { opacity: 0; }
+    /* 0% to 33% is invisible. 
+       33% is exactly 80% of the way through the 5%-40% drawing phase. */
+    0%, 33% { opacity: 0; }
     
-    /* Snaps to solid after wires meet */
-    45%, 55% { opacity: 1; }
+    /* Reaches full opacity at 40% (exactly when wires finish) */
+    40%, 60% { opacity: 1; }
     
-    /* Snaps out before wires begin to drain */
-    62%, 100% { opacity: 0; }
+    /* Begins fading out right as the wires start to drain */
+    65%, 100% { opacity: 0; }
   }
 </style>
         
