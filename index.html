@@ -1210,51 +1210,74 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </section>
     <section class="flex justify-center items-center min-h-[600px] overflow-visible">
 
+        
 <?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="0 0 1080 1080" style="enable-background:new 0 0 1080 1080;" xml:space="preserve">
+     viewBox="0 0 1080 1080" xml:space="preserve">
 <style>
-    /* Floating animation for the whole group */
-    @keyframes float {
+    :root {
+        /* Default colors (Light Mode) */
+        --logo-color: #1a1a1a;
+        --glow-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Dark Mode Support */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --logo-color: #ffffff;
+            --glow-color: rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    /* Continuous floating loop */
+    @keyframes floatLoop {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
+        50% { transform: translateY(-20px); }
     }
 
-    /* Stroke dash animation for a "writing" effect */
-    @keyframes draw {
-        from { stroke-dashoffset: 2000; }
-        to { stroke-dashoffset: 0; }
+    /* The "Drawing" intro animation */
+    @keyframes drawIntro {
+        0% { stroke-dashoffset: 2500; fill-opacity: 0; }
+        80% { fill-opacity: 0.1; }
+        100% { stroke-dashoffset: 0; fill-opacity: 1; }
     }
 
-    /* Subtle pulse of the fill color */
-    @keyframes pulse {
-        0%, 100% { fill-opacity: 0.85; filter: drop-shadow(0 0 2px rgba(255,255,255,0)); }
-        50% { fill-opacity: 1; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
+    /* Infinite pulse loop */
+    @keyframes pulseLoop {
+        0%, 100% { 
+            filter: drop-shadow(0 0 2px var(--glow-color));
+            fill-opacity: 0.9;
+        }
+        50% { 
+            filter: drop-shadow(0 0 12px var(--glow-color));
+            fill-opacity: 1;
+        }
     }
 
     .logo-path {
-        fill: #FFFFFF; /* Change to your brand color */
-        stroke: #FFFFFF;
-        stroke-width: 1px;
-        stroke-dasharray: 2000;
+        fill: var(--logo-color);
+        stroke: var(--logo-color);
+        stroke-width: 2px;
+        stroke-dasharray: 2500;
+        /* First 3s: Draw the logo | After 3s: Pulse forever */
         animation: 
-            draw 3s ease-in-out forwards, 
-            pulse 4s ease-in-out infinite 3s;
+            drawIntro 3s ease-out forwards, 
+            pulseLoop 4s ease-in-out infinite 3s;
     }
 
-    #main-group {
-        animation: float 6s ease-in-out infinite;
+    #logo-group {
+        animation: floatLoop 6s ease-in-out infinite;
         transform-origin: center;
     }
 
-    /* Staggered delay for each path */
-    .p1 { animation-delay: 0s, 3s; }
+    /* Staggered entry for the paths */
+    .p1 { animation-delay: 0.0s, 3.0s; }
     .p2 { animation-delay: 0.2s, 3.2s; }
     .p3 { animation-delay: 0.4s, 3.4s; }
     .p4 { animation-delay: 0.6s, 3.6s; }
 </style>
 
-<g id="main-group">
+<g id="logo-group">
     <path class="logo-path p1" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
         C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
         c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
@@ -1264,6 +1287,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     <path class="logo-path p4" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
 </g>
 </svg>
+
+        
         
     </section>
   </div>
