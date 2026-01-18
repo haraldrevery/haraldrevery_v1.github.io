@@ -368,8 +368,20 @@ body {
 /* Allow the decorative elements to bleed out */
 .overflow-bleed {
   position: relative;
-  overflow: visible !important;
+  overflow: hidden;
+    
 }
+
+/* Universal fix for all browsers - add to your existing styles */
+#discography-section .overflow-bleed {
+  /* Clip the container to prevent particle bleeding */
+  overflow: clip;
+  contain: layout style paint;
+  /* Ensure it doesn't expand beyond viewport */
+  max-width: 100%;
+}      
+
+      
 /* Ensure the canvas actually covers the extra bleed area */
 #particle-canvas,
 #particle-canvas-front {
@@ -688,14 +700,28 @@ html, body {
 
 
 
-
-/* 1. Force Firefox to ignore overflowing background elements */
+/* Enhanced Firefox Overflow Fix */
 @-moz-document url-prefix() {
+  /* Prevent overflow from container elements */
   #logo-container,
   .particles-layer,
   .bg-image-fade,
-  #particle-canvas {
-    overflow: clip !important; /* 'clip' is safer than 'hidden' for scroll artifacts */
+  #particle-canvas,
+  .overflow-bleed {
+    overflow: clip !important;
+  }
+  
+  /* Force strict containment on the discography section */
+  #discography-section,
+  #discography-section > .container {
+    overflow: clip !important;
+    contain: layout style paint;
+  }
+  
+  /* Ensure particle container doesn't create scroll */
+  .overflow-bleed {
+    contain: layout style paint;
+    isolation: isolate;
   }
 }
       
