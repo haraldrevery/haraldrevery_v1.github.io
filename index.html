@@ -1220,7 +1220,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       <filter id="viscous-splash" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
         <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="gooey" />
-        
         <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="8">
           <animate attributeName="baseFrequency" values="0.02; 0.01; 0.02" dur="6s" repeatCount="indefinite" />
         </feTurbulence>
@@ -1246,19 +1245,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 </div>
 
 <style>
-  .logo-container {
-    width: 400px;
-    height: 400px;
-  }
-
-  .paint-logo {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    /* Subtle background float */
-    animation: simpleFloat 8s ease-in-out infinite;
-  }
-
+  .logo-container { width: 400px; height: 400px; }
+  .paint-logo { width: 100%; height: 100%; overflow: visible; animation: simpleFloat 8s ease-in-out infinite; }
+  
   @keyframes simpleFloat {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -1267,33 +1256,47 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .paint-drop {
     fill: #000;
     opacity: 0;
-    /* YOUR CUSTOM BEZIER CURVE */
-    animation: splashCycle 20s infinite cubic-bezier(.04,.68,.27,.88);
     transform-origin: center;
+    animation-iteration-count: infinite;
   }
 
-  .dark .paint-drop {
-    fill: #fff;
+  .dark .paint-drop { fill: #fff; }
+
+  /* DROP 1: THE SLOW HEAVY HIT */
+  .d-1 { 
+    animation-name: splashCycle;
+    animation-duration: 22s; /* Slower overall cycle */
+    /* Much more linear/slow ease-out to feel 'heavy' */
+    animation-timing-function: cubic-bezier(.4, 0, .6, 1); 
+    animation-delay: 0s; 
   }
 
-  /* Deep de-sync for organic multi-impact feel */
-  .d-1 { animation-delay: 0s; }
-  .d-2 { animation-delay: 1.5s; }
-  .d-3 { animation-delay: 3s; }
+  /* DROP 2 & 3: THE SNAPPY PAINTBALLS */
+  .d-2 { 
+    animation-name: splashCycle;
+    animation-duration: 20s;
+    animation-timing-function: cubic-bezier(.04,.68,.27,.88);
+    animation-delay: 1.8s; /* Increased delay to wait for the slow first drop */
+  }
+
+  .d-3 { 
+    animation-name: splashCycle;
+    animation-duration: 20s;
+    animation-timing-function: cubic-bezier(.04,.68,.27,.88);
+    animation-delay: 3.5s; 
+  }
 
   @keyframes splashCycle {
-    /* 0-10s: Filling and Spread */
     0% { r: 0; opacity: 0; transform: scale(0.4); }
-    2% { opacity: 1; transform: scale(1.1); }
-    45% { r: 1300px; opacity: 1; transform: scale(1); }
+    /* Soft impact start */
+    5% { opacity: 1; transform: scale(1.05); }
+    /* Slow glide to full fill */
+    50% { r: 1300px; opacity: 1; transform: scale(1); }
     
-    /* 10-14s: Hold Phase */
-    50%, 70% { r: 1300px; opacity: 1; }
+    60%, 75% { r: 1300px; opacity: 1; }
 
-    /* 14-17s: Inverse Sucking back (Also using your curve) */
-    85% { r: 0; opacity: 0; transform: scale(0.7); }
-
-    /* 17-20s: Reset */
+    /* Inverse Sucking back */
+    90% { r: 0; opacity: 0; transform: scale(0.7); }
     100% { r: 0; opacity: 0; }
   }
 </style>
