@@ -1217,13 +1217,15 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="logo-container">
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
-      <filter id="viscous-splash" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="gooey" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="8">
-          <animate attributeName="baseFrequency" values="0.02; 0.01; 0.02" dur="6s" repeatCount="indefinite" />
-        </feTurbulence>
-        <feDisplacementMap in="gooey" scale="70" />
+      <filter id="heavy-paint-bucket" x="-50%" y="-50%" width="200%" height="200%">
+        <feMorphology operator="dilate" radius="10" in="SourceGraphic" result="thickened" />
+        
+        <feGaussianBlur in="thickened" stdDeviation="12" result="blurred" />
+        
+        <feColorMatrix in="blurred" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 35 -15" result="gooey-base" />
+
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" seed="12" result="noise" />
+        <feDisplacementMap in="gooey-base" in2="noise" scale="50" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1236,7 +1238,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </mask>
     </defs>
 
-    <g mask="url(#logo-silhouette)" filter="url(#viscous-splash)">
+    <g mask="url(#logo-silhouette)" filter="url(#heavy-paint-bucket)">
       <circle class="paint-drop d-1" cx="850" cy="750" r="0" />
       <circle class="paint-drop d-2" cx="250" cy="350" r="0" />
       <circle class="paint-drop d-3" cx="540" cy="600" r="0" />
@@ -1246,57 +1248,45 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <style>
   .logo-container { width: 400px; height: 400px; }
-  .paint-logo { width: 100%; height: 100%; overflow: visible; animation: simpleFloat 8s ease-in-out infinite; }
+  .paint-logo { width: 100%; height: 100%; overflow: visible; animation: float 8s ease-in-out infinite; }
   
-  @keyframes simpleFloat {
+  @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
 
   .paint-drop {
     fill: #000;
     opacity: 0;
     transform-origin: center;
-    animation-iteration-count: infinite;
   }
 
+  /* Support for your 'dark' class */
   .dark .paint-drop { fill: #fff; }
 
-  /* DROP 1: THE SLOW HEAVY HIT */
+  /* First drop: Heavy, slow, viscous */
   .d-1 { 
-    animation-name: splashCycle;
-    animation-duration: 22s; /* Slower overall cycle */
-    /* Much more linear/slow ease-out to feel 'heavy' */
-    animation-timing-function: cubic-bezier(.4, 0, .6, 1); 
+    animation: splashCycle 20s infinite cubic-bezier(.4, 0, .6, 1); 
     animation-delay: 0s; 
   }
 
-  /* DROP 2 & 3: THE SNAPPY PAINTBALLS */
+  /* Drops 2 & 3: Your requested Paintball curve */
   .d-2 { 
-    animation-name: splashCycle;
-    animation-duration: 20s;
-    animation-timing-function: cubic-bezier(.04,.68,.27,.88);
-    animation-delay: 1.8s; /* Increased delay to wait for the slow first drop */
+    animation: splashCycle 19.5s infinite cubic-bezier(.04,.68,.27,.88);
+    animation-delay: 1.8s;
   }
 
   .d-3 { 
-    animation-name: splashCycle;
-    animation-duration: 20s;
-    animation-timing-function: cubic-bezier(.04,.68,.27,.88);
+    animation: splashCycle 19s infinite cubic-bezier(.04,.68,.27,.88);
     animation-delay: 3.5s; 
   }
 
   @keyframes splashCycle {
     0% { r: 0; opacity: 0; transform: scale(0.4); }
-    /* Soft impact start */
-    5% { opacity: 1; transform: scale(1.05); }
-    /* Slow glide to full fill */
-    50% { r: 1300px; opacity: 1; transform: scale(1); }
-    
-    60%, 75% { r: 1300px; opacity: 1; }
-
-    /* Inverse Sucking back */
-    90% { r: 0; opacity: 0; transform: scale(0.7); }
+    3% { opacity: 1; transform: scale(1.15); }
+    45% { r: 1300px; opacity: 1; transform: scale(1); }
+    55%, 75% { r: 1300px; opacity: 1; }
+    90% { r: 0; opacity: 0; transform: scale(0.75); }
     100% { r: 0; opacity: 0; }
   }
 </style>
