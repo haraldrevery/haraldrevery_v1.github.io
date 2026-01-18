@@ -1,1 +1,645 @@
+.seo-only-h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  display: block; /* Ensures it's still a block element for crawlers */
+}
 
+
+
+
+      
+ @view-transition {
+  navigation: auto; /* Enables seamless transitions between documents */
+}
+      
+/* Force navbar to stay fixed during transitions */
+#main-header, #nav, #ulMenu {
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent mobile menu from causing layout shifts */
+#menu {
+  transition: height 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Ensure desktop menu never collapses */
+@media (min-width: 768px) {
+  #menu {
+    height: auto !important;
+    opacity: 1 !important;
+  }
+}
+      
+
+
+      
+/* Navbar stuff */
+#main-header {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  max-width: 100%;  /* ← Fixed! */
+  width: 100%;
+}
+
+.menu-letter-toggle {
+  font-family: 'HaraldMono', monospace;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Navbar reveal animation - ensure it starts visible if you don't use the original's scroll-reveal script */
+header#main-header {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+
+      
+
+/* Enhanced Ambient Background Blobs */
+@keyframes meshMove {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(30%, -20%) scale(1.2) rotate(120deg); }
+  66% { transform: translate(-20%, 20%) scale(0.8) rotate(240deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(360deg); }
+}
+
+.ambient-blob {
+  position: absolute;
+  width: 120%; /* Slightly smaller for more movement room */
+  height: 120%;
+  filter: blur(60px); /* Increased blur for smoother blending */
+  opacity: 0.15; /* Increased slightly for visibility */
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen; /* Better color blending */
+  transition: background 1.5s ease-in-out;
+}
+
+/* Specific animations for each blob to make them move independently */
+.playing .blob-1 {
+  animation: meshMove 15s ease-in-out infinite;
+}
+
+.playing .blob-2 {
+  animation: meshMove 20s ease-in-out infinite reverse;
+}
+
+.playing .ambient-blob {
+  animation: meshRotate 20s linear infinite;
+}
+
+/* Track Title Marquee */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 12s linear infinite;
+  display: flex !important;
+  white-space: nowrap !important;
+  width: max-content !important;
+  /* Add these two lines below */
+  transition: width 0.5s ease-in-out;
+  will-change: transform, width;
+}
+
+
+
+.will-change-transform {
+  will-change: transform;
+}
+/* Volume Slider Styling */
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+
+    /* The Fading Mask Logic for audio player */
+  .mask-fade {
+    /* Creates transparent edges at 0% and 100%, and solid in the middle */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+    
+    /* 2. Added a safeguard: Force background to be dark immediately 
+       This prevents any white flashes during script execution */
+    .dark body {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+
+    /* Standard letter fade animation */
+    @keyframes letterFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+/* Audio player texture slide show */
+/* Standard cycle for images 2 and 3 */
+
+@keyframes crossfade {
+  0% { opacity: 0; }
+  5% { opacity: 0.07; }   /* Fade in quickly */
+  25% { opacity: 0.07; }  /* Stay visible for exactly 1/4 of the 48s */
+  30% { opacity: 0; }     /* Fade out */
+  100% { opacity: 0; }
+}
+
+.animate-crossfade {
+  opacity: 0;
+  animation: crossfade 48s infinite linear;
+}
+
+  /* Special cycle for Image 1 to prevent the black start */
+  @keyframes crossfade-first {
+    0%, 40% { opacity: 1; } /* Visible immediately */
+    50%, 90% { opacity: 0; } /* Fades out for others */
+    100% { opacity: 1; }     /* Comes back at the end */
+  }
+
+    
+
+   /* letters fading in */ 
+.fade-letter {
+    /* remove display: inline-block if letters look gapped */
+    opacity: 0;
+    animation: letterFade 0.8s ease-out forwards;
+}
+
+  /* Prevent layout jump: hide the H2 initially */
+  h2[data-animate="true"] {
+    opacity: 0;
+  }
+  h2.active {
+    opacity: 1 !important;
+  }
+    
+     /* fading words */
+        .word {
+          display: inline-block;
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        @keyframes fadeInWord {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }  
+        /* This triggers when the IntersectionObserver adds the class */
+        .start-animation .word {
+          animation: fadeInWord 0.6s ease-out forwards;
+        }
+
+/* Hide the container entirely until JS is ready */
+.text-container {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+/* Show it only when the IntersectionObserver or JS adds this class */
+.text-container.start-animation {
+  opacity: 1;
+}
+      
+/* 1. FONT DEFINITIONS */
+@font-face {
+  font-family: 'HaraldText';
+  src: url('../fonts/HaraldReveryTextFont.woff2') format('woff2'),
+       url('../fonts/HaraldReveryTextFont.woff') format('woff'),
+       url('../fonts/HaraldReveryTextFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HaraldMono';
+  src: url('../fonts/HaraldReveryMonoFont.woff2') format('woff2'),
+       url('../fonts/HaraldReveryMonoFont.woff') format('woff'),
+       url('../fonts/HaraldReveryMonoFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+      
+/* CUSTOM DESKTOP FONT SIZING */
+html { 
+  /* Desktop Scale */
+  font-size: 1.2rem; 
+  scrollbar-gutter: stable;
+}
+
+body {
+  font-family: 'HaraldText', sans-serif;
+  font-size: 1.9rem;     /* ≈28px on 16px root */
+  line-height: 1.58;
+  letter-spacing: 0.018em;
+  overflow-x: hidden;
+}
+
+/* CUSTOM MOBILE FONT SIZING */
+@media (max-width: 768px) {
+          html {
+            /* Reduces the base scale by ~20% for smaller screens */
+            /* This makes your 1.9rem body text roughly 22px on mobile */
+            font-size: 1.427rem; 
+          }
+        body {
+          font-family: 'HaraldText', sans-serif;
+          font-size: 2.28rem;     /* ≈28px on 16px root */
+          line-height: 1.58;
+          letter-spacing: 0.018em;
+        }
+}
+
+      
+    
+/* 3. ANIMATIONS */
+/* Animation definition */
+@keyframes wave-animation {
+  0% { transform: rotate(0.0deg); }
+  10% { transform: rotate(14.0deg); }
+  20% { transform: rotate(-8.0deg); }
+  30% { transform: rotate(14.0deg); }
+  40% { transform: rotate(-4.0deg); }
+  50% { transform: rotate(10.0deg); }
+  60% { transform: rotate(0.0deg); }
+  100% { transform: rotate(0.0deg); }
+}
+
+/* Apply the animation only on hover */
+.hover-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.hover-wave:hover {
+  animation: wave-animation 2.5s infinite;
+}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-in forwards;
+    }
+
+    /* Background ANIMATIONS */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-slow {
+  animation: gradientMove 15s ease infinite;
+}
+
+/* Apply a smooth transition to the entire page and all its children */
+* {
+    transition: background-color 0.96s ease-in-out, color 0.6s ease-in-out, border-color 0.6s ease-in-out;
+}
+
+/* Specific smoothing for the background gradient */
+body {
+    transition: background 0.8s ease-in-out;
+    transition: color 0.6s ease-in-out !important; 
+}  
+
+/* avoid text-justify odd gaps */
+.text-justify {
+  text-justify: inter-word;
+  hyphens: auto;
+}
+    
+.text-container p {
+  text-align: justify;
+}
+
+
+
+      
+
+/* Horizontal Scrolling Gallery */
+#music-image-grid {
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+#music-image-grid .glightbox {
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+/* When ANY image is hovered → affect all siblings */
+#music-image-grid:hover .glightbox {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+/* The hovered image itself returns to full state */
+#music-image-grid .glightbox:hover {
+  opacity: 1 !important;
+  transform: scale(1.04) !important;
+  z-index: 10;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+}
+
+/* Optional: make transition smoother when leaving hover */
+#music-image-grid .glightbox:not(:hover) {
+  transition-delay: 0.05s;
+}
+
+/* Center glow effect */
+.center-glow {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.29) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+@media (min-width: 768px) {
+  .center-glow {
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Grid item reveal animation - same as index.html */
+.grid-item-reveal {
+  opacity: 0;
+  transform: translate3d(0, 5rem, 0);
+  transition:
+    opacity 1400ms cubic-bezier(0, 0.39, 0.4, 0.95),
+    transform 1400ms cubic-bezier(0, 0.39, 0.4, 0.95);
+  will-change: opacity, transform;
+  -webkit-font-smoothing: antialiased;
+}
+
+.grid-item-reveal.revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+      
+
+
+
+
+
+/* Particles */
+/* Base setup for all 4 layers */
+.particles-layer {
+  position: absolute;
+  top: -25%; 
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  pointer-events: none;
+  background-repeat: repeat;
+  /* High-density particle map */
+  background-image: 
+    radial-gradient(1.2px 1.2px at 15% 15%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 35% 45%, currentColor 100%, transparent),
+    radial-gradient(1.8px 1.8px at 55% 85%, currentColor 100%, transparent),
+    radial-gradient(1.2px 1.2px at 85% 25%, currentColor 100%, transparent),
+    radial-gradient(1px 1px at 25% 75%, currentColor 100%, transparent),
+    radial-gradient(1.5px 1.5px at 70% 50%, currentColor 100%, transparent);
+  will-change: transform;
+    /* Add this to prevent any individual particle layer from creating scrollbars */
+  overflow: hidden;
+  max-width: 100vw; /* Add this */  
+  clip-path: inset(0);
+}
+
+/* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
+.p-layer-1 {
+  z-index: -2;
+  opacity: 0.2;
+  background-size: 250px 250px;
+  animation: drift-1 60s ease-in-out infinite alternate;
+}
+
+/* LAYER 2: Mid Background (Moderate speed) */
+.p-layer-2 {
+  z-index: -1;
+  opacity: 0.25;
+  background-size: 420px 420px;
+  animation: drift-2 45s ease-in-out infinite alternate-reverse;
+}
+
+/* LAYER 3: Close Foreground (Faster, larger) */
+.p-layer-3 {
+  z-index: 1;
+  opacity: 0.3;
+  background-size: 680px 680px;
+  animation: drift-1 40s ease-in-out infinite alternate-reverse;
+}
+
+/* LAYER 4: Very Close (Fastest, largest, boldest) */
+.p-layer-4 {
+  z-index: 2;
+  opacity: 0.45;
+  background-size: 700px 700px;
+  animation: drift-2 21s ease-in-out infinite alternate;
+}
+
+/* LAYER 5: Extreme Foreground (16% larger than Layer 4) */
+.p-layer-5 {
+  z-index: 20;
+  opacity: 0.55;
+  background-size: 996px 996px; /* INCREASE this for larger particles */
+  /* Using the new 3rd drift variant */
+  animation: drift-3 18s ease-in-out infinite alternate;
+}
+      
+/* Two distinct paths so layers don't just follow each other */
+@keyframes drift-1 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(2%, -5%) rotate(0.5deg); }
+  100% { transform: translate(-3%, -8%) rotate(-1deg); }
+}
+
+@keyframes drift-2 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(-4%, 4%) rotate(-0.54deg); }
+  100% { transform: translate(2%, 6%) rotate(1deg); }
+}
+
+@keyframes drift-3 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  33%  { transform: translate(3%, 2%) rotate(0.3deg); }
+  66%  { transform: translate(-2%, 4%) rotate(-0.6deg); }
+  100% { transform: translate(1%, -5%) rotate(0.2deg); }
+}
+
+/* NEW: 4th distinct path for the 6th layer */
+@keyframes drift-4 {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(-3%, -2%) rotate(0.4deg); }
+  50%  { transform: translate(4%, 3%) rotate(-0.2deg); }
+  75%  { transform: translate(-2%, -5%) rotate(0.6deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* LAYER 6: Ultra Foreground (16% larger than Layer 5) */
+.p-layer-6 {
+  z-index: 25; /* Higher than Layer 5's z-index of 20 */
+  opacity: 0.65;
+  background-size: 1255px 1255px; /* 996px * 1.16 */
+  /* Faster than Layer 5 (18s) to enhance parallax speed */
+  animation: drift-4 24s ease-in-out infinite alternate;
+}
+      
+/* LAYER 6: Ultra Foreground (16% larger than Layer 5) */
+.p-layer-7 {
+  z-index: 29; /* Higher than Layer 5's z-index of 20 */
+  opacity: 0.8;
+  background-size: 1455px 1455px; /* 996px * 1.16 */
+  /* Faster than Layer 5 (18s) to enhance parallax speed */
+  animation: drift-1 22s ease-in-out infinite alternate;
+}
+      
+/* Colors based on theme */
+.dark .particles-layer { color: rgba(255, 255, 255, 0.8); }
+html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
+
+      
+
+
+
+
+
+
+
+  /* --- GLightbox Caption Styling --- */
+/* Remove the solid white background from the text container */
+.gslide-description {
+  background: transparent !important;
+}
+/* Ensure the text container doesn't have a shadow or border that looks like a box */
+.gslide-description.description-bottom {
+  border: none !important;
+  box-shadow: none !important;
+}
+/* Force the text to be your brand color (white) if it's defaulting to black */
+.gslide-title {
+  color: #FFFFFF !important;
+  font-family: 'HaraldMono', monospace !important;
+}
+.gslide-desc {
+  color: #FFFFFF !important;
+  font-family: 'HaraldText', sans-serif !important;
+    font-size: 0.21rem; /* Add or change this line */
+}
+.gslide-title, .gslide-desc {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+
+
+
+
+
+
+      
+      
+      
+
+
+
+    /* Base state for logos: hidden and shifted down */
+.logo-item {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* Triggered state when parent enters viewport */
+.start-animation .logo-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays so they pop in one by one */
+.logo-item:nth-child(1) { transition-delay: 0.3s; }
+.logo-item:nth-child(2) { transition-delay: 0.4s; }
+.logo-item:nth-child(3) { transition-delay: 0.5s; }
+.logo-item:nth-child(4) { transition-delay: 0.6s; }
+.logo-item:nth-child(5) { transition-delay: 0.7s; }
+
+
+/* Dark mode button fade in */
+/* Initial state for the toggle button */
+.mode-toggle-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* State when revealed */
+.mode-toggle-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+      
