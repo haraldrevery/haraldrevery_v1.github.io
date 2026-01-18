@@ -1240,29 +1240,24 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .wire-path {
     stroke-dasharray: 4000;
     stroke-dashoffset: 4000;
-    animation: wirePulse 12s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    /* Reduced cycle to 10s and updated keyframes below */
+    animation: wirePulse 10s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
 
   .solid-layer {
-    animation: fillFade 12s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    animation: fillFade 10s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
 
   @keyframes wirePulse {
-    0%, 5% { stroke-dashoffset: 4000; } /* Start */
-    40%, 60% { stroke-dashoffset: 0; }  /* Fully drawn */
-    95%, 100% { stroke-dashoffset: -4000; } /* Drain */
+    0% { stroke-dashoffset: 4000; } 
+    30%, 75% { stroke-dashoffset: 0; }  /* Stays fully drawn longer */
+    95%, 100% { stroke-dashoffset: -4000; } /* Faster exit */
   }
 
   @keyframes fillFade {
-    /* 0% to 33% is invisible. 
-       33% is exactly 80% of the way through the 5%-40% drawing phase. */
-    0%, 33% { opacity: 0; }
-    
-    /* Reaches full opacity at 40% (exactly when wires finish) */
-    40%, 60% { opacity: 1; }
-    
-    /* Begins fading out right as the wires start to drain */
-    65%, 100% { opacity: 0; }
+    0%, 25% { opacity: 0; }
+    30%, 75% { opacity: 1; } /* Matches the wires being fully drawn */
+    85%, 100% { opacity: 0; } /* Fades out just before the wires drain */
   }
 </style>
         
