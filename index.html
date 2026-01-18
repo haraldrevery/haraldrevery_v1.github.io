@@ -1213,9 +1213,16 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         
 
 
-  <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="droplet-svg">
+  <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
-      <mask id="logo-mask">
+      <filter id="paint-blur">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2">
+          <animate attributeName="baseFrequency" values="0.05;0.01;0.05" dur="10s" repeatCount="indefinite" />
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="40" />
+      </filter>
+
+      <mask id="logo-silhouette">
         <g fill="white">
           <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
           <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
@@ -1223,78 +1230,79 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
           <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
         </g>
       </mask>
-
-      <filter id="inner-disturbance" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="1">
-          <animate attributeName="baseFrequency" values="0.02;0.05;0.02" dur="10s" repeatCount="indefinite" />
-        </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" scale="30" />
-      </filter>
     </defs>
 
-    <rect x="0" y="0" width="1080" height="1080" 
-          mask="url(#logo-mask)" 
-          filter="url(#inner-disturbance)"
-          class="logo-fill-rect" />
+    <g mask="url(#logo-silhouette)">
+      <circle class="paint-drop drop-1" cx="800" cy="800" r="0" filter="url(#paint-blur)" />
+      <circle class="paint-drop drop-2" cx="300" cy="300" r="0" filter="url(#paint-blur)" />
+      <circle class="paint-drop drop-3" cx="540" cy="540" r="0" filter="url(#paint-blur)" />
+    </g>
   </svg>
 
 
 <style>
   .logo-container {
-    width: 300px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 400px;
+    height: 400px;
   }
 
-  /* Color handling - uses your project's dark mode logic */
-  .logo-fill-rect {
-    fill: #000; /* Light mode color */
-    transition: fill 0.4s ease;
-    animation: dropletCycle 20s infinite ease-in-out;
+  /* Color control for Light/Dark mode */
+  .paint-drop {
+    fill: #000; /* Light Mode */
+    transition: fill 0.5s ease;
   }
 
-  .dark .logo-fill-rect {
-    fill: #fff; /* Dark mode color */
+  .dark .paint-drop {
+    fill: #fff; /* Dark Mode */
   }
 
-  /* Droplet Animation: Drop -> Spread -> Stay -> Inverse -> Reset */
-  @keyframes dropletCycle {
+  /* Animation Logic */
+  .paint-drop {
+    /* Total 20s cycle: 10s animation, 10s wait/inverse */
+    animation: impactFill 20s infinite cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+  }
+
+  .drop-1 { animation-delay: 0s; }
+  .drop-2 { animation-delay: 0.2s; }
+  .drop-3 { animation-delay: 0.4s; }
+
+  @keyframes impactFill {
     0% {
-      clip-path: circle(0% at 50% 50%);
-      transform: scale(0.5);
+      r: 0;
       opacity: 0;
+      transform: scale(0.5);
     }
-    /* 3 Droplets "Hitting": We simulate this with a quick expansion */
-    10% {
-      clip-path: circle(20% at 50% 50%);
+    /* Impact/Paint Ball Strike (Fast expansion) */
+    5% {
       opacity: 1;
+      transform: scale(1.2);
     }
-    /* Spread to fill the whole logo by 5 seconds (25% of 20s) */
-    25% {
-      clip-path: circle(100% at 50% 50%);
+    /* Spread to cover the logo (By 10 seconds) */
+    50% {
+      r: 1200px; /* Large enough to fill the 1080 viewBox */
+      opacity: 1;
       transform: scale(1);
     }
-    /* Stay solid until 10 seconds (50%) */
-    50% {
-      clip-path: circle(100% at 50% 50%);
+    /* Hold for the user to see the logo */
+    60% {
       opacity: 1;
+      r: 1200px;
     }
-    /* Inverse: Shrink back to center */
-    75% {
-      clip-path: circle(0% at 50% 50%);
+    /* Inverse: Shrink back down fast */
+    70% {
+      r: 0;
       opacity: 0;
     }
     100% {
-      clip-path: circle(0% at 50% 50%);
+      r: 0;
       opacity: 0;
     }
   }
 
-  .droplet-svg {
+  .paint-logo {
     width: 100%;
-    height: auto;
+    height: 100%;
     overflow: visible;
   }
 </style>
