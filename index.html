@@ -1217,15 +1217,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="logo-container">
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
-      <filter id="paint-splash-filter" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+      <filter id="viscous-splash" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10" result="gooey" />
         
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="gooey" />
-
-        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="5">
-          <animate attributeName="baseFrequency" values="0.03; 0.015; 0.03" dur="4s" repeatCount="indefinite" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="8">
+          <animate attributeName="baseFrequency" values="0.02; 0.01; 0.02" dur="6s" repeatCount="indefinite" />
         </feTurbulence>
-        <feDisplacementMap in="gooey" scale="60" />
+        <feDisplacementMap in="gooey" scale="70" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1238,7 +1237,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </mask>
     </defs>
 
-    <g mask="url(#logo-silhouette)" filter="url(#paint-splash-filter)">
+    <g mask="url(#logo-silhouette)" filter="url(#viscous-splash)">
       <circle class="paint-drop d-1" cx="850" cy="750" r="0" />
       <circle class="paint-drop d-2" cx="250" cy="350" r="0" />
       <circle class="paint-drop d-3" cx="540" cy="600" r="0" />
@@ -1256,44 +1255,45 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     width: 100%;
     height: 100%;
     overflow: visible;
-    animation: float 8s ease-in-out infinite;
+    /* Subtle background float */
+    animation: simpleFloat 8s ease-in-out infinite;
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
+  @keyframes simpleFloat {
+    0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
   }
 
   .paint-drop {
     fill: #000;
     opacity: 0;
-    /* Using custom bezier for 'Impact' physics */
-    animation: splashFill 20s infinite cubic-bezier(0.3, 0, 0.2, 1);
+    /* YOUR CUSTOM BEZIER CURVE */
+    animation: splashCycle 20s infinite cubic-bezier(.04,.68,.27,.88);
+    transform-origin: center;
   }
 
   .dark .paint-drop {
     fill: #fff;
   }
 
-  /* Staggered starts for organic feel */
+  /* Deep de-sync for organic multi-impact feel */
   .d-1 { animation-delay: 0s; }
-  .d-2 { animation-delay: 1.2s; }
-  .d-3 { animation-delay: 2.4s; }
+  .d-2 { animation-delay: 1.5s; }
+  .d-3 { animation-delay: 3s; }
 
-  @keyframes splashFill {
-    /* Impact */
-    0% { r: 0; opacity: 0; transform: scale(0.5); }
+  @keyframes splashCycle {
+    /* 0-10s: Filling and Spread */
+    0% { r: 0; opacity: 0; transform: scale(0.4); }
     2% { opacity: 1; transform: scale(1.1); }
-    
-    /* Spread to fill */
     45% { r: 1300px; opacity: 1; transform: scale(1); }
     
-    /* Solid Hold */
-    55%, 65% { r: 1300px; opacity: 1; }
+    /* 10-14s: Hold Phase */
+    50%, 70% { r: 1300px; opacity: 1; }
 
-    /* Inverse - Sucking back */
-    85% { r: 0; opacity: 0; transform: scale(0.8); }
+    /* 14-17s: Inverse Sucking back (Also using your curve) */
+    85% { r: 0; opacity: 0; transform: scale(0.7); }
 
+    /* 17-20s: Reset */
     100% { r: 0; opacity: 0; }
   }
 </style>
