@@ -1234,6 +1234,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </defs>
 
     <g mask="url(#logo-silhouette)" filter="url(#realistic-bristles)">
+      <rect class="logo-fill" x="0" y="0" width="1080" height="1080" />
+
       <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
       <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
       <path class="brush-stroke curve-A s-3" d="M150,1100 Q450,550 750,-100" />
@@ -1247,8 +1249,54 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 </div>
 
 <style>
-  .logo-container { width: 400px; height: 400px; padding: 20px;}
-  
+  .logo-container { 
+    width: 400px; 
+    height: 400px; 
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- HARMONIC FLOAT ANIMATIONS --- */
+  @keyframes hoverFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-25px); }
+  }
+
+  @keyframes softSway {
+    0%, 100% { transform: rotate(-1.5deg); }
+    50% { transform: rotate(1.5deg); }
+  }
+
+  .paint-logo {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    transform-origin: center center;
+    /* Independent float and sway durations for a natural drift */
+    animation: 
+      hoverFloat 5s ease-in-out infinite,
+      softSway 7s ease-in-out infinite;
+  }
+
+  /* --- LOGO FILL (PAINT BUCKET) --- */
+  .logo-fill {
+    fill: #000;
+    opacity: 0;
+    animation: logoFillPhase 20s infinite;
+  }
+  .dark .logo-fill { fill: #fff; }
+
+  @keyframes logoFillPhase {
+    0%, 15% { opacity: 0; }  /* Wait for brushes */
+    25% { opacity: 1; }      /* "Paint bucket" fills it in */
+    65% { opacity: 1; }      /* Static hold for 5+ seconds */
+    75% { opacity: 0; }      /* Drain fill before brushes leave */
+    100% { opacity: 0; }
+  }
+
+  /* --- BRUSH STROKE LOGIC --- */
   .brush-stroke {
     fill: none;
     stroke: #000;
@@ -1256,13 +1304,13 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     stroke-linecap: butt;
     stroke-dasharray: 2200;
     stroke-dashoffset: 2200;
+    transition: stroke 0.5s ease;
   }
-
   .dark .brush-stroke { stroke: #fff; }
 
-/* 1. Extended paintLoop to 20 seconds */
-.curve-A { animation: paintLoop 20s infinite cubic-bezier(.05,.41,0,1.02); }
-.curve-B { animation: paintLoop 20s infinite cubic-bezier(.03,.29,.01,.66); }
+  /* 20 second synchronized loop */
+  .curve-A { animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); }
+  .curve-B { animation: paintLoop 20s infinite cubic-bezier(.06,.39,.02,.96); }
 
   /* Individual Staggering */
   .s-1 { animation-delay: 0s; }
@@ -1274,65 +1322,17 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .s-7 { animation-delay: 2.4s; }
   .s-8 { animation-delay: 2.5s; }
 
-@keyframes paintLoop {
-  0% { stroke-dashoffset: 2200; opacity: 0; }
-  1% { opacity: 1; }
-  
-  /* Paint In (Ends at 3s) */
-  15% { stroke-dashoffset: 0; opacity: 1; }
-  
-  /* LONG HOLD (Stays static from 15% to 65% — approx 10 seconds total) */
-  /* This gives you the 5+ second extra "static" time you requested */
-  65% { stroke-dashoffset: 0; opacity: 1; }
-  
-  /* Clean Sweep Out (Starts at 13s, ends at 17s) */
-  85% { stroke-dashoffset: -2200; opacity: 1; }
-  
-  /* Fade out and Reset (Ends at 20s) */
-  95%, 100% { stroke-dashoffset: -2200; opacity: 0; }
-}
-
-  .paint-logo { width: 100%; height: 100%; overflow: visible; }
-
-/* 1. Enhanced floating with a slight tilt and scale */
-/* 1. Pure Harmonic Float: Vertical movement only */
-@keyframes hoverFloat {
-  0%, 100% { 
-    transform: translateY(0px); 
+  @keyframes paintLoop {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
+    1% { opacity: 1; }
+    /* Fully painted by 15% mark (~3 seconds) */
+    15% { stroke-dashoffset: 0; opacity: 1; }
+    /* Long 5-10 second static hold */
+    65% { stroke-dashoffset: 0; opacity: 1; }
+    /* Sweep out forward */
+    85% { stroke-dashoffset: -2200; opacity: 1; }
+    95%, 100% { stroke-dashoffset: -2200; opacity: 0; }
   }
-  50% { 
-    transform: translateY(-25px); 
-  }
-}
-
-/* 2. Soft Sway: A separate, slower rotation for secondary motion */
-@keyframes softSway {
-  0%, 100% { 
-    transform: rotate(-1.5deg); 
-  }
-  50% { 
-    transform: rotate(1.5deg); 
-  }
-}
-
-.paint-logo {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  transform-origin: center center;
-  
-  /* We combine two different durations to create a "drifting" feel 
-     that doesn't repeat perfectly every cycle, making it look more natural. */
-  animation: 
-    hoverFloat 5s ease-in-out infinite,
-    softSway 7s ease-in-out infinite;
-}
-
-/* 3. Optional: Add a smooth transition if you change themes */
-.brush-stroke {
-  transition: stroke 0.5s ease;
-}
-    
 </style>
 
 
