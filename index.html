@@ -1197,18 +1197,17 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
-        <filter id="halftone-shred" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.01 0.4" numOctaves="2" seed="5" result="noise" />
+        <filter id="halftone-shred" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+          <feImage result="dot-tile" width="12" height="12" xlink:href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><circle cx='6' cy='6' r='3' fill='black'/></svg>"/>
+          <feTile in="dot-tile" result="grid"/>
+
+          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.6" numOctaves="3" seed="5" result="noise" />
           
-          <feSpecularLighting surfaceScale="5" specularConstant="1" specularExponent="40" lighting-color="#fff" in="noise" result="dots">
-            <feDistantLight elevation="45" azimuth="45" />
-          </feSpecularLighting>
+          <feDisplacementMap in="grid" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" result="shredded-dots" />
+
+          <feComposite operator="in" in="shredded-dots" in2="SourceGraphic" result="final-halftone" />
           
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" result="shredded-source" />
-          
-          <feComposite operator="in" in="dots" in2="shredded-source" result="final" />
-          
-          <feColorMatrix in="final" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -15" />
+          <feColorMatrix in="final-halftone" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
         </filter>
 
         <mask id="logo-silhouette">
@@ -1225,57 +1224,49 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         <path class="shred-stroke s-1" d="M-100,200 L1180,200" />
         <path class="shred-stroke s-2" d="M-100,540 L1180,540" />
         <path class="shred-stroke s-3" d="M-100,880 L1180,880" />
-        <path class="shred-stroke s-4" d="M100,1180 L100,-100" />
+        <path class="shred-stroke s-4" d="M200,1180 L200,-100" />
         <path class="shred-stroke s-5" d="M540,1180 L540,-100" />
-        <path class="shred-stroke s-6" d="M980,1180 L980,-100" />
+        <path class="shred-stroke s-6" d="M880,1180 L880,-100" />
         <path class="shred-stroke s-diagonal" d="M1100,1100 Q540,540 -100,-100" />
       </g>
     </svg>
   </a>
 </div>
 
- <style>
+<style>
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
   .logo-link { display: block; width: 100%; height: 100%; transition: transform 0.3s ease; }
   .logo-link:hover { transform: scale(1.05); }
 
-  .paint-logo { width: 100%; height: 100%; overflow: visible; }
+  .paint-logo { width: 100%; height: 100%; overflow: visible; position: relative; left: -9.7%; }
 
   .shred-stroke {
     fill: none;
     stroke: #000;
-    stroke-width: 450; /* Wide strokes to ensure the halftone fills the mask */
+    stroke-width: 500; /* Extra wide to ensure full dot coverage */
     stroke-dasharray: 2500;
     stroke-dashoffset: 2500;
     stroke-linecap: square;
     animation: shredFill 6s infinite cubic-bezier(.7, 0, .3, 1);
   }
-  .dark .shred-stroke { stroke: #fff; }
+  
+  /* In dark mode, we invert the filter output to white */
+  .dark .paint-logo { filter: invert(1); }
 
-  /* Staggering the start slightly for organic filling */
   .s-1 { animation-delay: 0.0s; }
   .s-2 { animation-delay: 0.1s; }
   .s-3 { animation-delay: 0.2s; }
   .s-4 { animation-delay: 0.05s; }
   .s-5 { animation-delay: 0.15s; }
   .s-6 { animation-delay: 0.25s; }
-  .s-diagonal { animation-delay: 0.3s; stroke-width: 600; }
+  .s-diagonal { animation-delay: 0.35s; }
 
   @keyframes shredFill {
-    0% { 
-      stroke-dashoffset: 2500; 
-      opacity: 0; 
-    }
-    /* 1.5s In (25% of 6s) */
-    25%, 75% { 
-      stroke-dashoffset: 0; 
-      opacity: 1; 
-    }
-    /* 1.5s Out (Remaining 25%) */
-    100% { 
-      stroke-dashoffset: -2500; 
-      opacity: 0; 
-    }
+    0% { stroke-dashoffset: 2500; opacity: 0; }
+    /* 1.5s Build-in (25%) */
+    25%, 75% { stroke-dashoffset: 0; opacity: 1; }
+    /* 1.5s Build-out (100%) */
+    100% { stroke-dashoffset: -2500; opacity: 0; }
   }
 </style>
         
