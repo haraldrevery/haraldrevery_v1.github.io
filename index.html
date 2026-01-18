@@ -1191,23 +1191,20 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
 
+
         
 
 <div class="logo-container">
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
-        <filter id="halftone-shred" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-          <feImage result="dot-tile" width="12" height="12" xlink:href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><circle cx='6' cy='6' r='3' fill='black'/></svg>"/>
-          <feTile in="dot-tile" result="grid"/>
+        <pattern id="dot-grid" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+          <circle cx="8" cy="8" r="4.5" fill="black" class="dot-fill" />
+        </pattern>
 
-          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.6" numOctaves="3" seed="5" result="noise" />
-          
-          <feDisplacementMap in="grid" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" result="shredded-dots" />
-
-          <feComposite operator="in" in="shredded-dots" in2="SourceGraphic" result="final-halftone" />
-          
-          <feColorMatrix in="final-halftone" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+        <filter id="shred-filter" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.01 0.35" numOctaves="4" seed="10" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="55" xChannelSelector="R" yChannelSelector="G" />
         </filter>
 
         <mask id="logo-silhouette">
@@ -1220,14 +1217,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         </mask>
       </defs>
 
-      <g filter="url(#halftone-shred)" mask="url(#logo-silhouette)">
-        <path class="shred-stroke s-1" d="M-100,200 L1180,200" />
-        <path class="shred-stroke s-2" d="M-100,540 L1180,540" />
-        <path class="shred-stroke s-3" d="M-100,880 L1180,880" />
-        <path class="shred-stroke s-4" d="M200,1180 L200,-100" />
-        <path class="shred-stroke s-5" d="M540,1180 L540,-100" />
-        <path class="shred-stroke s-6" d="M880,1180 L880,-100" />
-        <path class="shred-stroke s-diagonal" d="M1100,1100 Q540,540 -100,-100" />
+      <g mask="url(#logo-silhouette)" filter="url(#shred-filter)">
+        <rect width="100%" height="100%" fill="url(#dot-grid)" class="shred-rect" />
       </g>
     </svg>
   </a>
@@ -1235,40 +1226,39 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 <style>
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
-  .logo-link { display: block; width: 100%; height: 100%; transition: transform 0.3s ease; }
-  .logo-link:hover { transform: scale(1.05); }
-
-  .paint-logo { width: 100%; height: 100%; overflow: visible; position: relative; left: -9.7%; }
-
-  .shred-stroke {
-    fill: none;
-    stroke: #000;
-    stroke-width: 500; /* Extra wide to ensure full dot coverage */
-    stroke-dasharray: 2500;
-    stroke-dashoffset: 2500;
-    stroke-linecap: square;
-    animation: shredFill 6s infinite cubic-bezier(.7, 0, .3, 1);
-  }
+  .logo-link { display: block; width: 100%; height: 100%; }
   
-  /* In dark mode, we invert the filter output to white */
-  .dark .paint-logo { filter: invert(1); }
+  /* The Rect handles the "fill" animation using a clip-path */
+  .shred-rect {
+    animation: wipeIn 6s infinite ease-in-out;
+  }
 
-  .s-1 { animation-delay: 0.0s; }
-  .s-2 { animation-delay: 0.1s; }
-  .s-3 { animation-delay: 0.2s; }
-  .s-4 { animation-delay: 0.05s; }
-  .s-5 { animation-delay: 0.15s; }
-  .s-6 { animation-delay: 0.25s; }
-  .s-diagonal { animation-delay: 0.35s; }
+  /* Dot color switching for Dark Mode */
+  .dot-fill { fill: #000; }
+  .dark .dot-fill { fill: #fff; }
 
-  @keyframes shredFill {
-    0% { stroke-dashoffset: 2500; opacity: 0; }
-    /* 1.5s Build-in (25%) */
-    25%, 75% { stroke-dashoffset: 0; opacity: 1; }
-    /* 1.5s Build-out (100%) */
-    100% { stroke-dashoffset: -2500; opacity: 0; }
+  @keyframes wipeIn {
+    0% {
+      /* Start empty (using clip-path to simulate paint flow) */
+      clip-path: inset(0 100% 0 0); 
+    }
+    /* 1.5s in: Fully revealed */
+    25%, 75% {
+      clip-path: inset(0 0% 0 0);
+    }
+    /* 1.5s out: Wipe away */
+    100% {
+      clip-path: inset(0 0 0 100%);
+    }
+  }
+
+  .paint-logo {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
   }
 </style>
+        
         
 
         
