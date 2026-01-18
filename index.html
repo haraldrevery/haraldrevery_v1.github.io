@@ -1204,10 +1204,10 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
       <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
         <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
-        <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="140" xChannelSelector="R" yChannelSelector="G" result="shredded" />
+        <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="60" xChannelSelector="R" yChannelSelector="G" result="shredded" />
         
         <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
-        <feDisplacementMap in="shredded" in2="fine-grain" scale="40" result="final-texture" />
+        <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1221,7 +1221,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     </defs>
 
     <g mask="url(#logo-silhouette)">
-      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M1180,-100 L-100,1180" />
+      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M100,-100 L100,1180" />
       
       <g filter="url(#realistic-bristles)">
         <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
@@ -1259,7 +1259,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .dark .brush-stroke { stroke: #fff; }
 
   .final-stroke {
-    stroke-width: 1600;
+    /* Thinned by 60% (1600 * 0.4 = 640) */
+    stroke-width: 640; 
     opacity: 1;
     animation: finalStrokePhase 20s infinite cubic-bezier(0,.17,.16,.75);
     animation-delay: 2.8s;
@@ -1269,7 +1270,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
     70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; }
+    85% { stroke-dashoffset: 2200; } /* Retracts back up to the top left */
     100% { stroke-dashoffset: 2200; }
   }
 
