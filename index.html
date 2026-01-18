@@ -1197,28 +1197,34 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="ink-logo">
       <defs>
-        <filter id="ink-bleed-heavy" x="-40%" y="-40%" width="180%" height="180%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="6" seed="12" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="110" xChannelSelector="R" yChannelSelector="G" />
-          <feGaussianBlur stdDeviation="4" />
+        <filter id="ink-bleed-final" x="-40%" y="-40%" width="180%" height="180%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="7" seed="42" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="120" xChannelSelector="R" yChannelSelector="G" />
+          <feGaussianBlur stdDeviation="3" />
         </filter>
 
         <mask id="ink-mask">
-          <g filter="url(#ink-bleed-heavy)">
-            <circle class="ink-drop" cx="200" cy="200" r="0" fill="white" style="animation-delay: 0.0s;" />
-            <circle class="ink-drop" cx="880" cy="200" r="0" fill="white" style="animation-delay: 0.8s;" />
-            <circle class="ink-drop" cx="540" cy="540" r="0" fill="white" style="animation-delay: 1.6s;" />
-            <circle class="ink-drop" cx="200" cy="880" r="0" fill="white" style="animation-delay: 2.4s;" />
-            <circle class="ink-drop" cx="880" cy="880" r="0" fill="white" style="animation-delay: 3.2s;" />
-            <circle class="ink-drop" cx="540" cy="150" r="0" fill="white" style="animation-delay: 1.2s;" />
-            <circle class="ink-drop" cx="100" cy="540" r="0" fill="white" style="animation-delay: 0.4s;" />
-            <circle class="ink-drop" cx="980" cy="540" r="0" fill="white" style="animation-delay: 2.8s;" />
+          <g filter="url(#ink-bleed-final)">
+            <circle class="ink-drop" cx="540" cy="540" r="0" fill="white" style="animation-delay: 0s;" />
+            <circle class="ink-drop" cx="200" cy="200" r="0" fill="white" style="animation-delay: 0.5s;" />
+            <circle class="ink-drop" cx="880" cy="200" r="0" fill="white" style="animation-delay: 1s;" />
+            <circle class="ink-drop" cx="200" cy="880" r="0" fill="white" style="animation-delay: 1.5s;" />
+            <circle class="ink-drop" cx="880" cy="880" r="0" fill="white" style="animation-delay: 2s;" />
+            <circle class="ink-drop" cx="540" cy="150" r="0" fill="white" style="animation-delay: 0.8s;" />
+            <circle class="ink-drop" cx="100" cy="540" r="0" fill="white" style="animation-delay: 0.3s;" />
+            <circle class="ink-drop" cx="980" cy="540" r="0" fill="white" style="animation-delay: 2.5s;" />
+            <circle class="ink-drop" cx="400" cy="400" r="0" fill="white" style="animation-delay: 1.2s;" />
+            <circle class="ink-drop" cx="700" cy="700" r="0" fill="white" style="animation-delay: 1.8s;" />
+            <circle class="ink-drop" cx="900" cy="100" r="0" fill="white" style="animation-delay: 2.2s;" />
+            <circle class="ink-drop" cx="900" cy="900" r="0" fill="white" style="animation-delay: 2.8s;" />
+            <circle class="ink-drop" cx="300" cy="1000" r="0" fill="white" style="animation-delay: 3s;" />
+            <circle class="ink-drop" cx="500" cy="800" r="0" fill="white" style="animation-delay: 1.4s;" />
             
-            <circle class="ink-out" cx="540" cy="540" r="0" fill="black" style="animation-delay: 9.0s;" />
-            <circle class="ink-out" cx="150" cy="150" r="0" fill="black" style="animation-delay: 9.8s;" />
-            <circle class="ink-out" cx="930" cy="930" r="0" fill="black" style="animation-delay: 10.6s;" />
-            <circle class="ink-out" cx="930" cy="150" r="0" fill="black" style="animation-delay: 11.4s;" />
-            <circle class="ink-out" cx="150" cy="930" r="0" fill="black" style="animation-delay: 12.2s;" />
+            <circle class="ink-out" cx="540" cy="540" r="0" fill="black" style="animation-delay: 9s;" />
+            <circle class="ink-out" cx="200" cy="200" r="0" fill="black" style="animation-delay: 9.5s;" />
+            <circle class="ink-out" cx="880" cy="880" r="0" fill="black" style="animation-delay: 10s;" />
+            <circle class="ink-out" cx="880" cy="150" r="0" fill="black" style="animation-delay: 10.5s;" />
+            <circle class="ink-out" cx="150" cy="880" r="0" fill="black" style="animation-delay: 11s;" />
           </g>
         </mask>
       </defs>
@@ -1240,31 +1246,30 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .ink-shape { fill: #000; }
   .dark .ink-shape { fill: #fff; }
 
-  /* IN ANIMATION */
+  /* IDENTICAL CYCLE: All circles must reset to 0 at 100% */
   .ink-drop {
-    animation: seamlessInkIn 16s infinite linear;
+    animation: identicalInkIn 16s infinite linear;
     transform-origin: center;
   }
 
-  /* OUT ANIMATION */
   .ink-out {
-    animation: seamlessInkOut 16s infinite linear;
+    animation: identicalInkOut 16s infinite linear;
     transform-origin: center;
   }
 
-  @keyframes seamlessInkIn {
+  @keyframes identicalInkIn {
     0% { r: 0; }
-    /* Fully spread by 35% (approx 5.6s) */
-    35%, 98% { r: 1200px; }
-    /* Reset to 0 at the very last millisecond so it matches 0% */
+    /* Spread and hold until the eraser is nearly finished */
+    35%, 99.5% { r: 1200px; }
+    /* Hard reset at the final millisecond */
     100% { r: 0; }
   }
 
-  @keyframes seamlessInkOut {
-    0%, 55% { r: 0; } /* Wait for the logo to stay solid */
-    /* Grow until 95% (approx 15.2s) */
-    95%, 98% { r: 1500px; }
-    /* Reset to 0 to match 0% */
+  @keyframes identicalInkOut {
+    0%, 55% { r: 0; } 
+    /* The 'void' grows and stays solid to hide the reset of the white drops */
+    94%, 99.5% { r: 1500px; }
+    /* Hard reset to match 0% start */
     100% { r: 0; }
   }
 </style>
