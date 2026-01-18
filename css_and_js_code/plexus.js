@@ -120,34 +120,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /*   restart logo when dark/light mode */
 
- window.restartLogoAnimations = function() {
+window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
   const waves = document.querySelectorAll('.wave-echo');
   if (!logoGroup) return;
-  // Target the paths for logo drawing animation
+
   const logoPaths = logoGroup.querySelectorAll('path');
+  
+  // Phase 1: Remove all animations at once
   logoPaths.forEach(path => {
-    // Reset to initial state
     path.style.animation = 'none';
     path.style.strokeDashoffset = '4000';
     path.style.fillOpacity = '0';
-    // Force reflow
-    void path.offsetWidth;
-    // Re-apply animation
-    path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
   });
-  // Reset waves with extra reflow force
-  waves.forEach((wave, index) => {
+  
+  waves.forEach(wave => {
     wave.style.animation = 'none';
     wave.style.transform = 'scale(5)';
     wave.style.opacity = '0';
     wave.style.strokeWidth = '0.5px';
-    // Force reflow per wave
-    void wave.offsetWidth;
-    // Re-apply with staggered delay
+  });
+  
+  // Single forced reflow for ALL elements
+  void logoGroup.offsetWidth;
+  
+  // Phase 2: Re-apply animations
+  logoPaths.forEach(path => {
+    path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
+  });
+  
+  waves.forEach((wave, index) => {
     setTimeout(() => {
       wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
-    }, index * 100); // Tiny stagger to ensure separation
+    }, index * 100);
   });
 };
 
