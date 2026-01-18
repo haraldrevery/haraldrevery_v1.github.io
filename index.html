@@ -1197,18 +1197,19 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
-        <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
-          <feTurbulence type="fractalNoise" baseFrequency="1.8 0.01" numOctaves="5" seed="42" result="grain" />
-          <feDisplacementMap in="SourceGraphic" in2="grain" scale="40" result="distorted" />
-          <feComposite in="distorted" in2="SourceGraphic" operator="in" />
-        </filter>
-
-        <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
-          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
-          <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="55" xChannelSelector="R" yChannelSelector="G" result="shredded" />
-          <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
-          <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
-        </filter>
+            <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="2.5 0.05" numOctaves="6" seed="42" result="grain" />
+                <feDisplacementMap in="SourceGraphic" in2="grain" scale="60" xChannelSelector="R" yChannelSelector="G" result="distorted" />
+                <feComposite in="distorted" in2="SourceGraphic" operator="in" />
+              </filter>
+            
+              <filter id="extra-texture" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.8 0.03" numOctaves="8" seed="99" result="heavy-noise" />
+                <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="80" xChannelSelector="R" yChannelSelector="G" result="shredded" />
+                <feTurbulence type="fractalNoise" baseFrequency="3.5 0.02" numOctaves="5" seed="12" result="fine-grain" />
+                <feDisplacementMap in="shredded" in2="fine-grain" scale="40" result="final-texture" />
+                <feComposite in="final-texture" in2="SourceGraphic" operator="in" />
+              </filter>
 
         <mask id="logo-silhouette">
           <g fill="white">
@@ -1276,18 +1277,23 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
   .dark .brush-stroke { stroke: #fff; }
 
-    .s-extra-diagonal {
-  /* Starts slightly after the first burst of strokes */
-  animation: quickPaint 8s infinite cubic-bezier(.7, 0, .3, 1);
-  animation-delay: 0.25s;
-  opacity: 0.7;
-  stroke-width: 240; /* Slightly wider for a bold diagonal look */
+.s-extra-diagonal {
+  animation: quickPaint 8s infinite cubic-bezier(.76, 0, .24, 1);
+  animation-delay: 0.6s;
+  opacity: 0.8;
+  stroke-width: 280; /* Thicker width gives filters more room to create bristles */
 }
 
-/* Ensure the path randomization also applies to this new stroke */
-.s-extra-diagonal {
-  transform-origin: center;
-  transform: rotate(-2deg) translateY(5px);
+/* Adjust general brush settings for better texture display */
+.brush-stroke { 
+  fill: none; 
+  stroke: #000; 
+  stroke-width: 240; /* Increased from 220 */
+  stroke-dasharray: 2200; 
+  stroke-dashoffset: 2200;
+  stroke-linecap: round;
+  /* Anti-aliasing helper for filters */
+  shape-rendering: geometricPrecision; 
 }
   /* NEW BEZIER STRATEGY: 
      Using "Extreme" curves to simulate physical friction.
