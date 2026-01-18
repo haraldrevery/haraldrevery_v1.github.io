@@ -1253,53 +1253,59 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     left: -9.7%;
   }
 
-  .brush-stroke { 
+.brush-stroke { 
     fill: none; 
     stroke: #000; 
-    stroke-width: 260; /* Increased width to allow bristles to bloom */
+    stroke-width: 260; 
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
     stroke-linecap: round;
     animation-duration: 8s;
     animation-iteration-count: infinite;
     animation-name: paintCycle;
+    /* This ensures the stroke is invisible before the animation starts */
+    opacity: 0; 
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* ANIMATION GROUPS 
-     Grouping different strokes with different Bezier curves 
-     creates a non-mechanical, layered "build-up".
+  /* SMOOTHER CURVES: 
+     Using 'ease-in' variations so the start is very slow and accelerates 
   */
-
-  /* Snap-flicks: Fast start, slow end */
-  .s-1, .s-3, .s-6 { animation-timing-function: cubic-bezier(.1, .9, .2, 1); }
-  
-  /* Weighted Drags: Slow start (friction), fast snap end */
-  .s-2, .s-4, .s-8, .s-extra { 
-    animation-timing-function: cubic-bezier(.7, 0, .3, 1); 
-    animation-delay: 0.15s; 
-  }
-
-  /* Structural Strokes */
-  .s-early-vertical { animation-delay: 0.05s; opacity: 0.6; }
-  .final-stroke { 
-    stroke-width: 480; 
-    animation-delay: 0.35s; 
-    animation-timing-function: cubic-bezier(.6, 0, .4, 1);
-  }
+  .s-1, .s-3, .s-6 { animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  .s-2, .s-4, .s-8, .s-extra { animation-timing-function: cubic-bezier(.5, 0, .1, 1); }
 
   @keyframes paintCycle {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    /* The brush hits the canvas */
-    2% { opacity: 0.8; }
-    /* Fully painted in by 1.5s (18.75%) */
-    18.75%, 81.25% { stroke-dashoffset: 0; opacity: 0.8; }
-    /* The "Lift": Brush sweeps off the other side */
-    100% { stroke-dashoffset: -2200; opacity: 0; }
+    0% { 
+      stroke-dashoffset: 2200; 
+      opacity: 0; 
+    }
+    /* Soft Fade-in: The brush touches the canvas gently over 0.5s */
+    6.25% { 
+      opacity: 0.8; 
+    }
+    /* Fully painted by 1.5s (18.75%) */
+    18.75%, 81.25% { 
+      stroke-dashoffset: 0; 
+      opacity: 0.8; 
+    }
+    /* Smooth lift-off */
+    100% { 
+      stroke-dashoffset: -2200; 
+      opacity: 0; 
+    }
   }
 
-  /* Override for the final stroke to stay 100% opaque */
-  .final-stroke { opacity: 1; }
+  /* Keep the final stroke solid but still fade it in */
+  .final-stroke {
+    animation-name: finalCycle;
+  }
+
+  @keyframes finalCycle {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
+    8% { opacity: 1; } /* Slightly delayed hit for the heavy stroke */
+    22%, 78% { stroke-dashoffset: 0; opacity: 1; }
+    100% { stroke-dashoffset: -2200; opacity: 0; }
+  }
 </style>
         
 
