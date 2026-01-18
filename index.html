@@ -1244,39 +1244,45 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
   
   /* Link wrapper styles */
+.logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
+  
   .logo-link {
     display: block;
     width: 100%;
     height: 100%;
-    transition: transform 0.3s ease; /* Smooth scaling */
+    transition: transform 0.3s ease;
     cursor: pointer;
     text-decoration: none;
   }
 
-  /* Scale up on hover */
-  .logo-link:hover {
-    transform: scale(1.05);
+  .logo-link:hover { transform: scale(1.05); }
+
+  /* 2. Apply the vertical movement to the wrapper */
+  .vertical-float-wrap {
+    width: 100%;
+    height: 100%;
+    animation: hoverFloat 5s ease-in-out infinite;
   }
 
- .paint-logo {
+  /* 3. Apply ONLY the rotation to the SVG itself */
+  .paint-logo {
     width: 100%; 
     height: 100%; 
     overflow: visible; 
     transform-origin: center center;
-    /* Applied both animations with the new subtler values */
-    animation: hoverFloat 5s ease-in-out infinite, softSway 7s ease-in-out infinite;
+    animation: softSway 7s ease-in-out infinite;
   }
 
-  /* Tiny up and down movement */
+  /* Tiny up and down movement (reduced to -8px for a 'tiny bit') */
   @keyframes hoverFloat { 
     0%, 100% { transform: translateY(0px); } 
-    50% { transform: translateY(-16px); } 
+    50% { transform: translateY(-8px); } 
   }
 
-  /* Significantly less rotation */
+  /* Significantly less rotation (reduced to 0.5deg) */
   @keyframes softSway { 
-    0%, 100% { transform: rotate(-1deg); } 
-    50% { transform: rotate(1deg); } 
+    0%, 100% { transform: rotate(-0.5deg); } 
+    50% { transform: rotate(0.5deg); } 
   }
 
   .brush-stroke { 
