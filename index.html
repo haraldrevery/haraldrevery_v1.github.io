@@ -1193,6 +1193,19 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
 
         
+<div class="logo-container2">
+  <a href="./about.html" class="logo-link">
+    <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="neon-logo">
+      <g class="logo-paths">
+        <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+        <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+        <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+        <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+      </g>
+    </svg>
+  </a>
+</div>
+
 <style>
   .logo-container2 { 
     width: 400px; 
@@ -1207,13 +1220,14 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
   .neon-logo { width: 100%; height: 100%; position: relative; left: -9.2%; }
 
+  /* Combined styling for the single set of paths */
   .logo-paths path {
     fill: #000;
     stroke: #000;
     stroke-width: 4;
     stroke-dasharray: 4000;
     stroke-dashoffset: 4000;
-    /* Running both animations on the same paths */
+    /* Apply both animations to the same element */
     animation: 
       wirePulse 10s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95),
       fillFade 10s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
@@ -1232,9 +1246,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
 
   @keyframes fillFade {
-    0%, 10% { fill-opacity: 0; }     /* Starts fading in at 10% instead of 25% */
-    30%, 75% { fill-opacity: 1; }    /* Fully solid at 30% */
-    85%, 100% { fill-opacity: 0; }   /* Fades out */
+    0%, 25% { fill-opacity: 0; }
+    30%, 75% { fill-opacity: 1; }
+    85%, 100% { fill-opacity: 0; }
   }
 </style>
         
