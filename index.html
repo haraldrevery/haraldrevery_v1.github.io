@@ -398,9 +398,9 @@ html, body {
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
   position: relative; /* Added for stability */
-  overflow-x: hidden;
-    overflow-y: auto;
+    
 }
 /* Ensure these absolute elements don't create "phantom" width */
 #particle-canvas,
@@ -688,13 +688,29 @@ html, body {
 
 
 
+
+/* 1. Force Firefox to ignore overflowing background elements */
+@-moz-document url-prefix() {
+  #logo-container,
+  .particles-layer,
+  .bg-image-fade,
+  #particle-canvas {
+    overflow: clip !important; /* 'clip' is safer than 'hidden' for scroll artifacts */
+  }
+}
+      
+      
+
+      
+
+
+
 /* Particles */
 /* Base setup for all 4 layers */
 .particles-layer {
   position: absolute;
   top: -25%; 
-  left: -25%;
-  width: 150%;
+  width: 100%;
   height: 150%;
   pointer-events: none;
   background-repeat: repeat;
@@ -710,6 +726,7 @@ html, body {
     /* Add this to prevent any individual particle layer from creating scrollbars */
   overflow: hidden;
     max-width: 100vw; /* Force a cap */
+    transform: translateZ(0);
 }
 
 /* LAYER 1: Deep Background (Slowest, smallest, dimmest) */
