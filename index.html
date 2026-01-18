@@ -1196,10 +1196,17 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <div class="logo-container">
   <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
     <defs>
-      <filter id="realistic-bristles" x="-10%" y="-10%" width="120%" height="120%">
+      <filter id="realistic-bristles" x="-20%" y="-20%" width="140%" height="140%">
         <feTurbulence type="fractalNoise" baseFrequency="1.8 0.01" numOctaves="5" seed="42" result="grain" />
         <feDisplacementMap in="SourceGraphic" in2="grain" scale="40" result="distorted" />
         <feComposite in="distorted" in2="SourceGraphic" operator="in" />
+      </filter>
+
+      <filter id="extra-texture" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05 0.5" numOctaves="8" seed="99" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="120" xChannelSelector="R" yChannelSelector="G" result="heavy-distort" />
+        <feTurbulence type="fractalNoise" baseFrequency="2.5 0.02" numOctaves="5" seed="10" result="fine-grain" />
+        <feDisplacementMap in="heavy-distort" in2="fine-grain" scale="30" result="final-texture" />
       </filter>
 
       <mask id="logo-silhouette">
@@ -1212,17 +1219,19 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </mask>
     </defs>
 
-    <g mask="url(#logo-silhouette)" filter="url(#realistic-bristles)">
-      <path class="brush-stroke final-stroke" d="M1180,-100 L-100,1180" />
-
-      <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
-      <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
-      <path class="brush-stroke curve-C s-3" d="M150,1100 Q450,550 750,-100" />
-      <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
-      <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
-      <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
-      <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
-      <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
+    <g mask="url(#logo-silhouette)">
+      <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M1180,-100 L-100,1180" />
+      
+      <g filter="url(#realistic-bristles)">
+        <path class="brush-stroke curve-A s-1" d="M-100,200 Q400,-50 1100,250" />
+        <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
+        <path class="brush-stroke curve-C s-3" d="M150,1100 Q450,550 750,-100" />
+        <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
+        <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
+        <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
+        <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
+        <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
+      </g>
     </g>
   </svg>
 </div>
@@ -1248,11 +1257,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* LARGE STROKE WITH CUSTOM BEZIER */
   .final-stroke {
     stroke-width: 1600;
     opacity: 1;
-    /* Applied the custom cubic-bezier here */
     animation: finalStrokePhase 20s infinite cubic-bezier(0,.17,.16,.75);
     animation-delay: 2.8s;
   }
@@ -1261,7 +1268,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
     70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; } /* Retracts to top-right first */
+    85% { stroke-dashoffset: 2200; }
     100% { stroke-dashoffset: 2200; }
   }
 
