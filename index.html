@@ -1194,7 +1194,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         
 
 <div class="logo-container">
-  <a href="./about.html" class="logo-link">
+  <a href="https://your-link-here.com" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
         <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
@@ -1222,7 +1222,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
       <g mask="url(#logo-silhouette)">
         <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
-        
         <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
 
         <g filter="url(#realistic-bristles)">
@@ -1243,83 +1242,77 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 <style>
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
   
-  /* Link wrapper styles */
   .logo-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease; /* Smooth scaling */
+    display: block; width: 100%; height: 100%;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    text-decoration: none;
   }
 
-  /* Scale up on hover */
-  .logo-link:hover {
-    transform: scale(1.1);
-  }
+  .logo-link:hover { transform: scale(1.08); }
 
-  @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
-  @keyframes softSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+  @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+  @keyframes softSway { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
 
   .paint-logo {
     width: 100%; height: 100%; overflow: visible; transform-origin: center center;
-    /* Keeps your existing animations */
-    animation: hoverFloat 5s ease-in-out infinite, softSway 7s ease-in-out infinite;
+    animation: hoverFloat 6s ease-in-out infinite, softSway 8s ease-in-out infinite;
   }
 
   .brush-stroke { 
-    fill: none; 
-    stroke: #000; 
-    stroke-width: 220; 
-    stroke-dasharray: 2200; 
-    stroke-dashoffset: 2200;
-    position: relative;
-    left: -4%;
+    fill: none; stroke: #000; 
+    stroke-width: 220; stroke-dasharray: 2400; stroke-dashoffset: 2400;
+    stroke-linecap: round; /* Smoother ends */
+    position: relative; left: -4%;
   }
   .dark .brush-stroke { stroke: #fff; }
 
+  /* ORGANIC TIMING UPDATES */
+  /* Using 'back-out' or aggressive ease-in-out curves to simulate hand velocity */
   .s-early-vertical {
-    opacity: 0.70;
-    animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88);
-    animation-delay: 0.2s;
+    animation: paintLoop 18s infinite cubic-bezier(0.45, 0, 0.55, 1);
+    animation-delay: 0.1s;
   }
 
   .final-stroke {
-    stroke-width: 461; 
-    opacity: 1;
-    animation: finalStrokePhase 20s infinite cubic-bezier(.54, .04, .38, .97);
-    animation-delay: 1.6s;
+    stroke-width: 480; 
+    animation: finalStrokePhase 18s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    animation-delay: 1.2s;
   }
 
+  /* Keyframes for a more "ink-soaking" feel */
   @keyframes finalStrokePhase {
-    0% { stroke-dashoffset: 2200; }
-    15% { stroke-dashoffset: 0; }
-    70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; } 
-    100% { stroke-dashoffset: 2200; }
+    0% { stroke-dashoffset: 2400; opacity: 0; }
+    2% { opacity: 1; }
+    18% { stroke-dashoffset: 0; }
+    75% { stroke-dashoffset: 0; opacity: 1; } 
+    85% { opacity: 0; stroke-dashoffset: 0; } 
+    100% { stroke-dashoffset: 2400; opacity: 0; }
   }
 
-  .curve-A, .curve-B, .curve-C { opacity: 0.75; animation-duration: 20s; animation-iteration-count: infinite; }
-  .curve-A { animation-name: paintLoop; animation-timing-function: cubic-bezier(.04,.68,.27,.88); }
-  .curve-B { animation-name: paintLoop; animation-timing-function: cubic-bezier(.06,.39,.02,.96); }
-  .curve-C { animation-name: paintLoop; animation-timing-function: cubic-bezier(.1,.7,.28,.6); }
+  .curve-A, .curve-B, .curve-C { animation-duration: 18s; animation-iteration-count: infinite; }
+  
+  /* Varied Bezier curves per group for a hand-drawn feel */
+  .curve-A { animation-name: paintLoop; animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
+  .curve-B { animation-name: paintLoop; animation-timing-function: cubic-bezier(0.68, -0.2, 0.27, 1.2); }
+  .curve-C { animation-name: paintLoop; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
 
-  .s-1 { animation-delay: 0s; }
-  .s-2 { animation-delay: 0.4s; }
-  .s-3 { animation-delay: 0.8s; }
-  .s-4 { animation-delay: 1.0s; }
-  .s-5 { animation-delay: 1.6s; }
-  .s-6 { animation-delay: 2.0s; }
-  .s-7 { animation-delay: 2.4s; }
-  .s-8 { animation-delay: 2.5s; }
+  /* Staggered, non-linear delays */
+  .s-1 { animation-delay: 0.0s; }
+  .s-2 { animation-delay: 0.3s; }
+  .s-3 { animation-delay: 0.7s; }
+  .s-4 { animation-delay: 0.9s; }
+  .s-5 { animation-delay: 1.4s; }
+  .s-6 { animation-delay: 1.8s; }
+  .s-7 { animation-delay: 2.1s; }
+  .s-8 { animation-delay: 2.3s; }
 
   @keyframes paintLoop {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    2% { opacity: inherit; }
-    15% { stroke-dashoffset: 0; opacity: inherit; }
-    85% { stroke-dashoffset: 0; opacity: inherit; }
-    98% { stroke-dashoffset: -2200; opacity: inherit; }
-    100% { stroke-dashoffset: -2200; opacity: 0; }
+    0% { stroke-dashoffset: 2400; opacity: 0; stroke-width: 200; }
+    3% { opacity: 0.8; stroke-width: 230; } /* Initial "press" of the brush */
+    18% { stroke-dashoffset: 0; opacity: 0.8; stroke-width: 220; }
+    80% { stroke-dashoffset: 0; opacity: 0.8; }
+    90% { stroke-dashoffset: -2400; opacity: 0; }
+    100% { stroke-dashoffset: -2400; opacity: 0; }
   }
 </style>
         
