@@ -1210,22 +1210,26 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </filter>
 
       <mask id="logo-silhouette">
-        <g fill="white" class="mask-group">
-          <path class="part-left" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-          <path class="part-center" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-          <path class="part-bottom" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-          <path class="part-right" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
+        <g fill="white">
+          <path d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7 C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8 c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
+          <path d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4 C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
+          <path d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
+          <path d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
         </g>
       </mask>
     </defs>
 
     <g mask="url(#logo-silhouette)">
       <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
+      
       <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
+
       <g filter="url(#realistic-bristles)">
         <path class="brush-stroke curve-A s-1" d="M-100,300 Q400,50 1100,250" />
         <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
+        
         <path class="brush-stroke curve-C s-3" d="M150,600 Q650,450 750,-100" />
+        
         <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
         <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
         <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
@@ -1237,30 +1241,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 </div>
 
 <style>
-  .logo-container { 
-    width: 400px; 
-    height: 400px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    position: relative;
-    left: -4%; 
-    cursor: pointer;
-  }
+  .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
 
-  /* Transition for a smooth "shatter" effect */
-  .mask-group path {
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform-origin: center;
-  }
-
-  /* Hover logic: push parts away from the center */
-  .logo-container:hover .part-left { transform: translate(-40px, -20px) rotate(-5deg); }
-  .logo-container:hover .part-right { transform: translate(50px, 10px) rotate(3deg); }
-  .logo-container:hover .part-bottom { transform: translate(-20px, 40px); }
-  .logo-container:hover .part-center { transform: scale(0.9) translate(10px, -10px); }
-
-  /* Logo Animations */
   @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-25px); } }
   @keyframes softSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
 
@@ -1270,11 +1252,30 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   }
 
   .brush-stroke { 
-    fill: none; stroke: #000; stroke-width: 220; stroke-dasharray: 2200; stroke-dashoffset: 2200;
+    fill: none; 
+    stroke: #000; 
+    stroke-width: 220; 
+    stroke-dasharray: 2200; 
+    stroke-dashoffset: 2200;
+      /* Shifts the container 4% to the left relative to its normal position */
+    position: relative;
+    left: -4%;
   }
   .dark .brush-stroke { stroke: #fff; }
 
-  /* Stroke Animations */
+  .s-early-vertical {
+    opacity: 0.70;
+    animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88);
+    animation-delay: 0.2s;
+  }
+
+  .final-stroke {
+    stroke-width: 461; 
+    opacity: 1;
+    animation: finalStrokePhase 20s infinite cubic-bezier(.54, .04, .38, .97);
+    animation-delay: 1.6s;
+  }
+
   @keyframes finalStrokePhase {
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
@@ -1283,17 +1284,6 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     100% { stroke-dashoffset: 2200; }
   }
 
-  @keyframes paintLoop {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    2% { opacity: inherit; }
-    15% { stroke-dashoffset: 0; opacity: inherit; }
-    85% { stroke-dashoffset: 0; opacity: inherit; }
-    98% { stroke-dashoffset: -2200; opacity: inherit; }
-    100% { stroke-dashoffset: -2200; opacity: 0; }
-  }
-
-  .s-early-vertical { opacity: 0.70; animation: paintLoop 20s infinite cubic-bezier(.04,.68,.27,.88); animation-delay: 0.2s; }
-  .final-stroke { stroke-width: 461; opacity: 1; animation: finalStrokePhase 20s infinite cubic-bezier(.54, .04, .38, .97); animation-delay: 1.6s; }
   .curve-A, .curve-B, .curve-C { opacity: 0.75; animation-duration: 20s; animation-iteration-count: infinite; }
   .curve-A { animation-name: paintLoop; animation-timing-function: cubic-bezier(.04,.68,.27,.88); }
   .curve-B { animation-name: paintLoop; animation-timing-function: cubic-bezier(.06,.39,.02,.96); }
@@ -1307,6 +1297,15 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .s-6 { animation-delay: 2.0s; }
   .s-7 { animation-delay: 2.4s; }
   .s-8 { animation-delay: 2.5s; }
+
+  @keyframes paintLoop {
+    0% { stroke-dashoffset: 2200; opacity: 0; }
+    2% { opacity: inherit; }
+    15% { stroke-dashoffset: 0; opacity: inherit; }
+    85% { stroke-dashoffset: 0; opacity: inherit; }
+    98% { stroke-dashoffset: -2200; opacity: inherit; }
+    100% { stroke-dashoffset: -2200; opacity: 0; }
+  }
 </style>
         
 
