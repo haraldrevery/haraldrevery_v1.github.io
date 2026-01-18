@@ -24,13 +24,10 @@
 <meta property="og:url" content="https://haraldrevery.com/" />
 <meta property="og:type" content="website" />
     
+  <!-- Remember darkmode/lightmode-->
+
+
 <script src="./css_and_js_code/tailwind.js" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
-
-
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="0 0 1080 1080" style="enable-background:new 0 0 1080 1080;" xml:space="preserve">
-
     
   <style>
 @view-transition {
@@ -821,48 +818,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   border-width: 0;
   display: block; /* Ensures it's still a block element for crawlers */
 }
-
-
       
 
-/* Floating animation for the whole group */
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
-    }
-
-    /* Stroke dash animation for a "writing" effect */
-    @keyframes draw {
-        from { stroke-dashoffset: 2000; }
-        to { stroke-dashoffset: 0; }
-    }
-
-    /* Subtle pulse of the fill color */
-    @keyframes pulse {
-        0%, 100% { fill-opacity: 0.85; filter: drop-shadow(0 0 2px rgba(255,255,255,0)); }
-        50% { fill-opacity: 1; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
-    }
-
-    .logo-path {
-        fill: #FFFFFF; /* Change to your brand color */
-        stroke: #FFFFFF;
-        stroke-width: 1px;
-        stroke-dasharray: 2000;
-        animation: 
-            draw 3s ease-in-out forwards, 
-            pulse 4s ease-in-out infinite 3s;
-    }
-
-    #main-group {
-        animation: float 6s ease-in-out infinite;
-        transform-origin: center;
-    }
-
-    /* Staggered delay for each path */
-    .p1 { animation-delay: 0s, 3s; }
-    .p2 { animation-delay: 0.2s, 3.2s; }
-    .p3 { animation-delay: 0.4s, 3.4s; }
-    .p4 { animation-delay: 0.6s, 3.6s; }      
+      
       
   </style>
 
@@ -1251,20 +1209,13 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </div>
     </section>
     <section class="flex justify-center items-center min-h-[600px] overflow-visible">
-
-        
-<g id="main-group">
-    <path class="logo-path p1" d="M477.9,730c-31.9-13.7-62.4-30.2-91-49.1c-33.4-22-64.5-47.4-92.6-75.7c-32.8-32.9-61.8-69.7-86.1-109.7
-        C160,416.5,130.1,325,124.3,227C171.2,144.6,246,80,335.8,46c-34.2,56.8-57.7,120.8-67.8,189.2c-3.7,24.8-5.6,50.1-5.6,75.8
-        c0,109.4,34.1,210.9,92.3,294.3c10,14.4,20.8,28.2,32.2,41.4C413.8,678,444.4,706,477.9,730z"/>
-    <path class="logo-path p2" d="M546.2,737.8c-151.9-82.1-255.1-242.9-255.1-427.7c0-43.2,5.6-85.1,16.2-124.9C366.7,121.4,447.5,78,538.4,66.4
-        C454.6,151.9,403,269,403,398.2c0,53.9,9,105.7,25.5,153.9c6.3,18.3,13.6,36,22,53.2C474.6,654.9,507.1,699.7,546.2,737.8z"/>
-    <path class="logo-path p3" d="M386.9,717.3v317.8H253.3V607.2C292.4,649.9,337.3,687,386.9,717.3z"/>
-    <path class="logo-path p4" d="M956.1,98.2v936.8H839.9V605.3H485c-19.2-36-33.5-75.1-42.1-116.2h397V98.2H956.1z"/>
-</g>
-</svg>
-
-        
+      <div id="interactive-stage" class="glass-stage relative w-full max-w-[280px] md:max-w-[320px] aspect-[3/4]">
+        <div class="glass-card pos-1" data-pos="1"><img src="./photos/bw_glass0.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+        <div class="glass-card pos-2" data-pos="2"><img src="./photos/bw_glass2.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+        <div class="glass-card pos-3" data-pos="3"><img src="./photos/bw_glass3.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+        <div class="glass-card pos-4" data-pos="4"><img src="./photos/bw_glass4.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+        <div class="glass-card pos-5" data-pos="5"><img src="./photos/bw_glass1.jpg" class="w-full h-full object-cover pointer-events-none"></div>
+      </div>
     </section>
   </div>
 </div>
