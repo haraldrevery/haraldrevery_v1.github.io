@@ -1197,16 +1197,18 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
-        <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
-          <feTurbulence type="fractalNoise" baseFrequency="2.5 0.05" numOctaves="6" seed="42" result="grain" />
-          <feDisplacementMap in="SourceGraphic" in2="grain" scale="60" xChannelSelector="R" result="distorted" />
-          <feComposite in="distorted" in2="SourceGraphic" operator="in" />
-        </filter>
-
-        <filter id="extra-texture" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.8 0.03" numOctaves="8" seed="99" result="heavy-noise" />
-          <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="80" xChannelSelector="R" result="shredded" />
-          <feComposite in="shredded" in2="SourceGraphic" operator="in" />
+        <filter id="halftone-shred" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.01 0.4" numOctaves="2" seed="5" result="noise" />
+          
+          <feSpecularLighting surfaceScale="5" specularConstant="1" specularExponent="40" lighting-color="#fff" in="noise" result="dots">
+            <feDistantLight elevation="45" azimuth="45" />
+          </feSpecularLighting>
+          
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" result="shredded-source" />
+          
+          <feComposite operator="in" in="dots" in2="shredded-source" result="final" />
+          
+          <feColorMatrix in="final" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -15" />
         </filter>
 
         <mask id="logo-silhouette">
@@ -1219,92 +1221,61 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
         </mask>
       </defs>
 
-      <g mask="url(#logo-silhouette)">
-        <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
-        <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
-
-        <g filter="url(#realistic-bristles)">
-          <path class="brush-stroke s-1" d="M-100,300 Q400,50 1100,250" />
-          <path class="brush-stroke s-2" d="M1100,450 Q600,650 -100,550" />
-          <path class="brush-stroke s-3" d="M150,600 Q650,450 750,-100" />
-          <path class="brush-stroke s-4" d="M850,1100 Q550,550 250,-100" />
-          <path class="brush-stroke s-5" d="M-100,750 Q500,850 1100,650" />
-          <path class="brush-stroke s-6" d="M1100,850 Q500,950 -100,1050" />
-          <path class="brush-stroke s-7" d="M350,-50 Q650,550 350,1050" />
-          <path class="brush-stroke s-8" d="M580,1050 Q580,550 580,-50" />
-          <path class="brush-stroke s-extra" d="M1100,1100 Q540,540 -100,-100" />
-        </g>
+      <g filter="url(#halftone-shred)" mask="url(#logo-silhouette)">
+        <path class="shred-stroke s-1" d="M-100,200 L1180,200" />
+        <path class="shred-stroke s-2" d="M-100,540 L1180,540" />
+        <path class="shred-stroke s-3" d="M-100,880 L1180,880" />
+        <path class="shred-stroke s-4" d="M100,1180 L100,-100" />
+        <path class="shred-stroke s-5" d="M540,1180 L540,-100" />
+        <path class="shred-stroke s-6" d="M980,1180 L980,-100" />
+        <path class="shred-stroke s-diagonal" d="M1100,1100 Q540,540 -100,-100" />
       </g>
     </svg>
   </a>
 </div>
 
-        
-<style>
+ <style>
   .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
-  .logo-link { display: block; width: 100%; height: 100%; transition: transform 0.3s ease; cursor: pointer; }
+  .logo-link { display: block; width: 100%; height: 100%; transition: transform 0.3s ease; }
   .logo-link:hover { transform: scale(1.05); }
 
-  .paint-logo {
-    width: 100%; 
-    height: 100%; 
-    overflow: visible; 
-    position: relative;
-    left: -9.7%;
+  .paint-logo { width: 100%; height: 100%; overflow: visible; }
+
+  .shred-stroke {
+    fill: none;
+    stroke: #000;
+    stroke-width: 450; /* Wide strokes to ensure the halftone fills the mask */
+    stroke-dasharray: 2500;
+    stroke-dashoffset: 2500;
+    stroke-linecap: square;
+    animation: shredFill 6s infinite cubic-bezier(.7, 0, .3, 1);
   }
+  .dark .shred-stroke { stroke: #fff; }
 
-.brush-stroke { 
-    fill: none; 
-    stroke: #000; 
-    stroke-width: 260; 
-    stroke-dasharray: 2200; 
-    stroke-dashoffset: 2200;
-    stroke-linecap: round;
-    animation-duration: 8s;
-    animation-iteration-count: infinite;
-    animation-name: paintCycle;
-    /* This ensures the stroke is invisible before the animation starts */
-    opacity: 0; 
-  }
-  .dark .brush-stroke { stroke: #fff; }
+  /* Staggering the start slightly for organic filling */
+  .s-1 { animation-delay: 0.0s; }
+  .s-2 { animation-delay: 0.1s; }
+  .s-3 { animation-delay: 0.2s; }
+  .s-4 { animation-delay: 0.05s; }
+  .s-5 { animation-delay: 0.15s; }
+  .s-6 { animation-delay: 0.25s; }
+  .s-diagonal { animation-delay: 0.3s; stroke-width: 600; }
 
-  /* SMOOTHER CURVES: 
-     Using 'ease-in' variations so the start is very slow and accelerates 
-  */
-  .s-1, .s-3, .s-6 { animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
-  .s-2, .s-4, .s-8, .s-extra { animation-timing-function: cubic-bezier(.5, 0, .1, 1); }
-
-  @keyframes paintCycle {
+  @keyframes shredFill {
     0% { 
-      stroke-dashoffset: 2200; 
+      stroke-dashoffset: 2500; 
       opacity: 0; 
     }
-    /* Soft Fade-in: The brush touches the canvas gently over 0.5s */
-    6.25% { 
-      opacity: 0.8; 
-    }
-    /* Fully painted by 1.5s (18.75%) */
-    18.75%, 81.25% { 
+    /* 1.5s In (25% of 6s) */
+    25%, 75% { 
       stroke-dashoffset: 0; 
-      opacity: 0.8; 
+      opacity: 1; 
     }
-    /* Smooth lift-off */
+    /* 1.5s Out (Remaining 25%) */
     100% { 
-      stroke-dashoffset: -2200; 
+      stroke-dashoffset: -2500; 
       opacity: 0; 
     }
-  }
-
-  /* Keep the final stroke solid but still fade it in */
-  .final-stroke {
-    animation-name: finalCycle;
-  }
-
-  @keyframes finalCycle {
-    0% { stroke-dashoffset: 2200; opacity: 0; }
-    8% { opacity: 1; } /* Slightly delayed hit for the heavy stroke */
-    22%, 78% { stroke-dashoffset: 0; opacity: 1; }
-    100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 </style>
         
