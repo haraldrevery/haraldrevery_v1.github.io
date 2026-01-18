@@ -1197,17 +1197,24 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <a href="https://your-link-here.com" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
-        <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
-          <feTurbulence type="fractalNoise" baseFrequency="1.8 0.01" numOctaves="5" seed="42" result="grain" />
-          <feDisplacementMap in="SourceGraphic" in2="grain" scale="40" result="distorted" />
-          <feComposite in="distorted" in2="SourceGraphic" operator="in" />
-        </filter>
-
-        <filter id="extra-texture" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1080">
-          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.4" numOctaves="7" seed="99" result="heavy-noise" />
-          <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="55" xChannelSelector="R" yChannelSelector="G" result="shredded" />
-          <feTurbulence type="fractalNoise" baseFrequency="2.2 0.02" numOctaves="4" seed="12" result="fine-grain" />
-          <feDisplacementMap in="shredded" in2="fine-grain" scale="30" result="final-texture" />
+        <filter id="ultra-textured-bristles" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.03" numOctaves="4" seed="42" result="hair-grain" />
+          
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="10" result="paper-roughness" />
+          
+          <feDisplacementMap in="SourceGraphic" in2="hair-grain" scale="35" xChannelSelector="R" yChannelSelector="G" result="shredded-edges" />
+          
+          <feComposite in="shredded-edges" in2="paper-roughness" operator="out" k1="0.5" result="textured-stroke" />
+          
+          <feGaussianBlur in="textured-stroke" stdDeviation="1" result="blur" />
+          <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.8" specularExponent="20" lighting-color="#white" result="light">
+            <feDistantLight elevation="45" azimuth="45" />
+          </feSpecularLighting>
+          <feComposite in="light" in2="textured-stroke" operator="in" result="highlights" />
+          <feMerge>
+            <feMergeNode in="textured-stroke" />
+            <feMergeNode in="highlights" />
+          </feMerge>
         </filter>
 
         <mask id="logo-silhouette">
@@ -1221,10 +1228,9 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
       </defs>
 
       <g mask="url(#logo-silhouette)">
-        <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
-        <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
-
-        <g filter="url(#realistic-bristles)">
+        <g filter="url(#ultra-textured-bristles)">
+          <path class="brush-stroke final-stroke" d="M-100,540 Q540,540 1180,-100" />
+          <path class="brush-stroke s-early-vertical" d="M1100,1180 Q800,540 1100,-100" />
           <path class="brush-stroke curve-A s-1" d="M-100,300 Q400,50 1100,250" />
           <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
           <path class="brush-stroke curve-C s-3" d="M150,600 Q650,450 750,-100" />
@@ -1244,75 +1250,52 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   
   .logo-link {
     display: block; width: 100%; height: 100%;
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
   }
+  .logo-link:hover { transform: scale(1.1); }
 
-  .logo-link:hover { transform: scale(1.08); }
-
-  @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-  @keyframes softSway { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
-
+  @keyframes hoverFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
   .paint-logo {
-    width: 100%; height: 100%; overflow: visible; transform-origin: center center;
-    animation: hoverFloat 6s ease-in-out infinite, softSway 8s ease-in-out infinite;
+    width: 100%; height: 100%; overflow: visible;
+    animation: hoverFloat 6s ease-in-out infinite;
   }
 
   .brush-stroke { 
-    fill: none; stroke: #000; 
-    stroke-width: 220; stroke-dasharray: 2400; stroke-dashoffset: 2400;
-    stroke-linecap: round; /* Smoother ends */
-    position: relative; left: -4%;
-  }
-  .dark .brush-stroke { stroke: #fff; }
-
-  /* ORGANIC TIMING UPDATES */
-  /* Using 'back-out' or aggressive ease-in-out curves to simulate hand velocity */
-  .s-early-vertical {
-    animation: paintLoop 18s infinite cubic-bezier(0.45, 0, 0.55, 1);
-    animation-delay: 0.1s;
+    fill: none; stroke: #111; /* Slightly off-black for more realism */
+    stroke-width: 230; stroke-dasharray: 2800; stroke-dashoffset: 2800;
+    stroke-linecap: round;
   }
 
-  .final-stroke {
-    stroke-width: 480; 
-    animation: finalStrokePhase 18s infinite cubic-bezier(0.65, 0, 0.35, 1);
-    animation-delay: 1.2s;
-  }
+  .s-early-vertical { animation: paintLoop 18s infinite cubic-bezier(0.45, 0, 0.55, 1); animation-delay: 0.1s; }
+  .final-stroke { stroke-width: 500; animation: finalStrokePhase 18s infinite cubic-bezier(0.65, 0, 0.35, 1); animation-delay: 1.2s; }
 
-  /* Keyframes for a more "ink-soaking" feel */
   @keyframes finalStrokePhase {
-    0% { stroke-dashoffset: 2400; opacity: 0; }
+    0% { stroke-dashoffset: 2800; opacity: 0; }
     2% { opacity: 1; }
     18% { stroke-dashoffset: 0; }
-    75% { stroke-dashoffset: 0; opacity: 1; } 
-    85% { opacity: 0; stroke-dashoffset: 0; } 
-    100% { stroke-dashoffset: 2400; opacity: 0; }
+    80% { stroke-dashoffset: 0; opacity: 1; } 
+    90% { opacity: 0; }
+    100% { stroke-dashoffset: 2800; opacity: 0; }
   }
 
-  .curve-A, .curve-B, .curve-C { animation-duration: 18s; animation-iteration-count: infinite; }
-  
-  /* Varied Bezier curves per group for a hand-drawn feel */
-  .curve-A { animation-name: paintLoop; animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
-  .curve-B { animation-name: paintLoop; animation-timing-function: cubic-bezier(0.68, -0.2, 0.27, 1.2); }
-  .curve-C { animation-name: paintLoop; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  .curve-A, .curve-B, .curve-C { animation-duration: 18s; animation-iteration-count: infinite; animation-name: paintLoop; }
+  .curve-A { animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); }
+  .curve-B { animation-timing-function: cubic-bezier(0.68, -0.2, 0.27, 1.2); }
+  .curve-C { animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
 
-  /* Staggered, non-linear delays */
-  .s-1 { animation-delay: 0.0s; }
-  .s-2 { animation-delay: 0.3s; }
-  .s-3 { animation-delay: 0.7s; }
-  .s-4 { animation-delay: 0.9s; }
-  .s-5 { animation-delay: 1.4s; }
-  .s-6 { animation-delay: 1.8s; }
-  .s-7 { animation-delay: 2.1s; }
-  .s-8 { animation-delay: 2.3s; }
+  .s-1 { animation-delay: 0.0s; } .s-2 { animation-delay: 0.3s; }
+  .s-3 { animation-delay: 0.7s; } .s-4 { animation-delay: 0.9s; }
+  .s-5 { animation-delay: 1.4s; } .s-6 { animation-delay: 1.8s; }
+  .s-7 { animation-delay: 2.1s; } .s-8 { animation-delay: 2.3s; }
 
   @keyframes paintLoop {
-    0% { stroke-dashoffset: 2400; opacity: 0; stroke-width: 200; }
-    3% { opacity: 0.8; stroke-width: 230; } /* Initial "press" of the brush */
-    18% { stroke-dashoffset: 0; opacity: 0.8; stroke-width: 220; }
-    80% { stroke-dashoffset: 0; opacity: 0.8; }
-    90% { stroke-dashoffset: -2400; opacity: 0; }
-    100% { stroke-dashoffset: -2400; opacity: 0; }
+    0% { stroke-dashoffset: 2800; opacity: 0; }
+    3% { opacity: 0.9; } 
+    18% { stroke-dashoffset: 0; opacity: 0.9; }
+    80% { stroke-dashoffset: 0; opacity: 0.9; }
+    90% { stroke-dashoffset: -2800; opacity: 0; }
+    100% { stroke-dashoffset: -2800; opacity: 0; }
   }
 </style>
         
