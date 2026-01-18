@@ -1264,10 +1264,11 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     animation-delay: 0.2s;
   }
 
+  /* Final Stroke with updated Bezier */
   .final-stroke {
     stroke-width: 640; 
     opacity: 1;
-    animation: finalStrokePhase 20s infinite cubic-bezier(0,.17,.16,.75);
+    animation: finalStrokePhase 20s infinite cubic-bezier(.54, .04, .38, .97);
     animation-delay: 2.8s;
   }
 
@@ -1275,7 +1276,7 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     0% { stroke-dashoffset: 2200; }
     15% { stroke-dashoffset: 0; }
     70% { stroke-dashoffset: 0; } 
-    85% { stroke-dashoffset: 2200; } /* Retracts back toward the middle-left */
+    85% { stroke-dashoffset: 2200; } 
     100% { stroke-dashoffset: 2200; }
   }
 
