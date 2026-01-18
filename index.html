@@ -1197,19 +1197,17 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   <a href="./about.html" class="logo-link">
     <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="paint-logo">
       <defs>
-            <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
-                <feTurbulence type="fractalNoise" baseFrequency="2.5 0.05" numOctaves="6" seed="42" result="grain" />
-                <feDisplacementMap in="SourceGraphic" in2="grain" scale="60" xChannelSelector="R" yChannelSelector="G" result="distorted" />
-                <feComposite in="distorted" in2="SourceGraphic" operator="in" />
-              </filter>
-            
-              <filter id="extra-texture" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.8 0.03" numOctaves="8" seed="99" result="heavy-noise" />
-                <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="80" xChannelSelector="R" yChannelSelector="G" result="shredded" />
-                <feTurbulence type="fractalNoise" baseFrequency="3.5 0.02" numOctaves="5" seed="12" result="fine-grain" />
-                <feDisplacementMap in="shredded" in2="fine-grain" scale="40" result="final-texture" />
-                <feComposite in="final-texture" in2="SourceGraphic" operator="in" />
-              </filter>
+        <filter id="realistic-bristles" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="2.5 0.05" numOctaves="6" seed="42" result="grain" />
+          <feDisplacementMap in="SourceGraphic" in2="grain" scale="60" xChannelSelector="R" result="distorted" />
+          <feComposite in="distorted" in2="SourceGraphic" operator="in" />
+        </filter>
+
+        <filter id="extra-texture" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8 0.03" numOctaves="8" seed="99" result="heavy-noise" />
+          <feDisplacementMap in="SourceGraphic" in2="heavy-noise" scale="80" xChannelSelector="R" result="shredded" />
+          <feComposite in="shredded" in2="SourceGraphic" operator="in" />
+        </filter>
 
         <mask id="logo-silhouette">
           <g fill="white">
@@ -1223,19 +1221,18 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
       <g mask="url(#logo-silhouette)">
         <path class="brush-stroke final-stroke" filter="url(#extra-texture)" d="M-100,540 Q540,540 1180,-100" />
-        
         <path class="brush-stroke s-early-vertical" filter="url(#realistic-bristles)" d="M1000,1180 L1000,-100" />
 
         <g filter="url(#realistic-bristles)">
-          <path class="brush-stroke curve-A s-1" d="M-100,300 Q400,50 1100,250" />
-          <path class="brush-stroke curve-B s-2" d="M1100,450 Q600,650 -100,550" />
-          <path class="brush-stroke curve-C s-3" d="M150,600 Q650,450 750,-100" />
-          <path class="brush-stroke curve-A s-4" d="M850,1100 Q550,550 250,-100" />
-          <path class="brush-stroke curve-C s-5" d="M-100,750 Q500,850 1100,650" />
-          <path class="brush-stroke curve-B s-6" d="M1100,850 Q500,950 -100,1050" />
-          <path class="brush-stroke curve-A s-7" d="M350,-50 Q650,550 350,1050" />
-          <path class="brush-stroke curve-C s-8" d="M580,1050 Q580,550 580,-50" />
-          <path class="brush-stroke curve-B s-extra-diagonal" d="M1100,1000 Q500,500 -100,0" />
+          <path class="brush-stroke s-1" d="M-100,300 Q400,50 1100,250" />
+          <path class="brush-stroke s-2" d="M1100,450 Q600,650 -100,550" />
+          <path class="brush-stroke s-3" d="M150,600 Q650,450 750,-100" />
+          <path class="brush-stroke s-4" d="M850,1100 Q550,550 250,-100" />
+          <path class="brush-stroke s-5" d="M-100,750 Q500,850 1100,650" />
+          <path class="brush-stroke s-6" d="M1100,850 Q500,950 -100,1050" />
+          <path class="brush-stroke s-7" d="M350,-50 Q650,550 350,1050" />
+          <path class="brush-stroke s-8" d="M580,1050 Q580,550 580,-50" />
+          <path class="brush-stroke s-extra" d="M1100,1100 Q540,540 -100,-100" />
         </g>
       </g>
     </svg>
@@ -1244,18 +1241,8 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
         
 <style>
-  /* 3. Apply ONLY the rotation to the SVG itself */
-.logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
-  
-  .logo-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
+  .logo-container { width: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
+  .logo-link { display: block; width: 100%; height: 100%; transition: transform 0.3s ease; cursor: pointer; }
   .logo-link:hover { transform: scale(1.05); }
 
   .paint-logo {
@@ -1266,100 +1253,53 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
     left: -9.7%;
   }
 
-.brush-stroke { 
+  .brush-stroke { 
     fill: none; 
     stroke: #000; 
-    stroke-width: 220; 
+    stroke-width: 260; /* Increased width to allow bristles to bloom */
     stroke-dasharray: 2200; 
     stroke-dashoffset: 2200;
-    /* Added round linecaps for a softer, paint-tip feel */
-    stroke-linecap: round; 
+    stroke-linecap: round;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-name: paintCycle;
   }
   .dark .brush-stroke { stroke: #fff; }
 
-.s-extra-diagonal {
-  animation: quickPaint 8s infinite cubic-bezier(.76, 0, .24, 1);
-  animation-delay: 0.6s;
-  opacity: 0.8;
-  stroke-width: 280; /* Thicker width gives filters more room to create bristles */
-}
-
-/* Adjust general brush settings for better texture display */
-.brush-stroke { 
-  fill: none; 
-  stroke: #000; 
-  stroke-width: 240; /* Increased from 220 */
-  stroke-dasharray: 2200; 
-  stroke-dashoffset: 2200;
-  stroke-linecap: round;
-  /* Anti-aliasing helper for filters */
-  shape-rendering: geometricPrecision; 
-}
-  /* NEW BEZIER STRATEGY: 
-     Using "Extreme" curves to simulate physical friction.
-     - Group 1: High friction (slow start, fast snap)
-     - Group 2: The "Flick" (fast start, slow drag)
+  /* ANIMATION GROUPS 
+     Grouping different strokes with different Bezier curves 
+     creates a non-mechanical, layered "build-up".
   */
 
-  .s-early-vertical {
-    animation: quickPaint 8s infinite cubic-bezier(.22, 1, .36, 1);
-    animation-delay: 0.05s;
-    opacity: 0.6;
-  }
-
-  .final-stroke {
-    stroke-width: 461; 
-    opacity: 1;
-    /* The final stroke is heavy, so it should have a "weighted" drag */
-    animation: quickFinal 8s infinite cubic-bezier(.76, 0, .24, 1);
-    animation-delay: 0.3s;
-  }
-
-  .curve-A, .curve-B, .curve-C { 
-    opacity: 0.75; 
-    animation-duration: 8s; 
-    animation-iteration-count: infinite; 
-    animation-name: quickPaint;
-  }
-
-  /* Varying the timing functions per stroke so they don't look mechanical.
-     Some "snap" in, others "ooze" in.
-  */
+  /* Snap-flicks: Fast start, slow end */
+  .s-1, .s-3, .s-6 { animation-timing-function: cubic-bezier(.1, .9, .2, 1); }
   
-  /* Snap-in (Flicks) */
-  .s-1 { animation-delay: 0.0s;  animation-timing-function: cubic-bezier(.1, .9, .2, 1); } 
-  .s-6 { animation-delay: 0.15s; animation-timing-function: cubic-bezier(.1, .7, .1, 1); } 
-  .s-3 { animation-delay: 0.05s; animation-timing-function: cubic-bezier(.2, 1, .2, 1); } 
+  /* Weighted Drags: Slow start (friction), fast snap end */
+  .s-2, .s-4, .s-8, .s-extra { 
+    animation-timing-function: cubic-bezier(.7, 0, .3, 1); 
+    animation-delay: 0.15s; 
+  }
 
-  /* Slow-drag (Weighted strokes) */
-  .s-2 { animation-delay: 0.4s;  animation-timing-function: cubic-bezier(.8, 0, .2, 1); } 
-  .s-4 { animation-delay: 0.8s;  animation-timing-function: cubic-bezier(.9, 0, .1, 1); } 
-  .s-8 { animation-delay: 0.1s;  animation-timing-function: cubic-bezier(.7, 0, .3, 1); } 
+  /* Structural Strokes */
+  .s-early-vertical { animation-delay: 0.05s; opacity: 0.6; }
+  .final-stroke { 
+    stroke-width: 480; 
+    animation-delay: 0.35s; 
+    animation-timing-function: cubic-bezier(.6, 0, .4, 1);
+  }
 
-  /* Balanced hand movement */
-  .s-5 { animation-delay: 0.2s;  animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 
-  .s-7 { animation-delay: 0.3s;  animation-timing-function: cubic-bezier(.5, 0, .5, 1); } 
-
-  @keyframes quickPaint {
+  @keyframes paintCycle {
     0% { stroke-dashoffset: 2200; opacity: 0; }
-    /* The "Dab": Quick opacity hit as brush touches canvas */
-    1% { opacity: 0.75; }
-    
-    /* 1.5s Draw-in (18.75%): The "Paint" phase */
-    18.75%, 81.25% { stroke-dashoffset: 0; opacity: 0.75; }
-    
-    /* 1.5s Draw-out (100%): The "Lift" phase 
-       Moving to -2200 makes it look like the brush continues its stroke off-canvas */
+    /* The brush hits the canvas */
+    2% { opacity: 0.8; }
+    /* Fully painted in by 1.5s (18.75%) */
+    18.75%, 81.25% { stroke-dashoffset: 0; opacity: 0.8; }
+    /* The "Lift": Brush sweeps off the other side */
     100% { stroke-dashoffset: -2200; opacity: 0; }
   }
 
-  @keyframes quickFinal {
-    0%, 5% { stroke-dashoffset: 2200; opacity: 0; }
-    7% { opacity: 1; }
-    22%, 78% { stroke-dashoffset: 0; opacity: 1; }
-    92% { opacity: 0; }
-    100% { stroke-dashoffset: 2200; opacity: 0; }
-  }
+  /* Override for the final stroke to stay 100% opaque */
+  .final-stroke { opacity: 1; }
 </style>
         
 
