@@ -275,6 +275,7 @@ html {
 
 body.gscrollbar-fixer {
   padding-right: 0 !important;
+  padding-left: 0 !important;
 }
 
 
