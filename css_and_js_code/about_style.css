@@ -576,3 +576,15 @@ body.glightbox-open {
   width: 100% !important;
   overflow: hidden !important;
 }
+
+
+/* A container to just put fading elements in */
+@keyframes extra_fade_effect {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .extra_container_fade {
+    animation: extra_fade_effect 2s ease-in forwards;
+    opacity: 0;
+  }
