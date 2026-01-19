@@ -241,13 +241,17 @@
               <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner z-10">
                 <template x-for="(src, index) in gallery" :key="index">
                   <img :src="src" 
-                       alt="Harald Revery Gallery"
-                       :loading="index < 2 ? 'eager' : 'lazy'"
-                       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-                       :class="{
-                         'opacity-100 z-20': currentIndex === index,
-                         'opacity-0 z-10': currentIndex !== index
-                       }" />
+                         alt="Harald Revery Gallery"
+                         :loading="index < 2 ? 'eager' : 'lazy'"
+                         /* We use x-show and x-transition for a more reliable cross-fade */
+                         x-show="currentIndex === index"
+                         x-transition:enter="transition opacity duration-1000 ease-in-out"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         x-transition:leave="transition opacity duration-1000 ease-in-out"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
+                         class="absolute inset-0 w-full h-full object-cover" />
                 </template>
               </div>
               
