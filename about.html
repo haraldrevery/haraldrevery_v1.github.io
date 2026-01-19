@@ -8,12 +8,13 @@
 <head>
 <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
 <link rel="preload" href="./fonts/HaraldReveryMonoFont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-   <link rel="icon" type="image/x-icon" href="assets/hintericon.ico" />   
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="The official website of Harald Revery, this is the about section containing a FAQ secton, history behind the logo and some photos of Harald Revery.">
-  <meta name="keywords" content="harald, revery, edm, model, biography, about, background">
+<link rel="icon" type="image/x-icon" href="assets/hintericon.ico" />   
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="The official website of Harald Revery, this is the about section containing a FAQ secton, history behind the logo and some photos of Harald Revery.">
+<meta name="keywords" content="harald, revery, edm, model, biography, about, background">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self';">    
     
 <!--  Open Graph (social media image thing) -->
 <meta property="og:title" content="Harald Revery - About" />
@@ -22,26 +23,21 @@
 <meta property="og:url" content="https://haraldrevery.com/about" />
 <meta property="og:type" content="website" />
 
-    
+<link rel="preconnect" href="./fonts/" crossorigin>
+<link rel="preconnect" href="./photos/" crossorigin>
+<link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>    
 
 
-  
-  <title>Harald Revery - About</title>
+<title>Harald Revery - About</title>
 
   
-  <script src="./css_and_js_code/tailwind.js" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
-
-  
-  
-  
-  <link rel="preconnect" href="./fonts/" crossorigin>
-  <link rel="preconnect" href="./photos/" crossorigin>
-  <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin>
-
-<link rel="stylesheet" href="./css_and_js_code/about_style.css"/>
-    
- 
+<script src="./css_and_js_code/tailwind.js" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
 <script src="./css_and_js_code/tailwindconfig.js" integrity="sha384-wWTMIg3Wpz32DtjcUcA6Gg6YGRCUkQy0X5e5S1y77YKMr/U1cq041BJyv9DQh4Im" crossorigin="anonymous"></script>
+  
+<link rel="stylesheet" href="./css_and_js_code/about_style.css"/>
+<link rel="stylesheet" href="./css_and_js_code/glightbox.min.css" />    
+ 
+
 
 
 
@@ -51,8 +47,8 @@
 <script defer src="./css_and_js_code/alpine.min.js" integrity="sha384-4E5IZutrbnm0GBnBqEA2tgLsTg6ublElJlpE9qQQNL0WrY9g4GPahFyJYwnDet2+" crossorigin="anonymous"></script>
 </head>
 
-<link rel="stylesheet" href="./css_and_js_code/glightbox.min.css" />
-<script src="./css_and_js_code/glightbox_min.js" integrity="sha384-MZZbZ6RXJudK43v1qY1zOWKOU2yfeBPatuFoKyHAaAgHTUZhwblRTc9CphTt4IGQ" crossorigin="anonymous"></script>
+
+
 
 
 
@@ -570,11 +566,10 @@
 
   
 <script src="./css_and_js_code/menu.js" integrity="sha384-CX7fcq7f+j4TMIHj0tqRwP5d16JM3ucFA98D1MCINCCOidzw6TMi6gNv5JBWnbr/" crossorigin="anonymous"></script>
-<script src="./css_and_js_code/updatefooteryear.js" integrity="sha384-YJL02qgap2mGUC/83XgMbh/3GZZMBhfzdUnvbZ3bQuxvJd4k78Sw2Fpc0sWjDWv/" crossorigin="anonymous"></script>
-    
+<script src="./css_and_js_code/glightbox_min.js" integrity="sha384-MZZbZ6RXJudK43v1qY1zOWKOU2yfeBPatuFoKyHAaAgHTUZhwblRTc9CphTt4IGQ" crossorigin="anonymous"></script>   
 <script src="./css_and_js_code/txt_img_animation_min.js" integrity="sha384-/y1JfAVhSAwHoTjbPFQ6HPUShG4KudLsw72RpmIft+wrb6DjUhCUtjo/EVAPSA/b" crossorigin="anonymous"></script>
 
-
+<script src="./css_and_js_code/updatefooteryear.js" integrity="sha384-YJL02qgap2mGUC/83XgMbh/3GZZMBhfzdUnvbZ3bQuxvJd4k78Sw2Fpc0sWjDWv/" crossorigin="anonymous"></script>
     <!-- Load the other pages in the background so it doesn't blink as much -->
 <script src="./css_and_js_code/pgeload.js" integrity="sha384-ijWk4OFhvJ3ufth8hp0r+cAo6tamP1NMzC4P0jA/w4RkJMl8PIoIAeN8Ky3xKze2" crossorigin="anonymous"></script>    
 
