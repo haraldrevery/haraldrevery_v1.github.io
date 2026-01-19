@@ -654,6 +654,16 @@ body.glightbox-open {
 .-translate-x-1\/2 { transform: translateX(-50%); }
 .-translate-y-1\/2 { transform: translateY(-50%); }
 
+/* Combined transform for centering */
+.transform.-translate-x-1\/2.-translate-y-1\/2 {
+  transform: translate(-50%, -50%);
+}
+
+/* Position utilities for the toggle button */
+.absolute { position: absolute; }
+.left-1\/2 { left: 50%; }
+.top-1\/2 { top: 50%; }
+
 /* Text Alignment */
 .text-left { text-align: left; }
 .text-center { text-align: center; }
