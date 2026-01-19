@@ -35,21 +35,23 @@
 
 /* The card causes an issue with page width  */
 .logo-card-small {
-  /* Set the physical size (30% smaller than standard mobile width) */
   width: 280px !important;
   max-width: 100% !important;
-
-  /* Horizontal Centering Logic */
   display: block !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-
-  /* This ensures the 3D rotation happens around the center point */
-  transform-origin: center center;
   
-  /* Reset any potential float or absolute positioning that might be inherited */
+  /* Centered horizontally (auto), but with original vertical spacing (1.5rem) */
+  margin: 1.5rem auto !important; 
+
+  transform-origin: center center;
   position: relative !important;
   left: 0 !important;
+}
+
+/* Restores the larger vertical gap on Desktop */
+@media (min-width: 768px) {
+  .logo-card-small {
+    margin: 3rem auto !important; 
+  }
 }
 
 
