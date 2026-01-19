@@ -91,6 +91,37 @@ body {
           letter-spacing: 0.025em;
         }    
 
+/* --- Footer Typography & Utilities --- */
+/* Matches Tailwind's text-sm (approx 14px) */
+.text-sm {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem;
+}
+
+/* Matches Tailwind's text-xs (approx 12px) */
+.text-xs {
+  font-size: 0.75rem !important;
+  line-height: 1rem;
+}
+
+/* Ensure the opacity also works without Tailwind */
+.opacity-50 { opacity: 0.5; }
+.opacity-30 { opacity: 0.3; }
+
+/* Center the text container as seen in both footers */
+.text-center {
+  text-align: center;
+}
+
+/* Standard spacing for the footer links */
+.mt-2 { margin-top: 0.5rem; }
+.pt-4 { padding-top: 1rem; }
+
+
+
+
+
+
     /* Gradient Background Animation */
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
