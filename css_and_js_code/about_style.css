@@ -148,7 +148,10 @@ header#main-header {
 }
 
 
-
+/* Ensure the flex container in the FAQ doesn't force a minimum width */
+button.flex.w-full {
+    min-width: 0; 
+}
 
       
     
