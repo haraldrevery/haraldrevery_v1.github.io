@@ -148,20 +148,6 @@ header#main-header {
 }
 
 
-/* Ensure the flex container in the FAQ doesn't force a minimum width */
-button.flex.w-full {
-    min-width: 0; 
-}
-  /* This class wraps the FAQ and prevents layout stretching */
-  .faq-container p {
-    white-space: normal !important; 
-    word-break: break-word !important; 
-    overflow-wrap: anywhere !important; 
-    display: block;
-    width: 100%;
-  }
-
-
       
     
 /* 1. FONT DEFINITIONS */
