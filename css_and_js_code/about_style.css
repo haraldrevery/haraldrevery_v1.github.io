@@ -590,3 +590,350 @@ body.glightbox-open {
     animation: extra_fade_effect 2s ease-in forwards;
     opacity: 0;
   }
+
+
+/* ============================================
+   MISSING RESPONSIVE & LAYOUT UTILITIES
+   Add these to your about_style.css file
+   ============================================ */
+
+/* --- Core Display & Flex Utilities --- */
+.hidden { display: none; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+
+/* Flex Direction */
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+
+/* Flex Wrap */
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+
+/* Justify & Align */
+.justify-start { justify-content: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.items-start { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-baseline { align-items: baseline; }
+
+/* Flex Grow/Shrink */
+.flex-grow { flex-grow: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+/* Width Utilities */
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.w-5 { width: 1.25rem; }
+.h-5 { height: 1.25rem; }
+
+/* Margin & Padding Utilities */
+.ml-auto { margin-left: auto; }
+.mr-4 { margin-right: 1rem; }
+.mt-5 { margin-top: 1.25rem; }
+.pt-1 { padding-top: 0.25rem; }
+.pb-0 { padding-bottom: 0; }
+
+/* Spacing */
+.space-x-5 > * + * { margin-left: 1.25rem; }
+
+/* Position */
+.relative { position: relative; }
+.fixed { position: fixed; }
+.top-0 { top: 0; }
+.left-0 { left: 0; }
+
+/* Overflow */
+.overflow-hidden { overflow: hidden; }
+
+/* Transform */
+.transform { transform: translateZ(0); }
+.-translate-x-1\/2 { transform: translateX(-50%); }
+.-translate-y-1\/2 { transform: translateY(-50%); }
+
+/* Text Alignment */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+
+/* Colors */
+.text-black { color: #000; }
+.text-white { color: #fff; }
+.bg-white\/60 { background-color: rgba(255, 255, 255, 0.6); }
+.bg-black\/60 { background-color: rgba(0, 0, 0, 0.6); }
+
+/* Dark Mode Colors */
+.dark .dark\:text-white { color: #fff; }
+.dark .dark\:text-black { color: #000; }
+.dark .dark\:bg-black\/60 { background-color: rgba(0, 0, 0, 0.6); }
+
+/* Transitions */
+.transition { transition-property: all; transition-duration: 150ms; }
+.transition-all { transition-property: all; }
+.duration-300 { transition-duration: 300ms; }
+.duration-500 { transition-duration: 500ms; }
+.ease-out { transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+
+/* Opacity */
+.opacity-0 { opacity: 0; }
+.opacity-100 { opacity: 1; }
+.opacity-75 { opacity: 0.75; }
+
+/* Height */
+.h-0 { height: 0; }
+.h-auto { height: auto; }
+
+/* Focus */
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+
+/* Hover Effects */
+.hover\:opacity-75:hover { opacity: 0.75; }
+
+/* User Select */
+.select-none { user-select: none; }
+
+/* Backdrop Blur */
+.backdrop-blur-md { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+
+/* ============================================
+   CRITICAL: RESPONSIVE BREAKPOINTS (md: 768px+)
+   ============================================ */
+
+@media (min-width: 768px) {
+  /* Display */
+  .md\:hidden { display: none; }
+  .md\:block { display: block; }
+  .md\:flex { display: flex; }
+  
+  /* Flex Direction */
+  .md\:flex-row { flex-direction: row; }
+  .md\:flex-no-wrap { flex-wrap: nowrap; }
+  
+  /* Width */
+  .md\:w-auto { width: auto; }
+  
+  /* Spacing */
+  .md\:mr-8 { margin-right: 2rem; }
+  .md\:ml-auto { margin-left: auto; }
+  .md\:mt-0 { margin-top: 0; }
+  .md\:pt-0 { padding-top: 0; }
+  .md\:px-0 { padding-left: 0; padding-right: 0; }
+  
+  /* Space Between */
+  .md\:space-x-5 > * + * { margin-left: 1.25rem; }
+  
+  /* Items */
+  .md\:items-center { align-items: center; }
+  
+  /* Grow */
+  .md\:flex-grow { flex-grow: 1; }
+  
+  /* Height - CRITICAL for navigation */
+  .md\:h-auto { height: auto !important; }
+  
+  /* Opacity - CRITICAL for navigation */
+  .md\:opacity-100 { opacity: 1 !important; }
+  
+  /* Transitions - disable for desktop menu */
+  .md\:transition-none { transition: none !important; }
+}
+
+
+/* ============================================
+   NAVIGATION FIX: Force desktop mode at 768px+
+   ============================================ */
+
+@media (min-width: 768px) {
+  /* Ensure menu is always visible on desktop */
+  #menu {
+    display: flex !important;
+    height: auto !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+  
+  /* Ensure menu items are in a row */
+  #ulMenu {
+    display: flex !important;
+    flex-direction: row !important;
+    margin-top: 0 !important;
+  }
+  
+  /* Hide mobile toggle button */
+  .md\:hidden {
+    display: none !important;
+  }
+}
+
+
+/* ============================================
+   CARD/TEXT LAYOUT FIX
+   ============================================ */
+
+/* The existing grid rules were incomplete. Here's the full set: */
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
+.gap-14 {
+  gap: 3.5rem;
+}
+
+/* Mobile: Stack vertically */
+@media (max-width: 767px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr; /* Single column on mobile */
+  }
+}
+
+/* Desktop: Side by side */
+@media (min-width: 768px) {
+  .md\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+  
+  .md\:gap-20 {
+    gap: 5rem;
+  }
+  
+  .md\:text-start {
+    text-align: left;
+  }
+}
+
+/* Vertical centering */
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+
+/* ============================================
+   IMAGE GRID LAYOUT (Top Section)
+   ============================================ */
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.gap-16 {
+  gap: 4rem;
+}
+
+/* Desktop: Row reverse (images right, text left) */
+@media (min-width: 1024px) {
+  .lg\:flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+  
+  .lg\:w-1\/2 {
+    width: 50%;
+  }
+}
+
+
+/* ============================================
+   UTILITY ADDITIONS
+   ============================================ */
+
+.max-w-max {
+  max-width: max-content;
+}
+
+.break-normal {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.whitespace-normal {
+  white-space: normal;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-\[0\.15em\] {
+  letter-spacing: 0.15em;
+}
+
+.leading-none {
+  line-height: 1;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+.tap-highlight-transparent {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Border */
+.border {
+  border-width: 1px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+.border-gray-100 {
+  border-color: #f3f4f6;
+}
+
+.dark .dark\:border-neutral-800 {
+  border-color: #262626;
+}
+
+/* Shadow */
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.hover\:shadow-2xl:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Active state */
+.active\:scale-90:active {
+  transform: scale(0.9);
+}
