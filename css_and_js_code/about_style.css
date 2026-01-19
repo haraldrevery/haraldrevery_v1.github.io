@@ -152,6 +152,15 @@ header#main-header {
 button.flex.w-full {
     min-width: 0; 
 }
+  /* This class wraps the FAQ and prevents layout stretching */
+  .faq-container p {
+    white-space: normal !important; 
+    word-break: break-word !important; 
+    overflow-wrap: anywhere !important; 
+    display: block;
+    width: 100%;
+  }
+
 
       
     
