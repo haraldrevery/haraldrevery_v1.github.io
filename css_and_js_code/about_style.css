@@ -36,10 +36,14 @@
 /* The card causes an issue with page width  */
 /* Custom class to reduce card size by 30% and center it */
 .logo-card-small {
-  transform: scale(0.75); /* Shrinks the card */
-  max-width: 20rem !important; /* Limits the width to 320px */
+  width: 280px !important; 
+  max-width: 90% !important; 
+  
   margin-left: auto !important;
   margin-right: auto !important;
+  
+  /* Ensure the 3D effect doesn't get cut off */
+  transform-style: preserve-3d;
 }
 
 
