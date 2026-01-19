@@ -1,7 +1,7 @@
-/* Overriding Tailwind's default container behavior */
+/* Force all containers to 75% width and center them */
 .container {
-    width: 90% !important;
-    max-width: 90% !important;
+    width: 75% !important;
+    max-width: 75% !important;
     margin-left: auto !important;
     margin-right: auto !important;
     padding-left: 0 !important;
