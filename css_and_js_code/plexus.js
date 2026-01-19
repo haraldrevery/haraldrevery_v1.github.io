@@ -66,8 +66,8 @@ window.restartPlexus = function() {
   
   // Particle Settings
   const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 0 : 414;
-  const connectionDistance = isMobile ? 0 : 150;
+  const targetParticleCount = isMobile ? 0 : 400;
+  const connectionDistance = isMobile ? 0 : 145;
   const connDistSq = connectionDistance * connectionDistance;
   
   const posX = new Float32Array(targetParticleCount);
@@ -211,7 +211,7 @@ document.addEventListener('alpine:init', () => {
             this.startTime = Date.now(); // Set the start time
 
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 24 : 96;
+            this.config.particleCount = isMobile ? 21 : 96;
             this.config.lineDistance = isMobile ? 299 : 221;
 
             this.handleResize();
