@@ -553,7 +553,7 @@ html, body {
   overflow: visible;
   position: relative;
   transform-style: preserve-3d;
-  translateZ(15px);
+  transform: translateZ(15px);
 }
 /* Ensure the SVG scales to fit the screen size */
 #main-logo-svg {
