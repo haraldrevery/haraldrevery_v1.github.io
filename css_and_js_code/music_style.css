@@ -273,6 +273,11 @@ html {
   scrollbar-gutter: stable;
 }
 
+body.gscrollbar-fixer {
+  padding-right: 0 !important;
+}
+
+
 body {
   font-family: 'HaraldText', sans-serif;
   font-size: 1.9rem;     /* ≈28px on 16px root */
