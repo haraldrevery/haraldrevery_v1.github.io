@@ -408,3 +408,73 @@ body {
 .glightbox.translate-y-0 {
     transform: translateY(0) !important;
 }
+
+
+/* Image grid animation stuff */
+.opacity-0 {
+    opacity: 0;
+}
+.opacity-100 {
+    opacity: 1;
+}
+.translate-y-8 {
+    transform: translateY(2rem); /* Tailwind's 8 unit = 2rem or 32px */
+}
+.translate-y-0 {
+    transform: translateY(0);
+}
+/* Transition Timing */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+.duration-\[2000ms\] {
+    transition-duration: 2000ms;
+}
+.ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+/* Grid Structure */
+.grid {
+    display: grid;
+}
+
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gap-3 {
+    gap: 0.75rem;
+}
+/* Responsive Gap */
+@media (min-width: 768px) {
+    .md\:gap-5 {
+        gap: 1.25rem;
+    }
+}
+/* Item Spanning Logic */
+.col-span-1 {
+    grid-column: span 1 / span 1;
+}
+.col-span-2 {
+    grid-column: span 2 / span 2;
+}
+.row-span-2 {
+    grid-row: span 2 / span 2;
+}
+.aspect-square {
+    aspect-ratio: 1 / 1;
+}
+.relative {
+    position: relative;
+}
+.overflow-hidden {
+    overflow: hidden;
+}
+.rounded-xl {
+    border-radius: 0.75rem;
+}
+.group:hover .hover\:shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
