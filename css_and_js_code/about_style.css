@@ -378,6 +378,68 @@ body {
 }
 
 
+
+
+
+
+/* Recreating the 2-column layout utilities (Text and card layout) */
+/* Flexbox base */
+.flex {
+    display: flex;
+}
+
+/* Vertical stack by default (Mobile) */
+.flex-col {
+    flex-direction: column;
+}
+
+/* Horizontal row on Desktop (768px and up) */
+@media (min-width: 768px) {
+    .md\:flex-row {
+        flex-direction: row;
+    }
+    
+    .md\:items-center {
+        align-items: center;
+    }
+
+    .md\:justify-between {
+        justify-content: space-between;
+    }
+}
+
+/* Grid helper if you are using grid instead of flex */
+.grid {
+    display: grid;
+}
+
+@media (min-width: 768px) {
+    .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Image grid animation */
 
 /* Hover Scaling Effect */
