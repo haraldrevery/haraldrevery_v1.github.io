@@ -273,10 +273,6 @@ html {
   scrollbar-gutter: stable;
 }
 
-body.gscrollbar-fixer {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-}
 
 
 body {
