@@ -357,10 +357,6 @@ body {
     filter: saturate(0.8); /* Your default saturation */
 }
 
-/* Hover Dark Overlay */
-.group:hover .absolute.inset-0 {
-    opacity: 1 !important;
-}
 
 /* The base state for the grid items before they load */
 .glightbox {
