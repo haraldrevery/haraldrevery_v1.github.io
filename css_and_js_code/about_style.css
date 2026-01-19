@@ -577,6 +577,8 @@ body.glightbox-open {
   overflow: hidden !important;
 }
 
+/* FAQ & Grid Animation States */
+.rotate-45 { transform: rotate(45deg); }
 
 /* A container to just put fading elements in */
 @keyframes extra_fade_effect {
