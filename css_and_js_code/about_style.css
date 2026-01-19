@@ -34,11 +34,12 @@
 
 
 /* The card causes an issue with page width  */
-.scale-75 {
-  transform: scale(0.75);
-}
-.max-w-xs {
-  max-width: 20rem; /* 320px */
+/* Custom class to reduce card size by 30% and center it */
+.logo-card-small {
+  transform: scale(0.75); /* Shrinks the card */
+  max-width: 20rem !important; /* Limits the width to 320px */
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 
