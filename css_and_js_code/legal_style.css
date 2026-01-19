@@ -1,3 +1,14 @@
+/* Force all containers to 75% width and center them */
+.container {
+    width: 75% !important;
+    max-width: 75% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
 @view-transition {
   navigation: auto; /* Enables seamless transitions between documents */
 }
