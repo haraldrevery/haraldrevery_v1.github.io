@@ -354,3 +354,9 @@ body {
 .glightbox.translate-y-0 {
     transform: translateY(0) !important;
 }
+
+/* Prevent the body from shifting when GLightbox is active */
+body.glightbox-open {
+  width: 100% !important;
+  overflow: hidden !important;
+}
