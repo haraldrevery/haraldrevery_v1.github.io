@@ -33,13 +33,21 @@
 }
 
 
+
+
+
+
 /* The card causes an issue with page width  */
 .logo-card-small {
-  width: 280px !important;
+  /* Increased from 280px to 320px */
+  width: 320px !important;
+  
+  /* Critical: This prevents the card from ever being wider than the screen */
   max-width: 100% !important;
+
   display: block !important;
   
-  /* Centered horizontally (auto), but with original vertical spacing (1.5rem) */
+  /* Restores original vertical spacing (m-6 and md:m-12 equivalents) */
   margin: 1.5rem auto !important; 
 
   transform-origin: center center;
@@ -47,12 +55,13 @@
   left: 0 !important;
 }
 
-/* Restores the larger vertical gap on Desktop */
 @media (min-width: 768px) {
   .logo-card-small {
+    /* Desktop margin equivalent to your original m-12 */
     margin: 3rem auto !important; 
   }
 }
+
 
 
 
