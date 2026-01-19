@@ -334,8 +334,8 @@ body {
 
 /* Ensure the image has a smooth transition */
 .group img {
-    transition: transform 1s ease-out, filter 1s ease-out;
-    filter: saturate(0.8); /* Your default saturation */
+    transition: transform 1s ease-out, scale 1s ease-out, filter 1s ease-out;
+    filter: saturate(0.8);
 }
 
 
