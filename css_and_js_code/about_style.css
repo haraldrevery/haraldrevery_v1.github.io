@@ -428,7 +428,35 @@ body {
 
 
 
+/* --- Missing Layout Utilities: General grid stuff */
+/* Grid Columns */
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
+/* Flexbox for the top section (Images to the right, text left) */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.gap-16 { gap: 4rem; }
+.w-full { width: 100%; }
+
+/* Responsive Desktop Rules (768px and up) */
+@media (min-width: 768px) {
+    .md\:col-span-1 { grid-column: span 1 / span 1; }
+    .md\:gap-20 { gap: 5rem; }
+    .md\:text-start { text-align: left; }
+    .my-auto { margin-top: auto; margin-bottom: auto; }
+}
+
+/* Wide Screen Rules (1024px and up) */
+@media (min-width: 1024px) {
+    .lg\:flex-row-reverse { flex-direction: row-reverse; }
+    .lg\:w-1/2 { width: 50%; }
+}
+
+/* Spacing Helpers */
+.pt-20 { padding-top: 5rem; }
+.pb-2 { padding-bottom: 0.5rem; }
+.mx-3 { margin-left: 0.75rem; margin-right: 0.75rem; }
 
 
 
