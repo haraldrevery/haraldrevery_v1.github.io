@@ -707,9 +707,4 @@ html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
   .extra_container_fade {
     animation: extra_fade_effect 2s ease-in forwards;
     opacity: 0;
-    
-    /* Box for visualization */
-    width: 100%;
-    height: 300px;
-    background: #3498db;
   }
