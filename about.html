@@ -239,60 +239,16 @@
               </div>
             
               <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner z-10">
-
-
-                  
-                <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner z-10">
-  
-                                        <div class="relative w-full aspect-square overflow-hidden smooth-edges shadow-inner z-10">
-                                          
-                                          <img src="./assets/haraldrevery11techbw.gif" 
-                                               alt="Harald Revery Gallery"
-                                               x-show="currentIndex === 0"
-                                               x-transition:enter="transition opacity duration-1000 ease-in-out"
-                                               x-transition:enter-start="opacity-0"
-                                               x-transition:enter-end="opacity-100"
-                                               x-transition:leave="transition opacity duration-1000 ease-in-out"
-                                               x-transition:leave-start="opacity-100"
-                                               x-transition:leave-end="opacity-0"
-                                               class="absolute inset-0 w-full h-full object-cover">
-                                        
-                                          <img src="./photos/sketch_logo.jpg" 
-                                               alt="Harald Revery Gallery"
-                                               x-show="currentIndex === 1"
-                                               x-transition:enter="transition opacity duration-1000 ease-in-out"
-                                               x-transition:enter-start="opacity-0"
-                                               x-transition:enter-end="opacity-100"
-                                               x-transition:leave="transition opacity duration-1000 ease-in-out"
-                                               x-transition:leave-start="opacity-100"
-                                               x-transition:leave-end="opacity-0"
-                                               class="absolute inset-0 w-full h-full object-cover">
-                                        
-                                          <img src="./photos/2024Looking_at_Matterhorn.jpg" 
-                                               alt="Harald Revery Gallery"
-                                               x-show="currentIndex === 2"
-                                               x-transition:enter="transition opacity duration-1000 ease-in-out"
-                                               x-transition:enter-start="opacity-0"
-                                               x-transition:enter-end="opacity-100"
-                                               x-transition:leave="transition opacity duration-1000 ease-in-out"
-                                               x-transition:leave-start="opacity-100"
-                                               x-transition:leave-end="opacity-0"
-                                               class="absolute inset-0 w-full h-full object-cover">
-                                        
-                                          <img src="./photos/2025haraldgaldhopiggen2.jpg" 
-                                               alt="Harald Revery Gallery"
-                                               x-show="currentIndex === 3"
-                                               x-transition:enter="transition opacity duration-1000 ease-in-out"
-                                               x-transition:enter-start="opacity-0"
-                                               x-transition:enter-end="opacity-100"
-                                               x-transition:leave="transition opacity duration-1000 ease-in-out"
-                                               x-transition:leave-start="opacity-100"
-                                               x-transition:leave-end="opacity-0"
-                                               class="absolute inset-0 w-full h-full object-cover">
-                                        
-                                        </div>
-
-                  
+                <template x-for="(src, index) in gallery" :key="index">
+                  <img :src="src" 
+                       alt="Harald Revery Gallery"
+                       :loading="index < 2 ? 'eager' : 'lazy'"
+                       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+                       :class="{
+                         'opacity-100 z-20': currentIndex === index,
+                         'opacity-0 z-10': currentIndex !== index
+                       }" />
+                </template>
               </div>
               
               <div class="absolute bottom-0 left-0 right-0 text-center z-20">
