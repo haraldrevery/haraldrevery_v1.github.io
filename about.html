@@ -243,7 +243,6 @@
                   <img :src="src" 
                          alt="Harald Revery Gallery"
                          :loading="index < 2 ? 'eager' : 'lazy'"
-                         /* We use x-show and x-transition for a more reliable cross-fade */
                          x-show="currentIndex === index"
                          x-transition:enter="transition opacity duration-1000 ease-in-out"
                          x-transition:enter-start="opacity-0"
