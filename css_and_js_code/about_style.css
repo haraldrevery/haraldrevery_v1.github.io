@@ -61,6 +61,16 @@
     margin: 3rem auto !important; 
   }
 }
+.transition { transition-property: all; }
+.duration-1000 { transition-duration: 1000ms; }
+.ease-in-out { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+.opacity-0 { opacity: 0; }
+.opacity-100 { opacity: 1; }
+.absolute { position: absolute; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+
+
 
 
 
