@@ -30,7 +30,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. UPDATED: Trails with Ultra-Long Hero Lines */
+/* 2. UPDATED: Trails with 400% Increased Lengths Across the Board */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -47,7 +47,6 @@ window.restartPlexus = function() {
   const ctx = canvas.getContext('2d');
   const width = 1000, height = 1100;
   
-  // High particle density
   const trailCount = window.innerWidth < 768 ? 130 : 475;
   const trails = [];
 
@@ -60,27 +59,22 @@ window.restartPlexus = function() {
       this.y = Math.random() * height;
       this.segments = [];
       
-      // LENGTH DISTRIBUTION
       const rand = Math.random();
       if (rand < 0.10) {
-        // 10% are 400% longer (Ultra-Hero lines: 400-600 segments)
-        this.maxLength = Math.floor(Math.random() * 200) + 400;
+        // 10% Ultra-Hero Lines: Massive ribbons (1600-2400 segments)
+        this.maxLength = Math.floor(Math.random() * 800) + 1600;
       } else if (rand < 0.25) {
-        // 15% are standard long lines (100-150 segments)
-        this.maxLength = Math.floor(Math.random() * 50) + 100;
+        // 15% Standard Long Lines: (400-600 segments)
+        this.maxLength = Math.floor(Math.random() * 200) + 400;
       } else {
-        // 75% are standard short trails (30-60 segments)
-        this.maxLength = Math.floor(Math.random() * 30) + 30;
+        // 75% Standard Trails: (120-240 segments - still very long)
+        this.maxLength = Math.floor(Math.random() * 120) + 120;
       }
       
       this.speed = Math.random() < 0.4 ? (Math.random() * 0.4 + 0.3) : (Math.random() * 1.8 + 0.8);
       this.angle = Math.random() * TWO_PI;
       this.va = (Math.random() - 0.5) * 0.08; 
-      
-      // Low mouse influence (approx 20%)
       this.followsMouse = Math.random() < 0.2;
-      
-      // Opacity distribution (15% to 100%)
       this.alpha = Math.random() * (1.0 - 0.15) + 0.15;
     }
     update() {
@@ -107,11 +101,11 @@ window.restartPlexus = function() {
       this.segments.unshift({x: this.x, y: this.y});
       if (this.segments.length > this.maxLength) this.segments.pop();
 
-      // Larger wrap-around margin for ultra-long lines
-      if (this.x < -300) this.x = width + 290;
-      if (this.x > width + 300) this.x = -290;
-      if (this.y < -300) this.y = height + 290;
-      if (this.y > height + 300) this.y = -290;
+      // Increased wrap margin to accommodate the physics of massive trails
+      if (this.x < -500) this.x = width + 490;
+      if (this.x > width + 500) this.x = -490;
+      if (this.y < -500) this.y = height + 490;
+      if (this.y > height + 500) this.y = -490;
     }
     draw(isDark) {
       if (this.segments.length < 2) return;
@@ -119,8 +113,8 @@ window.restartPlexus = function() {
       const rgb = isDark ? "255, 255, 255" : "0, 0, 0";
       ctx.strokeStyle = `rgba(${rgb}, ${this.alpha})`;
       
-      // Ultra-long lines get a slightly distinct width
-      ctx.lineWidth = this.maxLength > 300 ? 1.5 : (this.alpha > 0.8 ? 1.2 : 0.7);
+      // Scale width based on length and alpha for a hierarchical look
+      ctx.lineWidth = this.maxLength > 1000 ? 1.6 : (this.alpha > 0.8 ? 1.2 : 0.7);
       
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -184,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => window.restartLogoAnimations(), 1);
 });
 
-/* 4. BACKGROUND: High-Density Alpine Flow */
+/* 4. BACKGROUND: Dense Long-Flow Alpine Background */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
@@ -204,10 +198,11 @@ document.addEventListener('alpine:init', () => {
                     y: Math.random() * this.canvas.height,
                     history: [],
                     angle: Math.random() * TWO_PI,
-                    len: isUltra ? 450 : Math.floor(Math.random() * 100) + 50,
+                    // Background trails scaled 400% as well
+                    len: isUltra ? 1800 : Math.floor(Math.random() * 400) + 200,
                     speed: Math.random() * 0.6 + 0.2,
                     follows: Math.random() < 0.08,
-                    alpha: Math.random() * (0.3 - 0.05) + 0.05
+                    alpha: Math.random() * (0.25 - 0.05) + 0.05
                 });
             }
             this.animate();
@@ -235,7 +230,7 @@ document.addEventListener('alpine:init', () => {
                 p.history.unshift({x: p.x, y: p.y});
                 if(p.history.length > p.len) p.history.pop();
                 
-                if(p.x < -200 || p.x > this.canvas.width + 200 || p.y < -200 || p.y > this.canvas.height + 200) {
+                if(p.x < -400 || p.x > this.canvas.width + 400 || p.y < -400 || p.y > this.canvas.height + 400) {
                     p.x = Math.random() * this.canvas.width;
                     p.y = Math.random() * this.canvas.height;
                     p.history = [];
