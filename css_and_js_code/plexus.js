@@ -1,4 +1,4 @@
-/* 1. KEEP: 3D Mouse Rotation Logic (Anti-Jitter) */
+/* 1. KEEP: 3D Mouse Rotation Logic */
 const TWO_PI = Math.PI * 2;
 const SPEED_BOOST_RADIUS_SQ = 62500; 
 
@@ -30,7 +30,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. MAIN ANIMATION: High-Res Trails with Optimized Loop */
+/* 2. MAIN ANIMATION: Particles and Trails */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -49,6 +49,9 @@ window.restartPlexus = function() {
   
   const trailCount = window.innerWidth < 768 ? 100 : 420;
   const trails = [];
+  const startTime = Date.now();
+  // UPDATED: Slower initiation (3000ms * 1.2 = 3600ms)
+  const initiationDuration = 3600; 
 
   class Trail {
     constructor() {
@@ -102,11 +105,13 @@ window.restartPlexus = function() {
       if (this.y < -600) this.y = height + 550;
       else if (this.y > height + 600) this.y = -550;
     }
-    draw(ctx, rgb) {
+    draw(ctx, rgb, globalProgress) {
       if (this.segments.length < 2) return;
       
       ctx.beginPath();
-      ctx.strokeStyle = `rgba(${rgb}, ${this.alpha})`;
+      // Fade in alpha based on global initiation progress
+      const currentAlpha = this.alpha * globalProgress;
+      ctx.strokeStyle = `rgba(${rgb}, ${currentAlpha})`;
       ctx.lineWidth = this.alpha > 0.8 ? 1.3 : 0.8;
       
       ctx.moveTo(this.segments[0].x, this.segments[0].y);
@@ -114,8 +119,6 @@ window.restartPlexus = function() {
       for (let i = 1; i < this.segments.length; i++) {
         const p1 = this.segments[i-1];
         const p2 = this.segments[i];
-        
-        // Wrap detection to prevent straight lines
         if (Math.abs(p1.x - p2.x) > 300 || Math.abs(p1.y - p2.y) > 300) {
            ctx.stroke();
            ctx.beginPath();
@@ -137,9 +140,12 @@ window.restartPlexus = function() {
     const mx = globalMouseX + width/2;
     const my = globalMouseY + height/2;
 
+    // UPDATED: Calculate 20% slower initiation progress
+    const progress = Math.min((Date.now() - startTime) / initiationDuration, 1);
+
     for (let i = 0; i < trails.length; i++) {
       trails[i].update(mx, my);
-      trails[i].draw(ctx, rgb);
+      trails[i].draw(ctx, rgb, progress);
     }
 
     plexusRequestId = requestAnimationFrame(animate);
@@ -147,7 +153,7 @@ window.restartPlexus = function() {
   animate();
 };
 
-/* 3. LOGO EFFECTS: Wave Implosion Reset Logic */
+/* 3. LOGO EFFECTS: Wave & Stroke Reset */
 window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
   const waves = document.querySelectorAll('.wave-echo');
@@ -155,7 +161,6 @@ window.restartLogoAnimations = function() {
 
   const logoPaths = logoGroup.querySelectorAll('path');
   
-  // Phase 1: Reset all states instantly
   logoPaths.forEach(path => {
     path.style.animation = 'none';
     path.style.strokeDashoffset = '4000';
@@ -164,24 +169,22 @@ window.restartLogoAnimations = function() {
   
   waves.forEach(wave => {
     wave.style.animation = 'none';
-    wave.style.transform = 'scale(5)'; // Scale up for the implosion start
+    wave.style.transform = 'scale(5)'; 
     wave.style.opacity = '0';
     wave.style.strokeWidth = '0.5px';
   });
   
-  // Forced reflow to ensure the 'none' state is registered by the browser
   void logoGroup.offsetWidth;
   
-  // Phase 2: Re-apply the drawing and wave animations
+  // UPDATED: Slower logo drawing (5s * 1.2 = 6s)
   logoPaths.forEach(path => {
-    path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
+    path.style.animation = 'logoDraw 6s cubic-bezier(.75,.03,.46,.46) forwards';
   });
   
   waves.forEach((wave, index) => {
-    // Delay each wave slightly for the echo effect
     setTimeout(() => {
       wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
-    }, index * 120); 
+    }, index * 144); // Stagger slowed by 20% (120 * 1.2)
   });
 };
 
@@ -191,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => window.restartLogoAnimations(), 50);
 });
 
-// Alpine background cleanup (prevent conflicts)
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({ init() { } }));
 });
