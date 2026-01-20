@@ -28,7 +28,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. UPDATED: Parallax Starfield with LARGER Particles */
+/* 2. UPDATED: High-Density Geometric Starfield */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -45,21 +45,25 @@ window.restartPlexus = function() {
   const ctx = canvas.getContext('2d');
   
   const width = 1000, height = 1100;
-  // Slightly increased count to balance the larger size
-  const starCount = window.innerWidth < 768 ? 180 : 450; 
+  // Increased particle density
+  const starCount = window.innerWidth < 768 ? 300 : 850; 
   const stars = [];
 
-  // Optimized Star Texture
+  // Optimized Geometric "Diamond" Texture
   const starCanvas = document.createElement('canvas');
-  starCanvas.width = 20; // Increased buffer for larger stars
-  starCanvas.height = 20;
+  starCanvas.width = 30;
+  starCanvas.height = 30;
   const sCtx = starCanvas.getContext('2d');
-  const gradient = sCtx.createRadialGradient(10, 10, 0, 10, 10, 10);
-  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.8)');
-  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-  sCtx.fillStyle = gradient;
-  sCtx.fillRect(0, 0, 20, 20);
+  
+  // Draw Rhombus/Diamond shape to match SVG style
+  sCtx.fillStyle = 'white';
+  sCtx.beginPath();
+  sCtx.moveTo(15, 0);   // Top
+  sCtx.lineTo(30, 15);  // Right
+  sCtx.lineTo(15, 30);  // Bottom
+  sCtx.lineTo(0, 15);   // Left
+  sCtx.closePath();
+  sCtx.fill();
 
   class Star {
     constructor() {
@@ -72,29 +76,29 @@ window.restartPlexus = function() {
       this.y = Math.random() * height;
       
       const layer = Math.random();
-      if (layer > 0.9) { // Hero Layer (Largest)
-        this.z = 3;
-        this.size = Math.random() * 4 + 6; // 6px to 10px
-        this.baseSpeed = 1.4;
-      } else if (layer > 0.6) { // Mid Layer
-        this.z = 2;
-        this.size = Math.random() * 2 + 3.5; // 3.5px to 5.5px
-        this.baseSpeed = 0.7;
-      } else { // Far Layer
-        this.z = 1;
-        this.size = Math.random() * 1.5 + 1.5; // 1.5px to 3px
-        this.baseSpeed = 0.3;
+      if (layer > 0.92) { // Hero Diamonds
+        this.z = 3.5;
+        this.size = Math.random() * 5 + 8; 
+        this.baseSpeed = 1.6;
+      } else if (layer > 0.7) { // Mid Diamonds
+        this.z = 2.2;
+        this.size = Math.random() * 3 + 4;
+        this.baseSpeed = 0.8;
+      } else { // Background Diamonds
+        this.z = 1.2;
+        this.size = Math.random() * 2 + 2;
+        this.baseSpeed = 0.4;
       }
-      this.alpha = (Math.random() * 0.4 + 0.4).toFixed(2);
+      this.alpha = (Math.random() * 0.5 + 0.2).toFixed(2);
     }
     update(mx, my) {
       this.y += this.baseSpeed;
       
-      const parallaxX = mx * 0.025 * this.z;
-      const parallaxY = my * 0.025 * this.z;
+      const parallaxX = mx * 0.03 * this.z;
+      const parallaxY = my * 0.03 * this.z;
 
       if (this.y > height) {
-        this.y = 0;
+        this.y = -30;
         this.x = Math.random() * width;
       }
       
@@ -103,8 +107,7 @@ window.restartPlexus = function() {
     }
     draw(ctx) {
       ctx.globalAlpha = this.alpha;
-      const drawSize = this.size;
-      ctx.drawImage(starCanvas, this.renderX | 0, this.renderY | 0, drawSize, drawSize);
+      ctx.drawImage(starCanvas, this.renderX | 0, this.renderY | 0, this.size, this.size);
     }
   }
 
@@ -114,9 +117,8 @@ window.restartPlexus = function() {
     ctx.clearRect(0, 0, width, height);
     const isDark = document.documentElement.classList.contains('dark');
     
-    if (!isDark) {
-        ctx.filter = 'invert(1)';
-    }
+    // Invert field for light mode
+    if (!isDark) ctx.filter = 'invert(1)';
 
     for (let i = 0; i < stars.length; i++) {
       stars[i].update(globalMouseX, globalMouseY);
@@ -130,7 +132,7 @@ window.restartPlexus = function() {
   animate();
 };
 
-/* 3. KEEP: Logo Effects Reset Logic */
+/* 3. KEEP: Slower Logo Effects Reset Logic */
 window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
   const waves = document.querySelectorAll('.wave-echo');
@@ -153,6 +155,7 @@ window.restartLogoAnimations = function() {
   
   void logoGroup.offsetWidth;
   
+  // 6s duration (20% slower)
   logoPaths.forEach(path => {
     path.style.animation = 'logoDraw 6s cubic-bezier(.75,.03,.46,.46) forwards';
   });
@@ -160,7 +163,7 @@ window.restartLogoAnimations = function() {
   waves.forEach((wave, index) => {
     setTimeout(() => {
       wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
-    }, index * 144); 
+    }, index * 144); // 20% slower stagger
   });
 };
 
