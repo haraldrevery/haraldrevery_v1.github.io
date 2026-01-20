@@ -22,9 +22,6 @@
   display: block; /* Ensures it's still a block element for crawlers */
 }
 
-body {
-  overscroll-behavior-y: none;
-}
 
 
       
