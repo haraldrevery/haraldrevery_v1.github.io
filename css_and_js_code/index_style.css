@@ -263,8 +263,14 @@ body {
           line-height: 1.2;
           letter-spacing: 0.025em;
         }
- 
 
+
+    /* 2. Added a safeguard: Force background to be dark immediately 
+       This prevents any white flashes during script execution */
+    .dark body {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
 
 
 
