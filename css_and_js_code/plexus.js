@@ -12,6 +12,7 @@ document.addEventListener('mousemove', (e) => {
   targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
 });
 
+// Reset rotation when the mouse truly leaves the browser window
 document.addEventListener('mouseout', (e) => {
   if (!e.relatedTarget && !e.toElement) {
     targetRotateY = 0;
@@ -31,10 +32,9 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* Plexus (Logo Canvas) */
+/* Plexus Logo Canvas (Optimized) */
 let plexusRequestId;
 let mouseX = 0, mouseY = 0;
-let targetX = 0, targetY = 0;
 
 document.addEventListener('mousemove', (e) => {
   mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
@@ -45,31 +45,36 @@ window.restartPlexus = function() {
   if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
   
   const canvas = document.getElementById('plexus-canvas');
-  const svg = document.getElementById('main-logo-svg');
-  if (!canvas || !svg) return;
+  if (!canvas) return;
   
   const ctx = canvas.getContext('2d');
   const width = 1000, height = 1100;
   const isDark = document.documentElement.classList.contains('dark');
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
+  
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 0 : 400;
   const connectionDistance = isMobile ? 0 : 145;
   const connDistSq = connectionDistance * connectionDistance;
   
-  const posX = new Float32Array(targetParticleCount);
-  const posY = new Float32Array(targetParticleCount);
-  const velX = new Float32Array(targetParticleCount);
-  const velY = new Float32Array(targetParticleCount);
-  
+  // Spatial Grid Setup
+  const cellSize = connectionDistance;
+  const cols = Math.ceil(width / cellSize);
+  const rows = Math.ceil(height / cellSize);
+  let grid = [];
+
+  const particles = [];
   let currentParticleCount = 0;
   const startTime = Date.now();
   
-  function createParticle(i) {
-    posX[i] = Math.random() * width;
-    posY[i] = Math.random() * height;
-    velX[i] = (Math.random() - 0.5) * 0.8;
-    velY[i] = (Math.random() - 0.5) * 0.8;
+  function createParticle(id) {
+    return {
+      id,
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8
+    };
   }
   
   function animate() {
@@ -77,33 +82,59 @@ window.restartPlexus = function() {
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
     
-    while (currentParticleCount < targetThisFrame) {
-      createParticle(currentParticleCount);
-      currentParticleCount++;
+    while (particles.length < targetThisFrame) {
+      particles.push(createParticle(particles.length));
     }
     
+    // Reset Grid
+    grid = Array.from({ length: cols * rows }, () => []);
+    
+    // Update and Draw Particles
     ctx.fillStyle = `rgba(${rgb}, 0.8)`;
-    for (let i = 0; i < currentParticleCount; i++) {
-      posX[i] += velX[i];
-      posY[i] += velY[i];
-      if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
-      if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-      ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > width) p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+      
+      ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
+
+      const c = Math.floor(p.x / cellSize);
+      const r = Math.floor(p.y / cellSize);
+      if (c >= 0 && c < cols && r >= 0 && r < rows) {
+        grid[c + r * cols].push(p);
+      }
     }
     
+    // Draw Connections (Grid Optimized + Double Stroke Prevention)
     ctx.lineWidth = 0.8;
-    for (let i = 0; i < currentParticleCount; i++) {
-      const x1 = posX[i], y1 = posY[i];
-      for (let j = i + 1; j < currentParticleCount; j++) {
-        const dx = x1 - posX[j], dy = y1 - posY[j];
-        const distSq = dx * dx + dy * dy;
-        if (distSq < connDistSq) {
-          const alpha = Math.round((1 - Math.sqrt(distSq) / connectionDistance) * 80);
-          ctx.strokeStyle = `rgba(${rgb}, ${alpha / 100})`;
-          ctx.beginPath();
-          ctx.moveTo(x1, y1);
-          ctx.lineTo(posX[j], posY[j]);
-          ctx.stroke();
+    for (const p1 of particles) {
+      const c = Math.floor(p1.x / cellSize);
+      const r = Math.floor(p1.y / cellSize);
+
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          const nc = c + i;
+          const nr = r + j;
+          if (nc >= 0 && nc < cols && nr >= 0 && nr < rows) {
+            for (const p2 of grid[nc + nr * cols]) {
+              // Unique ID check avoids double strokes and self-connection
+              if (p1.id >= p2.id) continue;
+
+              const dx = p1.x - p2.x;
+              const dy = p1.y - p2.y;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq < connDistSq) {
+                const alpha = Math.round((1 - Math.sqrt(distSq) / connectionDistance) * 80);
+                ctx.strokeStyle = `rgba(${rgb}, ${alpha / 100})`;
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+              }
+            }
+          }
         }
       }
     }
@@ -112,13 +143,14 @@ window.restartPlexus = function() {
   animate();
 };
 
-/* Restart Animations */
+/* Restart Logo Animations (SVG) */
 window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
   const waves = document.querySelectorAll('.wave-echo');
   if (!logoGroup) return;
 
   const logoPaths = logoGroup.querySelectorAll('path');
+  
   logoPaths.forEach(path => {
     path.style.animation = 'none';
     path.style.strokeDashoffset = '4000';
@@ -145,12 +177,10 @@ window.restartLogoAnimations = function() {
   });
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.restartPlexus();
-  setTimeout(() => window.restartLogoAnimations(), 1);
-});
+setTimeout(() => window.restartPlexus(), 150);
+setTimeout(() => window.restartLogoAnimations(), 1);
 
-/* Plexus Background - Spatial Grid Optimized */
+/* Plexus Background (Optimized) */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
@@ -173,14 +203,12 @@ document.addEventListener('alpine:init', () => {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
             this.startTime = Date.now();
-
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
             window.addEventListener('mousemove', (e) => {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
             });
-
             this.animate();
         },
 
@@ -190,14 +218,13 @@ document.addEventListener('alpine:init', () => {
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 25 : 96;
             this.config.lineDistance = isMobile ? 250 : 221;
-            
-            // Grid Setup: Cell size is the connection distance
             this.cols = Math.ceil(this.canvas.width / this.config.lineDistance);
             this.rows = Math.ceil(this.canvas.height / this.config.lineDistance);
         },
 
-        createParticle() {
+        createParticle(id) {
             return {
+                id,
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
                 vx: (Math.random() - 0.5) * this.config.baseSpeed,
@@ -207,21 +234,18 @@ document.addEventListener('alpine:init', () => {
 
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
             const progress = Math.min((Date.now() - this.startTime) / 3000, 1);
             const currentTarget = Math.floor(progress * this.config.particleCount);
 
             while (this.particles.length < currentTarget) {
-                this.particles.push(this.createParticle());
+                this.particles.push(this.createParticle(this.particles.length));
             }
 
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
             this.ctx.fillStyle = `rgba(${color}, 0.4)`;
-
-            // Clear and rebuild spatial grid
             this.grid = Array.from({ length: this.cols * this.rows }, () => []);
-            
-            this.particles.forEach((p, i) => {
+
+            this.particles.forEach((p) => {
                 const dxMouse = p.x - this.mouse.x;
                 const dyMouse = p.y - this.mouse.y;
                 const distSqMouse = dxMouse * dxMouse + dyMouse * dyMouse;
@@ -237,33 +261,29 @@ document.addEventListener('alpine:init', () => {
                 this.ctx.arc(p.x, p.y, this.config.particleSize, 0, TWO_PI);
                 this.ctx.fill();
 
-                // Assign to grid
-                const col = Math.floor(p.x / this.config.lineDistance);
-                const row = Math.floor(p.y / this.config.lineDistance);
-                if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
-                    this.grid[col + row * this.cols].push(p);
+                const c = Math.floor(p.x / this.config.lineDistance);
+                const r = Math.floor(p.y / this.config.lineDistance);
+                if (c >= 0 && c < this.cols && r >= 0 && r < this.rows) {
+                    this.grid[c + r * this.cols].push(p);
                 }
             });
 
-            // Draw connections using the grid
             const connDistSq = this.config.lineDistance * this.config.lineDistance;
-            
-            this.particles.forEach(p => {
-                const col = Math.floor(p.x / this.config.lineDistance);
-                const row = Math.floor(p.y / this.config.lineDistance);
+            this.particles.forEach(p1 => {
+                const c = Math.floor(p1.x / this.config.lineDistance);
+                const r = Math.floor(p1.y / this.config.lineDistance);
 
-                // Check 3x3 grid around the particle
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
-                        const neighborCol = col + i;
-                        const neighborRow = row + j;
+                        const nc = c + i;
+                        const nr = r + j;
+                        if (nc >= 0 && nc < this.cols && nr >= 0 && nr < this.rows) {
+                            this.grid[nc + nr * this.cols].forEach(p2 => {
+                                // FIXED: No double strokes using unique ID comparison
+                                if (p1.id >= p2.id) return;
 
-                        if (neighborCol >= 0 && neighborCol < this.cols && neighborRow >= 0 && neighborRow < this.rows) {
-                            const neighbors = this.grid[neighborCol + neighborRow * this.cols];
-                            neighbors.forEach(p2 => {
-                                if (p === p2) return;
-                                const dx = p.x - p2.x;
-                                const dy = p.y - p2.y;
+                                const dx = p1.x - p2.x;
+                                const dy = p1.y - p2.y;
                                 const dSq = dx * dx + dy * dy;
 
                                 if (dSq < connDistSq) {
@@ -271,7 +291,7 @@ document.addEventListener('alpine:init', () => {
                                     this.ctx.lineWidth = (1 - dist / this.config.lineDistance) * 1.5;
                                     this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
                                     this.ctx.beginPath();
-                                    this.ctx.moveTo(p.x, p.y);
+                                    this.ctx.moveTo(p1.x, p1.y);
                                     this.ctx.lineTo(p2.x, p2.y);
                                     this.ctx.stroke();
                                 }
