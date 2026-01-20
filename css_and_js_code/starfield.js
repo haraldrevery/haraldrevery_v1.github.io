@@ -28,7 +28,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. NEW ANIMATION: Parallax Starfield (Ultra-Low Computation) */
+/* 2. UPDATED: Parallax Starfield with LARGER Particles */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -44,58 +44,55 @@ window.restartPlexus = function() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   
-  // High-res internal dimensions
   const width = 1000, height = 1100;
-  const starCount = window.innerWidth < 768 ? 150 : 400;
+  // Slightly increased count to balance the larger size
+  const starCount = window.innerWidth < 768 ? 180 : 450; 
   const stars = [];
 
-  // Performance Optimization: Pre-render a star to an offscreen canvas
+  // Optimized Star Texture
   const starCanvas = document.createElement('canvas');
-  starCanvas.width = 10;
-  starCanvas.height = 10;
+  starCanvas.width = 20; // Increased buffer for larger stars
+  starCanvas.height = 20;
   const sCtx = starCanvas.getContext('2d');
-  const gradient = sCtx.createRadialGradient(5, 5, 0, 5, 5, 5);
+  const gradient = sCtx.createRadialGradient(10, 10, 0, 10, 10, 10);
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.8)');
   gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
   sCtx.fillStyle = gradient;
-  sCtx.fillRect(0, 0, 10, 10);
+  sCtx.fillRect(0, 0, 20, 20);
 
   class Star {
     constructor() {
       this.reset();
-      // Start stars at random positions across the full field
       this.x = Math.random() * width;
       this.y = Math.random() * height;
     }
     reset() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      // Assign to 3 parallax depth layers
+      
       const layer = Math.random();
-      if (layer > 0.9) { // Front layer
+      if (layer > 0.9) { // Hero Layer (Largest)
         this.z = 3;
-        this.size = 2.5;
-        this.baseSpeed = 1.2;
-      } else if (layer > 0.6) { // Middle layer
+        this.size = Math.random() * 4 + 6; // 6px to 10px
+        this.baseSpeed = 1.4;
+      } else if (layer > 0.6) { // Mid Layer
         this.z = 2;
-        this.size = 1.5;
-        this.baseSpeed = 0.6;
-      } else { // Background layer
+        this.size = Math.random() * 2 + 3.5; // 3.5px to 5.5px
+        this.baseSpeed = 0.7;
+      } else { // Far Layer
         this.z = 1;
-        this.size = 0.8;
-        this.baseSpeed = 0.2;
+        this.size = Math.random() * 1.5 + 1.5; // 1.5px to 3px
+        this.baseSpeed = 0.3;
       }
-      this.alpha = (Math.random() * 0.5 + 0.3).toFixed(2);
+      this.alpha = (Math.random() * 0.4 + 0.4).toFixed(2);
     }
     update(mx, my) {
-      // Basic movement
       this.y += this.baseSpeed;
       
-      // Parallax mouse influence based on depth (z)
-      const parallaxX = mx * 0.02 * this.z;
-      const parallaxY = my * 0.02 * this.z;
+      const parallaxX = mx * 0.025 * this.z;
+      const parallaxY = my * 0.025 * this.z;
 
-      // Wrap around logic
       if (this.y > height) {
         this.y = 0;
         this.x = Math.random() * width;
@@ -104,12 +101,9 @@ window.restartPlexus = function() {
       this.renderX = this.x + parallaxX;
       this.renderY = this.y + parallaxY;
     }
-    draw(ctx, isDark) {
-      // Adjust star color for dark/light mode
+    draw(ctx) {
       ctx.globalAlpha = this.alpha;
       const drawSize = this.size;
-      
-      // Use the pre-rendered star image for extreme speed
       ctx.drawImage(starCanvas, this.renderX | 0, this.renderY | 0, drawSize, drawSize);
     }
   }
@@ -120,14 +114,13 @@ window.restartPlexus = function() {
     ctx.clearRect(0, 0, width, height);
     const isDark = document.documentElement.classList.contains('dark');
     
-    // Invert starfield if in light mode for visibility
     if (!isDark) {
         ctx.filter = 'invert(1)';
     }
 
     for (let i = 0; i < stars.length; i++) {
       stars[i].update(globalMouseX, globalMouseY);
-      stars[i].draw(ctx, isDark);
+      stars[i].draw(ctx);
     }
     
     ctx.filter = 'none';
