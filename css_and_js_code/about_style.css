@@ -861,7 +861,6 @@ body.glightbox-open {
   .lg\:flex-row-reverse {
     flex-direction: row-reverse;
   }
-  
   .lg\:w-1\/2 {
     width: 50%;
   }
