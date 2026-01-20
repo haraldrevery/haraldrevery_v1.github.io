@@ -267,7 +267,7 @@ document.addEventListener('alpine:init', () => {
 
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 21 : 210; // Slight boost for desktop
-            this.config.lineDistance = isMobile ? 140 : 350;
+            this.config.lineDistance = isMobile ? 140 : 450;
 
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
