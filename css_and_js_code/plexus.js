@@ -1,7 +1,7 @@
-/* Performance & Config constants */
+/* Performance constants */
 const TWO_PI = Math.PI * 2;
 
-/* 1. KEEP: 3D Mouse Rotation Logic (Exactly as original) */
+/* 1. KEEP: 3D Mouse Rotation Logic (Tilt Effect) */
 let targetRotateX = 0, targetRotateY = 0;
 let currentRotateX = 0, currentRotateY = 0;
 const logoSvg = document.getElementById('main-logo-svg');
@@ -30,12 +30,13 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. NEW: Grid Parallax Logic (Replaces Plexus) */
+/* 2. REPLACED: Grid Parallax Logic (Canvas Trails replacement) */
 let plexusRequestId;
 let mouseX = 0, mouseY = 0;
+let lerpX = 0, lerpY = 0;
 
 document.addEventListener('mousemove', (e) => {
-  // Normalized coordinates (-1 to 1)
+  // Normalize mouse to range -1 to 1
   mouseX = (e.clientX / window.innerWidth) - 0.5;
   mouseY = (e.clientY / window.innerHeight) - 0.5;
 });
@@ -47,51 +48,54 @@ window.restartPlexus = function() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // Static internal resolution for the logo-area canvas
+  // Internal resolution for the logo area
   const width = 1000, height = 1100;
   
-  function drawGrid(lerpMouseX, lerpMouseY) {
+  function draw() {
     ctx.clearRect(0, 0, width, height);
     
+    // Smooth the mouse movement for the grid
+    lerpX += (mouseX - lerpX) * 0.08;
+    lerpY += (mouseY - lerpY) * 0.08;
+
     const isDark = document.documentElement.classList.contains('dark');
     const color = isDark ? "255, 255, 255" : "0, 0, 0";
     
-    // Grid settings
+    // Define Grid Layers (Depth effect)
+    // spacing: pixels between lines, speed: parallax intensity, opacity: line brightness
     const layers = [
-      { spacing: 60, speed: 15, opacity: 0.05, lineWidth: 1 },
-      { spacing: 120, speed: 35, opacity: 0.1, lineWidth: 2 }
+      { spacing: 60, speed: 25, opacity: 0.04, width: 1 },
+      { spacing: 120, speed: 50, opacity: 0.08, width: 2 },
+      { spacing: 240, speed: 100, opacity: 0.12, width: 1 }
     ];
 
     layers.forEach(layer => {
       ctx.beginPath();
       ctx.strokeStyle = `rgba(${color}, ${layer.opacity})`;
-      ctx.lineWidth = layer.lineWidth;
+      ctx.lineWidth = layer.width;
 
-      const offsetX = mouseX * layer.speed;
-      const offsetY = mouseY * layer.speed;
+      const offX = lerpX * layer.speed;
+      const offY = lerpY * layer.speed;
 
       // Vertical lines
-      for (let x = offsetX % layer.spacing; x < width; x += layer.spacing) {
+      for (let x = (offX % layer.spacing); x < width + layer.spacing; x += layer.spacing) {
         ctx.moveTo(x | 0, 0);
         ctx.lineTo(x | 0, height);
       }
       // Horizontal lines
-      for (let y = offsetY % layer.spacing; y < height; y += layer.spacing) {
+      for (let y = (offY % layer.spacing); y < height + layer.spacing; y += layer.spacing) {
         ctx.moveTo(0, y | 0);
         ctx.lineTo(width, y | 0);
       }
       ctx.stroke();
     });
-  }
 
-  function animate() {
-    drawGrid();
-    plexusRequestId = requestAnimationFrame(animate);
+    plexusRequestId = requestAnimationFrame(draw);
   }
-  animate();
+  draw();
 };
 
-/* 3. KEEP: Restart Logo Animations (SVG drawing logic) */
+/* 3. KEEP: Restart Logo Animations (SVG Drawing logic) */
 window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
   const waves = document.querySelectorAll('.wave-echo');
@@ -124,17 +128,19 @@ window.restartLogoAnimations = function() {
   });
 };
 
-/* Initial Start */
+/* Initial Start Sequence */
 document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
   setTimeout(() => window.restartLogoAnimations(), 1);
 });
 
-/* 4. NEW: Alpine Parallax Background (Replaces Background Plexus) */
+/* 4. REPLACED: Background Grid (Alpine.js integration) */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
         ctx: null,
+        bgLerpX: 0,
+        bgLerpY: 0,
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
@@ -151,34 +157,37 @@ document.addEventListener('alpine:init', () => {
             const canvas = this.canvas;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            this.bgLerpX += (mouseX - this.bgLerpX) * 0.05;
+            this.bgLerpY += (mouseY - this.bgLerpY) * 0.05;
+
             const isDark = document.documentElement.classList.contains('dark');
             const color = isDark ? "255, 255, 255" : "0, 0, 0";
             
-            // Background grid is subtle and slow
             const spacing = 100;
-            const speed = 50; // Pixels of max movement
+            const intensity = 60; // How much the grid moves
             
-            const offX = (mouseX * speed);
-            const offY = (mouseY * speed);
+            const offX = (this.bgLerpX * intensity);
+            const offY = (this.bgLerpY * intensity);
 
             ctx.beginPath();
             ctx.lineWidth = 0.5;
-            ctx.strokeStyle = `rgba(${color}, 0.08)`;
+            ctx.strokeStyle = `rgba(${color}, 0.07)`;
 
-            for (let x = (offX % spacing); x < canvas.width; x += spacing) {
+            // Subtle Background Grid
+            for (let x = (offX % spacing); x < canvas.width + spacing; x += spacing) {
                 ctx.moveTo(x | 0, 0);
                 ctx.lineTo(x | 0, canvas.height);
             }
-            for (let y = (offY % spacing); y < canvas.height; y += spacing) {
+            for (let y = (offY % spacing); y < canvas.height + spacing; y += spacing) {
                 ctx.moveTo(0, y | 0);
                 ctx.lineTo(canvas.width, y | 0);
             }
             ctx.stroke();
 
-            // Add subtle "tracking dots" at intersections
-            ctx.fillStyle = `rgba(${color}, 0.2)`;
-            for (let x = (offX % spacing); x < canvas.width; x += spacing) {
-                for (let y = (offY % spacing); y < canvas.height; y += spacing) {
+            // Add Intersection Dots
+            ctx.fillStyle = `rgba(${color}, 0.15)`;
+            for (let x = (offX % spacing); x < canvas.width + spacing; x += spacing) {
+                for (let y = (offY % spacing); y < canvas.height + spacing; y += spacing) {
                     ctx.fillRect((x - 1) | 0, (y - 1) | 0, 2, 2);
                 }
             }
