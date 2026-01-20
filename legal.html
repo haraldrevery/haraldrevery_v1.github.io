@@ -320,7 +320,7 @@
      x-data="{ showToggle: false }"
      x-init="
        /* This keeps your 2.8s delay for the animation, but we've optimized how the button 'exists' */
-       setTimeout(() => showToggle = true, 2800);
+       setTimeout(() => showToggle = true, 1000);
        $watch('darkMode', () => {
          setTimeout(() => {
            if (window.restartPlexus) window.restartPlexus();
