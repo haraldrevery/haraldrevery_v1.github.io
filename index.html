@@ -5,8 +5,8 @@
   x-init="$watch('darkMode', val => { 
     localStorage.setItem('darkMode', val);
     if (window.restartPlexus) { window.restartPlexus(); } 
-  })"
-  :class="{ 'dark': darkMode }">
+  })">
+    
 <head>
 <link rel="preload" href="./fonts/HaraldReveryTextFont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
 <link rel="preload" href="./fonts/HaraldReveryMonoFont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -31,7 +31,7 @@
 <!-- anti FOUC -->  
 <script src="./css_and_js_code/antiflash.js"></script>
 <!-- Alpine (handles the darkmode for the site) -->
-<script defer src="./css_and_js_code/alpine.min.js" defer integrity="sha384-4E5IZutrbnm0GBnBqEA2tgLsTg6ublElJlpE9qQQNL0WrY9g4GPahFyJYwnDet2+" crossorigin="anonymous"></script>
+<script defer src="./css_and_js_code/alpine.min.js" integrity="sha384-4E5IZutrbnm0GBnBqEA2tgLsTg6ublElJlpE9qQQNL0WrY9g4GPahFyJYwnDet2+" crossorigin="anonymous" defer></script>
     
 <!-- Internet icon -->
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
@@ -233,7 +233,9 @@
     <span x-show="darkMode" class="block">☀</span>
   </button>
 </div>
- 
+
+
+      
 <!-- Grid to the left + Text to the right -->
 <div id="discography-section" class="container mx-auto py-20 px-5 md:px-0">
  <div class="flex flex-col lg:flex-row gap-16 items-center">
