@@ -63,6 +63,8 @@ window.restartPlexus = function() {
     let particles = [];
     let currentParticleCount = 0;
     const startTime = Date.now();
+    const connections = new Map(); // Track connection ages
+    const FADE_DURATION = 300; // milliseconds for fade in/out
     
     function createParticle(id) {
         return {
@@ -72,6 +74,10 @@ window.restartPlexus = function() {
             vx: (Math.random() - 0.5) * 0.8,
             vy: (Math.random() - 0.5) * 0.8
         };
+    }
+    
+    function getConnectionKey(id1, id2) {
+        return id1 < id2 ? `${id1}-${id2}` : `${id2}-${id1}`;
     }
     
     function animate() {
@@ -112,8 +118,10 @@ window.restartPlexus = function() {
             }
         }
         
-        // Part 2: Batch Drawing by Alpha (11 bins)
+        // Part 2: Batch Drawing by Alpha (11 bins) with fade in/out
         const bins = Array.from({ length: 11 }, () => new Path2D());
+        const activeConnections = new Set();
+        const now = Date.now();
 
         for (let i = 0; i < currentParticleCount; i++) {
             const p1 = particles[i];
@@ -133,16 +141,55 @@ window.restartPlexus = function() {
                             const dSq = dx * dx + dy * dy;
 
                             if (dSq < connDistSq) {
+                                const connKey = getConnectionKey(p1.id, p2.id);
+                                activeConnections.add(connKey);
+                                
+                                // Track connection age
+                                if (!connections.has(connKey)) {
+                                    connections.set(connKey, { birth: now, death: null });
+                                }
+                                
                                 const dist = Math.sqrt(dSq);
-                                const alphaBin = Math.floor((1 - dist / connectionDistance) * 10);
-                                bins[alphaBin].moveTo(p1.x | 0, p1.y | 0);
-                                bins[alphaBin].lineTo(p2.x | 0, p2.y | 0);
+                                const baseAlpha = (1 - dist / connectionDistance);
+                                const alphaBin = Math.floor(baseAlpha * 10);
+                                
+                                // Calculate fade multiplier
+                                const connData = connections.get(connKey);
+                                let fadeMult = 1;
+                                if (connData.death !== null) {
+                                    // Fading out
+                                    const timeSinceDeath = now - connData.death;
+                                    fadeMult = Math.max(0, 1 - timeSinceDeath / FADE_DURATION);
+                                } else {
+                                    // Fading in
+                                    const age = now - connData.birth;
+                                    fadeMult = Math.min(1, age / FADE_DURATION);
+                                }
+                                
+                                if (fadeMult > 0.01) {
+                                    bins[alphaBin].moveTo(p1.x | 0, p1.y | 0);
+                                    bins[alphaBin].lineTo(p2.x | 0, p2.y | 0);
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        
+        // Mark dying connections
+        connections.forEach((data, key) => {
+            if (!activeConnections.has(key) && data.death === null) {
+                data.death = now;
+            }
+        });
+        
+        // Clean up old connections
+        connections.forEach((data, key) => {
+            if (data.death !== null && now - data.death > FADE_DURATION) {
+                connections.delete(key);
+            }
+        });
 
         // Render 11 paths
         ctx.lineWidth = 0.8;
@@ -202,6 +249,8 @@ document.addEventListener('alpine:init', () => {
         grid: [],
         cols: 0,
         rows: 0,
+        connections: new Map(),
+        FADE_DURATION: 300,
         config: {
             particleCount: 0,
             lineDistance: 0,
@@ -248,6 +297,10 @@ document.addEventListener('alpine:init', () => {
             };
         },
 
+        getConnectionKey(id1, id2) {
+            return id1 < id2 ? `${id1}-${id2}` : `${id2}-${id1}`;
+        },
+
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             
@@ -287,6 +340,8 @@ document.addEventListener('alpine:init', () => {
 
             const bins = Array.from({ length: 6 }, () => new Path2D());
             const connDistSq = this.config.lineDistance * this.config.lineDistance;
+            const activeConnections = new Set();
+            const now = Date.now();
 
             this.particles.forEach(p1 => {
                 const c = Math.floor(p1.x / this.config.lineDistance);
@@ -303,14 +358,53 @@ document.addEventListener('alpine:init', () => {
                                 const dSq = dx * dx + dy * dy;
 
                                 if (dSq < connDistSq) {
+                                    const connKey = this.getConnectionKey(p1.id, p2.id);
+                                    activeConnections.add(connKey);
+                                    
+                                    // Track connection age
+                                    if (!this.connections.has(connKey)) {
+                                        this.connections.set(connKey, { birth: now, death: null });
+                                    }
+                                    
                                     const dist = Math.sqrt(dSq);
-                                    const alphaBin = Math.floor((1 - dist / this.config.lineDistance) * 5);
-                                    bins[alphaBin].moveTo(p1.x | 0, p1.y | 0);
-                                    bins[alphaBin].lineTo(p2.x | 0, p2.y | 0);
+                                    const baseAlpha = (1 - dist / this.config.lineDistance);
+                                    const alphaBin = Math.floor(baseAlpha * 5);
+                                    
+                                    // Calculate fade multiplier
+                                    const connData = this.connections.get(connKey);
+                                    let fadeMult = 1;
+                                    if (connData.death !== null) {
+                                        // Fading out
+                                        const timeSinceDeath = now - connData.death;
+                                        fadeMult = Math.max(0, 1 - timeSinceDeath / this.FADE_DURATION);
+                                    } else {
+                                        // Fading in
+                                        const age = now - connData.birth;
+                                        fadeMult = Math.min(1, age / this.FADE_DURATION);
+                                    }
+                                    
+                                    if (fadeMult > 0.01) {
+                                        bins[alphaBin].moveTo(p1.x | 0, p1.y | 0);
+                                        bins[alphaBin].lineTo(p2.x | 0, p2.y | 0);
+                                    }
                                 }
                             });
                         }
                     }
+                }
+            });
+            
+            // Mark dying connections
+            this.connections.forEach((data, key) => {
+                if (!activeConnections.has(key) && data.death === null) {
+                    data.death = now;
+                }
+            });
+            
+            // Clean up old connections
+            this.connections.forEach((data, key) => {
+                if (data.death !== null && now - data.death > this.FADE_DURATION) {
+                    this.connections.delete(key);
                 }
             });
 
