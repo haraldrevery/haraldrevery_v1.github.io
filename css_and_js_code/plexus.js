@@ -266,7 +266,7 @@ document.addEventListener('alpine:init', () => {
             this.startTime = Date.now();
 
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 21 : 210; // Slight boost for desktop
+            this.config.particleCount = isMobile ? 0 : 210; // Slight boost for desktop
             this.config.lineDistance = isMobile ? 140 : 450;
 
             this.handleResize();
