@@ -30,7 +30,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. UPDATED: Trails with 400% Increased Lengths Across the Board */
+/* 2. MAIN ANIMATION: High-Density Ultra-Long Trails */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -61,13 +61,13 @@ window.restartPlexus = function() {
       
       const rand = Math.random();
       if (rand < 0.10) {
-        // 10% Ultra-Hero Lines: Massive ribbons (1600-2400 segments)
+        // Ultra-Hero Lines: Massive ribbons (1600-2400 segments)
         this.maxLength = Math.floor(Math.random() * 800) + 1600;
       } else if (rand < 0.25) {
-        // 15% Standard Long Lines: (400-600 segments)
+        // Standard Long Lines: (400-600 segments)
         this.maxLength = Math.floor(Math.random() * 200) + 400;
       } else {
-        // 75% Standard Trails: (120-240 segments - still very long)
+        // Standard Trails: (120-240 segments)
         this.maxLength = Math.floor(Math.random() * 120) + 120;
       }
       
@@ -101,7 +101,6 @@ window.restartPlexus = function() {
       this.segments.unshift({x: this.x, y: this.y});
       if (this.segments.length > this.maxLength) this.segments.pop();
 
-      // Increased wrap margin to accommodate the physics of massive trails
       if (this.x < -500) this.x = width + 490;
       if (this.x > width + 500) this.x = -490;
       if (this.y < -500) this.y = height + 490;
@@ -112,10 +111,7 @@ window.restartPlexus = function() {
       ctx.beginPath();
       const rgb = isDark ? "255, 255, 255" : "0, 0, 0";
       ctx.strokeStyle = `rgba(${rgb}, ${this.alpha})`;
-      
-      // Scale width based on length and alpha for a hierarchical look
       ctx.lineWidth = this.maxLength > 1000 ? 1.6 : (this.alpha > 0.8 ? 1.2 : 0.7);
-      
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.moveTo(this.segments[0].x, this.segments[0].y);
@@ -178,76 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => window.restartLogoAnimations(), 1);
 });
 
-/* 4. BACKGROUND: Dense Long-Flow Alpine Background */
+/* 4. BACKGROUND: Empty Alpine Init (Trails Removed) */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
-        canvas: null,
-        ctx: null,
-        points: [],
         init() {
-            this.canvas = this.$refs.canvas;
-            this.ctx = this.canvas.getContext('2d');
-            this.handleResize();
-            window.addEventListener('resize', () => this.handleResize());
-            
-            const bgCount = window.innerWidth < 768 ? 100 : 300;
-            for(let i=0; i < bgCount; i++) {
-                const isUltra = Math.random() < 0.1;
-                this.points.push({
-                    x: Math.random() * this.canvas.width,
-                    y: Math.random() * this.canvas.height,
-                    history: [],
-                    angle: Math.random() * TWO_PI,
-                    // Background trails scaled 400% as well
-                    len: isUltra ? 1800 : Math.floor(Math.random() * 400) + 200,
-                    speed: Math.random() * 0.6 + 0.2,
-                    follows: Math.random() < 0.08,
-                    alpha: Math.random() * (0.25 - 0.05) + 0.05
-                });
-            }
-            this.animate();
-        },
-        handleResize() {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        },
-        animate() {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            const isDark = document.documentElement.classList.contains('dark');
-            const rgb = isDark ? "255, 255, 255" : "0, 0, 0";
-            
-            this.points.forEach(p => {
-                if(p.follows) {
-                  const dx = globalMouseX + (window.innerWidth/2) - p.x;
-                  const dy = globalMouseY + (window.innerHeight/2) - p.y;
-                  p.angle += (Math.atan2(dy, dx) - p.angle) * 0.008;
-                }
-                
-                p.angle += (Math.random() - 0.5) * 0.02;
-                p.x += Math.cos(p.angle) * p.speed;
-                p.y += Math.sin(p.angle) * p.speed;
-                
-                p.history.unshift({x: p.x, y: p.y});
-                if(p.history.length > p.len) p.history.pop();
-                
-                if(p.x < -400 || p.x > this.canvas.width + 400 || p.y < -400 || p.y > this.canvas.height + 400) {
-                    p.x = Math.random() * this.canvas.width;
-                    p.y = Math.random() * this.canvas.height;
-                    p.history = [];
-                }
-                
-                if(p.history.length > 1) {
-                    this.ctx.beginPath();
-                    this.ctx.strokeStyle = `rgba(${rgb}, ${p.alpha})`;
-                    this.ctx.lineWidth = 0.4;
-                    this.ctx.moveTo(p.history[0].x, p.history[0].y);
-                    for(let i=1; i < p.history.length; i++) {
-                        this.ctx.lineTo(p.history[i].x, p.history[i].y);
-                    }
-                    this.ctx.stroke();
-                }
-            });
-            requestAnimationFrame(() => this.animate());
+            // Background trails removed as requested
         }
     }));
 });
