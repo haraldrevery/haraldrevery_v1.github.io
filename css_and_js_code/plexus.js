@@ -1,8 +1,7 @@
-/* Performance constants */
+/* 1. KEEP: 3D Mouse Rotation Logic (Anti-Jitter) */
 const TWO_PI = Math.PI * 2;
 const SPEED_BOOST_RADIUS_SQ = 62500; 
 
-/* 1. KEEP: 3D Mouse Rotation Logic */
 let targetRotateX = 0, targetRotateY = 0;
 let currentRotateX = 0, currentRotateY = 0;
 const logoSvg = document.getElementById('main-logo-svg');
@@ -23,7 +22,6 @@ function smoothRotate() {
   if (logoSvg) {
     currentRotateX += (targetRotateX - currentRotateX) * 0.29;
     currentRotateY += (targetRotateY - currentRotateY) * 0.29;
-    // Removed bitwise truncation to eliminate jitter in rotation
     logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX.toFixed(2)}deg) rotateY(${currentRotateY.toFixed(2)}deg) translateZ(50px)`;
     const shadowAlpha = document.documentElement.classList.contains('dark') ? 0.1 : 0.3;
     logoSvg.style.filter = `drop-shadow(${(currentRotateY * 0.5).toFixed(1)}px ${(currentRotateX * 0.5).toFixed(1)}px 20px rgba(0,0,0,${shadowAlpha}))`;
@@ -32,7 +30,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. OPTIMIZED ANIMATION: Resolution Bump & Wrap-Fix */
+/* 2. MAIN ANIMATION: High-Res Trails with Optimized Loop */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -47,8 +45,6 @@ window.restartPlexus = function() {
   const canvas = document.getElementById('plexus-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
-  // Resolution Bump: Ensure we are using the actual CSS dimensions precisely
   const width = 1000, height = 1100;
   
   const trailCount = window.innerWidth < 768 ? 100 : 420;
@@ -77,7 +73,6 @@ window.restartPlexus = function() {
       this.angle = Math.random() * TWO_PI;
       this.va = (Math.random() - 0.5) * 0.05; 
       
-      // Categorized Opacity Classes: 25%, 50%, 75%, 100%
       const opacityClasses = [0.25, 0.50, 0.75, 1.0];
       this.alpha = opacityClasses[Math.floor(Math.random() * opacityClasses.length)];
     }
@@ -102,9 +97,6 @@ window.restartPlexus = function() {
       this.segments.unshift({x: this.x, y: this.y});
       if (this.segments.length > this.maxLength) this.segments.pop();
 
-      // Fix for "Straight Line Pop" Bug: 
-      // We wrap the coordinates, but the rendering loop will check distance 
-      // to ensure it doesn't draw a line across the wrap.
       if (this.x < -600) this.x = width + 550;
       else if (this.x > width + 600) this.x = -550;
       if (this.y < -600) this.y = height + 550;
@@ -123,8 +115,7 @@ window.restartPlexus = function() {
         const p1 = this.segments[i-1];
         const p2 = this.segments[i];
         
-        // BUG FIX: If distance between segments is huge, it's a "wrap-around" 
-        // We stop drawing this path and start a new one to prevent the straight line.
+        // Wrap detection to prevent straight lines
         if (Math.abs(p1.x - p2.x) > 300 || Math.abs(p1.y - p2.y) > 300) {
            ctx.stroke();
            ctx.beginPath();
@@ -146,9 +137,6 @@ window.restartPlexus = function() {
     const mx = globalMouseX + width/2;
     const my = globalMouseY + height/2;
 
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
     for (let i = 0; i < trails.length; i++) {
       trails[i].update(mx, my);
       trails[i].draw(ctx, rgb);
@@ -159,24 +147,51 @@ window.restartPlexus = function() {
   animate();
 };
 
-/* 3. KEEP: Restart Logo Animations */
+/* 3. LOGO EFFECTS: Wave Implosion Reset Logic */
 window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
+  const waves = document.querySelectorAll('.wave-echo');
   if (!logoGroup) return;
+
   const logoPaths = logoGroup.querySelectorAll('path');
+  
+  // Phase 1: Reset all states instantly
   logoPaths.forEach(path => {
     path.style.animation = 'none';
-    void path.offsetWidth; 
+    path.style.strokeDashoffset = '4000';
+    path.style.fillOpacity = '0';
+  });
+  
+  waves.forEach(wave => {
+    wave.style.animation = 'none';
+    wave.style.transform = 'scale(5)'; // Scale up for the implosion start
+    wave.style.opacity = '0';
+    wave.style.strokeWidth = '0.5px';
+  });
+  
+  // Forced reflow to ensure the 'none' state is registered by the browser
+  void logoGroup.offsetWidth;
+  
+  // Phase 2: Re-apply the drawing and wave animations
+  logoPaths.forEach(path => {
     path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
+  });
+  
+  waves.forEach((wave, index) => {
+    // Delay each wave slightly for the echo effect
+    setTimeout(() => {
+      wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
+    }, index * 120); 
   });
 };
 
+/* 4. INITIALIZATION */
 document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
-  setTimeout(() => window.restartLogoAnimations(), 1);
+  setTimeout(() => window.restartLogoAnimations(), 50);
 });
 
-// Clean up background integration
+// Alpine background cleanup (prevent conflicts)
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({ init() { } }));
 });
