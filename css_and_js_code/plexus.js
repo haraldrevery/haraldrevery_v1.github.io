@@ -65,8 +65,8 @@ window.restartPlexus = function() {
   
   // Particle Settings
   const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 0 : 500; // Safe to increase to 500 now
-  const connectionDistance = isMobile ? 0 : 145;
+  const targetParticleCount = isMobile ? 0 : 420; // Safe to increase to 500 now
+  const connectionDistance = isMobile ? 0 : 140;
   const connDistSq = connectionDistance * connectionDistance;
 
   // --- OPTIMIZATION 1: SPATIAL GRID SETUP ---
@@ -267,7 +267,7 @@ document.addEventListener('alpine:init', () => {
 
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 21 : 210; // Slight boost for desktop
-            this.config.lineDistance = isMobile ? 140 : 275;
+            this.config.lineDistance = isMobile ? 140 : 350;
 
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
