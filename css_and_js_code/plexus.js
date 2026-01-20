@@ -314,7 +314,7 @@ document.addEventListener('alpine:init', () => {
                 }
             });
 
-            ctx.lineWidth = 1.2;
+            this.ctx.lineWidth = 1.2;
             for (let b = 0; b <= 5; b++) {
                 this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
                 this.ctx.stroke(bins[b]);
