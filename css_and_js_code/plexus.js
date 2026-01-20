@@ -1,253 +1,207 @@
 /* Performance constants */
 const TWO_PI = Math.PI * 2;
-const MOUSE_INFLUENCE_DIST_SQ = 62500; // 250² for squared distance check
+const MOUSE_INFLUENCE_DIST_SQ = 62500;
 
-/* Script 3D mouse rotation - EXACTLY AS ORIGINAL */
+/* Script 3D mouse rotation */
 let targetRotateX = 0, targetRotateY = 0;
 let currentRotateX = 0, currentRotateY = 0;
 const logoSvg = document.getElementById('main-logo-svg');
 
 document.addEventListener('mousemove', (e) => {
-  targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
-  targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
+    targetRotateY = ((e.clientX / window.innerWidth) - 0.5) * 40;
+    targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
 });
 
-// Reset rotation when the mouse truly leaves the browser window
 document.addEventListener('mouseout', (e) => {
-  if (!e.relatedTarget && !e.toElement) {
-    targetRotateY = 0;
-    targetRotateX = 0;
-  }
+    if (!e.relatedTarget && !e.toElement) {
+        targetRotateY = 0;
+        targetRotateX = 0;
+    }
 });
 
 function smoothRotate() {
-  if (logoSvg) {
-    currentRotateX += (targetRotateX - currentRotateX) * 0.29;
-    currentRotateY += (targetRotateY - currentRotateY) * 0.29;
-    logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
-    const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
-    logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
-  }
-  requestAnimationFrame(smoothRotate);
+    if (logoSvg) {
+        currentRotateX += (targetRotateX - currentRotateX) * 0.29;
+        currentRotateY += (targetRotateY - currentRotateY) * 0.29;
+        logoSvg.style.transform = `translateX(-9.81%) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(50px)`;
+        const shadowColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.3)';
+        logoSvg.style.filter = `drop-shadow(${currentRotateY * 0.5}px ${currentRotateX * 0.5}px 20px ${shadowColor})`;
+    }
+    requestAnimationFrame(smoothRotate);
 }
 smoothRotate();
 
-
-
-/* Plexus Logo (Optimized with Spatial Grid) */
-// 1. GLOBAL SCOPE: Animation ID and Persistent Mouse Coordinates
+/* Logo Plexus - Optimized with Grid + Batching */
 let plexusRequestId;
-let mouseX = 0, mouseY = 0;
-let targetX = 0, targetY = 0;
+let mouseX = -9999, mouseY = -9999;
 
-// Update mouse position globally so it persists through restarts
 document.addEventListener('mousemove', (e) => {
-  mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-  mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) * 500 + 500;
+    mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2) * 550 + 550;
 });
 
 window.restartPlexus = function() {
-  // Clear previous loop
-  if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
-  
-  const canvas = document.getElementById('plexus-canvas');
-  const svg = document.getElementById('main-logo-svg');
-  if (!canvas || !svg) return;
-  
-  const ctx = canvas.getContext('2d');
-  
-  // Use the dimensions from your original code
-  const width = 1000, height = 1100;
-  
-  // Dynamic Color
-  const isDark = document.documentElement.classList.contains('dark');
-  const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
-  
-  // Particle Settings
-  const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 0 : 500; // Safe to increase to 500 now
-  const connectionDistance = isMobile ? 0 : 145;
-  const connDistSq = connectionDistance * connectionDistance;
-
-  // --- OPTIMIZATION 1: SPATIAL GRID SETUP ---
-  const cellSize = connectionDistance;
-  const cols = Math.ceil(width / cellSize);
-  const rows = Math.ceil(height / cellSize);
-  
-  // Particle Arrays (Float32 is faster for math)
-  const posX = new Float32Array(targetParticleCount);
-  const posY = new Float32Array(targetParticleCount);
-  const velX = new Float32Array(targetParticleCount);
-  const velY = new Float32Array(targetParticleCount);
-  const ids = new Int16Array(targetParticleCount); // ID tracking for de-duplication
-
-  let currentParticleCount = 0;
-  const startTime = Date.now();
-  
-  function createParticle(i) {
-    posX[i] = Math.random() * width;
-    posY[i] = Math.random() * height;
-    velX[i] = (Math.random() - 0.5) * 0.8;
-    velY[i] = (Math.random() - 0.5) * 0.8;
-    ids[i] = i; // Assign ID
-  }
-  
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
+    if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
     
-    // Build-up logic
-    const progress = Math.min((Date.now() - startTime) / 3000, 1);
-    const targetThisFrame = Math.floor(progress * targetParticleCount);
+    const canvas = document.getElementById('plexus-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
     
-    while (currentParticleCount < targetThisFrame) {
-      createParticle(currentParticleCount);
-      currentParticleCount++;
-    }
-
-    // --- OPTIMIZATION 2: GRID & BATCHING ---
-    // Create an empty grid for this frame
-    const grid = Array.from({ length: cols * rows }, () => []);
+    const width = 1000, height = 1100;
+    const isDark = () => document.documentElement.classList.contains('dark');
     
-    // Draw Particles & Populate Grid
-    ctx.fillStyle = `rgba(${rgb}, 0.8)`;
+    const isMobile = window.innerWidth < 768;
+    const targetParticleCount = isMobile ? 0 : 400;
+    const connectionDistance = 145;
+    const connDistSq = connectionDistance * connectionDistance;
     
-    for (let i = 0; i < currentParticleCount; i++) {
-      // Movement
-      posX[i] += velX[i];
-      posY[i] += velY[i];
-      if (posX[i] < 0 || posX[i] > width) velX[i] *= -1;
-      if (posY[i] < 0 || posY[i] > height) velY[i] *= -1;
-      
-      // Draw Dot (Snapped to integer pixels for speed)
-      ctx.fillRect((posX[i] - 1) | 0, (posY[i] - 1) | 0, 2, 2);
-
-      // Add to Grid
-      const c = Math.floor(posX[i] / cellSize);
-      const r = Math.floor(posY[i] / cellSize);
-      if (c >= 0 && c < cols && r >= 0 && r < rows) {
-        grid[c + r * cols].push(i);
-      }
+    // Spatial Grid Configuration
+    const cellSize = connectionDistance;
+    const cols = Math.ceil(width / cellSize);
+    const rows = Math.ceil(height / cellSize);
+    
+    let particles = [];
+    let currentParticleCount = 0;
+    const startTime = Date.now();
+    
+    function createParticle(id) {
+        return {
+            id: id,
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8
+        };
     }
     
-    // Draw Lines using Path Batching (Reduces draw calls from ~500 to ~10)
-    const bins = Array.from({ length: 11 }, () => new Path2D());
-    
-    for (let i = 0; i < currentParticleCount; i++) {
-      const x1 = posX[i], y1 = posY[i];
-      const c = Math.floor(x1 / cellSize);
-      const r = Math.floor(y1 / cellSize);
-      const id1 = ids[i];
-
-      // Check Neighboring Cells (3x3 area)
-      for (let ox = -1; ox <= 1; ox++) {
-        for (let oy = -1; oy <= 1; oy++) {
-          const nc = c + ox, nr = r + oy;
-          if (nc >= 0 && nc < cols && nr >= 0 && nr < rows) {
-            const cellParticles = grid[nc + nr * cols];
-            for (let k = 0; k < cellParticles.length; k++) {
-              const idx2 = cellParticles[k];
-              const id2 = ids[idx2];
-              
-              // --- OPTIMIZATION 3: PREVENT DOUBLE STROKES ---
-              // Only draw if ID1 < ID2. This ensures the line is drawn exactly once.
-              if (id1 >= id2) continue;
-
-              const dx = x1 - posX[idx2], dy = y1 - posY[idx2];
-              const distSq = dx * dx + dy * dy;
-
-              if (distSq < connDistSq) {
-                // Approximate distance for alpha binning
-                const dist = Math.sqrt(distSq);
-                // Map distance 0..145 to bin 10..0
-                const alphaBin = Math.floor((1 - dist / connectionDistance) * 10);
-                if (alphaBin >= 0 && alphaBin <= 10) {
-                   // Snap coordinates to integers (| 0) for faster rendering
-                   bins[alphaBin].moveTo(x1 | 0, y1 | 0);
-                   bins[alphaBin].lineTo(posX[idx2] | 0, posY[idx2] | 0);
-                }
-              }
-            }
-          }
+    function animate() {
+        const rgb = isDark() ? "255, 255, 255" : "26, 26, 26";
+        ctx.clearRect(0, 0, width, height);
+        
+        const progress = Math.min((Date.now() - startTime) / 3000, 1);
+        const targetThisFrame = Math.floor(progress * targetParticleCount);
+        
+        while (currentParticleCount < targetThisFrame) {
+            particles.push(createParticle(currentParticleCount));
+            currentParticleCount++;
         }
-      }
-    }
+        
+        const grid = Array.from({ length: cols * rows }, () => []);
+        
+        // Part 1: Update Positions and Rebuild Grid
+        ctx.fillStyle = `rgba(${rgb}, 0.8)`;
+        for (let i = 0; i < currentParticleCount; i++) {
+            const p = particles[i];
+            
+            // Mouse influence
+            const dxM = p.x - mouseX, dyM = p.y - mouseY;
+            const speedMult = (dxM*dxM + dyM*dyM) < MOUSE_INFLUENCE_DIST_SQ ? 1.96 : 1.0;
+            
+            p.x += p.vx * speedMult;
+            p.y += p.vy * speedMult;
+            
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+            
+            ctx.fillRect((p.x - 1) | 0, (p.y - 1) | 0, 2, 2);
 
-    // Render the batched paths
-    ctx.lineWidth = 0.8;
-    for (let b = 0; b <= 10; b++) {
-      // Scale alpha: bin 10 = 0.8 opacity, bin 0 = 0.0 opacity
-      const alpha = (b / 10) * 0.8; 
-      if (alpha > 0.01) {
-        ctx.strokeStyle = `rgba(${rgb}, ${alpha})`;
-        ctx.stroke(bins[b]);
-      }
+            const c = Math.floor(p.x / cellSize);
+            const r = Math.floor(p.y / cellSize);
+            if (c >= 0 && c < cols && r >= 0 && r < rows) {
+                grid[c + r * cols].push(p);
+            }
+        }
+        
+        // Part 2: Batch Drawing by Alpha (11 bins)
+        const bins = Array.from({ length: 11 }, () => new Path2D());
+
+        for (let i = 0; i < currentParticleCount; i++) {
+            const p1 = particles[i];
+            const c = Math.floor(p1.x / cellSize);
+            const r = Math.floor(p1.y / cellSize);
+
+            for (let goX = -1; goX <= 1; goX++) {
+                for (let goY = -1; goY <= 1; goY++) {
+                    const nc = c + goX, nr = r + goY;
+                    if (nc >= 0 && nc < cols && nr >= 0 && nr < rows) {
+                        const neighbors = grid[nc + nr * cols];
+                        for (let j = 0; j < neighbors.length; j++) {
+                            const p2 = neighbors[j];
+                            if (p1.id >= p2.id) continue;
+
+                            const dx = p1.x - p2.x, dy = p1.y - p2.y;
+                            const dSq = dx * dx + dy * dy;
+
+                            if (dSq < connDistSq) {
+                                const dist = Math.sqrt(dSq);
+                                const alphaBin = Math.floor((1 - dist / connectionDistance) * 10);
+                                bins[alphaBin].moveTo(p1.x | 0, p1.y | 0);
+                                bins[alphaBin].lineTo(p2.x | 0, p2.y | 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Render 11 paths
+        ctx.lineWidth = 0.8;
+        for (let b = 0; b <= 10; b++) {
+            ctx.strokeStyle = `rgba(${rgb}, ${(b * 8) / 100})`;
+            ctx.stroke(bins[b]);
+        }
+        
+        plexusRequestId = requestAnimationFrame(animate);
     }
-    
-    plexusRequestId = requestAnimationFrame(animate);
-  }
-  
-  animate();
+    animate();
 };
 
-// Start initially
-document.addEventListener('DOMContentLoaded', () => {
-  window.restartPlexus();
-});
-
-
-
-/* restart logo when dark/light mode */
-
+/* SVG Logo Restart Logic */
 window.restartLogoAnimations = function() {
-  const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
-  const waves = document.querySelectorAll('.wave-echo');
-  if (!logoGroup) return;
+    const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
+    const waves = document.querySelectorAll('.wave-echo');
+    if (!logoGroup) return;
 
-  const logoPaths = logoGroup.querySelectorAll('path');
-  
-  // Phase 1: Remove all animations at once
-  logoPaths.forEach(path => {
-    path.style.animation = 'none';
-    path.style.strokeDashoffset = '4000';
-    path.style.fillOpacity = '0';
-  });
-  
-  waves.forEach(wave => {
-    wave.style.animation = 'none';
-    wave.style.transform = 'scale(5)';
-    wave.style.opacity = '0';
-    wave.style.strokeWidth = '0.5px';
-  });
-  
-  // Single forced reflow for ALL elements
-  void logoGroup.offsetWidth;
-  
-  // Phase 2: Re-apply animations
-  logoPaths.forEach(path => {
-    path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
-  });
-  
-  waves.forEach((wave, index) => {
-    setTimeout(() => {
-      wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
-    }, index * 100);
-  });
-};
-
+    const logoPaths = logoGroup.querySelectorAll('path');
+    logoPaths.forEach(path => {
+        path.style.animation = 'none';
+        path.style.strokeDashoffset = '4000';
+        path.style.fillOpacity = '0';
+    });
     
+    waves.forEach(wave => {
+        wave.style.animation = 'none';
+        wave.style.transform = 'scale(5)';
+        wave.style.opacity = '0';
+        wave.style.strokeWidth = '0.5px';
+    });
+    
+    void logoGroup.offsetWidth;
+    
+    logoPaths.forEach(path => {
+        path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
+    });
+    
+    waves.forEach((wave, index) => {
+        setTimeout(() => {
+            wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
+        }, index * 100);
+    });
+};
 
 setTimeout(() => window.restartPlexus(), 150);
-setTimeout(() => window.restartLogoAnimations(), 1); // logo a bit later
+setTimeout(() => window.restartLogoAnimations(), 1);
 
-
-/* Plexus background (Optimized with Spatial Grid) */
-
+/* Plexus Background - Optimized with Grid + Batching */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
         ctx: null,
         particles: [],
         startTime: null,
+        grid: [],
+        cols: 0,
+        rows: 0,
         config: {
             particleCount: 0,
             lineDistance: 0,
@@ -256,26 +210,21 @@ document.addEventListener('alpine:init', () => {
             lineOpacity: 0.2
         },
         mouse: { x: -9999, y: -9999 },
-        // Grid properties
-        cols: 0, 
-        rows: 0,
+
+        get darkMode() {
+            return document.documentElement.classList.contains('dark');
+        },
 
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
             this.startTime = Date.now();
-
-            const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 21 : 100; // Slight boost for desktop
-            this.config.lineDistance = isMobile ? 299 : 221;
-
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
             window.addEventListener('mousemove', (e) => {
                 this.mouse.x = e.clientX;
                 this.mouse.y = e.clientY;
             });
-
             this.animate();
         },
 
@@ -283,17 +232,15 @@ document.addEventListener('alpine:init', () => {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 25 : 100;
-            this.config.lineDistance = isMobile ? 250 : 221;
-            
-            // Recalculate Grid Dimensions
+            this.config.particleCount = isMobile ? 21 : 96;
+            this.config.lineDistance = isMobile ? 299 : 221;
             this.cols = Math.ceil(this.canvas.width / this.config.lineDistance);
             this.rows = Math.ceil(this.canvas.height / this.config.lineDistance);
         },
 
         createParticle(id) {
             return {
-                id: id, // Assign unique ID
+                id: id,
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
                 vx: (Math.random() - 0.5) * this.config.baseSpeed,
@@ -303,7 +250,7 @@ document.addEventListener('alpine:init', () => {
 
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+            
             const progress = Math.min((Date.now() - this.startTime) / 3000, 1);
             const currentTarget = Math.floor(progress * this.config.particleCount);
 
@@ -313,11 +260,8 @@ document.addEventListener('alpine:init', () => {
 
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
             this.ctx.fillStyle = `rgba(${color}, 0.4)`;
-            
-            // Reset Grid
-            const grid = Array.from({ length: this.cols * this.rows }, () => []);
+            this.grid = Array.from({ length: this.cols * this.rows }, () => []);
 
-            // 1. Update Particles & Fill Grid
             this.particles.forEach((p) => {
                 const dxMouse = p.x - this.mouse.x;
                 const dyMouse = p.y - this.mouse.y;
@@ -334,15 +278,13 @@ document.addEventListener('alpine:init', () => {
                 this.ctx.arc(p.x | 0, p.y | 0, this.config.particleSize, 0, TWO_PI);
                 this.ctx.fill();
 
-                // Add to Grid
                 const c = Math.floor(p.x / this.config.lineDistance);
                 const r = Math.floor(p.y / this.config.lineDistance);
                 if (c >= 0 && c < this.cols && r >= 0 && r < this.rows) {
-                    grid[c + r * this.cols].push(p);
+                    this.grid[c + r * this.cols].push(p);
                 }
             });
 
-            // 2. Draw Lines using Alpha Batching (5 bins for background)
             const bins = Array.from({ length: 6 }, () => new Path2D());
             const connDistSq = this.config.lineDistance * this.config.lineDistance;
 
@@ -350,45 +292,32 @@ document.addEventListener('alpine:init', () => {
                 const c = Math.floor(p1.x / this.config.lineDistance);
                 const r = Math.floor(p1.y / this.config.lineDistance);
 
-                // Check 3x3 Grid
-                for (let ox = -1; ox <= 1; ox++) {
-                    for (let oy = -1; oy <= 1; oy++) {
-                        const nc = c + ox, nr = r + oy;
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        const nc = c + i, nr = r + j;
                         if (nc >= 0 && nc < this.cols && nr >= 0 && nr < this.rows) {
-                            const neighbors = grid[nc + nr * this.cols];
-                            for (let k = 0; k < neighbors.length; k++) {
-                                const p2 = neighbors[k];
-                                
-                                // ID Check: Prevent double drawing
-                                if (p1.id >= p2.id) continue;
+                            this.grid[nc + nr * this.cols].forEach(p2 => {
+                                if (p1.id >= p2.id) return;
 
-                                const dx = p1.x - p2.x;
-                                const dy = p1.y - p2.y;
+                                const dx = p1.x - p2.x, dy = p1.y - p2.y;
                                 const dSq = dx * dx + dy * dy;
 
                                 if (dSq < connDistSq) {
                                     const dist = Math.sqrt(dSq);
-                                    // Map 0..maxDist to bins 5..0
-                                    const binIdx = Math.floor((1 - dist / this.config.lineDistance) * 5);
-                                    if (binIdx >= 0 && binIdx <= 5) {
-                                        bins[binIdx].moveTo(p1.x | 0, p1.y | 0);
-                                        bins[binIdx].lineTo(p2.x | 0, p2.y | 0);
-                                    }
+                                    const alphaBin = Math.floor((1 - dist / this.config.lineDistance) * 5);
+                                    bins[alphaBin].moveTo(p1.x | 0, p1.y | 0);
+                                    bins[alphaBin].lineTo(p2.x | 0, p2.y | 0);
                                 }
-                            }
+                            });
                         }
                     }
                 }
             });
 
-            // Render Bins
+            this.ctx.lineWidth = 1.2;
             for (let b = 0; b <= 5; b++) {
-                const alpha = (b / 5) * this.config.lineOpacity;
-                if (alpha > 0.01) {
-                    this.ctx.lineWidth = (b / 5) * 1.5;
-                    this.ctx.strokeStyle = `rgba(${color}, ${alpha})`;
-                    this.ctx.stroke(bins[b]);
-                }
+                this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
+                this.ctx.stroke(bins[b]);
             }
 
             requestAnimationFrame(() => this.animate());
