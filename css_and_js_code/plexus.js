@@ -240,7 +240,7 @@ setTimeout(() => window.restartPlexus(), 150);
 setTimeout(() => window.restartLogoAnimations(), 1); // logo a bit later
 
 
-/* Plexus background (Optimized with Spatial Grid) */
+/* Plexus background (Optimized with Spatial Grid + 10-Step Fading) */
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
@@ -342,8 +342,9 @@ document.addEventListener('alpine:init', () => {
                 }
             });
 
-            // 2. Draw Lines using Alpha Batching (5 bins for background)
-            const bins = Array.from({ length: 6 }, () => new Path2D());
+            // 2. Draw Lines using 10-Bin Batching (Smoother Fade)
+            // Increased to 11 bins (0-10) to match the main logo quality
+            const bins = Array.from({ length: 11 }, () => new Path2D());
             const connDistSq = this.config.lineDistance * this.config.lineDistance;
 
             this.particles.forEach(p1 => {
@@ -368,9 +369,9 @@ document.addEventListener('alpine:init', () => {
 
                                 if (dSq < connDistSq) {
                                     const dist = Math.sqrt(dSq);
-                                    // Map 0..maxDist to bins 5..0
-                                    const binIdx = Math.floor((1 - dist / this.config.lineDistance) * 5);
-                                    if (binIdx >= 0 && binIdx <= 5) {
+                                    // Map 0..maxDist to bins 10..0 (Smoother 10 steps)
+                                    const binIdx = Math.floor((1 - dist / this.config.lineDistance) * 10);
+                                    if (binIdx >= 0 && binIdx <= 10) {
                                         bins[binIdx].moveTo(p1.x | 0, p1.y | 0);
                                         bins[binIdx].lineTo(p2.x | 0, p2.y | 0);
                                     }
@@ -381,11 +382,12 @@ document.addEventListener('alpine:init', () => {
                 }
             });
 
-            // Render Bins
-            for (let b = 0; b <= 5; b++) {
-                const alpha = (b / 5) * this.config.lineOpacity;
+            // Render Bins with Opacity AND Thickness scaling
+            for (let b = 0; b <= 10; b++) {
+                const alpha = (b / 10) * this.config.lineOpacity;
                 if (alpha > 0.01) {
-                    this.ctx.lineWidth = (b / 5) * 1.5;
+                    // Lines get thicker as they get more opaque (closer)
+                    this.ctx.lineWidth = (b / 10) * 1.5;
                     this.ctx.strokeStyle = `rgba(${color}, ${alpha})`;
                     this.ctx.stroke(bins[b]);
                 }
