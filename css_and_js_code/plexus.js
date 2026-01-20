@@ -103,6 +103,13 @@ document.addEventListener('mousemove', (e) => {
     targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
 });
 
+document.addEventListener('mouseout', (e) => {
+    if (!e.relatedTarget && !e.toElement) {
+        targetRotateY = 0;
+        targetRotateX = 0;
+    }
+});
+
 function smoothRotate() {
     if (logoSvg) {
         currentRotateX += (targetRotateX - currentRotateX) * 0.29;
@@ -155,7 +162,7 @@ const createPlexus = (canvas, isBackground, config) => {
             } 
         };
     } else {
-        // FALLBACK: Optimized Main Thread version (Last 10 years compatibility)
+        // FALLBACK: Optimized Main Thread version
         const ctx = canvas.getContext('2d');
         let particles = [], startTime = Date.now();
         const cols = Math.ceil(canvas.width / config.lineDistance);
@@ -249,7 +256,7 @@ window.restartPlexus = function() {
         canvas.width = 1000; 
         canvas.height = 1100;
         logoInstance = createPlexus(canvas, false, { 
-            particleCount: window.innerWidth < 768 ? 0 : 500, 
+            particleCount: window.innerWidth < 768 ? 0 : 400, 
             lineDistance: 145, 
             particleSize: 2 
         });
@@ -265,42 +272,49 @@ document.addEventListener('alpine:init', () => {
             canvas.height = window.innerHeight;
             const isMobile = window.innerWidth < 768;
             this.instance = createPlexus(canvas, true, {
-                particleCount: isMobile ? 25 : 120, 
-                lineDistance: isMobile ? 250 : 221,
+                particleCount: isMobile ? 21 : 96, 
+                lineDistance: isMobile ? 299 : 221,
                 particleSize: 1.59, 
                 baseSpeed: 0.4, 
                 lineOpacity: 0.2, 
                 isBackground: true
             });
-        },
-        get darkMode() {
-            return document.documentElement.classList.contains('dark');
         }
     }));
 });
 
 window.restartLogoAnimations = function() {
-    const lg = document.querySelector('#logo-shape-definition.animate-logo'); 
-    if (!lg) return;
-    const lp = lg.querySelectorAll('path'), wv = document.querySelectorAll('.wave-echo');
-    lp.forEach(p => { 
-        p.style.animation = 'none'; 
-        p.style.strokeDashoffset = '4000'; 
-        p.style.fillOpacity = '0'; 
+    const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
+    const waves = document.querySelectorAll('.wave-echo');
+    if (!logoGroup) return;
+
+    const logoPaths = logoGroup.querySelectorAll('path');
+    
+    logoPaths.forEach(path => {
+        path.style.animation = 'none';
+        path.style.strokeDashoffset = '4000';
+        path.style.fillOpacity = '0';
     });
-    wv.forEach(w => { 
-        w.style.animation = 'none'; 
-        w.style.transform = 'scale(5)'; 
-        w.style.opacity = '0'; 
+    
+    waves.forEach(wave => {
+        wave.style.animation = 'none';
+        wave.style.transform = 'scale(5)';
+        wave.style.opacity = '0';
+        wave.style.strokeWidth = '0.5px';
     });
-    void lg.offsetWidth;
-    lp.forEach(p => p.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards');
-    wv.forEach((w, i) => { 
-        setTimeout(() => w.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards', i * 100); 
+    
+    void logoGroup.offsetWidth;
+    
+    logoPaths.forEach(path => {
+        path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
+    });
+    
+    waves.forEach((wave, index) => {
+        setTimeout(() => {
+            wave.style.animation = 'implodingWave 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards';
+        }, index * 100);
     });
 };
 
-document.addEventListener('DOMContentLoaded', () => { 
-    window.restartPlexus(); 
-    setTimeout(window.restartLogoAnimations, 1); 
-});
+setTimeout(() => window.restartPlexus(), 150);
+setTimeout(() => window.restartLogoAnimations(), 1);
