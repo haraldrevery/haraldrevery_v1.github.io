@@ -53,7 +53,7 @@ window.restartPlexus = function() {
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
   
   const isMobile = window.innerWidth < 768;
-  const targetParticleCount = isMobile ? 0 : 400;
+  const targetParticleCount = isMobile ? 0 : 440;
   const connectionDistance = isMobile ? 0 : 145;
   const connDistSq = connectionDistance * connectionDistance;
   
@@ -216,7 +216,7 @@ document.addEventListener('alpine:init', () => {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 25 : 96;
+            this.config.particleCount = isMobile ? 29 : 110;
             this.config.lineDistance = isMobile ? 250 : 221;
             this.cols = Math.ceil(this.canvas.width / this.config.lineDistance);
             this.rows = Math.ceil(this.canvas.height / this.config.lineDistance);
