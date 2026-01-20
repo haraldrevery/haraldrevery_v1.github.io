@@ -30,7 +30,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. UPDATED: High-Density Mixed Trails */
+/* 2. UPDATED: High Density Trails with Opacity Highlights */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -47,8 +47,8 @@ window.restartPlexus = function() {
   const ctx = canvas.getContext('2d');
   const width = 1000, height = 1100;
   
-  // 400% More lines (approx 100-120 on desktop)
-  const trailCount = window.innerWidth < 768 ? 40 : 120;
+  // Increased particle/trail count further
+  const trailCount = window.innerWidth < 768 ? 60 : 250;
   const trails = [];
 
   class Trail {
@@ -59,16 +59,17 @@ window.restartPlexus = function() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
       this.segments = [];
-      this.maxLength = Math.floor(Math.random() * 80) + 60; 
+      this.maxLength = Math.floor(Math.random() * 70) + 50; 
       
-      // Some lines are now significantly slower (0.5 to 4.0 range)
-      this.speed = Math.random() < 0.3 ? (Math.random() * 0.5 + 0.5) : (Math.random() * 2.5 + 1.5);
-      
+      this.speed = Math.random() < 0.4 ? (Math.random() * 0.4 + 0.4) : (Math.random() * 2 + 1);
       this.angle = Math.random() * TWO_PI;
-      this.va = (Math.random() - 0.5) * 0.12; 
+      this.va = (Math.random() - 0.5) * 0.1; 
       
-      // 50% Probability of following mouse
-      this.followsMouse = Math.random() > 0.5;
+      // Follow the mouse less: now only 20% follow the mouse
+      this.followsMouse = Math.random() < 0.2;
+      
+      // 10% of them have full opacity
+      this.isHighlighted = Math.random() < 0.1;
     }
     update() {
       if (this.followsMouse) {
@@ -82,11 +83,11 @@ window.restartPlexus = function() {
         while (diff < -Math.PI) diff += TWO_PI;
         while (diff > Math.PI) diff -= TWO_PI;
         
-        this.angle += diff * 0.07 + (this.va * 0.5);
+        // Lowered interpolation (0.04) so they follow less aggressively
+        this.angle += diff * 0.04 + (this.va * 0.5);
       } else {
-        // Natural wandering for the other 50%
         this.angle += this.va;
-        if (Math.random() < 0.02) this.va = (Math.random() - 0.5) * 0.12;
+        if (Math.random() < 0.01) this.va = (Math.random() - 0.5) * 0.1;
       }
       
       this.x += Math.cos(this.angle) * this.speed;
@@ -95,18 +96,16 @@ window.restartPlexus = function() {
       this.segments.unshift({x: this.x, y: this.y});
       if (this.segments.length > this.maxLength) this.segments.pop();
 
-      // Wrap-around logic instead of hard reset for "drifters"
       if (this.x < -100) this.x = width + 90;
       if (this.x > width + 100) this.x = -90;
       if (this.y < -100) this.y = height + 90;
       if (this.y > height + 100) this.y = -90;
     }
-    draw(color) {
+    draw(baseColor, highlightColor) {
       if (this.segments.length < 2) return;
       ctx.beginPath();
-      ctx.strokeStyle = color;
-      // Drifters are slightly thinner for visual hierarchy
-      ctx.lineWidth = this.followsMouse ? 1.2 : 0.8;
+      ctx.strokeStyle = this.isHighlighted ? highlightColor : baseColor;
+      ctx.lineWidth = this.isHighlighted ? 1.4 : 0.7;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.moveTo(this.segments[0].x, this.segments[0].y);
@@ -122,11 +121,14 @@ window.restartPlexus = function() {
   function animate() {
     ctx.clearRect(0, 0, width, height);
     const isDark = document.documentElement.classList.contains('dark');
-    const color = isDark ? "rgba(255, 255, 255, 0.25)" : "rgba(0, 0, 0, 0.25)";
+    
+    // Base trails are subtle, Highlights are 1.0 opacity
+    const baseColor = isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)";
+    const highlightColor = isDark ? "rgba(255, 255, 255, 1.0)" : "rgba(0, 0, 0, 1.0)";
 
     trails.forEach(t => {
       t.update();
-      t.draw(color);
+      t.draw(baseColor, highlightColor);
     });
     plexusRequestId = requestAnimationFrame(animate);
   }
@@ -171,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => window.restartLogoAnimations(), 1);
 });
 
-/* 4. BACKGROUND: High Density Alpine Flow */
+/* 4. BACKGROUND: Dense Alpine Flow */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
@@ -183,16 +185,17 @@ document.addEventListener('alpine:init', () => {
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
             
-            const bgCount = window.innerWidth < 768 ? 30 : 80;
+            const bgCount = window.innerWidth < 768 ? 50 : 150;
             for(let i=0; i < bgCount; i++) {
                 this.points.push({
                     x: Math.random() * this.canvas.width,
                     y: Math.random() * this.canvas.height,
                     history: [],
                     angle: Math.random() * TWO_PI,
-                    len: Math.floor(Math.random() * 100) + 100,
-                    speed: Math.random() * 1 + 0.3,
-                    follows: Math.random() > 0.5
+                    len: Math.floor(Math.random() * 80) + 80,
+                    speed: Math.random() * 0.8 + 0.2,
+                    follows: Math.random() < 0.1, // Only 10% of background follows mouse
+                    highlight: Math.random() < 0.05 // 5% of background trails are bright
                 });
             }
             this.animate();
@@ -204,16 +207,15 @@ document.addEventListener('alpine:init', () => {
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             const isDark = document.documentElement.classList.contains('dark');
-            const color = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)";
             
             this.points.forEach(p => {
                 if(p.follows) {
                   const dx = globalMouseX + (window.innerWidth/2) - p.x;
                   const dy = globalMouseY + (window.innerHeight/2) - p.y;
-                  p.angle += (Math.atan2(dy, dx) - p.angle) * 0.02;
+                  p.angle += (Math.atan2(dy, dx) - p.angle) * 0.01;
                 }
                 
-                p.angle += (Math.random() - 0.5) * 0.04;
+                p.angle += (Math.random() - 0.5) * 0.03;
                 p.x += Math.cos(p.angle) * p.speed;
                 p.y += Math.sin(p.angle) * p.speed;
                 
@@ -227,9 +229,10 @@ document.addEventListener('alpine:init', () => {
                 }
                 
                 if(p.history.length > 1) {
+                    const alpha = p.highlight ? 0.3 : 0.04;
                     this.ctx.beginPath();
-                    this.ctx.strokeStyle = color;
-                    this.ctx.lineWidth = 0.6;
+                    this.ctx.strokeStyle = isDark ? `rgba(255,255,255,${alpha})` : `rgba(0,0,0,${alpha})`;
+                    this.ctx.lineWidth = p.highlight ? 0.8 : 0.5;
                     this.ctx.moveTo(p.history[0].x, p.history[0].y);
                     for(let i=1; i < p.history.length; i++) {
                         this.ctx.lineTo(p.history[i].x, p.history[i].y);
