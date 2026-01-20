@@ -30,9 +30,10 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. MAIN ANIMATION: High-Density Ultra-Long Trails */
+/* 2. MAIN ANIMATION: Speed-Boost Trails (No Attraction) */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
+const SPEED_BOOST_RADIUS = 250; 
 
 document.addEventListener('mousemove', (e) => {
   globalMouseX = (e.clientX - window.innerWidth / 2);
@@ -61,50 +62,52 @@ window.restartPlexus = function() {
       
       const rand = Math.random();
       if (rand < 0.10) {
-        // Ultra-Hero Lines: Massive ribbons (1600-2400 segments)
+        // Ultra-Hero: (1600-2400 segments)
         this.maxLength = Math.floor(Math.random() * 800) + 1600;
       } else if (rand < 0.25) {
-        // Standard Long Lines: (400-600 segments)
+        // Standard Long: (400-600 segments)
         this.maxLength = Math.floor(Math.random() * 200) + 400;
       } else {
-        // Standard Trails: (120-240 segments)
+        // Standard: (120-240 segments)
         this.maxLength = Math.floor(Math.random() * 120) + 120;
       }
       
-      this.speed = Math.random() < 0.4 ? (Math.random() * 0.4 + 0.3) : (Math.random() * 1.8 + 0.8);
+      this.baseSpeed = Math.random() < 0.4 ? (Math.random() * 0.4 + 0.3) : (Math.random() * 1.8 + 0.8);
+      this.currentSpeed = this.baseSpeed;
       this.angle = Math.random() * TWO_PI;
-      this.va = (Math.random() - 0.5) * 0.08; 
-      this.followsMouse = Math.random() < 0.2;
+      this.va = (Math.random() - 0.5) * 0.06; 
       this.alpha = Math.random() * (1.0 - 0.15) + 0.15;
     }
     update() {
-      if (this.followsMouse) {
-        const targetX = globalMouseX + width/2;
-        const targetY = globalMouseY + height/2;
-        const dx = targetX - this.x;
-        const dy = targetY - this.y;
-        const angleToMouse = Math.atan2(dy, dx);
-        
-        let diff = angleToMouse - this.angle;
-        while (diff < -Math.PI) diff += TWO_PI;
-        while (diff > Math.PI) diff -= TWO_PI;
-        
-        this.angle += diff * 0.03 + (this.va * 0.4);
+      // Calculate distance to mouse
+      const targetX = globalMouseX + width/2;
+      const targetY = globalMouseY + height/2;
+      const dx = targetX - this.x;
+      const dy = targetY - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // Speed Logic: Increase speed if within radius, otherwise return to base
+      if (dist < SPEED_BOOST_RADIUS) {
+        const boost = (1 - dist / SPEED_BOOST_RADIUS) * 6; // Max 6x speed boost
+        this.currentSpeed += (this.baseSpeed + boost - this.currentSpeed) * 0.1;
       } else {
-        this.angle += this.va;
-        if (Math.random() < 0.01) this.va = (Math.random() - 0.5) * 0.1;
+        this.currentSpeed += (this.baseSpeed - this.currentSpeed) * 0.05;
       }
+
+      // Natural movement only (no angle-snapping to mouse)
+      this.angle += this.va;
+      if (Math.random() < 0.01) this.va = (Math.random() - 0.5) * 0.08;
       
-      this.x += Math.cos(this.angle) * this.speed;
-      this.y += Math.sin(this.angle) * this.speed;
+      this.x += Math.cos(this.angle) * this.currentSpeed;
+      this.y += Math.sin(this.angle) * this.currentSpeed;
 
       this.segments.unshift({x: this.x, y: this.y});
       if (this.segments.length > this.maxLength) this.segments.pop();
 
-      if (this.x < -500) this.x = width + 490;
-      if (this.x > width + 500) this.x = -490;
-      if (this.y < -500) this.y = height + 490;
-      if (this.y > height + 500) this.y = -490;
+      if (this.x < -600) this.x = width + 590;
+      if (this.x > width + 600) this.x = -590;
+      if (this.y < -600) this.y = height + 590;
+      if (this.y > height + 600) this.y = -590;
     }
     draw(isDark) {
       if (this.segments.length < 2) return;
@@ -168,17 +171,15 @@ window.restartLogoAnimations = function() {
   });
 };
 
-/* Initial Start */
+/* Start initially */
 document.addEventListener('DOMContentLoaded', () => {
   window.restartPlexus();
   setTimeout(() => window.restartLogoAnimations(), 1);
 });
 
-/* 4. BACKGROUND: Empty Alpine Init (Trails Removed) */
+/* 4. BACKGROUND: Stripped */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
-        init() {
-            // Background trails removed as requested
-        }
+        init() { }
     }));
 });
