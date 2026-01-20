@@ -809,9 +809,6 @@ html, body {
 .dark .particles-layer { color: rgba(255, 255, 255, 0.8); }
 html:not(.dark) .particles-layer { color: rgba(0, 0, 0, 0.4); }
 
-body {
-  overscroll-behavior-y: none;
-}
 
 .seo-only-h1 {
   position: absolute;
