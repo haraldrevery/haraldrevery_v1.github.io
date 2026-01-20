@@ -66,7 +66,7 @@ window.restartPlexus = function() {
   // Particle Settings
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 0 : 420; // Safe to increase to 500 now
-  const connectionDistance = isMobile ? 0 : 140;
+  const connectionDistance = isMobile ? 10 : 140;
   const connDistSq = connectionDistance * connectionDistance;
 
   // --- OPTIMIZATION 1: SPATIAL GRID SETUP ---
@@ -283,7 +283,7 @@ document.addEventListener('alpine:init', () => {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
             const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 25 : 100;
+            this.config.particleCount = isMobile ? 0 : 100;
             this.config.lineDistance = isMobile ? 250 : 221;
             
             // Recalculate Grid Dimensions
