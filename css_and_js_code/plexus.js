@@ -211,6 +211,10 @@ document.addEventListener('alpine:init', () => {
         },
         mouse: { x: -9999, y: -9999 },
 
+        get darkMode() {
+            return document.documentElement.classList.contains('dark');
+        },
+
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
