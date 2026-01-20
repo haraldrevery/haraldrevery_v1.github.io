@@ -12,7 +12,6 @@ document.addEventListener('mousemove', (e) => {
   targetRotateX = ((e.clientY / window.innerHeight) - 0.5) * -40;
 });
 
-// Reset rotation when the mouse truly leaves the browser window
 document.addEventListener('mouseout', (e) => {
   if (!e.relatedTarget && !e.toElement) {
     targetRotateY = 0;
@@ -32,23 +31,17 @@ function smoothRotate() {
 }
 smoothRotate();
 
-
-
-  
-/* Plexus */
-// 1. GLOBAL SCOPE: Animation ID and Persistent Mouse Coordinates
+/* Plexus (Logo Canvas) */
 let plexusRequestId;
 let mouseX = 0, mouseY = 0;
 let targetX = 0, targetY = 0;
 
-// Update mouse position globally so it persists through restarts
 document.addEventListener('mousemove', (e) => {
   mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
   mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
 });
 
 window.restartPlexus = function() {
-  // Clear previous loop
   if (plexusRequestId) cancelAnimationFrame(plexusRequestId);
   
   const canvas = document.getElementById('plexus-canvas');
@@ -56,15 +49,9 @@ window.restartPlexus = function() {
   if (!canvas || !svg) return;
   
   const ctx = canvas.getContext('2d');
-  
-  // Use the dimensions from your original code
   const width = 1000, height = 1100;
-  
-  // Dynamic Color
   const isDark = document.documentElement.classList.contains('dark');
   const rgb = isDark ? "255, 255, 255" : "26, 26, 26";
-  
-  // Particle Settings
   const isMobile = window.innerWidth < 768;
   const targetParticleCount = isMobile ? 0 : 400;
   const connectionDistance = isMobile ? 0 : 145;
@@ -86,14 +73,7 @@ window.restartPlexus = function() {
   }
   
   function animate() {
-    // --- PART 1: RESTORE 3D ROTATION ---
-    // Apply the 3D tilt to the SVG
-    const rotateX = targetY * -19; // Vertical tilt
-    const rotateY = targetX * 19; // Horizontal tilt
-  
-    // --- PART 2: PLEXUS ANIMATION ---
     ctx.clearRect(0, 0, width, height);
-    
     const progress = Math.min((Date.now() - startTime) / 3000, 1);
     const targetThisFrame = Math.floor(progress * targetParticleCount);
     
@@ -102,7 +82,6 @@ window.restartPlexus = function() {
       currentParticleCount++;
     }
     
-    // Draw Particles - set fill style once
     ctx.fillStyle = `rgba(${rgb}, 0.8)`;
     for (let i = 0; i < currentParticleCount; i++) {
       posX[i] += velX[i];
@@ -112,7 +91,6 @@ window.restartPlexus = function() {
       ctx.fillRect(posX[i] - 1, posY[i] - 1, 2, 2);
     }
     
-    // Draw Lines
     ctx.lineWidth = 0.8;
     for (let i = 0; i < currentParticleCount; i++) {
       const x1 = posX[i], y1 = posY[i];
@@ -120,7 +98,6 @@ window.restartPlexus = function() {
         const dx = x1 - posX[j], dy = y1 - posY[j];
         const distSq = dx * dx + dy * dy;
         if (distSq < connDistSq) {
-          // Optimized: use integer math instead of toFixed
           const alpha = Math.round((1 - Math.sqrt(distSq) / connectionDistance) * 80);
           ctx.strokeStyle = `rgba(${rgb}, ${alpha / 100})`;
           ctx.beginPath();
@@ -130,30 +107,18 @@ window.restartPlexus = function() {
         }
       }
     }
-    
     plexusRequestId = requestAnimationFrame(animate);
   }
-  
   animate();
 };
 
-// Start initially
-document.addEventListener('DOMContentLoaded', () => {
-  window.restartPlexus();
-});
-
-
-
-/*   restart logo when dark/light mode */
-
+/* Restart Animations */
 window.restartLogoAnimations = function() {
   const logoGroup = document.querySelector('#logo-shape-definition.animate-logo');
   const waves = document.querySelectorAll('.wave-echo');
   if (!logoGroup) return;
 
   const logoPaths = logoGroup.querySelectorAll('path');
-  
-  // Phase 1: Remove all animations at once
   logoPaths.forEach(path => {
     path.style.animation = 'none';
     path.style.strokeDashoffset = '4000';
@@ -167,10 +132,8 @@ window.restartLogoAnimations = function() {
     wave.style.strokeWidth = '0.5px';
   });
   
-  // Single forced reflow for ALL elements
   void logoGroup.offsetWidth;
   
-  // Phase 2: Re-apply animations
   logoPaths.forEach(path => {
     path.style.animation = 'logoDraw 5s cubic-bezier(.75,.03,.46,.46) forwards';
   });
@@ -182,20 +145,21 @@ window.restartLogoAnimations = function() {
   });
 };
 
-    
+document.addEventListener('DOMContentLoaded', () => {
+  window.restartPlexus();
+  setTimeout(() => window.restartLogoAnimations(), 1);
+});
 
-setTimeout(() => window.restartPlexus(), 150);
-setTimeout(() => window.restartLogoAnimations(), 1); // logo a bit later
-
-
-/* Plexus background */
-
+/* Plexus Background - Spatial Grid Optimized */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
         ctx: null,
         particles: [],
-        startTime: null, // Track when the animation starts for the build-up
+        startTime: null,
+        grid: [],
+        cols: 0,
+        rows: 0,
         config: {
             particleCount: 0,
             lineDistance: 0,
@@ -208,11 +172,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.canvas = this.$refs.canvas;
             this.ctx = this.canvas.getContext('2d');
-            this.startTime = Date.now(); // Set the start time
-
-            const isMobile = window.innerWidth < 768;
-            this.config.particleCount = isMobile ? 21 : 96;
-            this.config.lineDistance = isMobile ? 299 : 221;
+            this.startTime = Date.now();
 
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
@@ -230,6 +190,10 @@ document.addEventListener('alpine:init', () => {
             const isMobile = window.innerWidth < 768;
             this.config.particleCount = isMobile ? 25 : 96;
             this.config.lineDistance = isMobile ? 250 : 221;
+            
+            // Grid Setup: Cell size is the connection distance
+            this.cols = Math.ceil(this.canvas.width / this.config.lineDistance);
+            this.rows = Math.ceil(this.canvas.height / this.config.lineDistance);
         },
 
         createParticle() {
@@ -244,8 +208,6 @@ document.addEventListener('alpine:init', () => {
         animate() {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            // --- RESTORED BUILD-UP LOGIC ---
-            // Gradually increase target count over 3 seconds
             const progress = Math.min((Date.now() - this.startTime) / 3000, 1);
             const currentTarget = Math.floor(progress * this.config.particleCount);
 
@@ -254,12 +216,12 @@ document.addEventListener('alpine:init', () => {
             }
 
             const color = this.darkMode ? '255, 255, 255' : '0, 0, 0';
-            
-            // Set fill style once before particle loop
             this.ctx.fillStyle = `rgba(${color}, 0.4)`;
 
+            // Clear and rebuild spatial grid
+            this.grid = Array.from({ length: this.cols * this.rows }, () => []);
+            
             this.particles.forEach((p, i) => {
-                // Optimized: use squared distance to avoid sqrt
                 const dxMouse = p.x - this.mouse.x;
                 const dyMouse = p.y - this.mouse.y;
                 const distSqMouse = dxMouse * dxMouse + dyMouse * dyMouse;
@@ -275,16 +237,46 @@ document.addEventListener('alpine:init', () => {
                 this.ctx.arc(p.x, p.y, this.config.particleSize, 0, TWO_PI);
                 this.ctx.fill();
 
-                for (let j = i + 1; j < this.particles.length; j++) {
-                    const p2 = this.particles[j];
-                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (dist < this.config.lineDistance) {
-                        this.ctx.lineWidth = (1 - dist / this.config.lineDistance) * 1.5;
-                        this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(p.x, p.y);
-                        this.ctx.lineTo(p2.x, p2.y);
-                        this.ctx.stroke();
+                // Assign to grid
+                const col = Math.floor(p.x / this.config.lineDistance);
+                const row = Math.floor(p.y / this.config.lineDistance);
+                if (col >= 0 && col < this.cols && row >= 0 && row < this.rows) {
+                    this.grid[col + row * this.cols].push(p);
+                }
+            });
+
+            // Draw connections using the grid
+            const connDistSq = this.config.lineDistance * this.config.lineDistance;
+            
+            this.particles.forEach(p => {
+                const col = Math.floor(p.x / this.config.lineDistance);
+                const row = Math.floor(p.y / this.config.lineDistance);
+
+                // Check 3x3 grid around the particle
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        const neighborCol = col + i;
+                        const neighborRow = row + j;
+
+                        if (neighborCol >= 0 && neighborCol < this.cols && neighborRow >= 0 && neighborRow < this.rows) {
+                            const neighbors = this.grid[neighborCol + neighborRow * this.cols];
+                            neighbors.forEach(p2 => {
+                                if (p === p2) return;
+                                const dx = p.x - p2.x;
+                                const dy = p.y - p2.y;
+                                const dSq = dx * dx + dy * dy;
+
+                                if (dSq < connDistSq) {
+                                    const dist = Math.sqrt(dSq);
+                                    this.ctx.lineWidth = (1 - dist / this.config.lineDistance) * 1.5;
+                                    this.ctx.strokeStyle = `rgba(${color}, ${this.config.lineOpacity})`;
+                                    this.ctx.beginPath();
+                                    this.ctx.moveTo(p.x, p.y);
+                                    this.ctx.lineTo(p2.x, p2.y);
+                                    this.ctx.stroke();
+                                }
+                            });
+                        }
                     }
                 }
             });
