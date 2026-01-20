@@ -47,10 +47,10 @@
 /* The card causes an issue with page width  */
 .logo-card-small {
   /* Increased from 280px to 320px */
-  width: 320px !important;
+  width: 400px !important;
   
   /* Critical: This prevents the card from ever being wider than the screen */
-  max-width: 100% !important;
+  max-width: 98% !important;
 
   display: block !important;
   
