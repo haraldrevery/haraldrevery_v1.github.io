@@ -30,7 +30,7 @@ function smoothRotate() {
 }
 smoothRotate();
 
-/* 2. UPDATED: Trails with Opacity Distribution & Varied Lengths */
+/* 2. UPDATED: Trails with Ultra-Long Hero Lines */
 let plexusRequestId;
 let globalMouseX = 0, globalMouseY = 0;
 
@@ -47,7 +47,8 @@ window.restartPlexus = function() {
   const ctx = canvas.getContext('2d');
   const width = 1000, height = 1100;
   
-  const trailCount = window.innerWidth < 768 ? 80 : 280;
+  // High particle density
+  const trailCount = window.innerWidth < 768 ? 130 : 475;
   const trails = [];
 
   class Trail {
@@ -59,17 +60,27 @@ window.restartPlexus = function() {
       this.y = Math.random() * height;
       this.segments = [];
       
-      // LONGER LINES: Variety from short (40) to very long (250 segments)
-      this.maxLength = Math.random() < 0.15 ? Math.floor(Math.random() * 150) + 100 : Math.floor(Math.random() * 60) + 40; 
+      // LENGTH DISTRIBUTION
+      const rand = Math.random();
+      if (rand < 0.10) {
+        // 10% are 400% longer (Ultra-Hero lines: 400-600 segments)
+        this.maxLength = Math.floor(Math.random() * 200) + 400;
+      } else if (rand < 0.25) {
+        // 15% are standard long lines (100-150 segments)
+        this.maxLength = Math.floor(Math.random() * 50) + 100;
+      } else {
+        // 75% are standard short trails (30-60 segments)
+        this.maxLength = Math.floor(Math.random() * 30) + 30;
+      }
       
       this.speed = Math.random() < 0.4 ? (Math.random() * 0.4 + 0.3) : (Math.random() * 1.8 + 0.8);
       this.angle = Math.random() * TWO_PI;
       this.va = (Math.random() - 0.5) * 0.08; 
       
-      // Follow the mouse less (20% influence)
+      // Low mouse influence (approx 20%)
       this.followsMouse = Math.random() < 0.2;
       
-      // OPACITY DISTRIBUTION: Random alpha between 0.15 and 1.0
+      // Opacity distribution (15% to 100%)
       this.alpha = Math.random() * (1.0 - 0.15) + 0.15;
     }
     update() {
@@ -84,7 +95,7 @@ window.restartPlexus = function() {
         while (diff < -Math.PI) diff += TWO_PI;
         while (diff > Math.PI) diff -= TWO_PI;
         
-        this.angle += diff * 0.035 + (this.va * 0.4);
+        this.angle += diff * 0.03 + (this.va * 0.4);
       } else {
         this.angle += this.va;
         if (Math.random() < 0.01) this.va = (Math.random() - 0.5) * 0.1;
@@ -96,10 +107,11 @@ window.restartPlexus = function() {
       this.segments.unshift({x: this.x, y: this.y});
       if (this.segments.length > this.maxLength) this.segments.pop();
 
-      if (this.x < -150) this.x = width + 140;
-      if (this.x > width + 150) this.x = -140;
-      if (this.y < -150) this.y = height + 140;
-      if (this.y > height + 150) this.y = -140;
+      // Larger wrap-around margin for ultra-long lines
+      if (this.x < -300) this.x = width + 290;
+      if (this.x > width + 300) this.x = -290;
+      if (this.y < -300) this.y = height + 290;
+      if (this.y > height + 300) this.y = -290;
     }
     draw(isDark) {
       if (this.segments.length < 2) return;
@@ -107,8 +119,9 @@ window.restartPlexus = function() {
       const rgb = isDark ? "255, 255, 255" : "0, 0, 0";
       ctx.strokeStyle = `rgba(${rgb}, ${this.alpha})`;
       
-      // Thicker lines for higher opacity to add depth
-      ctx.lineWidth = this.alpha > 0.8 ? 1.3 : 0.7;
+      // Ultra-long lines get a slightly distinct width
+      ctx.lineWidth = this.maxLength > 300 ? 1.5 : (this.alpha > 0.8 ? 1.2 : 0.7);
+      
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.moveTo(this.segments[0].x, this.segments[0].y);
@@ -124,7 +137,6 @@ window.restartPlexus = function() {
   function animate() {
     ctx.clearRect(0, 0, width, height);
     const isDark = document.documentElement.classList.contains('dark');
-
     trails.forEach(t => {
       t.update();
       t.draw(isDark);
@@ -172,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => window.restartLogoAnimations(), 1);
 });
 
-/* 4. BACKGROUND: Enhanced Alpine Flow */
+/* 4. BACKGROUND: High-Density Alpine Flow */
 document.addEventListener('alpine:init', () => {
     Alpine.data('plexusBackground', () => ({
         canvas: null,
@@ -184,17 +196,18 @@ document.addEventListener('alpine:init', () => {
             this.handleResize();
             window.addEventListener('resize', () => this.handleResize());
             
-            const bgCount = window.innerWidth < 768 ? 60 : 180;
+            const bgCount = window.innerWidth < 768 ? 100 : 300;
             for(let i=0; i < bgCount; i++) {
+                const isUltra = Math.random() < 0.1;
                 this.points.push({
                     x: Math.random() * this.canvas.width,
                     y: Math.random() * this.canvas.height,
                     history: [],
                     angle: Math.random() * TWO_PI,
-                    len: Math.floor(Math.random() * 120) + 60,
-                    speed: Math.random() * 0.7 + 0.2,
-                    follows: Math.random() < 0.1,
-                    alpha: Math.random() * (0.4 - 0.05) + 0.05 // Background is more subtle
+                    len: isUltra ? 450 : Math.floor(Math.random() * 100) + 50,
+                    speed: Math.random() * 0.6 + 0.2,
+                    follows: Math.random() < 0.08,
+                    alpha: Math.random() * (0.3 - 0.05) + 0.05
                 });
             }
             this.animate();
@@ -212,17 +225,17 @@ document.addEventListener('alpine:init', () => {
                 if(p.follows) {
                   const dx = globalMouseX + (window.innerWidth/2) - p.x;
                   const dy = globalMouseY + (window.innerHeight/2) - p.y;
-                  p.angle += (Math.atan2(dy, dx) - p.angle) * 0.01;
+                  p.angle += (Math.atan2(dy, dx) - p.angle) * 0.008;
                 }
                 
-                p.angle += (Math.random() - 0.5) * 0.03;
+                p.angle += (Math.random() - 0.5) * 0.02;
                 p.x += Math.cos(p.angle) * p.speed;
                 p.y += Math.sin(p.angle) * p.speed;
                 
                 p.history.unshift({x: p.x, y: p.y});
                 if(p.history.length > p.len) p.history.pop();
                 
-                if(p.x < -100 || p.x > this.canvas.width + 100 || p.y < -100 || p.y > this.canvas.height + 100) {
+                if(p.x < -200 || p.x > this.canvas.width + 200 || p.y < -200 || p.y > this.canvas.height + 200) {
                     p.x = Math.random() * this.canvas.width;
                     p.y = Math.random() * this.canvas.height;
                     p.history = [];
@@ -231,7 +244,7 @@ document.addEventListener('alpine:init', () => {
                 if(p.history.length > 1) {
                     this.ctx.beginPath();
                     this.ctx.strokeStyle = `rgba(${rgb}, ${p.alpha})`;
-                    this.ctx.lineWidth = 0.5;
+                    this.ctx.lineWidth = 0.4;
                     this.ctx.moveTo(p.history[0].x, p.history[0].y);
                     for(let i=1; i < p.history.length; i++) {
                         this.ctx.lineTo(p.history[i].x, p.history[i].y);
