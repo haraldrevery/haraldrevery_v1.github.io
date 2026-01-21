@@ -25,8 +25,7 @@ img, svg {
 
 
 
-
-
+/* H animation */
 .logo-container2 { 
     width: 400px; 
     height: 400px; 
@@ -69,16 +68,7 @@ img, svg {
     0%, 25% { fill-opacity: 0; }
     30%, 75% { fill-opacity: 1; }
     85%, 100% { fill-opacity: 0; }
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
